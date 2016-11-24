@@ -1,0 +1,26 @@
+{
+  {
+    "id": 1,
+    "type": "frame"
+  },
+  {
+    "id": 2,
+    "type": "stem"
+  },
+  {
+    "id": 3,
+    "type": "handlebar"
+  },
+  {
+    "id": 4,
+    "type": "seatpost"
+  },
+  {
+    "id": 5,
+    "type": "crank"
+  },
+  {
+    "id": 6,
+    "type": "saddle"
+  }
+}

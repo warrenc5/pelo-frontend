@@ -1,0 +1,78 @@
+@import "_variables.scss";
+@import "_flexboxgrid.scss";
+
+body {
+  color: $black;
+  font-family: 'graphik','Helvetica Neue','Roboto', Arial, sans-serif;
+};
+
+.main-nav {
+  xbackground: $teal;
+  xpadding: 20px;
+}
+
+.main-logo {
+  background: $darkgray;
+  color: $white;
+  padding: 10px;
+  font-size: 40px;
+  font-family: 'arial black';
+  letter-spacing: -1px;
+
+  a {
+    color: inherit;
+  }
+
+  a:hover,
+  a:focus,
+  a:active {
+    text-decoration: none;
+  }
+
+  & > a > span {
+    color: $pastelBlue;
+  }
+
+}
+
+.main-search {
+  background: $teal;
+  padding: 20px;
+}
+
+.main-wrapper {
+  margin: 0 auto;
+}
+
+.main-content-wrapper {
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 0 20px;
+}
+
+@media screen and (min-width: 1301px) {
+  .main-wrapper {
+    padding-left: 250px;
+  }
+
+  .main-content-wrapper {
+    width:960px;
+    padding: 0;
+  }
+}
+
+.card {
+  margin-right: 20px;
+}
+
+.margin-r-0 {
+  margin-right: 0 !important;
+}
+
+// typography
+.type-italic {
+  font-style: italic;
+  font-family: 'times new roman';
+}
+
+
