@@ -8,6 +8,7 @@ var browserSync = require('browser-sync');
 var sass = require('gulp-sass');
 var bourbon = require('node-bourbon').includePaths;
 var concat = require('gulp-concat');
+var gulp_plugins = require('gulp-load-plugins')();
 
 //html
 var gulpJade = require('gulp-jade');
@@ -85,6 +86,9 @@ gulp.task('copy-data', function () {
         .pipe(gulp.dest(paths.dataDist))
 })
 
+gulp.task('release', function () { 
+//run shrink-wrap
+}
 gulp.task('default', ['copy-html', 'copy-data', 'compile-css', 'compile-js'], function() {
     // Fire up a web server.
     browserSync.init({
