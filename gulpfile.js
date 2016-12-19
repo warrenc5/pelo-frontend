@@ -25,28 +25,48 @@ var paths = new (function () {
     this.root = '.';
 
     // source
-    this.htmlSource  = this.root + '/source';
-    this.cssSource   = this.root + '/source/css';
-    this.jsSource    = this.root + '/source/js';
-    //this.jsComponent = this.root + '/source/js-component';
-    this.imgSource   = this.root + '/source/img';
-    this.dataSource  = this.root + '/source/data';
-    //this.fontSource  = this.root + '/source/font';
+    this.source  = this.root + '/src';
+    this.htmlSource  = this.source;
+    this.cssSource   =  this.source + '/css';
+    this.jsSource    =  this.source + '/js';
+    //this.jsComponent = this.source + '/js-component';
+    this.imgSource   =  this.source + '/img';
+    this.dataSource  =  this.source + '/data';
+    //this.fontSource  =  this.source + '/font';
     this.mainApplicationJS = 'app.js';
 
     // destination
-    this.htmlDist = this.root + '/dist';
-    this.cssDist  = this.root + '/dist/css';
-    this.jsDist   = this.root + '/dist/js';
-    this.imgDist  = this.root + '/dist/img';
-    this.dataDist = this.root + '/dist/data';
-    //this.fontDist = this.root + '/dist/font';
+    
+    this.dist = this.root + '/cordova/www/';
+    this.htmlDist = this.dist;
+    this.cssDist  =  this.dist + '/css';
+    this.jsDist   =  this.dist + '/js';
+    this.imgDist  =  this.dist + '/img';
+    this.dataDist =  this.dist + '/data';
+    //this.fontDist =  this.dist/font';
     
     this.cssDistName = 'bundle.css';
     this.jsDistName = 'bundle.js';
     
 })();
 
+var npmShrinkwrap = require("npm-shrinkwrap");
+
+/*
+npmShrinkwrap({
+    dirname: process.cwd()
+}, function (err, optionalWarnings) {
+    if (err) {
+        throw err;
+    }
+ 
+    optionalWarnings.forEach(function (err) {
+        console.warn(err.message)
+    })
+ 
+    console.log("wrote npm-shrinkwrap.json")
+});
+*/
 
 gulp.task('compile-css', function () {
     gulp.src(paths.cssSource + '/main.scss')
@@ -88,12 +108,14 @@ gulp.task('copy-data', function () {
 
 gulp.task('release', function () { 
 //run shrink-wrap
-}
+})
+gulp.task('compile',['copy-html', 'copy-data', 'compile-css', 'compile-js']);
+
 gulp.task('default', ['copy-html', 'copy-data', 'compile-css', 'compile-js'], function() {
     // Fire up a web server.
     browserSync.init({
         server: {
-            baseDir: './dist',
+            baseDir: './cordova/www/',
             index: 'index.html'
         },
         online: true
