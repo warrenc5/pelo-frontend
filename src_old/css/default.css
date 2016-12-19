@@ -1,0 +1,185 @@
+body {
+    background-color: rgb(51, 51, 51);
+    color: #d9dde3;
+    font-family: "sans-serif";
+    font-size: 12px;
+}
+
+.right {
+  float: right;
+  margin: 10px;
+}
+
+li {
+  list-style: none;
+  margin-left: 0;
+}
+
+table {
+  text-align:center;
+  padding: 5px;
+}
+
+.name {
+  font-size:16px;
+}
+.status {
+  text-align:left;
+}
+
+.hidden {
+display : none; 
+}
+
+.shown {
+display : inline; 
+}
+
+.gallery {
+  margin: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-points-x: repeat(500px);
+  scroll-snap-type: mandatory;
+  white-space: nowrap;
+  width: 500px;
+}
+.float {
+  float : left;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  height: 80%;
+}
+  
+div#mapc {
+  height: 80%;
+  max-height: 80%
+}
+  
+#login {
+    position:absolute;
+    top: 50%;
+    left: 0%;
+    width:100%;
+    height:50%;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: 0%; /*set to a negative number 1/2 of your width*/
+    //border: 1px solid #ccc;
+    //background-color: #f3f3f3;
+    text-align: center ;
+}
+
+.floating-menu {
+font-family: sans-serif;
+background-color: #1a355e;
+padding: 5px;
+bottom: 0;
+width: 100%;
+z-index: 100;
+position: fixed;
+display: -webkit-flex; /* Safari */
+    -webkit-justify-content: space-around; /* Safari 6.1+ */
+    display: flex;
+    justify-content: space-around;
+}
+
+.floating-menu a, 
+.floating-menu h3 {
+font-size: 0.9em;
+display: block;
+margin: 0 0.5em;
+color: white;
+}
+
+.map{
+width: 100%;
+position:fixed;
+display: -webkit-flex; /* Safari */
+    -webkit-justify-content: space-around; /* Safari 6.1+ */
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.round-image {
+    border-radius: 100%;
+    -o-border-radius: 90%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="file"] {
+  font-size: 18px;
+width: 60%;
+  outline: none;
+  -webkit-transition: all 0.4s ease-out;
+  -moz-transition: all 0.4s ease-out;
+  -o-transition: all 0.4s ease-out;
+  -ms-transition: all 0.4s ease-out;
+  transition: all 0.4s ease-out;
+  padding: 2px 2px 2px 2px;
+  margin-top: 4px;
+}
+
+button {
+  background: #1a355e ;
+  //repeat-x url("../img/dimple.png");
+  color: white;
+  border: none;
+  width: 50%;
+  margin-top: 4px;
+  padding: 2px 2px 2px 2px;
+  -webkit-border-top-left-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-bottom-left-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="text"]:focus {
+  color: #123456;
+  padding: 2px 2px 2px 2px;
+
+}
+
+.login {
+    background-image: url('../img/bg1.jpg');
+    margin:auto;
+    background-size: auto 100%;
+}
+
+.dark {
+   color: white;
+   text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;  
+}
+
+#error {
+   color: white;
+    font-size: 18px;
+   text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;  
+}

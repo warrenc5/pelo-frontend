@@ -4,3 +4,8 @@ dist
 www/*
 platforms
 plugins
+npm-debug.log
+.config.xml.swp
+.*.*.sw*
+www/.*
+www/*.*
