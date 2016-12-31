@@ -111,7 +111,7 @@ gulp.task('release', function () {
 })
 gulp.task('compile',['copy-html', 'copy-data', 'compile-css', 'compile-js']);
 
-gulp.task('default', ['copy-html', 'copy-data', 'compile-css', 'compile-js'], function() {
+gulp.task('default', ['compile'], function() {
     // Fire up a web server.
     browserSync.init({
         server: {

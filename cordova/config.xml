@@ -12,9 +12,6 @@
     </author>
 
     <content src="index.html" />
-    <content src="data" />
-    <content src="js" />
-    <content src="css" />
 
     <plugin name="cordova-plugin-whitelist" version="1" />
     <plugin name="cordova-plugin-geolocation" />

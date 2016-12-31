@@ -24,7 +24,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Home from './pages/home';
-import RouterPath from './routerPath';
+//import RouterPath from './routerPath';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
