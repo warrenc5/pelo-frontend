@@ -10,7 +10,7 @@ export default class MainLayout extends React.Component {
   render() {
     let currentRouteName = this.props.location.pathname;
 
-    return (          
+    return (
       <div>
         <Navigation />
         <div id="main-wrapper" className="main-wrapper">

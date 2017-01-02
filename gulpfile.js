@@ -81,7 +81,6 @@ gulp.task('compile-css', function () {
 
 gulp.task('compile-js', function () {    
     browserify(paths.jsSource + '/' + paths.mainApplicationJS)
-        //.transform(reactify)
         .transform(babelify.configure({
             ignore: /(node_modules)/
         }))
@@ -106,12 +105,38 @@ gulp.task('copy-data', function () {
         .pipe(gulp.dest(paths.dataDist))
 })
 
+gulp.task('old', function () {
+
+    gulp.src(paths.root + '/src_old/css/default.css')
+        .pipe(sass({
+            outputStyle: 'compressed',
+            includePaths: bourbon
+        }))
+        .pipe(concat(paths.cssDistName))
+        .pipe(gulp.dest(paths.cssDist))
+        .pipe(browserSync.stream());
+
+    browserify(paths.root + '/src_old/js/index.js')
+        .transform(babelify.configure({
+            ignore: /(node_modules)/
+        }))
+        .bundle()
+        .on('error', console.error.bind(console))
+        .pipe(source(paths.jsDistName))
+        .pipe(gulp.dest(paths.jsDist));
+
+    return gulp.src(paths.root + '/src_old/**/*')
+        .pipe(gulp.dest(paths.dist))
+})
+
 gulp.task('release', function () { 
 //run shrink-wrap
 })
 gulp.task('compile',['copy-html', 'copy-data', 'compile-css', 'compile-js']);
 
-gulp.task('default', ['compile'], function() {
+gulp.task('default', ['compile','serve'])
+
+gulp.task('serve', [], function() {
     // Fire up a web server.
     browserSync.init({
         server: {
@@ -126,6 +151,7 @@ gulp.task('default', ['compile'], function() {
     gulp.watch(paths.jsSource + '/**/*', ['compile-js']);
     //gulp.watch(paths.jsComponent + '/**/*', ['application-js']);
     gulp.watch(paths.htmlSource + '/**/*.jade', ['copy-html']);
+    gulp.watch(paths.root + '/src_old/**/*', ['old']);
 
     // Watch main files and reload browser.
     gulp.watch([paths.cssDist + '/**/*', paths.jsDist + '/**/*', paths.htmlDist + '/**/*']).on('change', browserSync.reload);

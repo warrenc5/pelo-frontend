@@ -1,9 +1,4 @@
 //TODO
-//var peloBaseUrl = "http://localhost/pelo/rest/view/";
-var peloBaseUrl = "http://localhost:8085/pelo/rest/view/";
-//var peloBaseUrl = "http://devnull.com.au/pelo/rest/view/";
-//var peloBaseUrl= "http://10.0.0.68/pelo/rest/view/";
-var debugFlag=true;
 
 function ajax(name, url, delegate, method, data) {
   var xhttp;
@@ -46,14 +41,6 @@ function ajax(name, url, delegate, method, data) {
     xhttp.open(method, url, true);
     xhttp.send();
   }
-}
-
-function emptyRides() {
-    gEBI("empty").className = "shown";
-}
-
-function emptyGroups() {
-    gEBI("empty").className = "shown";
 }
 
 
@@ -250,11 +237,11 @@ function rideRoute(rideId) {
 function (name, xhttp) { 
   switch (xhttp.status) {
     case 200:
+    case 204:
       debug2(name +"  "+ xhttp.status + " " + xhttp.responseText.length);
       var data = storeJSON(name,xhttp.responseText); 
       plotFitRoute(data);
       break;
-    case 204:
     default: 
       debug(name,xhttp);
   }
