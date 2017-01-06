@@ -3,23 +3,6 @@ import security from './security'
 import storage from './storage'
 import * as misc from './misc'
 
-function platform() {
-    var platforms = new Array("Android", "BlackBerry", "iOS", "webOS", "WinCE", "Tizen");
-
-    try {
-        var devicePlatform = device.platform;
-
-        for (var i = 0; i < platforms.length; i++) {
-            if (devicePlatform.search(platforms[i]) >= 0) {
-                return platforms[i];
-            }
-        }
-    } catch (e) {
-        misc.debug2(e);
-    }
-    return 'Unknown';
-}
-
 function onDeviceReady() {
     //cordova only
     misc.debug2('device ready');
@@ -34,7 +17,7 @@ function ang() {
 
 }
 angular.element(function () {
-    ang().initit();
+    ang().init();
 });
 
 var inited = false;
@@ -63,13 +46,66 @@ peloApp.factory('storage', function () {
     }
 });
 
+peloApp.factory('platform', function () {
+
+    var peloBaseUrl = null;
+    var p;
+
+    function configurePlatform() {
+        p = platform();
+
+        if (p == 'Dev') {
+            peloBaseUrl = "http://localhost/pelo/rest/view/";
+        }
+
+        cordovaOnly(function () {
+            peloBaseUrl = "http://10.0.0.69/pelo/rest/view/";
+        })
+    }
+
+    function cordovaOnly(func) {
+        if (p == 'iOS' || p == 'Android') {
+            func();
+        }
+    }
+
+
+    function platform() {
+
+        var platforms = new Array("Android", "BlackBerry", "iOS", "webOS", "WinCE", "Tizen");
+
+        if (typeof(device) === 'undefined') {
+            return 'Dev';
+        } else {
+            try {
+                var devicePlatform = device.platform;
+
+                for (var i = 0; i < platforms.length; i++) {
+                    if (devicePlatform.search(platforms[i]) >= 0) {
+                        return platforms[i];
+                    }
+                }
+            } catch (e) {
+                misc.debug2(e);
+            }
+        }
+
+        return 'Unknown';
+    }
+
+    return {
+        cordovaOnly: cordovaOnly,
+        configure: configurePlatform,
+    }
+
+})
 peloApp.service('debug', function () {
     return {
         debug: misc.debug,
         debug2: misc.debug2,
         debugJSON: misc.debugJSON,
     }
-});
+})
 
 peloApp.service('security', function () {
 
@@ -86,29 +122,30 @@ peloApp.service('security', function () {
         getUser: security.getUser,
     }
 
-});
+})
 
-peloApp.controller("ctrl", function ($scope, $http, $timeout, $interval, security, storage, debug) {
-    $scope.initit = function () {
+peloApp.controller("ctrl", function ($scope, $http, $timeout, $interval, security, platform, storage, debug) {
+    $scope.init = function () {
 
+        platform.configure();
 
         if (inited)
             return;
 
-        try {
-            navigator.splashscreen.hide();
-        } catch (e) {
-        }
+        platform.cordovaOnly(function () {
+            try {
+                navigator.splashscreen.hide();
+            } catch (e) {
+            }
+        })
 
         inited = true;
 
-        security.checkLogin(function() {})
+        security.checkLogin(function () {
+            debug.debug2("login")
+        })
 
-        var p = platform();
 
-        if (p == 'iOS' || p == 'Android') {
-            peloBaseUrl = "http://10.0.0.69/pelo/rest/view/";
-        }
     }
 
     $scope.exitApp = function () {

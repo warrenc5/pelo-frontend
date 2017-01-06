@@ -24,9 +24,9 @@ export class MySecurity {
         var data = storage.loadJSON("auth");
 
         if (this.needsToSignIn()) {
-            this.logout();
-        } else {
             doLogin();
+        } else {
+            this.logout();
         }
     }
 
