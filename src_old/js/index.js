@@ -1,11 +1,15 @@
-import init from './init.js'
-import misc from './misc.js'
-import storage from './storage.js'
-import worker from './worker.js'
-import dom from './dom.js'
-import ajax from './ajax.js'
-import map_location from './map_location.js'
-import services from './services.js'
+import $ from 'jquery'
+import 'angular'
+
+import init from './init'
+import misc from './misc'
+import worker from './worker'
+import dom from './dom'
+import ajax from './ajax'
+import map_location from './map_location'
+
+import './services'
+
 /*
 require.config({
     baseUrl: 'node_modules/',

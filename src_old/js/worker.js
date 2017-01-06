@@ -1,10 +1,11 @@
 var i = 0;
-delay=1000;
-interval=5000;
+var delay=1000;
+var interval=5000;
+
 
 function startTimer() {
     postMessage(i++);
     setTimeout("startTimer()",interval);
 }
 
-setTimeout("startTimer()",delay);
+////setTimeout("startTimer()",delay);

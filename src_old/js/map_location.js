@@ -1,3 +1,5 @@
+const MapboxClient = require('mapbox');
+
         function initMap2(){
         //  storage = new MyStorage();
         //  storage.init();

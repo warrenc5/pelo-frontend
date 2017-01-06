@@ -1,11 +1,7 @@
-
 export class MyStorage {
-
-    storage = null;
 
     constructor() {
         if (typeof(Storage) != "undefined") {
-            storage = localStorage;
         } else {
             alert("no storage available on device");
         }
@@ -13,7 +9,7 @@ export class MyStorage {
 
     put(name, value) {
         try {
-            storage.setItem(name, value);
+            localStorage.setItem(name, value);
         } catch (x) {
             alert(x);
 
@@ -22,7 +18,7 @@ export class MyStorage {
 
     has(name) {
         try {
-            if ((value = storage.getItem(name)) != undefined) {
+            if ((value = localStorage.getItem(name)) != undefined) {
                 return true;
             }
         } catch (x) {
@@ -34,8 +30,8 @@ export class MyStorage {
     get(name) {
         var value;
         try {
-            if ((value = storage.getItem(name)) != undefined) {
-                value = storage.getItem(name);
+            if ((value = localStorage.getItem(name)) != undefined) {
+                value = localStorage.getItem(name);
             }
             else {
                 //alert("no name");
@@ -49,8 +45,8 @@ export class MyStorage {
     remove(name) {
         var value;
         try {
-            if ((value = storage.getItem(name)) != undefined) {
-                storage.removeItem(name);
+            if ((value = localStorage.getItem(name)) != undefined) {
+                localStorage.removeItem(name);
             }
             else {
             }
@@ -62,48 +58,43 @@ export class MyStorage {
 
     clear() {
         try {
-            storage.clear();
+            localStorage.clear();
         } catch (x) {
             alert(x);
         }
     }
-}
-function getCurrentUser() {
-    return storage.get("auth");
-}
 
-function getUser(userId) {
-    return storage.get("userId" + userId);
-}
 
-function loadJSON(name) {
-    var data = storage.get(name);
-    if (data == null || data.length == 0)
-        return null;
+    loadJSON(name) {
+        var data = storage.get(name);
+        if (data == null || data.length == 0)
+            return null;
 
-    try {
-        data = JSON.parse(data);
-    } catch (e) {
-        debug2(data + " invalid");
-        return null;
-    }
-    return data;
-}
-function storeJSON(name, data) {
-    storage.put(name, data);
-    try {
-        var data = JSON.parse(data);
-        bind(name, data);
+        try {
+            data = JSON.parse(data);
+        } catch (e) {
+            debug2(data + " invalid");
+            return null;
+        }
         return data;
-    } catch (e) {
-        debug2("no valid json " + name + " " + e);
-        return null;
+    }
+
+    storeJSON(name, data) {
+        storage.put(name, data);
+        try {
+            var data = JSON.parse(data);
+            bind(name, data);
+            return data;
+        } catch (e) {
+            debug2("no valid json " + name + " " + e);
+            return null;
+        }
+    }
+
+    storeUser(data) {
+        storage.put("userId" + data.id, data);
     }
 }
 
-function storeUser(data) {
-    storage.put("userId" + data.id, data);
-}
-
-
-
+const storage = new MyStorage();
+module.exports = storage;

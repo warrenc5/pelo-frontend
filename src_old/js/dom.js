@@ -21,7 +21,6 @@ function aC(struct){
   //alert("o : " + o);
   return o;
 }
-
 function gEBI(name) {
   return document.getElementById(name);
 }

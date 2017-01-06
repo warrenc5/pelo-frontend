@@ -1,4 +1,3 @@
-//TODO
 
 function ajax(name, url, delegate, method, data) {
   var xhttp;

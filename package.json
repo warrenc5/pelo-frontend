@@ -42,6 +42,7 @@
     "gulp-load-plugins": "^1.4.0",
     "gulp-sass": "^2.3.2",
     "jade": "^1.11.0",
+    "jquery": "^3.1.1",
     "mapbox": "^1.0.0-beta5",
     "material-ui": "^0.15.4",
     "mime-types": "^2.1.13",
