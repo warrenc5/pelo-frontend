@@ -1,5 +1,5 @@
 import storage from './storage'
-import * as globals from './init'
+import {AUTH} from './init'
 
 export class MySecurity {
 
@@ -10,8 +10,8 @@ export class MySecurity {
 
     needsToSignIn() {
 
-        if (storage.has(globals.AUTH)) {
-            var data = storage.get(globals.AUTH);
+        if (storage.has(AUTH)) {
+            var data = this.getCurrentUser()
 
             return data == undefined || data.length == 0; // || data.lastSignedInAt < online.updatedAt
         } else {
@@ -20,18 +20,18 @@ export class MySecurity {
 
     }
 
-    checkLogin(doLogin) {
+    checkLogin(username,password,doLogin) {
         var data = storage.loadJSON("auth");
 
         if (this.needsToSignIn()) {
-            doLogin();
+            doLogin(username,password);
         } else {
             this.logout();
         }
     }
 
     getCurrentUser() {
-        return storage.get("auth");
+        return storage.get(AUTH);
     }
 
     getUser(userId) {

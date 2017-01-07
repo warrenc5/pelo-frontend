@@ -1,26 +1,28 @@
 import $ from 'jquery'
-import security from './security'
-import storage from './storage'
+import _security from './security'
+import _storage from './storage'
 import * as misc from './misc'
+import {_app,MyAjax} from './ajax'
 
 function onDeviceReady() {
     //cordova only
-    misc.debug2('device ready');
+    cordovaOnly(function () {
+        misc.debug2('device ready');
+    })
 }
 
 function onBodyLoad() {
-    debug2('bodyload');
+    misc.debug2('bodyload');
 }
 
-function ang() {
+function scope() {
     return angular.element($("#app")).scope();
 
 }
-angular.element(function () {
-    ang().init();
-});
 
-var inited = false;
+angular.element(function () {
+    scope().init();
+});
 
 function init2() {
     debug2('init2');
@@ -34,32 +36,30 @@ function init2() {
     });
 }
 
-
-var peloApp = angular.module('peloApp', []);
+var peloApp = angular.module('peloApp', ['ng']);
 
 peloApp.factory('storage', function () {
     return {
-        clear: storage.clear,
-        has: storage.has,
-        put: storage.put,
-        get: storage.get,
+        clear: _storage.clear,
+        has: _storage.has,
+        put: _storage.put,
+        get: _storage.get,
     }
 });
 
-peloApp.factory('platform', function () {
+peloApp.factory('platform', function ($rootScope) {
 
-    var peloBaseUrl = null;
     var p;
 
     function configurePlatform() {
         p = platform();
 
         if (p == 'Dev') {
-            peloBaseUrl = "http://localhost/pelo/rest/view/";
+            $rootScope.peloBaseUrl = "http://localhost/pelo/rest/view/";
         }
 
         cordovaOnly(function () {
-            peloBaseUrl = "http://10.0.0.69/pelo/rest/view/";
+            $rootScope.peloBaseUrl = "http://10.0.0.69/pelo/rest/view/";
         })
     }
 
@@ -68,7 +68,6 @@ peloApp.factory('platform', function () {
             func();
         }
     }
-
 
     function platform() {
 
@@ -96,9 +95,11 @@ peloApp.factory('platform', function () {
     return {
         cordovaOnly: cordovaOnly,
         configure: configurePlatform,
+
     }
 
 })
+
 peloApp.service('debug', function () {
     return {
         debug: misc.debug,
@@ -107,29 +108,102 @@ peloApp.service('debug', function () {
     }
 })
 
-peloApp.service('security', function () {
-
+peloApp.service('local', function () {
     function doLogin() {
-        debug.debug2("**********!")
+        var data = loadJSON("auth");
+        debugJSON(data);
+        if (data == null) {
+            debug2("user login failed : none");
+            return;
+        }
+        currentUserId = data.id;
+
+        debug2("logged in user " + currentUserId);
+    }
+})
+
+peloApp.factory('ajax', function () {
+    const _ajax = new MyAjax(null)
+    return {
+        call: _ajax.remote
+    }
+})
+
+peloApp.factory('app', function () {
+    return {
+        login2: _app.login2
+    }
+})
+
+peloApp.service('security', function (app, ajax,$rootScope) {
+
+    function login(username, password) {
+        misc.debug2('login ' + username + " " + password);
+
+        ajax.baseUrl = $rootScope.peloBaseUrl;
+        app.login2(ajax, username, password)
+
+
+        /*
+         login(username, password, new function () {
+         misc.debug2("**************");
+         //FIXME
+         //$scope.showPage($scope.defaultPage);
+         // $scope.currentPage = $scope.defaultPage;
+         });
+         */
     }
 
+
+    function logout(username, password) {
+        $scope.hideAll();
+        stopAllWorkers();
+        storage.clear();
+        $scope.auth = null;
+
+        /*
+         try {
+         $scope.logoutFB();
+         } catch (e) {
+         debug2('logout fb error');
+         }
+         */
+        _security.logout();
+
+    };
+
     return {
-        logout: security.logout,
-        needsToSignIn: security.needsToSignIn,
-        doLogin: security.doLogin,
-        checkLogin: security.checkLogin,
-        getCurrentUser: security.getCurrentUser,
-        getUser: security.getUser,
+        login: login,
+        logout: logout,
+        needsToSignIn: _security.needsToSignIn,
+        getCurrentUser: _security.getCurrentUser,
+        getUser: _security.getUser,
     }
 
 })
 
-peloApp.controller("ctrl", function ($scope, $http, $timeout, $interval, security, platform, storage, debug) {
+peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $interval, security, platform, storage, debug, ajax) {
+
+
+    $scope.cordovaOnly = platform.cordovaOnly
+    $scope.inited = false
+    $scope.login = security.login
+    $scope.logout = security.logout
+    $scope.username = "Wozza";
+    $scope.password = "uyooho00";
+
+    $rootScope.peloBaseUrl = 'wwww';
+
+    $scope.$watch("peloBaseUrl", function (n, o, scope) {
+        misc.debug2("peloBaseUrl " + n);
+        ajax.baseUrl = n;
+    })
+
     $scope.init = function () {
 
         platform.configure();
 
-        if (inited)
+        if ($scope.inited)
             return;
 
         platform.cordovaOnly(function () {
@@ -139,13 +213,11 @@ peloApp.controller("ctrl", function ($scope, $http, $timeout, $interval, securit
             }
         })
 
-        inited = true;
+        $scope.inited = true;
 
-        security.checkLogin(function () {
-            debug.debug2("login")
+        _security.checkLogin($scope.username, $scope.password, function (username, password) {
+            security.login(username, password);
         })
-
-
     }
 
     $scope.exitApp = function () {
@@ -158,6 +230,52 @@ peloApp.controller("ctrl", function ($scope, $http, $timeout, $interval, securit
             debug2(e);
         }
     }
-});
+})
+
+peloApp.factory("fb", function () {
+
+    //var appId = "1027544200612898";
+    var appId = "1697342230545684";
+    var version = "2.5";
+
+    $scope.loginFB = function (username) {
+
+        if (username == undefined) {
+        }
+
+        try {
+            facebookConnectPlugin.browserInit(appId, version);
+        } catch (e) {
+            debug2(e);
+        }
+
+        facebookConnectPlugin.login(['email', 'public_profile'], function (userData) {
+                facebookConnectPlugin.api('/me?fields=email', null,
+                    function (response) {
+
+                        debug2("me: " + JSON.stringify(response));
+                        login2(response.email, userData.accessToken);
+                        debug2("success" + JSON.stringify(userData));
+                        //response.name
+                        $scope.showPage('groups');
+                    });
+            },
+            function (error) {
+                debug2('fb api error');
+            })
+    };
+
+    $scope.logoutFB = function () {
+        facebookConnectPlugin.browserInit(appId, version);
+        facebookConnectPlugin.logout(function () {
+                debug2('fb logout');
+            },
+            function (fail) {
+                debug2('fb logout fail');
+            });
+    }
+
+
+})
 
 
