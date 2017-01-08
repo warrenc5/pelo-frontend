@@ -1,3 +1,4 @@
+import {debug, debug2, debugJSON} from './misc'
 export class MyStorage {
 
     constructor() {
@@ -64,6 +65,13 @@ export class MyStorage {
         }
     }
 
+    map(func) {
+        for (var i = 0; i < localStorage.length; i++) {
+            var key = localStorage.key(i)
+            var value = localStorage.getItem(key)
+            func(key,value)
+        }
+    }
 
     loadJSON(name) {
         var data = storage.get(name);
@@ -80,13 +88,18 @@ export class MyStorage {
     }
 
     storeJSON(name, data) {
+        if(data === undefined) {
+            debug2("no data")
+            return
+        }
+
         storage.put(name, data);
+
         try {
             var data = JSON.parse(data);
-            bind(name, data);
             return data;
         } catch (e) {
-            debug2("no valid json " + name + " " + e);
+            debug2("no valid json " + name + " " + e  + " length: " + data.length + " data:" + data);
             return null;
         }
     }

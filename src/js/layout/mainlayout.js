@@ -1,6 +1,6 @@
 import React from 'react';
-import Navigation from '../components/navigation';
-import Search from '../components/search';
+import Navigation from '../component/navigation';
+import Search from '../component/search';
 
 export default class MainLayout extends React.Component {
   constructor(props) {

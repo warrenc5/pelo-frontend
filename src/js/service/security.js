@@ -5,7 +5,6 @@ export class MySecurity {
 
     logout() {
         storage.clear();
-        storage.remove("auth");
     }
 
     needsToSignIn() {

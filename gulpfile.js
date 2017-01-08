@@ -12,7 +12,7 @@ var gulp_plugins = require('gulp-load-plugins')();
 
 //html
 var gulpJade = require('gulp-jade');
-var jade =  require('jade');
+var jade = require('jade');
 
 //react
 var browserify = require('browserify');
@@ -25,118 +25,104 @@ var paths = new (function () {
     this.root = '.';
 
     // source
-    this.source  = this.root + '/src';
-    this.htmlSource  = this.source;
-    this.cssSource   =  this.source + '/css';
-    this.jsSource    =  this.source + '/js';
+    this.source = this.root + '/src';
+    this.htmlSrc = this.source;
+    this.cssSrc = this.source + '/css';
+    this.jsSrc = this.source + '/js';
     //this.jsComponent = this.source + '/js-component';
-    this.imgSource   =  this.source + '/img';
-    this.dataSource  =  this.source + '/data';
-    //this.fontSource  =  this.source + '/font';
+    this.imgSrc = this.source + '/img';
+    this.dataSrc = this.source + '/data';
+    //this.fontSrc  =  this.source + '/font';
     this.mainApplicationJS = 'app.js';
 
     // destination
-    
+
     this.dist = this.root + '/cordova/www/';
-    this.htmlDist = this.dist;
-    this.cssDist  =  this.dist + '/css';
-    this.jsDist   =  this.dist + '/js';
-    this.imgDist  =  this.dist + '/img';
-    this.dataDist =  this.dist + '/data';
-    //this.fontDist =  this.dist/font';
-    
-    this.cssDistName = 'bundle.css';
-    this.jsDistName = 'bundle.js';
-    
-})();
+    this.htmlDest = this.dist;
+    this.cssDest = this.dist + '/css';
+    this.jsDest = this.dist + '/js';
+    this.imgDest = this.dist + '/img';
+    this.dataDest = this.dist + '/data';
+    //this.fontDest =  this.dist/font';
+
+    this.cssDestName = 'bundle.css';
+    this.jsDestName = 'bundle.js';
+})
+
 
 var npmShrinkwrap = require("npm-shrinkwrap");
 
 /*
-npmShrinkwrap({
-    dirname: process.cwd()
-}, function (err, optionalWarnings) {
-    if (err) {
-        throw err;
-    }
- 
-    optionalWarnings.forEach(function (err) {
-        console.warn(err.message)
-    })
- 
-    console.log("wrote npm-shrinkwrap.json")
-});
-*/
+ npmShrinkwrap({
+ dirname: process.cwd()
+ }, function (err, optionalWarnings) {
+ if (err) {
+ throw err;
+ }
+
+ optionalWarnings.forEach(function (err) {
+ console.warn(err.message)
+ })
+
+ console.log("wrote npm-shrinkwrap.json")
+ });
+ */
 
 gulp.task('compile-css', function () {
-    gulp.src(paths.cssSource + '/main.scss')
+
+    return gulp.src(paths.cssSrc)
         .pipe(sass({
             outputStyle: 'compressed',
             includePaths: bourbon
         }))
-        .pipe(concat(paths.cssDistName))
-        .pipe(gulp.dest(paths.cssDist))
+        .pipe(concat(paths.cssDestName))
+        .pipe(gulp.dest(paths.cssDest))
         .pipe(browserSync.stream());
 });
 
-gulp.task('compile-js', function () {    
-    browserify(paths.jsSource + '/' + paths.mainApplicationJS)
+gulp.task('compile-js', function () {
+    return browserify(paths.jsSrc + '/' + paths.mainApplicationJS)
         .transform(babelify.configure({
             ignore: /(node_modules)/
         }))
         .bundle()
         .on('error', console.error.bind(console))
-        .pipe(source(paths.jsDistName))
-        .pipe(gulp.dest(paths.jsDist));
-    
+        .pipe(source(paths.jsDestName))
+        .pipe(gulp.dest(paths.jsDest));
+
 });
 
 gulp.task('copy-html', function () {
-    return gulp.src(paths.htmlSource + '/**/*.jade')
-        .pipe(gulpJade({
-            jade: jade,     
-            pretty: true
-        }))
-        .pipe(gulp.dest(paths.htmlDist))
+    return gulp.src(paths.htmlSrc + '/**/*.html')
+            .pipe(gulp.dest(paths.htmlDest))
+
+        &&
+        gulp.src(paths.htmlSrc + '/**/*.jade')
+            .pipe(gulpJade({
+                jade: jade,
+                pretty: true
+            }))
+            .pipe(gulp.dest(paths.htmlDest))
 })
 
 gulp.task('copy-data', function () {
-    return gulp.src(paths.dataSource + '/**/*')
-        .pipe(gulp.dest(paths.dataDist))
+    return gulp.src(paths.dataSrc + '/**/*')
+        .pipe(gulp.dest(paths.dataDest))
 })
 
-gulp.task('old', function () {
-
-    gulp.src(paths.root + '/src_old/css/default.css')
-        .pipe(sass({
-            outputStyle: 'compressed',
-            includePaths: bourbon
-        }))
-        .pipe(concat(paths.cssDistName))
-        .pipe(gulp.dest(paths.cssDist))
-        .pipe(browserSync.stream());
-
-    browserify(paths.root + '/src_old/js/index.js')
-        .transform(babelify.configure({
-            ignore: /(node_modules)/
-        }))
-        .bundle()
-        .on('error', console.error.bind(console))
-        .pipe(source(paths.jsDistName))
-        .pipe(gulp.dest(paths.jsDist));
-
-    return gulp.src(paths.root + '/src_old/**/*')
-        .pipe(gulp.dest(paths.dist))
+gulp.task('copy-images', function () {
+    return gulp.src(paths.imgSrc + '/**/*')
+        .pipe(gulp.dest(paths.imgDest))
 })
 
-gulp.task('release', function () { 
+gulp.task('release', function () {
 //run shrink-wrap
 })
-gulp.task('compile',['copy-html', 'copy-data', 'compile-css', 'compile-js']);
+gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js']);
 
-gulp.task('default', ['compile','serve'])
+gulp.task('default', ['compile', 'serve'])
 
-gulp.task('serve', [], function() {
+gulp.task('serve', [], function () {
     // Fire up a web server.
     browserSync.init({
         server: {
@@ -146,13 +132,16 @@ gulp.task('serve', [], function() {
         online: true
     });
 
-     // Watch changes
-    gulp.watch(paths.cssSource + '/**/*', ['compile-css']);
-    gulp.watch(paths.jsSource + '/**/*', ['compile-js']);
+    // Watch changes
+    gulp.watch(paths.cssSrc + '/**/*', ['compile-css']);
+    gulp.watch(paths.jsSrc + '/**/*.js', ['compile-js']);
+    gulp.watch(paths.jsSrc + '/**/*.js', ['compile-js']);
     //gulp.watch(paths.jsComponent + '/**/*', ['application-js']);
-    gulp.watch(paths.htmlSource + '/**/*.jade', ['copy-html']);
+    gulp.watch(paths.htmlSrc + '/**/*.jade', ['copy-html']);
+    gulp.watch(paths.htmlSrc + '/**/*.html', ['copy-html']);
+
     gulp.watch(paths.root + '/src_old/**/*', ['old']);
 
     // Watch main files and reload browser.
-    gulp.watch([paths.cssDist + '/**/*', paths.jsDist + '/**/*', paths.htmlDist + '/**/*']).on('change', browserSync.reload);
+    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*']).on('change', browserSync.reload);
 });

@@ -9,75 +9,87 @@ import {deepOrange500} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RouterPath from './RouterPath';
 
 const styles = {
-  container: {
-    textAlign: 'center',
-    paddingTop: 200,
-  },
+    container: {
+        textAlign: 'center',
+        paddingTop: 200,
+    },
 };
 
 const muiTheme = getMuiTheme({
-  palette: {
-    accent1Color: deepOrange500,
-  },
+    palette: {
+        accent1Color: deepOrange500,
+    },
 });
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+//injectTapEventPlugin();
 
-class Main extends Component {
-  constructor(props, context) {
-    super(props, context);
+export default class Main extends Component {
 
-    this.handleRequestClose = this.handleRequestClose.bind(this);
-    this.handleTouchTap = this.handleTouchTap.bind(this);
+    constructor(props, context) {
+        super(props, context);
 
-    this.state = {
-      open: false,
-    };
-  }
+        this.handleRequestClose = this.handleRequestClose.bind(this);
+        this.handleTouchTap = this.handleTouchTap.bind(this);
 
-  handleRequestClose() {
-    this.setState({
-      open: false,
-    });
-  }
+        this.state = {
+            open: false,
+        };
+    }
 
-  handleTouchTap() {
-    this.setState({
-      open: true,
-    });
-  }
+    handleRequestClose() {
+        this.setState({
+            open: false,
+        });
+    }
 
-  render() {
-    const standardActions = (
-      <FlatButton
-        label="Ok"
-        primary={true}
-        onTouchTap={this.handleRequestClose}
-      />
-    );
+    handleTouchTap() {
+        this.setState({
+            open: true,
+        });
+    }
 
-    return (
-      <MuiThemeProvider muiTheme={muiTheme}>
-        <div style={styles.container}>
-          <Dialog
-            open={this.state.open}
-            title="Super Secret Password"
-            actions={standardActions}
-            onRequestClose={this.handleRequestClose}
-          >
-            1-2-3-4-5
-          </Dialog>
-          <h1>Material-UI</h1>
-          <h2>example project</h2>
-          <RaisedButton
-            label="Super Secret Password"
-            secondary={true}
-            onTouchTap={this.handleTouchTap}
-          />
-        </div>
-      </MuiThemeProvider>
-    );
-  }
+    render() {
+        const standardActions = (
+            <FlatButton
+                label="Ok"
+                primary={true}
+                onTouchTap={this.handleRequestClose}
+            />
+        );
+
+        return (
+            <MuiThemeProvider muiTheme={muiTheme}>
+                <div style={styles.container}>
+                    <Dialog
+                        open={this.state.open}
+                        title="Super Secret Password"
+                        actions={standardActions}
+                        onRequestClose={this.handleRequestClose}
+                    >
+                        1-2-3-4-5
+                    </Dialog>
+                    <h1>Material-UI</h1>
+                    <h2>example project</h2>
+                    <RaisedButton
+                        label="Super Secret Password"
+                        secondary={true}
+                        onTouchTap={this.handleTouchTap}
+                    />
+                </div>
+            </MuiThemeProvider>
+        );
+    }
 }
 
-export default Main;
+export const App2 = () => (
+    <MuiThemeProvider muiTheme={muiTheme}>
+        <RouterPath />
+    </MuiThemeProvider>
+);
+module.exports = {App2:App2,Main:Main}
+
+exports.default = Main;

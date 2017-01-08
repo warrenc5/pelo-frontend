@@ -160,7 +160,7 @@ input[type="text"]:focus {
 }
 
 .login {
-    background-image: url('../img/bg1.jpg');
+    background-image: url('../../src/img/bg1.jpg');
     margin:auto;
     background-size: auto 100%;
 }
