@@ -10,6 +10,9 @@ import FlatButton from 'material-ui/FlatButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RouterPath from './RouterPath';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+import {debug, debug2, debugJSON} from './service/misc'
 
 const styles = {
     container: {
@@ -25,12 +28,14 @@ const muiTheme = getMuiTheme({
 });
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-//injectTapEventPlugin();
+injectTapEventPlugin();
 
 export default class Main extends Component {
 
     constructor(props, context) {
         super(props, context);
+
+        alert("i" + JSON.stringify(props))
 
         this.handleRequestClose = this.handleRequestClose.bind(this);
         this.handleTouchTap = this.handleTouchTap.bind(this);
@@ -87,7 +92,7 @@ export default class Main extends Component {
 
 export const App2 = () => (
     <MuiThemeProvider muiTheme={muiTheme}>
-        <RouterPath />
+        <RouterPath props={one}/>
     </MuiThemeProvider>
 );
 module.exports = {App2:App2,Main:Main}

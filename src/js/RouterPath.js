@@ -13,6 +13,13 @@ let onUpdate = () => {
 };
 
 export default class RouterPath extends React.Component {
+
+  constructor(props, context) {
+    super(props, context);
+
+    alert("R" + JSON.stringify(props))
+  }
+
   render() {
     return (
       <div>

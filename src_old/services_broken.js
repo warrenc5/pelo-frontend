@@ -271,7 +271,7 @@ peloApp.controller("ctrl", ["$scope", "$http", "$timeout", "$interval", function
         $scope.fblogin2 = function () {
             facebookConnectPlugin.getLoginStatus(function (success) {
                 if (success.status === 'connected') {
-                    // The user is logged in and has authenticated your app, and response.authResponse supplies
+                    // The user is logged in and has authenticated your service, and response.authResponse supplies
                     // the user's ID, a valid access token, a signed request, and the time the access token
                     // and signed request each expire
                     console.log('getLoginStatus', success.status);
@@ -301,9 +301,9 @@ peloApp.controller("ctrl", ["$scope", "$http", "$timeout", "$interval", function
                     }
                 } else {
                     // If (success.status === 'not_authorized') the user is logged in to Facebook,
-                    // but has not authenticated your app
+                    // but has not authenticated your service
                     // Else the person is not logged into Facebook,
-                    // so we're not sure if they are logged into this app or not.
+                    // so we're not sure if they are logged into this service or not.
 
                     console.log('getLoginStatus', success.status);
 
@@ -318,76 +318,7 @@ peloApp.controller("ctrl", ["$scope", "$http", "$timeout", "$interval", function
             });
         };
     }]);
-
-peloApp.directive("rideLocation", function () {
-        return {
-            scope: {},
-            link: function (scope, element, attrs) {
-                var rideId = scope.$parent.ride.id;
-                var userId = scope.$parent.user.id;
-                var user = scope.$parent.user;
-                var rl = scope.$parent.rideLocations;
-
-                if (rl == null)
-                    return;
-                rl.forEach(function (e, i, a) {
-                    if (e.msWhen > new Date().getTime() - (1000 * 60 * 60 * 24 * 25)) {
-                        if (e.rideId == rideId && e.userId == userId) {
-                            attrs.$set("src", "img/" + ((user.role == "captain" ) ? "captain.png" : "rider.png"));
-                        }
-                    }
-                }); //forEach
-            }
-        };
-    });
-peloApp.directive("avatar2", function () {
-        return {
-            scope: {},
-
-            link: function (scope, element, attrs) {
-                var userimages = loadJSON("userimages");
-                var image = userimages["1"];
-                var img = "data:image/png;base64," + image;
-                //FIXME
-                attrs.$set("src", img);
-            }
-        };
-    })
-    .directive("avatar", function () {
-        return {
-            scope: {},
-
-            link: function (scope, element, attrs) {
-                var user = scope.$parent.user;
-
-                if (user == null)
-                    return;
-
-                var image = user.avatar;
-
-                if (image == null)
-                    return;
-
-                if (!image.startsWith("http")) {
-                    image = "img/" + image;
-                }
-
-                debug2(image);
-                attrs.$set("src", image);
-            }
-        };
-    }).filter('myfilter', function () {
-        return function (items, name) {
-            var filtered = [];
-            angular.forEach(items, function (item) {
-                if (name == undefined || name == '') {
-                    filtered.push(item);
-                }
-            });
-            return filtered;
-        };
-    })
-    .value('peloBaseUrl', function () {
+   .value('peloBaseUrl', function () {
         //peloBaseUrl= "http://10.0.0.68/pelo/rest/view/";
         return peloBaseUrl;
     })
@@ -398,7 +329,7 @@ peloApp.directive("avatar2", function () {
         $scope.showLogOutMenu = function () {
             var hideSheet = $ionicActionSheet.show({
                 destructiveText: 'Logout',
-                titleText: 'Are you sure you want to logout? This app is awsome so I recommend you to stay.',
+                titleText: 'Are you sure you want to logout? This service is awsome so I recommend you to stay.',
                 cancelText: 'Cancel',
                 cancel: function () {
                 },
@@ -424,7 +355,7 @@ peloApp.directive("avatar2", function () {
     });
 
 /*
- Brings the app to the foreground. E.g. Call this in response to a user clicking on a notification.
+ Brings the service to the foreground. E.g. Call this in response to a user clicking on a notification.
  */
 
 
@@ -461,7 +392,7 @@ peloApp.directive("avatar2", function () {
 
 
 
- app.controller('PoniesCtrl', function($scope, ponyService) {
+ service.controller('PoniesCtrl', function($scope, ponyService) {
  ponyService.getPonies().then(function(data) {
  $scope.ponies = data;
  }).catch(function() {
@@ -469,7 +400,7 @@ peloApp.directive("avatar2", function () {
  });
  });
 
- app.factory('ponyService', function($http) {
+ service.factory('ponyService', function($http) {
  var getPonies = function() {
  return $http.get('/api/ponies');
  };
@@ -496,7 +427,7 @@ function showMap() {
                 lng: 4.8951680
             },
             zoomLevel: 12, // 0 (the entire world) to 20, default 10
-            showUserLocation: false, // your app will ask permission to the user, default false
+            showUserLocation: false, // your service will ask permission to the user, default false
             hideAttribution: false, // default false, Mapbox requires this default if you're on a free plan
             hideLogo: false, // default false, Mapbox requires this default if you're on a free plan
             hideCompass: false, // default false
