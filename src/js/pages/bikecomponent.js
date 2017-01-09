@@ -3,6 +3,7 @@ import React from 'react';
 export default class BikeComponent extends React.Component {
   constructor(props) {
     super(props);
+
   }
 
   render() {

@@ -65,16 +65,16 @@ export class MyStorage {
         }
     }
 
-    map(func) {
-        for (var i = 0; i < localStorage.length; i++) {
-            var key = localStorage.key(i)
-            var value = localStorage.getItem(key)
+    forEach(func) {
+        for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i)
+            let value = localStorage.getItem(key)
             func(key,value)
         }
     }
 
     loadJSON(name) {
-        var data = storage.get(name);
+        let data = storage.get(name);
         if (data == null || data.length == 0)
             return null;
 

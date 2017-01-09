@@ -13,7 +13,7 @@ import _workers from './misc'
 import _security from './security'
 import _storage from './storage'
 
-import {App2} from '../Main'
+import {App} from '../App'
 
 function onDeviceReady() {
     //cordova only
@@ -57,7 +57,7 @@ peloApp.factory('storage', function () {
         has: _storage.has,
         put: _storage.put,
         get: _storage.get,
-        map: _storage.map,
+        forEach: _storage.forEach,
         loadJSON: _storage.loadJSON,
     }
 })
@@ -194,6 +194,7 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
     $scope.username = "Wozza"
     $scope.password = "uyooho00"
     $scope.test = {one: "!!!!", two : "@@@@@@@@@@"}
+    $scope.props = {}
 
     $rootScope.peloBaseUrl = 'wwww'
 
@@ -221,9 +222,9 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
     $scope.scopeApply = scopeApply
 
     function loadStorageIntoScope() {
-        storage.map(function (name, value) {
+        storage.forEach(function (name, value) {
             debug2("scope " + name + " " + value)
-            $scope[name] = value
+            $scope.props[name] = value
         })
 
         debug2("storage loaded")
@@ -399,16 +400,7 @@ peloApp.filter('myfilter', function () {
     }
 })
 
-peloApp.value('App2', App2)
-/*
-    React.createClass({
-        propTypes: {},
-        render: function () {
-            return <span>Hello</span>;
-        }
-    })
-);
-*/
+peloApp.value('App', App)
 
 /*
  peloApp.directive('react-bridge', function () {

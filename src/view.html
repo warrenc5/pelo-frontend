@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="peloApp">
 <head>
+    <!--
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="pragma" content="no-cache">
@@ -10,11 +11,14 @@
     <meta name="viewport"
           content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, target-densitydpi=device-dpi">
     <meta http-equiv="Content-Security-Policy" content=""/>
+    -->
 
     <title>Pelo Riders App</title>
+
     <link rel="stylesheet" href="css/bundle.css"/>
     <script type="text/javascript" charset="utf-8" src="js/bundle.js"></script>
 
+    <!--
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8" src="cordova_plugins.js"></script>
 
@@ -24,6 +28,7 @@
 
     <script type="text/javascript" charset="utf-8" src="./node_modules/ng-cordova/src/plugins/facebook.js"></script>
 
+-->
 
 
     <!--
@@ -51,14 +56,10 @@
     </head>
 
     <body id="app" ng-controller="main" ng-init="init()">
-
-
-    <span>--></span>
-    <react-component name="App2"  props="test" watch-depth="reference"/>
+    <react-component name="App"  props="props" watch-depth="reference"/>
     <!--
     <react-bridge name="App2" />
         -->
-    <span><--</span>
 
         <!--
         <body  ng-controller="mainCtrl" onload="onBodyLoad()">
@@ -216,10 +217,14 @@
             -->
             <p id="demo" ng-show="debug"></p>
         </body>
+<!--
         <script type="text/javascript" charset="utf-8">
 
 
     </script>
+    -->
+
+
 
     <div id="fb-root">
     </div>

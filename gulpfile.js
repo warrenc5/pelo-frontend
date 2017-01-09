@@ -33,7 +33,7 @@ var paths = new (function () {
     this.imgSrc = this.source + '/img';
     this.dataSrc = this.source + '/data';
     //this.fontSrc  =  this.source + '/font';
-    this.mainApplicationJS = 'app.js';
+    this.mainApplicationJS = '/service/control.js';
 
     // destination
 

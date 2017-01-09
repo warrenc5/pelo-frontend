@@ -9,7 +9,7 @@ import {deepOrange500} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RouterPath from './RouterPath';
+import RouterPath from './Router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import {debug, debug2, debugJSON} from './service/misc'
@@ -90,11 +90,12 @@ export default class Main extends Component {
     }
 }
 
-export const App2 = () => (
+export const App = (props) => (
     <MuiThemeProvider muiTheme={muiTheme}>
-        <RouterPath props={one}/>
+        <RouterPath props={props}/>
     </MuiThemeProvider>
 );
-module.exports = {App2:App2,Main:Main}
+
+module.exports = {App:App,Main:Main}
 
 exports.default = Main;
