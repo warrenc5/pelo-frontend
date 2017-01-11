@@ -1,4 +1,4 @@
-import React from 'react';
+import React { PropTypes } from 'react'
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
@@ -72,4 +72,15 @@ export default class MyBike extends React.Component {
       </div>
     )
   }
-};
+}
+
+/*
+MyBike.propTypes = {
+  : PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    completed: PropTypes.bool.isRequired,
+    text: PropTypes.string.isRequired
+  }).isRequired).isRequired,
+  Click: PropTypes.func.isRequired
+}
+*/

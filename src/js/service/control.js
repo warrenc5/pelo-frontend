@@ -4,6 +4,7 @@ import 'angular-cookies'
 import React from 'react'
 import { render } from 'react-dom'
 import 'ngreact/ngReact'
+import ngRedux from 'ng-redux';
 
 import {debug, debug2, debugJSON} from './misc'
 import MyAjax from './ajax'
@@ -49,7 +50,7 @@ function init2() {
     })
 }
 
-var peloApp = angular.module('peloApp', ['ng', 'ngCookies', 'react'])
+var peloApp = angular.module('peloApp', ['ng', 'ngCookies', 'react',])
 
 peloApp.factory('storage', function () {
     return {
@@ -218,6 +219,13 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
                 scope()[name] = value
             })
     }
+    /*
+    let unsubscribe = $ngRedux.connect(this.mapStateToThis, CounterActions)(this);
+    $scope.$on('$destroy', unsubscribe);
+    $ngRedux.subscribe(() => { let state = $ngRedux.getState();
+        alert  ("$$$" + state)
+    })
+     */
 
     $scope.scopeApply = scopeApply
 

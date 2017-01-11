@@ -5,6 +5,7 @@ import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-ro
 import MainLayout from './layout/mainlayout'
 import ContentLayout from './layout/contentlayout'
 import Home from './pages/home'
+import HomeContainer from './model/containers'
 import BikeComponent from './pages/bikecomponent'
 import About from './pages/about'
 
@@ -30,7 +31,7 @@ export default class RouterPath extends React.Component {
             <div>
                 <Router history={hashHistory}>
                     <Route path="/" component={MainLayout}>
-                        <IndexRoute component={Home}/>
+                        <IndexRoute component={HomeContainer}/>
                         <Route component={ContentLayout}>
                             <Route path="/bike-component" component={BikeComponent} pageTitle={this.props.DB_VERSION}/>
                             <Route path="/bike-component/:componentType" component={BikeComponent}
