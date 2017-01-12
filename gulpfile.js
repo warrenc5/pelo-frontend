@@ -1,5 +1,6 @@
 // Include gulp
 var gulp = require('gulp');
+var run = require('gulp-run');
 
 //server
 var browserSync = require('browser-sync');
@@ -70,7 +71,7 @@ var npmShrinkwrap = require("npm-shrinkwrap");
 
 gulp.task('compile-css', function () {
 
-    return gulp.src(paths.cssSrc)
+    return gulp.src(paths.cssSrc + "/*.scss")
         .pipe(sass({
             outputStyle: 'compressed',
             includePaths: bourbon
@@ -122,18 +123,29 @@ gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'c
 
 gulp.task('default', ['compile', 'serve'])
 
+gulp.task('stop', function () {
+    browserSync.exit()
+})
+
+gulp.task('android', ['compile'], function() {
+  return new run('cordova run android',{cwd: './cordova', verbosity: 3}).exec()
+})
+
 gulp.task('serve', [], function () {
     // Fire up a web server.
-    browserSync.init({
+    browserSync.create().init({
         server: {
             baseDir: './cordova/www/',
             index: 'index.html'
         },
         online: true
     });
+    // Watch main files and reload browser.
+    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*']).on('change', browserSync.reload);
 
     // Watch changes
-    gulp.watch(paths.cssSrc + '/**/*', ['compile-css']);
+    gulp.watch([paths.root + '/gulpfile.js', paths.root + '/package.json'], ['stop','serve']);
+    gulp.watch(paths.cssSrc + '/**/*.scss', ['compile-css']);
     gulp.watch(paths.jsSrc + '/**/*.js', ['compile-js']);
     gulp.watch(paths.jsSrc + '/**/*.js', ['compile-js']);
     //gulp.watch(paths.jsComponent + '/**/*', ['application-js']);
@@ -142,6 +154,4 @@ gulp.task('serve', [], function () {
 
     gulp.watch(paths.root + '/src_old/**/*', ['old']);
 
-    // Watch main files and reload browser.
-    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*']).on('change', browserSync.reload);
 });

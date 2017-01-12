@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -33,9 +33,14 @@ class Home extends React.Component {
   }
 
   render() {
-    return (          
+    return (
       <div>
         <h2>What's new</h2>
+           <a href="#"
+       onClick={e => {
+         e.preventDefault()
+         onClick()
+       }}> SomeLink </a>
         <div className="row">
           <div className="col-xs-4">
             {this.createCard('Card title', 'Card subtitle', 'Card content 1')}
@@ -45,7 +50,7 @@ class Home extends React.Component {
           </div>
           <div className="col-xs-4">
             {this.createCard('Card title', 'Card subtitle', 'Card content 3')}
-          </div>            
+          </div>
         </div>
 
         <h2>Latest post</h2>
@@ -58,11 +63,15 @@ class Home extends React.Component {
           </div>
           <div className="col-xs-4">
             {this.createCard('Card title', 'Card subtitle', 'Card content 3')}
-          </div>            
-        </div>                  
+          </div>
+        </div>
       </div>
     )
   }
 };
+
+Home.propTypes = {
+  onClick: PropTypes.func.isRequired
+}
 
 export default Home;

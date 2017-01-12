@@ -31,25 +31,22 @@ const muiTheme = getMuiTheme({
         accent1Color: deepOrange500,
     },
 })
+
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin()
 
- if (typeof MyReducer !== 'function') {
-    throw new Error('222Expected the reducer to be a function.');
-
-  }
-let store = createStore(MyReducer)
+const store = createStore(MyReducer)
 
 //Props is the angular $scope.props
 //ES6 shorthand
 export const App = (props) => (
-    <Provider store={store}>
-        <MuiThemeProvider muiTheme={muiTheme}>
+    <MuiThemeProvider muiTheme={muiTheme}>
+        <Provider store={store}>
             <RouterPath props={props}/>
-        </MuiThemeProvider>
-    </Provider>
+        </Provider>
+    </MuiThemeProvider>
 )
 
-module.exports = {App:App}
+module.exports = {App: App}
 exports.default = App

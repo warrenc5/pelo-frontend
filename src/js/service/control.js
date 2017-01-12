@@ -14,6 +14,7 @@ import _workers from './misc'
 import _security from './security'
 import _storage from './storage'
 
+import {MyReducer} from '../model/reducers'
 import {App} from '../App'
 
 function onDeviceReady() {
@@ -34,7 +35,7 @@ function scope() {
 //TODO: REMOVE unused
 angular.element(function () {
     debug2('early init')
-    scope().init()
+    //scope().init()
 })
 
 //TODO: REMOVE unused
@@ -50,7 +51,10 @@ function init2() {
     })
 }
 
-var peloApp = angular.module('peloApp', ['ng', 'ngCookies', 'react',])
+var peloApp = angular.module('peloApp', ['ng', 'ngCookies', 'react', 'ngRedux'])
+peloApp.config(($ngReduxProvider) => {
+    $ngReduxProvider.createStoreWith(MyReducer)
+});
 
 peloApp.factory('storage', function () {
     return {
@@ -186,7 +190,7 @@ peloApp.service('security', function (app, ajax, $rootScope) {
 
 })
 
-peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $interval, security, platform, storage, ajax, $cookies) {
+peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $interval, security, platform, storage, ajax, $cookies, $ngRedux) {
 
     $scope.cordovaOnly = platform.cordovaOnly
     $scope.inited = false
@@ -194,7 +198,7 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
     $scope.logout = security.logout
     $scope.username = "Wozza"
     $scope.password = "uyooho00"
-    $scope.test = {one: "!!!!", two : "@@@@@@@@@@"}
+    $scope.test = {one: "!!!!", two: "@@@@@@@@@@"}
     $scope.props = {}
 
     $rootScope.peloBaseUrl = 'wwww'
@@ -219,13 +223,26 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
                 scope()[name] = value
             })
     }
-    /*
-    let unsubscribe = $ngRedux.connect(this.mapStateToThis, CounterActions)(this);
+
+
+    let unsubscribe = $ngRedux.connect(function (state, action) {
+        debug2("ngRedux" + action)
+        return {something: "something"}
+    }, function (dispatch) {
+        return {
+            something: function (data) {
+                dispatch(function () {
+                    alert("hello")
+                })
+            }
+        }
+    })(this);
+
     $scope.$on('$destroy', unsubscribe);
-    $ngRedux.subscribe(() => { let state = $ngRedux.getState();
-        alert  ("$$$" + state)
+    $ngRedux.subscribe(() => {
+        let state = $ngRedux.getState();
+        alert("$$$" + state)
     })
-     */
 
     $scope.scopeApply = scopeApply
 

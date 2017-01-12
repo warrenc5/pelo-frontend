@@ -5,7 +5,7 @@ import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-ro
 import MainLayout from './layout/mainlayout'
 import ContentLayout from './layout/contentlayout'
 import Home from './pages/home'
-import HomeContainer from './model/containers'
+import {HomeContainer} from './model/containers'
 import BikeComponent from './pages/bikecomponent'
 import About from './pages/about'
 
