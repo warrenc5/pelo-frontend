@@ -26,7 +26,7 @@ export const searchFilter = (filter) => {
 export const toggleTracking = (id) => {
   return {
     type: 'TOGGLE_TODO',
-    payload: {}
+    payload: {stuff:'hello'}
   }
 }
 
