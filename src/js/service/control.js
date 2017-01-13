@@ -4,7 +4,7 @@ import 'angular-cookies'
 import React from 'react'
 import { render } from 'react-dom'
 import 'ngreact/ngReact'
-import ngRedux from 'ng-redux';
+import ngRedux from 'ng-redux'
 import { createStore } from 'redux'
 
 import {debug, debug2, debugJSON} from './misc'
@@ -58,7 +58,7 @@ peloApp.config(($ngReduxProvider) => {
         debug2("$$$$$$$$ " + action.type)
 
     })
-});
+})
 
 peloApp.factory('storage', function () {
     return {
@@ -73,7 +73,7 @@ peloApp.factory('storage', function () {
 
 peloApp.factory('platform', function ($rootScope) {
 
-    var p = null;
+    var p = null
 
     function configurePlatform() {
         p = platform()
@@ -202,7 +202,7 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
     $scope.logout = security.logout
     $scope.username = "Wozza"
     $scope.password = "uyooho00"
-    $scope.props = {todaysRides: {id: false}, one: "!!!!", two: "@@@@@@@@@@"}
+    $scope.props = {todaysRides: {id: true}, one: "!!!!", two: "@@@@@@@@@@"}
 
     $rootScope.peloBaseUrl = 'wwww'
 
@@ -216,7 +216,7 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
     })
 
     $scope.$watch("initit", function (n, o, scope) {
-        debug2("inited");
+        debug2("inited")
     })
 
     function scopeApply(name, value) {
@@ -236,12 +236,12 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
                 alert("hello")
             }
         }
-    })(this);
+    })(this)
 
-    $scope.$on('$destroy', unsubscribe);
+    $scope.$on('$destroy', unsubscribe)
 
     $ngRedux.subscribe(() => {
-        let state = $ngRedux.getState();
+        let state = $ngRedux.getState()
         debug2("$$$" + state)
     })
 
@@ -386,7 +386,7 @@ peloApp.directive("avatar2", function () {
             link: function (scope, element, attrs) {
                 var userimages = loadJSON("userimages")
                 var image = userimages["1"]
-                var img = "data:image/pngbase64," + image;
+                var img = "data:image/pngbase64," + image
                 //FIXME
                 attrs.$set("src", img)
             }

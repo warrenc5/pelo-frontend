@@ -2,15 +2,15 @@
  * In this file, we create a React component
  * which incorporates components providedby material-ui.
  */
-import React, {Component} from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import Dialog from 'material-ui/Dialog';
-import {deepOrange500} from 'material-ui/styles/colors';
-import FlatButton from 'material-ui/FlatButton';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RouterPath from './Router';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import React, {Component} from 'react'
+import RaisedButton from 'material-ui/RaisedButton'
+import Dialog from 'material-ui/Dialog'
+import {deepOrange500} from 'material-ui/styles/colors'
+import FlatButton from 'material-ui/FlatButton'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import RouterPath from './Router'
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import {debug, debug2, debugJSON} from './service/misc'
 
@@ -19,42 +19,42 @@ const styles = {
         textAlign: 'center',
         paddingTop: 200,
     },
-};
+}
 
 const muiTheme = getMuiTheme({
     palette: {
         accent1Color: deepOrange500,
     },
-});
+})
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
+injectTapEventPlugin()
 
 export default class Main extends Component {
 
     constructor(props, context) {
-        super(props, context);
+        super(props, context)
 
         alert("i" + JSON.stringify(props))
 
-        this.handleRequestClose = this.handleRequestClose.bind(this);
-        this.handleTouchTap = this.handleTouchTap.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this)
+        this.handleTouchTap = this.handleTouchTap.bind(this)
 
         this.state = {
             open: false,
-        };
+        }
     }
 
     handleRequestClose() {
         this.setState({
             open: false,
-        });
+        })
     }
 
     handleTouchTap() {
         this.setState({
             open: true,
-        });
+        })
     }
 
     render() {
@@ -64,7 +64,7 @@ export default class Main extends Component {
                 primary={true}
                 onTouchTap={this.handleRequestClose}
             />
-        );
+        )
 
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
@@ -86,7 +86,7 @@ export default class Main extends Component {
                     />
                 </div>
             </MuiThemeProvider>
-        );
+        )
     }
 }
 
@@ -94,8 +94,8 @@ export const App = (props) => (
     <MuiThemeProvider muiTheme={muiTheme}>
         <RouterPath props={props}/>
     </MuiThemeProvider>
-);
+)
 
 module.exports = {App:App,Main:Main}
 
-exports.default = Main;
+exports.default = Main

@@ -1,15 +1,15 @@
-import React from 'react';
-import Navigation from '../component/navigation';
-import Search from '../component/search';
+import React from 'react'
+import Navigation from '../component/navigation'
+import Search from '../component/search'
 
 export default class MainLayout extends React.Component {
   constructor(props) {
     //alert('hellml' + props.auth)
-    super(props);
+    super(props)
   }
 
   render() {
-    let currentRouteName = this.props.location.pathname;
+    let currentRouteName = this.props.location.pathname
 
     return (
       <div>
@@ -23,4 +23,4 @@ export default class MainLayout extends React.Component {
       </div>
     )
   }
-};
+}

@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
 export default class About extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   render() {
@@ -16,4 +16,4 @@ export default class About extends React.Component {
       </div>            
     )
   }
-};
+}

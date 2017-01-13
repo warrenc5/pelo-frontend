@@ -1,12 +1,12 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes } from 'react'
 
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 
 class Home extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.props = props
     }
 
@@ -77,7 +77,7 @@ class Home extends React.Component {
         )
     }
 }
-;
+
 
 /**
  * These component react properties are automatically bound from redux connect in the containers
@@ -89,4 +89,4 @@ Home.propTypes = {
 
 }
 
-export default Home;
+export default Home

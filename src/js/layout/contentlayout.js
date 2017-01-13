@@ -1,13 +1,13 @@
-import React from 'react';
+import React from 'react'
 
 export default class ContentLayout extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
       alert('hello cl')
   }
 
   getPageTitle = () => {
-    // let currentPath = this.props.location.pathname;
+    // let currentPath = this.props.location.pathname
     
     let pageTitle = this.props.routes[this.props.routes.length-1].pageTitle
 
@@ -32,4 +32,4 @@ export default class ContentLayout extends React.Component {
       </div>
     )
   }
-};
+}

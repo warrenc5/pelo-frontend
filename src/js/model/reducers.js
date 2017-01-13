@@ -40,7 +40,7 @@ const todaysRides = (state = {} , action) => {
     debug2(" action" + action.type )
     switch (action.type) {
         case 'LOAD':
-            return action.payload
+            return {todaysRides: {id: action.payload.id}}
         case 'TOGGLE_TRACK':
             debug2("handling action" + action.type + "  " + action.payload.id)
             if (action.payload.id)

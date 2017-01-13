@@ -6,6 +6,11 @@ import MainLayout from './layout/mainlayout'
 import ContentLayout from './layout/contentlayout'
 import Home from './pages/home'
 import {HomeContainer} from './model/containers'
+import {GroupsContainer} from './view/groups.jsx'
+import {MessagesContainer} from './view/messages.jsx'
+import {RidesContainer} from './view/rides.jsx'
+import {SettingsContainer} from './view/settings.jsx'
+import {LoginContainer} from './view/login.jsx'
 import BikeComponent from './pages/bikecomponent'
 import About from './pages/about'
 
@@ -34,8 +39,12 @@ export default class RouterPath extends React.Component {
                         <IndexRoute component={HomeContainer}/>
                         <Route component={ContentLayout}>
                             <Route path="/bike-component" component={BikeComponent} pageTitle={this.props.DB_VERSION}/>
-                            <Route path="/bike-component/:componentType" component={BikeComponent}
-                                   pageTitle="{:componentType}"/>
+                            <Route path="/bike-component/:componentType" component={BikeComponent} pageTitle="{:componentType}"/>
+                            <Route path="/login" component={LoginContainer} pageTitle="{:componentType}"/>
+                            <Route path="/rides" component={RidesContainer} pageTitle="{:componentType}"/>
+                            <Route path="/groups" component={GroupsContainer} pageTitle="{:componentType}"/>
+                            <Route path="/messages" component={MessagesContainer} pageTitle="{:componentType}"/>
+                            <Route path="/settings" component={SettingsContainer} pageTitle="{:componentType}"/>
                         </Route>
                         <Route path="/about" component={About}/>
                     </Route>

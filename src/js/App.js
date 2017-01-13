@@ -50,7 +50,7 @@ store2.subscribe((state = [], dispatch) => {
 const LOAD="LOAD"
 class App extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.props = props
         store2.dispatch({type: LOAD, payload: {data: this.props}})
     }

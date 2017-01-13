@@ -4,7 +4,7 @@ import {AUTH} from './init'
 export class MySecurity {
 
     logout() {
-        storage.clear();
+        storage.clear()
     }
 
     needsToSignIn() {
@@ -14,32 +14,32 @@ export class MySecurity {
 
             return data == undefined || data.length == 0; // || data.lastSignedInAt < online.updatedAt
         } else {
-            return true;
+            return true
         }
 
     }
 
     checkLogin(username,password,doLogin) {
-        var data = storage.loadJSON("auth");
+        var data = storage.loadJSON("auth")
 
         if (this.needsToSignIn()) {
-            doLogin(username,password);
+            doLogin(username,password)
         } else {
-            this.logout();
+            this.logout()
         }
     }
 
     getCurrentUser() {
-        return storage.get(AUTH);
+        return storage.get(AUTH)
     }
 
     getUser(userId) {
-        return storage.get("userId" + userId);
+        return storage.get("userId" + userId)
     }
 
 }
 
-var security = new MySecurity();
+var security = new MySecurity()
 
-module.exports = security;
-exports.default = security;
+module.exports = security
+exports.default = security

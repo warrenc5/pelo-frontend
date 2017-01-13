@@ -1,13 +1,13 @@
-import React from 'react';
+import React from 'react'
 
 export default class Search extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {open: false};
+    super(props)
+    this.state = {open: false}
   }
 
   handleToggle = () => {
-    this.setState({open: !this.state.open});
+    this.setState({open: !this.state.open})
   }
 
   render() {
@@ -17,4 +17,4 @@ export default class Search extends React.Component {
       </div>
     )
   }
-};
+}

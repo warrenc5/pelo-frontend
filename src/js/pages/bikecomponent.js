@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
 export default class BikeComponent extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
   }
 
@@ -14,4 +14,4 @@ export default class BikeComponent extends React.Component {
       </div>            
     )
   }
-};
+}

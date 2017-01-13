@@ -1,49 +1,60 @@
-import React from 'react';
-import { Drawer, MenuItem, RaisedButton, List, ListItem, Divider } from 'material-ui';
-import { Link } from 'react-router';
+import React from 'react'
+import { Drawer, MenuItem, RaisedButton, List, ListItem, Divider } from 'material-ui'
+import { Link } from 'react-router'
 
 export default class Navigation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {open: true};
-  };
-
-  handleToggle = () => {
-    this.setState({open: !this.state.open});
-  };
-
-  handleWindowResize = () => {
-    if (window.innerWidth <= 1300 && this.state.open === true) {
-      this.setState({open: false});
+    constructor(props) {
+        super(props)
+        this.state = {open: true}
     }
-    else if (window.innerWidth > 1300 && this.state.open === false) {
-      this.setState({open: true});
+
+    handleToggle = () => {
+        this.setState({open: !this.state.open})
     }
-  };
 
-  componentDidMount = () => {
-    this.handleWindowResize();
-    window.addEventListener('resize', this.handleWindowResize);
-  };
+    handleWindowResize = () => {
+        if (window.innerWidth <= 1300 && this.state.open === true) {
+            this.setState({open: false})
+        }
+        else if (window.innerWidth > 1300 && this.state.open === false) {
+            this.setState({open: true})
+        }
+    }
 
-  render() {
-    return (
-      <nav className="main-nav">
-        <Drawer width={250} open={this.state.open}>
-          <div className="main-logo">
-            <Link to="/">BIKE<span className="type-italic">weight</span></Link>
-          </div>
-          <List>
-            <ListItem primaryText="Home" containerElement={<Link activeClassName="active" to="/" />} />
-            <ListItem primaryText="Bike component"  containerElement={<Link activeClassName="active" to="/bike-component" />}/>
-            <ListItem primaryText="Sent mail" />
-            <ListItem primaryText="Inbox" />
-            <ListItem primaryText="About" containerElement={<Link activeClassName="active" to="/about" />}  />          
-          </List>
-          <Divider />
-          <RaisedButton label="Bike weight" onTouchTap={this.handleToggle} />
-        </Drawer>
-      </nav>
-    )
-  }
-};
+    componentDidMount = () => {
+        this.handleWindowResize()
+        window.addEventListener('resize', this.handleWindowResize)
+    }
+
+    render() {
+        return (
+            <nav className="main-nav">
+                <Drawer width={250} open={this.state.open}>
+                    <div className="main-logo">
+                        <Link to="/">Pelo<span className="type-italic">Riders App</span></Link>
+                    </div>
+                    <List>
+                        <ListItem primaryText="Home" containerElement={<Link activeClassName="active" to="/" />}/>
+                        <ListItem primaryText="Bike component" containerElement={<Link activeClassName="active" to="/bike-component" />}/>
+                        <ListItem primaryText="Rides" containerElement={<Link activeClassName="active" to="/rides" />}/>
+                        <ListItem primaryText="Groups" containerElement={<Link activeClassName="active" to="/groups" />}/>
+                        <ListItem primaryText="Messages" containerElement={<Link activeClassName="active" to="/messages" />}/>
+                        <ListItem primaryText="Settings" containerElement={<Link activeClassName="active" to="/settings" />}/>
+                        <ListItem primaryText="Logout" containerElement={<Link activeClassName="active" to="/logout" />}/>
+
+                    </List>
+                    <Divider />
+                    <RaisedButton label="Hide" onTouchTap={this.handleToggle}/>
+                </Drawer>
+            </nav>
+        )
+    }
+}
+/*
+ <span class="dark" ng-click="showPage('rides');">rides</span>
+ <span class="dark" ng-click="showPage('groups');">groups</span>
+ <span class="dark" ng-click="showPage('messages');">messages</span>
+ <span class="dark" ng-click="showPage('settings');">settings</span>
+ <span class="dark" ng-click="logout();">logout</span>
+ </nav>
+ */

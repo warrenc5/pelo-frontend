@@ -1,37 +1,37 @@
 import * as globals from './init'
 
 export function debug(name, xhttp) {
-    debug2(name + " " + xhttp.status + "  " + xhttp.responseText);
+    debug2(name + " " + xhttp.status + "  " + xhttp.responseText)
 }
 
 export function debug2(message) {
     if (!globals.debugFlag)
-        return;
+        return
 
-    //gEBI("demo").innerHTML = message + "<br/>"+gEBI("demo").innerHTML ;
-    console.log(message);
+    //gEBI("demo").innerHTML = message + "<br/>"+gEBI("demo").innerHTML 
+    console.log(message)
 }
 
 export function debugJSON(message) {
-    debug2(JSON.stringify(message));
+    debug2(JSON.stringify(message))
 }
 
 export function formatKm(n) {
 
     if (n > 999) {
-        return (n / 1000).toFixed(2) + "km.";
+        return (n / 1000).toFixed(2) + "km."
     } else {
-        return n + "m.";
+        return n + "m."
     }
 }
 
 export function createSomeTestData(userId, rideId) {
-    var pos = posify(-33.91344174742699 + Math.random(), 151.15843034349382 + Math.random());
+    var pos = posify(-33.91344174742699 + Math.random(), 151.15843034349382 + Math.random())
 
-    //debug2(JSON.stringify(pos));
-    storage.put("lastKnownLocation", JSON.stringify(pos));
+    //debug2(JSON.stringify(pos))
+    storage.put("lastKnownLocation", JSON.stringify(pos))
 
-    //updateUserLocation(userId,rideId,pos);
+    //updateUserLocation(userId,rideId,pos)
 }
 
 export function bind(name, value) {
@@ -50,35 +50,35 @@ export function bind(name, value) {
 export class MyWorkers {
 
     stopAllWorkers() {
-        debug2("workers before " + workers.size);
+        debug2("workers before " + workers.size)
         this.workers.forEach(function (w, n, workers) {
-            debug2("stopped " + n);
+            debug2("stopped " + n)
             try {
-                workers.delete(n);
-                w.terminate();
+                workers.delete(n)
+                w.terminate()
             } catch (e) {
-                debug2(e);
+                debug2(e)
             }
-        });
-        debug2("workers after " + workers.size);
+        })
+        debug2("workers after " + workers.size)
     }
 
     stopWorker(name) {
         if (this.workers.has(name)) {
-            var w = this.workers.get(name);
-            this.workers.delete(name);
-            w.terminate();
+            var w = this.workers.get(name)
+            this.workers.delete(name)
+            w.terminate()
         }
     }
 
     startWorker(name, func) {
         if (!this.workers.has(name)) {
             if (typeof(Worker) !== "undefined") {
-                var w = new Worker("js/worker.js");
-                this.workers.set(name, w);
-                w.onmessage = func;
+                var w = new Worker("js/worker.js")
+                this.workers.set(name, w)
+                w.onmessage = func
             } else {
-                alert("No worker support");
+                alert("No worker support")
             }
         }
     }
