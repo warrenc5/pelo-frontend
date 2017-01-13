@@ -5,6 +5,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import 'ngreact/ngReact'
 import ngRedux from 'ng-redux';
+import { createStore } from 'redux'
 
 import {debug, debug2, debugJSON} from './misc'
 import MyAjax from './ajax'
@@ -14,8 +15,7 @@ import _workers from './misc'
 import _security from './security'
 import _storage from './storage'
 
-import {MyReducer} from '../model/reducers'
-import {App} from '../App'
+import {App,store2} from '../App'
 
 function onDeviceReady() {
     //cordova only
@@ -52,8 +52,12 @@ function init2() {
 }
 
 var peloApp = angular.module('peloApp', ['ng', 'ngCookies', 'react', 'ngRedux'])
+
 peloApp.config(($ngReduxProvider) => {
-    $ngReduxProvider.createStoreWith(MyReducer)
+    $ngReduxProvider.createStoreWith((state, action)=> {
+        debug2("$$$$$$$$ " + action.TYPE)
+
+    })
 });
 
 peloApp.factory('storage', function () {
@@ -200,7 +204,7 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
     $scope.password = "uyooho00"
     $scope.test = {one: "!!!!", two: "@@@@@@@@@@"}
     $scope.props = {}
-
+    //$scope.store = ;
     $rootScope.peloBaseUrl = 'wwww'
 
     $scope.$watch("peloBaseUrl", function (n, o, scope) {
@@ -224,25 +228,27 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
             })
     }
 
-
-    let unsubscribe = $ngRedux.connect(function (state, action) {
-        debug2("ngRedux" + action)
+    let unsubscribe = $ngRedux.connect(function (state = {}) {
+        debug2("ngRedux" + state)
         return {something: "something"}
     }, function (dispatch) {
         return {
             something: function (data) {
-                dispatch(function () {
-                    alert("hello")
-                })
+                alert("hello")
             }
         }
     })(this);
 
     $scope.$on('$destroy', unsubscribe);
+
     $ngRedux.subscribe(() => {
         let state = $ngRedux.getState();
-        alert("$$$" + state)
+        debug2("$$$" + state)
     })
+
+    const DOIT = Symbol()
+    $ngRedux.dispatch({type:DOIT, payload:{something:0}})
+
 
     $scope.scopeApply = scopeApply
 

@@ -4,7 +4,7 @@ var run = require('gulp-run');
 
 //server
 var browserSync = require('browser-sync');
-
+var plumber = require('gulp-plumber');
 //sass
 var sass = require('gulp-sass');
 var bourbon = require('node-bourbon').includePaths;
@@ -19,32 +19,32 @@ var jade = require('jade');
 var browserify = require('browserify');
 //var reactify = require('reactify');
 var babelify = require('babelify');
-var source = require('vinyl-source-stream'); // text stream for gulp
+var src = require('vinyl-source-stream'); // text stream for gulp
 
 //paths
 var paths = new (function () {
     this.root = '.';
 
-    // source
-    this.source = this.root + '/src';
-    this.htmlSrc = this.source;
-    this.cssSrc = this.source + '/css';
-    this.jsSrc = this.source + '/js';
-    //this.jsComponent = this.source + '/js-component';
-    this.imgSrc = this.source + '/img';
-    this.dataSrc = this.source + '/data';
-    //this.fontSrc  =  this.source + '/font';
+    // src
+    this.src = this.root + '/src';
+    this.htmlSrc = this.src;
+    this.cssSrc = this.src + '/css';
+    this.jsSrc = this.src + '/js';
+    //this.jsComponent = this.src + '/js-component';
+    this.imgSrc = this.src + '/img';
+    this.dataSrc = this.src + '/data';
+    //this.fontSrc  =  this.src + '/font';
     this.mainApplicationJS = '/service/control.js';
 
     // destination
 
-    this.dist = this.root + '/cordova/www/';
-    this.htmlDest = this.dist;
-    this.cssDest = this.dist + '/css';
-    this.jsDest = this.dist + '/js';
-    this.imgDest = this.dist + '/img';
-    this.dataDest = this.dist + '/data';
-    //this.fontDest =  this.dist/font';
+    this.dest = this.root + '/cordova/www/';
+    this.htmlDest = this.dest;
+    this.cssDest = this.dest + '/css';
+    this.jsDest = this.dest + '/js';
+    this.imgDest = this.dest + '/img';
+    this.dataDest = this.dest + '/data';
+    //this.fontDest =  this.dest/font';
 
     this.cssDestName = 'bundle.css';
     this.jsDestName = 'bundle.js';
@@ -72,6 +72,7 @@ var npmShrinkwrap = require("npm-shrinkwrap");
 gulp.task('compile-css', function () {
 
     return gulp.src(paths.cssSrc + "/*.scss")
+        .pipe(plumber())
         .pipe(sass({
             outputStyle: 'compressed',
             includePaths: bourbon
@@ -87,10 +88,10 @@ gulp.task('compile-js', function () {
             ignore: /(node_modules)/
         }))
         .bundle()
+        .pipe(plumber())
         .on('error', console.error.bind(console))
-        .pipe(source(paths.jsDestName))
+        .pipe(src(paths.jsDestName))
         .pipe(gulp.dest(paths.jsDest));
-
 });
 
 gulp.task('copy-html', function () {
@@ -127,31 +128,30 @@ gulp.task('stop', function () {
     browserSync.exit()
 })
 
-gulp.task('android', ['compile'], function() {
-  return new run('cordova run android',{cwd: './cordova', verbosity: 3}).exec()
+gulp.task('android', ['compile'], function () {
+    return new run('cordova run android', {cwd: './cordova', verbosity: 3}).exec()
 })
 
 gulp.task('serve', [], function () {
     // Fire up a web server.
-    browserSync.create().init({
+    browserSync.init({
         server: {
             baseDir: './cordova/www/',
-            index: 'index.html'
-        },
-        online: true
+            online: true
+        }
     });
     // Watch main files and reload browser.
-    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*']).on('change', browserSync.reload);
 
     // Watch changes
-    gulp.watch([paths.root + '/gulpfile.js', paths.root + '/package.json'], ['stop','serve']);
+
     gulp.watch(paths.cssSrc + '/**/*.scss', ['compile-css']);
-    gulp.watch(paths.jsSrc + '/**/*.js', ['compile-js']);
-    gulp.watch(paths.jsSrc + '/**/*.js', ['compile-js']);
+    gulp.watch(paths.jsSrc + '/**/*.js', ['compile-js'])
     //gulp.watch(paths.jsComponent + '/**/*', ['application-js']);
     gulp.watch(paths.htmlSrc + '/**/*.jade', ['copy-html']);
     gulp.watch(paths.htmlSrc + '/**/*.html', ['copy-html']);
 
     gulp.watch(paths.root + '/src_old/**/*', ['old']);
+
+    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*']).on('change', browserSync.reload);
 
 });

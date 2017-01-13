@@ -34,7 +34,7 @@ class Home extends React.Component {
     }
 
     handleClick(something) {
-        alert('clicked' + something)
+        console.log('clicked2' + something)
         this.props.onClick2(something)
     }
 
@@ -45,8 +45,10 @@ class Home extends React.Component {
                 <a href="#"
                    onClick={e => {
          e.preventDefault()
-         this.handleClick("nothing")
-       }}> SomeLink </a>
+         //this.handleClick("nothing")
+        this.props.onClick2(this.props.id)
+
+       }}> SomeLink {this.props.id?'true':'false'} </a>
                 <div className="row">
                     <div className="col-xs-4">
                         {this.createCard('Card title', 'Card subtitle', 'Card content 1')}
@@ -77,10 +79,14 @@ class Home extends React.Component {
 }
 ;
 
+/**
+ * These component react properties are automatically bound from redux connect in the containers
+ */
 //https://toddmotto.com/react-create-class-versus-component/
-
 Home.propTypes = {
-    onClick2: PropTypes.func.isRequired
+    onClick2: PropTypes.func.isRequired,
+    id : PropTypes.bool.isRequired
+
 }
 
 export default Home;

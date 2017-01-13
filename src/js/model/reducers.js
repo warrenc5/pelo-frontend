@@ -3,39 +3,48 @@ import { combineReducers } from 'redux'
 import {debug, debug2, debugJSON} from '../service/misc'
 /**
  *
- * Reducers are like event handlers which read the action and then do something
+ * Reducers are like event handlers which read the action and then do something and return the result of that something
  *
  * @param state
  * @param action
  * @returns {the new state map to be grafted onto the global state}
  */
-const auth = (state = {}, action) => {
-    debug2("action " + action.type)
+/*
+ const auth = (state = {}, action) => {
+ debug2("action " + action.type)
 
+ switch (action.type) {
+ case 'ADD_TODO':
+ return {
+ id: action.id,
+ text: action.text,
+ completed: false
+ }
+ case 'TOGGLE_TODO':
+ if (state.id !== action.id) {
+ return state
+ }
+
+ return Object.assign({}, state, {
+ completed: !state.completed
+ })
+
+ default:
+ return state
+ }
+ }
+ */
+
+
+const todaysRides = (state = {} , action) => {
+    debug2(" action" + action.type )
     switch (action.type) {
-        case 'ADD_TODO':
-            return {
-                id: action.id,
-                text: action.text,
-                completed: false
-            }
-        case 'TOGGLE_TODO':
-            if (state.id !== action.id) {
-                return state
-            }
-
-            return Object.assign({}, state, {
-                completed: !state.completed
-            })
-
-        default:
-            return state
-    }
-}
-
-
-const todaysRides = (state = [], action) => {
-    switch (action.type) {
+        case 'TOGGLE_TRACK':
+            debug2("handling action" + action.type + "  " + action.payload.id)
+            if (action.payload.id)
+                return {id:false}
+            else
+                return {id:true}
         case 'ADD_TODO':
             return [
                 ...state,
@@ -56,7 +65,8 @@ const todaysRides = (state = [], action) => {
      */
 }
 
-export const MyReducer = combineReducers({auth: auth, todaysRides})
+//export const MyReducer = combineReducers({auth: auth, todaysRides})
+export const MyReducer = combineReducers({todaysRides})
 //alert (typeof MyReducer )
 
 exports.default = MyReducer

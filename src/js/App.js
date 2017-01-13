@@ -36,13 +36,19 @@ const muiTheme = getMuiTheme({
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin()
 
-const store = createStore(MyReducer)
+
+export const store2 = createStore(MyReducer, {todaysRides: {id : true}})
+
+//store2.subscribe((state = []) => {
+store2.subscribe((state = [],dispatch) => {
+    debug2("sub " + JSON.stringify(state))
+})
 
 //Props is the angular $scope.props
 //ES6 shorthand
 export const App = (props) => (
     <MuiThemeProvider muiTheme={muiTheme}>
-        <Provider store={store}>
+        <Provider store={store2}>
             <RouterPath props={props}/>
         </Provider>
     </MuiThemeProvider>

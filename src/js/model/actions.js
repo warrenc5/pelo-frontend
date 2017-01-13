@@ -1,5 +1,4 @@
-let nextTodoId = 0
-
+import {debug, debug2, debugJSON} from '../service/misc'
 /**
  * These Actions are like our own custom events descriptors.
  *
@@ -23,15 +22,15 @@ export const searchFilter = (filter) => {
   }
 }
 
-export const toggleTracking = (id) => {
+export function toggleTracking (newId) {
+  debug2(`tt ${newId}`)
   return {
-    type: 'TOGGLE_TODO',
-    payload: {stuff:'hello'}
+    type: 'TOGGLE_TRACK',
+    payload: {id:newId}
   }
 }
 
 export const actions = [addBike,toggleTracking,searchFilter]
 
-module.exports = actions
 exports.default = actions
 exports.actions = actions
