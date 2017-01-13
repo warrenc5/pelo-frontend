@@ -71,7 +71,7 @@ var npmShrinkwrap = require("npm-shrinkwrap");
 
 gulp.task('compile-css', function () {
 
-    return gulp.src(paths.cssSrc + "/*.scss")
+    gulp.src(paths.cssSrc + "/*.scss")
         .pipe(plumber())
         .pipe(sass({
             outputStyle: 'compressed',
@@ -80,31 +80,32 @@ gulp.task('compile-css', function () {
         .pipe(concat(paths.cssDestName))
         .pipe(gulp.dest(paths.cssDest))
         .pipe(browserSync.stream());
+    return true;
 });
 
 gulp.task('compile-js', function () {
-    return browserify(paths.jsSrc + '/' + paths.mainApplicationJS)
+    browserify(paths.jsSrc + '/' + paths.mainApplicationJS)
         .transform(babelify.configure({
             ignore: /(node_modules)/
         }))
         .bundle()
-        .pipe(plumber())
         .on('error', console.error.bind(console))
         .pipe(src(paths.jsDestName))
         .pipe(gulp.dest(paths.jsDest));
+    return true;
 });
 
 gulp.task('copy-html', function () {
-    return gulp.src(paths.htmlSrc + '/**/*.html')
-            .pipe(gulp.dest(paths.htmlDest))
+    gulp.src(paths.htmlSrc + '/**/*.html')
+        .pipe(gulp.dest(paths.htmlDest))
 
-        &&
-        gulp.src(paths.htmlSrc + '/**/*.jade')
-            .pipe(gulpJade({
-                jade: jade,
-                pretty: true
-            }))
-            .pipe(gulp.dest(paths.htmlDest))
+    gulp.src(paths.htmlSrc + '/**/*.jade')
+        .pipe(gulpJade({
+            jade: jade,
+            pretty: true
+        }))
+        .pipe(gulp.dest(paths.htmlDest))
+    return true;
 })
 
 gulp.task('copy-data', function () {
