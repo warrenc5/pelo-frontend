@@ -55,7 +55,7 @@ var peloApp = angular.module('peloApp', ['ng', 'ngCookies', 'react', 'ngRedux'])
 
 peloApp.config(($ngReduxProvider) => {
     $ngReduxProvider.createStoreWith((state, action)=> {
-        debug2("$$$$$$$$ " + action.TYPE)
+        debug2("$$$$$$$$ " + action.type)
 
     })
 });
@@ -202,9 +202,8 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
     $scope.logout = security.logout
     $scope.username = "Wozza"
     $scope.password = "uyooho00"
-    $scope.test = {one: "!!!!", two: "@@@@@@@@@@"}
-    $scope.props = {}
-    //$scope.store = ;
+    $scope.props = {todaysRides: {id: false}, one: "!!!!", two: "@@@@@@@@@@"}
+
     $rootScope.peloBaseUrl = 'wwww'
 
     $scope.$watch("peloBaseUrl", function (n, o, scope) {
@@ -229,7 +228,7 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
     }
 
     let unsubscribe = $ngRedux.connect(function (state = {}) {
-        debug2("ngRedux" + state)
+        debug2("ngRedux" + JSON.stringify(state))
         return {something: "something"}
     }, function (dispatch) {
         return {
@@ -246,9 +245,8 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
         debug2("$$$" + state)
     })
 
-    const DOIT = Symbol()
+    const DOIT = "DOIT"
     $ngRedux.dispatch({type:DOIT, payload:{something:0}})
-
 
     $scope.scopeApply = scopeApply
 

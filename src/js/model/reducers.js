@@ -39,6 +39,8 @@ import {debug, debug2, debugJSON} from '../service/misc'
 const todaysRides = (state = {} , action) => {
     debug2(" action" + action.type )
     switch (action.type) {
+        case 'LOAD':
+            return action.payload
         case 'TOGGLE_TRACK':
             debug2("handling action" + action.type + "  " + action.payload.id)
             if (action.payload.id)
