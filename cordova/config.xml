@@ -39,7 +39,9 @@
     <preference name="SplashScreenHeight" value="300" /> -- defaults to "200" --
 
     <!-- http://cordova.apache.org/docs/en/4.0.0/config_ref_images.md.html -->
+    <!--
     <hook type="before_build" src="scripts/gulp_default.js" />
+    -->
     <platform name="android">
     <!--
     <icon src="res/android/ldpi.png" density="ldpi" />
