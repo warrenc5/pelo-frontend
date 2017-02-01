@@ -24,6 +24,7 @@ class Messages extends React.Component {
                     <img class="round-image" avatar2 user="{{from}}"/>
                     <span>message.when</span>
 
+
                     <p>message.message</p>
                 </li>
             </ul>

@@ -39,7 +39,6 @@ class Rides extends React.Component {
 Rides.propTypes = {
     onClick2: PropTypes.func.isRequired,
     id: PropTypes.bool.isRequired
-
 }
 
 export const RidesContainer = connect(

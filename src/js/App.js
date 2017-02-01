@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RouterPath from './Router'
-import injectTapEventPlugin from 'react-tap-event-plugin'
+//import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import {debug, debug2, debugJSON} from './service/misc'
 import { Provider } from 'react-redux'
@@ -34,16 +34,17 @@ const muiTheme = getMuiTheme({
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin()
+//injectTapEventPlugin()
 
 
-export const store2 = createStore(MyReducer, {todaysRides: {id: true}})
+const store2 = createStore(MyReducer, {todaysRides: {id: true}})
 
 
 //store2.subscribe((state = []) => {
-store2.subscribe((state = [], dispatch) => {
+/*store2.subscribe((state = [], dispatch) => {
     debug2("sub " + JSON.stringify(state))
 })
+*/
 
 //Props is the angular $scope.props
 //ES6 shorthand
@@ -52,7 +53,7 @@ class App extends React.Component {
     constructor(props) {
         super(props)
         this.props = props
-        store2.dispatch({type: LOAD, payload: {data: this.props}})
+        ///store2.dispatch({type: LOAD, payload: {data: this.props}})
     }
 
     render() {

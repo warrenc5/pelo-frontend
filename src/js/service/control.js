@@ -15,7 +15,7 @@ import _workers from './misc'
 import _security from './security'
 import _storage from './storage'
 
-import {App,store2} from '../App'
+//import {App,store2} from '../App'
 
 function onDeviceReady() {
     //cordova only

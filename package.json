@@ -6,7 +6,9 @@
   "scripts": {
     "server": "gulp default",
     "compile": "gulp compile && cd cordova && cordova build",
-    "android": "gulp compile && cd cordova && cordova run android",
+    "cordova-clean": "gulp compile && cd cordova && cordova clean",
+    "android": "gulp compile && cd cordova && cordova run android --debug",
+    "redeploy": "cd cordova && cordova run android --debug",
     "android2": "gulp old && cd cordova && cordova run android",
     "setup": "cd cordova && cordova platform add android"
   },

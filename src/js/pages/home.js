@@ -50,9 +50,11 @@ class Home extends React.Component {
 
        }}> SomeLink {this.props.id?'true':'false'} </a>
                 <div className="row">
+                    //TODO: how to get xyz from here
                     <div className="col-xs-4">
                         {this.createCard('Card title', 'Card subtitle', 'Card content 1')}
                     </div>
+                    // FIXME: rename function
                     <div className="col-xs-4">
                         {this.createCard('Card title', 'Card subtitle', 'Card content 2')}
                     </div>

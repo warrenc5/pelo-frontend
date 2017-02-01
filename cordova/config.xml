@@ -8,42 +8,51 @@
         The Pelo Rider Application
     </description>
     <author email="warren@devnull.com.au" href="www.devnull.com.au">
-      Warren Crossing
+        Warren Crossing
     </author>
 
-    <content src="index.html" />
+    <content src="index.html"/>
 
-    <plugin name="cordova-plugin-whitelist" version="1" />
-    <plugin name="cordova-plugin-geolocation" />
+    <plugin name="cordova-plugin-whitelist" version="1"/>
+    <plugin name="cordova-plugin-geolocation"/>
 
-    <allow-navigation href="*" />
-    <access origin="*" />
+    <allow-navigation href="*"/>
+    <access origin="*"/>
+    <allow-intent href="http://*/*"/>
+    <allow-intent href="https://*/*"/>
+    <allow-intent href="tel:*"/>
+    <allow-intent href="sms:*"/>
+    <allow-intent href="mailto:*"/>
+    <allow-intent href="geo:*"/>
 
-    <preference name="Fullscreen" value="true" />
-    <preference name="Orientation" value="default" />
-    <preference name="DisallowOverscroll" value="true" />
-    <preference name="BackupWebStorage" value="none" />
 
-    <preference name="xwalkVersion" value="org.xwalk:xwalk_core_library:14+" />
-    <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect --fullscreen" />
+    <preference name="Fullscreen" value="true"/>
+    <preference name="Orientation" value="default"/>
+    <preference name="DisallowOverscroll" value="true"/>
+    <preference name="BackupWebStorage" value="none"/>
 
-    <preference name="SplashScreenDelay" value="3000" />
-    <preference name="SplashMaintainAspectRatio" value="true" />
-    <preference name="SplashShowOnlyFirstTime" value="true" />
-    <preference name="SplashScreen" value="/images/browser/splashscreen.jpg" /> <!-- defaults to "/img/logo.png" -->
-    <preference name="SplashScreenDelay" value="3000" /> <!-- defaults to "3000" -->
-    <preference name="SplashScreenBackgroundColor" value="green" /> <!-- defaults to "#464646" -->
-    <preference name="ShowSplashScreen" value="true" /> <!-- defaults to "true" -->
-
-    <preference name="SplashScreenWidth" value="600" /> -- defaults to "170" --
-    <preference name="SplashScreenHeight" value="300" /> -- defaults to "200" --
+    <preference name="SplashScreenDelay" value="3000"/>
+    <preference name="SplashMaintainAspectRatio" value="true"/>
+    <preference name="SplashShowOnlyFirstTime" value="true"/>
+    <preference name="SplashScreen" value="/images/browser/splashscreen.jpg"/> <!-- defaults to "/img/logo.png" -->
+    <preference name="SplashScreenDelay" value="3000"/> <!-- defaults to "3000" -->
+    <preference name="SplashScreenBackgroundColor" value="green"/> <!-- defaults to "#464646" -->
+    <preference name="ShowSplashScreen" value="true"/> <!-- defaults to "true" -->
+    <preference name="cdvBuildArch" value="x86"/>
+    <preference name="cdvBuildMultipleApks" value="false"/>
+    <preference name="android-minSdkVersion" value="16"/>
+    <preference name="SplashScreenWidth" value="600"/>
+    <!-- defaults to "170" -->
+    <preference name="SplashScreenHeight" value="300"/>
+    <!-- defaults to "200" -->
 
     <!-- http://cordova.apache.org/docs/en/4.0.0/config_ref_images.md.html -->
     <!--
     <hook type="before_build" src="scripts/gulp_default.js" />
     -->
     <platform name="android">
-    <!--
+        <allow-intent href="market:*"/>
+        <!--
     <icon src="res/android/ldpi.png" density="ldpi" />
     <icon src="res/android/mdpi.png" density="mdpi" />
     <icon src="res/android/hdpi.png" density="hdpi" />
@@ -67,32 +76,35 @@
     -->
     </platform>
     <platform name="ios">
+        <allow-intent href="itms:*"/>
+        <allow-intent href="itms-apps:*"/>
+
         <!-- iOS 8.0+ -->
         <!-- iPhone 6 Plus  -->
-        <icon src="res/ios/icon-60@3x.png" width="180" height="180" />
+        <icon src="res/ios/icon-60@3x.png" width="180" height="180"/>
         <!-- iOS 7.0+ -->
         <!-- iPhone / iPod Touch  -->
-        <icon src="res/ios/icon-60.png" width="60" height="60" />
-        <icon src="res/ios/icon-60@2x.png" width="120" height="120" />
+        <icon src="res/ios/icon-60.png" width="60" height="60"/>
+        <icon src="res/ios/icon-60@2x.png" width="120" height="120"/>
         <!-- iPad -->
-        <icon src="res/ios/icon-76.png" width="76" height="76" />
-        <icon src="res/ios/icon-76@2x.png" width="152" height="152" />
+        <icon src="res/ios/icon-76.png" width="76" height="76"/>
+        <icon src="res/ios/icon-76@2x.png" width="152" height="152"/>
         <!-- iOS 6.1 -->
         <!-- Spotlight Icon -->
-        <icon src="res/ios/icon-40.png" width="40" height="40" />
-        <icon src="res/ios/icon-40@2x.png" width="80" height="80" />
+        <icon src="res/ios/icon-40.png" width="40" height="40"/>
+        <icon src="res/ios/icon-40@2x.png" width="80" height="80"/>
         <!-- iPhone / iPod Touch -->
-        <icon src="res/ios/icon.png" width="57" height="57" />
-        <icon src="res/ios/icon@2x.png" width="114" height="114" />
+        <icon src="res/ios/icon.png" width="57" height="57"/>
+        <icon src="res/ios/icon@2x.png" width="114" height="114"/>
         <!-- iPad -->
-        <icon src="res/ios/icon-72.png" width="72" height="72" />
-        <icon src="res/ios/icon-72@2x.png" width="144" height="144" />
+        <icon src="res/ios/icon-72.png" width="72" height="72"/>
+        <icon src="res/ios/icon-72@2x.png" width="144" height="144"/>
         <!-- iPhone Spotlight and Settings Icon -->
-        <icon src="res/ios/icon-small.png" width="29" height="29" />
-        <icon src="res/ios/icon-small@2x.png" width="58" height="58" />
+        <icon src="res/ios/icon-small.png" width="29" height="29"/>
+        <icon src="res/ios/icon-small@2x.png" width="58" height="58"/>
         <!-- iPad Spotlight and Settings Icon -->
-        <icon src="res/ios/icon-50.png" width="50" height="50" />
-        <icon src="res/ios/icon-50@2x.png" width="100" height="100" />
+        <icon src="res/ios/icon-50.png" width="50" height="50"/>
+        <icon src="res/ios/icon-50@2x.png" width="100" height="100"/>
 
         <splash src="res/screen/ios/Default~iphone.png" width="320" height="480"/>
         <splash src="res/screen/ios/Default@2x~iphone.png" width="640" height="960"/>

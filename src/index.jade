@@ -1,13 +1,18 @@
+//
 doctype html
 html(ng-app="peloApp")
     head
         title Pelo Riders App
-        link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-        link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
-        link(rel='stylesheet', href='/css/bundle.css')
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        meta(charset="utf-8")
-        script(src="/js/bundle.js", type="text/javascript")
+        //
+            link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+            link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
+            link(rel='stylesheet', href='/css/bundle.css')
 
+            meta(name="viewport", content="width=device-width, initial-scale=1.0")
+            meta(charset="utf-8")
+
+        script(src="/js/bundle.js", type="text/javascript")
+        link(rel='stylesheet', href='/css/bundle.css')
     body(id="app",ng-controller="main",ng-init="init()")
-        react-component(name="App", props = "props", watch-depth= "reference")
+    // react-component(name="App", props = "props", watch-depth= "reference")
+    span hello4
