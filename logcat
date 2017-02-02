@@ -1,0 +1,1 @@
+adb logcat *:E chromium:d CordovaWebViewImpl:d CordovaLog:d | less

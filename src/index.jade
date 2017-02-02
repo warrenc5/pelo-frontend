@@ -1,4 +1,4 @@
-//
+//https://pugjs.org/api/getting-started.html
 doctype html
 html(ng-app="peloApp")
     head
@@ -11,8 +11,8 @@ html(ng-app="peloApp")
             meta(name="viewport", content="width=device-width, initial-scale=1.0")
             meta(charset="utf-8")
 
-        script(src="/js/bundle.js", type="text/javascript")
+        script(src="js/bundle.js", type="text/javascript")
+
         link(rel='stylesheet', href='/css/bundle.css')
     body(id="app",ng-controller="main",ng-init="init()")
-    // react-component(name="App", props = "props", watch-depth= "reference")
-    span hello4
+        react-component(name="App", props = "props", watch-depth= "reference")

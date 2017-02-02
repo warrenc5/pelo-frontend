@@ -5,12 +5,14 @@ export function debug(name, xhttp) {
 }
 
 export function debug2(message) {
-    if (!globals.debugFlag)
-        return
+    //if (!globals.debugFlag)
+    //    return
 
-    //gEBI("demo").innerHTML = message + "<br/>"+gEBI("demo").innerHTML 
+    //gEBI("demo").innerHTML = message + "<br/>"+gEBI("demo").innerHTML
+    console.log("HERO")
     console.log(message)
 }
+
 
 export function debugJSON(message) {
     debug2(JSON.stringify(message))
