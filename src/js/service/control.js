@@ -120,11 +120,16 @@ peloApp.controller("main", function ($scope, platform, fb) {
             }
         });
 
-
+        platform.cordovaOnly(function () {
+            try {
+                showMap()
+            } catch (e) {
+                debug2(e)
+            }
+        });
     }
 
     $scope.cordovaOnly = platform.cordovaOnly
-
 
 })
 
@@ -241,5 +246,92 @@ peloApp.factory("fb", function () {
     }
 
 })
+//http://plugins.telerik.com/cordova/plugin/mapbox
+function showMap() {
+    debug2("showMap");
 
+    Mapbox.show({
+            style: 'emerald', // light|dark|emerald|satellite|streets , default 'streets'
+            margins: {
+                left: 0, // default 0
+                right: 0, // default 0
+                top: 400, // default 0
+                bottom: 20 // default 0
+            },
+            center: { // optional, without a default
+                lat: 52.3702160,
+                lng: 4.8951680
+            },
+            zoomLevel: 12, // 0 (the entire world) to 20, default 10
+            showUserLocation: false, // your app will ask permission to the user, default false
+            hideAttribution: false, // default false, Mapbox requires this default if you're on a free plan
+            hideLogo: false, // default false, Mapbox requires this default if you're on a free plan
+            hideCompass: false, // default false
+            disableRotation: false, // default false
+            disableScroll: false, // default false
+            disableZoom: false, // default false
+            disablePitch: false, // disable the two-finger perspective gesture, default false
+            markers: [
+                {
+                    lat: 52.3732160,
+                    lng: 4.8941680,
+                    title: 'Nice location',
+                    subtitle: 'Really really nice location'
+                }
+            ]
+        },
+
+        // optional success callback
+        function (msg) {
+            debug2("Success :) " + JSON.stringify(msg));
+        },
+
+        // optional error callback
+        function (msg) {
+            debug2("Error " + JSON.stringify(msg));
+        }
+    );
+
+    Mapbox.addMarkerCallback(function (selectedMarker) {
+        debug2("Marker selected: " + JSON.stringify(selectedMarker));
+    });
+
+    Mapbox.addMarkers(
+        [
+            {
+                lat: 52.3602160, // mandatory
+                lng: 4.8891680, // mandatory
+                title: 'One-line title here', // no popup unless set
+                subtitle: 'Infamous subtitle!' // can't span multiple lines, so keep it short and sweet
+            },
+            {}
+        ]
+    );
+    Mapbox.addPolygon(
+        {
+            points: [
+                {
+                    lat: 52.3832160, // mandatory
+                    lng: 4.8991680   // mandatory
+                },
+                {
+                    lat: 52.3632160,
+                    lng: 4.9011680
+                },
+                {
+                    lat: 52.3932160,
+                    lng: 4.8911680
+                }
+            ]
+        }
+    );
+}
+function hide() {
+    Mapbox.hide(
+        {},
+        function (msg) {
+            console.log("Mapbox successfully hidden");
+        }
+    );
+}
 peloApp.value('App', App)
