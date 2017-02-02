@@ -79,7 +79,6 @@ var local = {
         //document.addEventListener("menubutton", exitApp, false);
 
     },
-
 }
 
 local.bindEvents()
@@ -105,11 +104,6 @@ peloApp.controller("main", function ($scope, platform, fb) {
                 APP: globals.APP_VERSION,
                 DB: globals.DB_VERSION
             }))
-        try {
-            fb.loginFB('wozza.xing@gmail.com')
-        } catch (e) {
-            debug2(e)
-        }
 
         platform.cordovaOnly(function () {
             try {
@@ -117,6 +111,16 @@ peloApp.controller("main", function ($scope, platform, fb) {
             } catch (e) {
             }
         })
+
+        platform.cordovaOnly(function () {
+            try {
+                fb.loginFB('wozza.xing@gmail.com')
+            } catch (e) {
+                debug2(e)
+            }
+        });
+
+
     }
 
     $scope.cordovaOnly = platform.cordovaOnly
@@ -141,9 +145,19 @@ peloApp.factory('platform', function ($rootScope) {
     }
 
     function cordovaOnly(func) {
-        if (p == 'iOS' || p == 'Android') {
+        if (typeof cordova != 'undefined') {
             func()
         }
+    }
+
+    function iosOnly(func) {
+        if (p == 'iOS')
+            func()
+    }
+
+    function androidOnly(func) {
+        if (p == 'Android')
+            func()
     }
 
     function platform() {
@@ -189,10 +203,10 @@ peloApp.factory("fb", function () {
         }
 
         try {
-            alert(facebookConnectPlugin)
             facebookConnectPlugin.browserInit(appId, version)
         } catch (e) {
             debug2(e)
+            return;
         }
 
         facebookConnectPlugin.login(['email', 'public_profile'], function (userData) {
