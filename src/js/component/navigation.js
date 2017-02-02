@@ -28,6 +28,7 @@ export default class Navigation extends React.Component {
 
     render() {
         return (
+            //TODO: can't see this on mobile emulator
             <nav className="main-nav">
                 <Drawer width={250} open={this.state.open}>
                     <div className="main-logo">

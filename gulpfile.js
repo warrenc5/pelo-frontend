@@ -83,6 +83,7 @@ gulp.task('build-time', function () {
 
 function createBuildTime() {
     buildTime = moment().format('MMMM Do YYYY, h:mm:ss a');
+    console.log(buildTime)
     var str = 'export const buildTime = \"' + buildTime + '\"';
 
     return file('build.js', str, {src: true})
@@ -118,6 +119,7 @@ gulp.task('compile-js', ['build-time'], function () {
 })
 
 gulp.task('copy-html', function () {
+    createBuildTime();
     gulp.src(paths.htmlSrc + '/**/*.html')
         .pipe(gulp.dest(paths.htmlDest))
 
@@ -239,9 +241,14 @@ function cordova_run() {
         } else {
 
         }
-        fs.readFile(paths.jsSrc + "/build.js", function (e, data) {
-            console.log(e)
-            console.log("***" + data)
+        fs.readFile(dir+ "/src/js/build.js", function (e, data) {
+            if (e) {
+                console.log(e)
+                cwd = process.cwd()
+                console.log('cwd ' + cwd)
+            } else {
+                console.log("***" + data)
+            }
         });
         process.chdir(dir)
     })

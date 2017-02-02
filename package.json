@@ -22,8 +22,7 @@
     "material-ui": "^0.15.2",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
-    "react-router": "^2.7.0",
-    "react-tap-event-plugin": "^1.0.0"
+    "react-router": "^2.7.0"
   },
   "devDependencies": {
     "angular": "^1.6.1",
@@ -54,11 +53,13 @@
     "jade-strip-comments": "^1.0.0",
     "jquery": "^3.1.1",
     "mapbox": "^1.0.0-beta5",
-    "material-ui": "^0.15.4",
+    "material-ui": "https://registry.npmjs.org/material-ui/-/material-ui-0.15.4.tgz",
+    "material-ui-build": "git+https://github.com/callemall/material-ui.git",
     "mime-types": "^2.1.13",
     "moment": "^2.17.1",
     "ms": "^0.7.2",
     "negotiator": "^0.6.1",
+    "ng-cordova": "^0.1.27-alpha",
     "ng-redux": "^3.4.0-beta.1",
     "ngreact": "^0.3.0",
     "node-bourbon": "^4.2.8",

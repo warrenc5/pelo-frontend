@@ -13,6 +13,13 @@ html(ng-app="peloApp")
 
         script(src="js/bundle.js", type="text/javascript")
 
+        script(type="text/javascript", charset="utf-8", src="cordova.js")
+        script(type="text/javascript", charset="utf-8", src="cordova_plugins.js")
+        //script(type="text/javascript", charset="utf-8", src="plugins/cordova-plugin-facebook4/www/facebook-native.js")
+
         link(rel='stylesheet', href='/css/bundle.css')
-    body(id="app",ng-controller="main",ng-init="init()")
+    body(id="app",ng-controller="main")
         react-component(name="App", props = "props", watch-depth= "reference")
+        div#fb-root
+        script(type='text/javascript').
+        p hello

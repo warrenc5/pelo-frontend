@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RouterPath from './Router'
-//import injectTapEventPlugin from 'react-tap-event-plugin'
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import {debug, debug2, debugJSON} from './service/misc'
 import { Provider } from 'react-redux'
@@ -19,6 +19,7 @@ import {MyReducer} from './model/reducers'
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
  **/
+
 const styles = {
     container: {
         textAlign: 'center',
@@ -34,7 +35,7 @@ const muiTheme = getMuiTheme({
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-//injectTapEventPlugin()
+injectTapEventPlugin()
 
 
 const store2 = createStore(MyReducer, {todaysRides: {id: true}})
