@@ -154,7 +154,17 @@ gulp.task('stop', function () {
 })
 
 var dir = process.cwd()
-
+function readBuildTime() {
+    fs.readFile(dir + "/src/js/build.js", function (e, data) {
+        if (e) {
+            console.log(e)
+            cwd = process.cwd()
+            console.log('cwd ' + cwd)
+        } else {
+            console.log("***" + data)
+        }
+    });
+}
 gulp.task('run', [], function () {
     process.chdir(dir + "/cordova")
     cwd = process.cwd()
@@ -241,16 +251,8 @@ function cordova_run() {
         } else {
 
         }
-        fs.readFile(dir+ "/src/js/build.js", function (e, data) {
-            if (e) {
-                console.log(e)
-                cwd = process.cwd()
-                console.log('cwd ' + cwd)
-            } else {
-                console.log("***" + data)
-            }
-        });
-        process.chdir(dir)
+        readBuildTime()
+       process.chdir(dir)
     })
 }
 function reload() {

@@ -120,14 +120,15 @@ peloApp.controller("main", function ($scope, platform, fb) {
             }
         });
 
-        platform.cordovaOnly(function () {
-            try {
-                showMap()
-            } catch (e) {
-                debug2(e)
-            }
-        });
+         platform.cordovaOnly(function () {
+         try {
+         showMap()
+         } catch (e) {
+         debug2(e)
+         }
+         });
     }
+
 
     $scope.cordovaOnly = platform.cordovaOnly
 
@@ -211,18 +212,17 @@ peloApp.factory("fb", function () {
             facebookConnectPlugin.browserInit(appId, version)
         } catch (e) {
             debug2(e)
-            return;
         }
 
+        debug2('login to facebook')
         facebookConnectPlugin.login(['email', 'public_profile'], function (userData) {
                 facebookConnectPlugin.api('/me?fields=email', null,
                     function (response) {
-
                         debug2("me: " + JSON.stringify(response))
-                        login2(response.email, userData.accessToken)
+                        //login2(response.email, userData.accessToken)
                         debug2("success" + JSON.stringify(userData))
                         //response.name
-                        $scope.showPage('groups')
+                        logoutFB()
                     })
             },
             function (error) {
@@ -231,7 +231,12 @@ peloApp.factory("fb", function () {
     }
 
     function logoutFB() {
-        facebookConnectPlugin.browserInit(appId, version)
+        debug2('logout of facebook')
+        try {
+            facebookConnectPlugin.browserInit(appId, version)
+        } catch (e) {
+            debug2(e)
+        }
         facebookConnectPlugin.logout(function () {
                 debug2('fb logout')
             },
