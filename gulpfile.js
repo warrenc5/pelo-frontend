@@ -4,8 +4,9 @@ var run = require('gulp-run')
 var batch = require('gulp-batch')
 var file = require('gulp-file')
 var moment = require('moment')
-var fs = require('fs');
-
+var fs = require('fs')
+var imageResize = require('gulp-image-resize')
+var rename = require("gulp-rename");
 //server
 var browserSync = require('browser-sync')
 var plumber = require('gulp-plumber')
@@ -45,6 +46,7 @@ var paths = new (function () {
     // destination
 
     this.dest = this.root + '/cordova/www/'
+    this.resDest = this.root + '/cordova/res/'
     this.htmlDest = this.dest
     this.cssDest = this.dest + '/css'
     this.jsDest = this.dest + '/js'
@@ -75,19 +77,19 @@ var npmShrinkwrap = require("npm-shrinkwrap")
  })
  */
 
-var buildTime = moment().format('MMMM Do YYYY, h:mm:ss a');
+var buildTime = moment().format('MMMM Do YYYY, h:mm:ss a')
 
 gulp.task('build-time', function () {
-    createBuildTime();
-});
+    createBuildTime()
+})
 
 function createBuildTime() {
-    buildTime = moment().format('MMMM Do YYYY, h:mm:ss a');
+    buildTime = moment().format('MMMM Do YYYY, h:mm:ss a')
     console.log(buildTime)
-    var str = 'export const buildTime = \"' + buildTime + '\"';
+    var str = 'export const buildTime = \"' + buildTime + '\"'
 
     return file('build.js', str, {src: true})
-        .pipe(gulp.dest(paths.jsSrc));
+        .pipe(gulp.dest(paths.jsSrc))
 }
 
 gulp.task('compile-css', function () {
@@ -105,7 +107,7 @@ gulp.task('compile-css', function () {
 })
 
 gulp.task('compile-js', ['build-time'], function () {
-    createBuildTime();
+    createBuildTime()
     browserify(paths.jsSrc + '/' + paths.mainApplicationJS)
         .transform(babelify.configure({
             ignore: /(node_modules)/
@@ -119,7 +121,7 @@ gulp.task('compile-js', ['build-time'], function () {
 })
 
 gulp.task('copy-html', function () {
-    createBuildTime();
+    createBuildTime()
     gulp.src(paths.htmlSrc + '/**/*.html')
         .pipe(gulp.dest(paths.htmlDest))
 
@@ -137,7 +139,7 @@ gulp.task('copy-data', function () {
         .pipe(gulp.dest(paths.dataDest))
 })
 
-gulp.task('copy-images', function () {
+gulp.task('copy-images', ['pix-resize'], function () {
     return gulp.src(paths.imgSrc + '/**/*')
         .pipe(gulp.dest(paths.imgDest))
 })
@@ -163,8 +165,9 @@ function readBuildTime() {
         } else {
             console.log("***" + data)
         }
-    });
+    })
 }
+
 gulp.task('run', [], function () {
     process.chdir(dir + "/cordova")
     cwd = process.cwd()
@@ -252,7 +255,7 @@ function cordova_run() {
 
         }
         readBuildTime()
-       process.chdir(dir)
+        process.chdir(dir)
     })
 }
 function reload() {
@@ -292,3 +295,166 @@ gulp.task('serve', [], function () {
     )
 
 })
+
+
+gulp.task('pix-resize', function () {
+
+    var andRes = paths.dest + '/android/'
+    var andScreenRes = paths.dest + '/screen/android/'
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(rename("ldpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            width: 36,
+            height: 36,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andRes))
+
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(rename("mdpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            width: 48,
+            height: 48,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andRes))
+
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(rename("hdpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            width: 72,
+            height: 72,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andRes))
+
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(rename("xhdpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            width: 96,
+            height: 96,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andRes))
+
+    gulp.src(paths.imgSrc + '/splash-land.png')
+        .pipe(rename("splash-land-hdpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andScreenRes))
+
+    gulp.src(paths.imgSrc + '/splash-land.png')
+        .pipe(rename("splash-land-ldpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andScreenRes))
+
+    gulp.src(paths.imgSrc + '/splash-land.png')
+        .pipe(rename("splash-land-mdpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andScreenRes))
+
+    gulp.src(paths.imgSrc + '/splash-land.png')
+        .pipe(rename("splash-land-xhdpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andScreenRes))
+
+    gulp.src(paths.imgSrc + '/splash-port.png')
+        .pipe(rename("splash-port-hdpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andScreenRes))
+
+    gulp.src(paths.imgSrc + '/splash-port.png')
+        .pipe(rename("splash-port-ldpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andScreenRes))
+
+    gulp.src(paths.imgSrc + '/splash-port.png')
+        .pipe(rename("splash-port-mdpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andScreenRes))
+
+    gulp.src(paths.imgSrc + '/splash-port.png')
+        .pipe(rename("splash-port-xhdpi.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest(andScreenRes))
+
+
+    /** TODO
+     <icon src="res/ios/icon-60@3x.png" width="180" height="180"/>
+     <!-- iOS 7.0+ -->
+     <!-- iPhone / iPod Touch  -->
+     <icon src="res/ios/icon-60.png" width="60" height="60"/>
+     <icon src="res/ios/icon-60@2x.png" width="120" height="120"/>
+     <!-- iPad -->
+     <icon src="res/ios/icon-76.png" width="76" height="76"/>
+     <icon src="res/ios/icon-76@2x.png" width="152" height="152"/>
+     <!-- iOS 6.1 -->
+     <!-- Spotlight Icon -->
+     <icon src="res/ios/icon-40.png" width="40" height="40"/>
+     <icon src="res/ios/icon-40@2x.png" width="80" height="80"/>
+     <!-- iPhone / iPod Touch -->
+     <icon src="res/ios/icon.png" width="57" height="57"/>
+     <icon src="res/ios/icon@2x.png" width="114" height="114"/>
+     <!-- iPad -->
+     <icon src="res/ios/icon-72.png" width="72" height="72"/>
+     <icon src="res/ios/icon-72@2x.png" width="144" height="144"/>
+     <!-- iPhone Spotlight and Settings Icon -->
+     <icon src="res/ios/icon-small.png" width="29" height="29"/>
+     <icon src="res/ios/icon-small@2x.png" width="58" height="58"/>
+     <!-- iPad Spotlight and Settings Icon -->
+     <icon src="res/ios/icon-50.png" width="50" height="50"/>
+     <icon src="res/ios/icon-50@2x.png" width="100" height="100"/>
+
+     <splash src="res/screen/ios/Default~iphone.png" width="320" height="480"/>
+     <splash src="res/screen/ios/Default@2x~iphone.png" width="640" height="960"/>
+     <splash src="res/screen/ios/Default-Portrait~ipad.png" width="768" height="1024"/>
+     <splash src="res/screen/ios/Default-Portrait@2x~ipad.png" width="1536" height="2048"/>
+     <splash src="res/screen/ios/Default-Landscape~ipad.png" width="1024" height="768"/>
+     <splash src="res/screen/ios/Default-Landscape@2x~ipad.png" width="2048" height="1536"/>
+     <splash src="res/screen/ios/Default-568h@2x~iphone.png" width="640" height="1136"/>
+     <splash src="res/screen/ios/Default-667h.png" width="750" height="1334"/>
+     <splash src="res/screen/ios/Default-736h.png" width="1242" height="2208"/>
+     <splash src="res/screen/ios/Default-Landscape-736h.png" width="2208" height="1242"/>
+     **/
+
+})
+

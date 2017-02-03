@@ -120,13 +120,13 @@ peloApp.controller("main", function ($scope, platform, fb) {
             }
         });
 
-         platform.cordovaOnly(function () {
-         try {
-         showMap()
-         } catch (e) {
-         debug2(e)
-         }
-         });
+        platform.cordovaOnly(function () {
+            try {
+                showMap()
+            } catch (e) {
+                debug2(e)
+            }
+        });
     }
 
 

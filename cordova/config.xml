@@ -52,27 +52,27 @@
     -->
     <platform name="android">
         <allow-intent href="market:*"/>
+        <icon src="res/android/ldpi.png" density="ldpi"/>
+        <icon src="res/android/mdpi.png" density="mdpi"/>
+        <icon src="res/android/hdpi.png" density="hdpi"/>
+        <icon src="res/android/xhdpi.png" density="xhdpi"/>
+
+        <splash src="res/screen/android/splash-land-hdpi.png" density="land-hdpi"/>
+        <splash src="res/screen/android/splash-land-ldpi.png" density="land-ldpi"/>
+        <splash src="res/screen/android/splash-land-mdpi.png" density="land-mdpi"/>
+        <splash src="res/screen/android/splash-land-xhdpi.png" density="land-xhdpi"/>
+
+        <splash src="res/screen/android/splash-port-hdpi.png" density="port-hdpi"/>
+        <splash src="res/screen/android/splash-port-ldpi.png" density="port-ldpi"/>
+        <splash src="res/screen/android/splash-port-mdpi.png" density="port-mdpi"/>
+        <splash src="res/screen/android/splash-port-xhdpi.png" density="port-xhdpi"/>
+
         <!--
-    <icon src="res/android/ldpi.png" density="ldpi" />
-    <icon src="res/android/mdpi.png" density="mdpi" />
-    <icon src="res/android/hdpi.png" density="hdpi" />
-    <icon src="res/android/xhdpi.png" density="xhdpi" />
+        <hook type="before_build" src="scripts/appBeforeBuild.js"/>
+        <hook type="before_plugin_install" src="scripts/appBeforePluginInstall.js"/>
 
-    <splash src="res/screen/android/splash-land-hdpi.png" density="land-hdpi"/>
-    <splash src="res/screen/android/splash-land-ldpi.png" density="land-ldpi"/>
-    <splash src="res/screen/android/splash-land-mdpi.png" density="land-mdpi"/>
-    <splash src="res/screen/android/splash-land-xhdpi.png" density="land-xhdpi"/>
-
-    <splash src="res/screen/android/splash-port-hdpi.png" density="port-hdpi"/>
-    <splash src="res/screen/android/splash-port-ldpi.png" density="port-ldpi"/>
-    <splash src="res/screen/android/splash-port-mdpi.png" density="port-mdpi"/>
-    <splash src="res/screen/android/splash-port-xhdpi.png" density="port-xhdpi"/>
-
-      <hook type="before_build" src="scripts/appBeforeBuild.js" />
-      <hook type="before_plugin_install" src="scripts/appBeforePluginInstall.js" />
-
-      <hook type="before_build" src="scripts/wp8/appAndroidBeforeBuild.js" />
-      <hook type="before_plugin_install" src="scripts/wp8/appWP8BeforePluginInstall.js" />
+        <hook type="before_build" src="scripts/wp8/appAndroidBeforeBuild.js"/>
+        <hook type="before_plugin_install" src="scripts/wp8/appWP8BeforePluginInstall.js"/>
     -->
     </platform>
     <platform name="ios">
