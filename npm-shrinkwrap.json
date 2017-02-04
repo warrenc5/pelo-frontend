@@ -214,6 +214,12 @@
       "resolved": "https://registry.npmjs.org/array-series/-/array-series-0.1.5.tgz",
       "dev": true
     },
+    "array-union": {
+      "version": "1.0.2",
+      "from": "array-union@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/array-union/-/array-union-1.0.2.tgz",
+      "dev": true
+    },
     "array-uniq": {
       "version": "1.0.3",
       "from": "array-uniq@>=1.0.2 <2.0.0",
@@ -2058,6 +2064,12 @@
       "resolved": "https://registry.npmjs.org/defined/-/defined-1.0.0.tgz",
       "dev": true
     },
+    "del": {
+      "version": "2.2.2",
+      "from": "del@latest",
+      "resolved": "https://registry.npmjs.org/del/-/del-2.2.2.tgz",
+      "dev": true
+    },
     "delayed-stream": {
       "version": "1.0.0",
       "from": "delayed-stream@>=1.0.0 <1.1.0",
@@ -2869,6 +2881,12 @@
       "version": "9.14.0",
       "from": "globals@>=9.0.0 <10.0.0",
       "resolved": "https://registry.npmjs.org/globals/-/globals-9.14.0.tgz",
+      "dev": true
+    },
+    "globby": {
+      "version": "5.0.0",
+      "from": "globby@>=5.0.0 <6.0.0",
+      "resolved": "https://registry.npmjs.org/globby/-/globby-5.0.0.tgz",
       "dev": true
     },
     "globule": {
@@ -3906,6 +3924,24 @@
       "version": "1.0.7",
       "from": "is-number-like@>=1.0.3 <2.0.0",
       "resolved": "https://registry.npmjs.org/is-number-like/-/is-number-like-1.0.7.tgz",
+      "dev": true
+    },
+    "is-path-cwd": {
+      "version": "1.0.0",
+      "from": "is-path-cwd@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/is-path-cwd/-/is-path-cwd-1.0.0.tgz",
+      "dev": true
+    },
+    "is-path-in-cwd": {
+      "version": "1.0.0",
+      "from": "is-path-in-cwd@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/is-path-in-cwd/-/is-path-in-cwd-1.0.0.tgz",
+      "dev": true
+    },
+    "is-path-inside": {
+      "version": "1.0.0",
+      "from": "is-path-inside@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/is-path-inside/-/is-path-inside-1.0.0.tgz",
       "dev": true
     },
     "is-posix-bracket": {
@@ -6808,6 +6844,12 @@
       "version": "1.0.1",
       "from": "path-is-absolute@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/path-is-absolute/-/path-is-absolute-1.0.1.tgz",
+      "dev": true
+    },
+    "path-is-inside": {
+      "version": "1.0.2",
+      "from": "path-is-inside@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/path-is-inside/-/path-is-inside-1.0.2.tgz",
       "dev": true
     },
     "path-platform": {

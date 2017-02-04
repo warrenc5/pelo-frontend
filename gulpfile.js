@@ -3,6 +3,7 @@ var gulp = require('gulp')
 var run = require('gulp-run')
 var batch = require('gulp-batch')
 var file = require('gulp-file')
+var del = require('del')
 var moment = require('moment')
 var fs = require('fs')
 var imageResize = require('gulp-image-resize')
@@ -187,6 +188,13 @@ gulp.task('run', [], function () {
     })
 })
 
+gulp.task('clean-dist', [], function () {
+    cwd = process.cwd()
+    console.log(`deleting ${cwd}/${paths.dest}`)
+
+    return del([paths.dest + '/**/*'])
+})
+
 gulp.task('android-run', [], function () {
     cordova_run()
 })
@@ -203,7 +211,7 @@ gulp.task('android', [], function () {
 })
 //https://github.com/apache/cordova-lib/blob/master/cordova-lib/src/cordova/util.js#L294
 function cordova_serve() {
-    process.chdir(dir + "/cordova")
+    process.chdir(`${dir}/cordova`)
     cwd = process.cwd()
     console.log('serving cordova on port 8000')
     cordova.serve({
