@@ -306,9 +306,9 @@ gulp.task('serve', [], function () {
 
 
 gulp.task('pix-resize', function () {
-
     var andRes = paths.dest + '/android/'
     var andScreenRes = paths.dest + '/screen/android/'
+
     gulp.src(paths.imgSrc + '/logo.png')
         .pipe(rename("ldpi.png"))
         .pipe(imageResize({
@@ -318,7 +318,9 @@ gulp.task('pix-resize', function () {
             crop: true,
             upscale: false
         }))
-        .pipe(gulp.dest(andRes))
+        .pipe(gulp.dest(andRes)).on('error',function () {
+        console.log("install http://www.graphicsmagick.org/ or http://www.imagemagick.org")
+    })
 
     gulp.src(paths.imgSrc + '/logo.png')
         .pipe(rename("mdpi.png"))

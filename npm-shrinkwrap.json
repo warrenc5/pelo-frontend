@@ -294,6 +294,28 @@
       "resolved": "https://registry.npmjs.org/async/-/async-1.5.2.tgz",
       "dev": true
     },
+    "async-done": {
+      "version": "1.2.2",
+      "from": "async-done@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/async-done/-/async-done-1.2.2.tgz",
+      "dev": true,
+      "dependencies": {
+        "end-of-stream": {
+          "version": "1.1.0",
+          "from": "end-of-stream@>=1.1.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/end-of-stream/-/end-of-stream-1.1.0.tgz",
+          "dev": true,
+          "dependencies": {
+            "once": {
+              "version": "1.3.3",
+              "from": "once@>=1.3.0 <1.4.0",
+              "resolved": "https://registry.npmjs.org/once/-/once-1.3.3.tgz",
+              "dev": true
+            }
+          }
+        }
+      }
+    },
     "async-each": {
       "version": "1.0.1",
       "from": "async-each@>=1.0.0 <2.0.0",
@@ -2989,6 +3011,12 @@
         }
       }
     },
+    "gulp-batch": {
+      "version": "1.0.5",
+      "from": "gulp-batch@latest",
+      "resolved": "https://registry.npmjs.org/gulp-batch/-/gulp-batch-1.0.5.tgz",
+      "dev": true
+    },
     "gulp-concat": {
       "version": "2.6.1",
       "from": "gulp-concat@>=2.6.0 <3.0.0",
@@ -4985,6 +5013,12 @@
       "version": "1.0.2",
       "from": "nested-error-stacks@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/nested-error-stacks/-/nested-error-stacks-1.0.2.tgz",
+      "dev": true
+    },
+    "next-tick": {
+      "version": "1.0.0",
+      "from": "next-tick@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/next-tick/-/next-tick-1.0.0.tgz",
       "dev": true
     },
     "ng-cordova": {
@@ -7956,6 +7990,20 @@
       "resolved": "https://registry.npmjs.org/std/-/std-0.1.40.tgz",
       "dev": true
     },
+    "stream-array": {
+      "version": "1.1.2",
+      "from": "stream-array@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/stream-array/-/stream-array-1.1.2.tgz",
+      "dev": true,
+      "dependencies": {
+        "readable-stream": {
+          "version": "2.1.5",
+          "from": "readable-stream@>=2.1.0 <2.2.0",
+          "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-2.1.5.tgz",
+          "dev": true
+        }
+      }
+    },
     "stream-browserify": {
       "version": "2.0.1",
       "from": "stream-browserify@>=2.0.0 <3.0.0",
@@ -7984,6 +8032,12 @@
       "version": "0.1.0",
       "from": "stream-consume@>=0.1.0 <0.2.0",
       "resolved": "https://registry.npmjs.org/stream-consume/-/stream-consume-0.1.0.tgz",
+      "dev": true
+    },
+    "stream-exhaust": {
+      "version": "1.0.1",
+      "from": "stream-exhaust@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/stream-exhaust/-/stream-exhaust-1.0.1.tgz",
       "dev": true
     },
     "stream-http": {
