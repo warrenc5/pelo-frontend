@@ -140,7 +140,7 @@ gulp.task('copy-data', function () {
         .pipe(gulp.dest(paths.dataDest))
 })
 
-gulp.task('copy-images', ['pix-resize'], function () {
+gulp.task('copy-images', [], function () {
     return gulp.src(paths.imgSrc + '/**/*')
         .pipe(gulp.dest(paths.imgDest))
 })
@@ -270,7 +270,7 @@ function reload() {
     console.log(buildTime)
 }
 
-gulp.task('serve', [], function () {
+gulp.task('start', [], function () {
     // Fire up a web server.
     browserSync.init({
         server: {
@@ -306,8 +306,8 @@ gulp.task('serve', [], function () {
 
 
 gulp.task('pix-resize', function () {
-    var andRes = paths.dest + '/android/'
-    var andScreenRes = paths.dest + '/screen/android/'
+    var andRes = 'cordova/res/android/'
+    var andScreenRes = 'cordova/res/screen/android/'
 
     gulp.src(paths.imgSrc + '/logo.png')
         .pipe(rename("ldpi.png"))
