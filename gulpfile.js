@@ -150,7 +150,7 @@ gulp.task('release', function () {
 })
 gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
-gulp.task('default', ['compile', 'serve'])
+gulp.task('default', ['compile', 'start'])
 
 gulp.task('stop', function () {
     browserSync.exit()

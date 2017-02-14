@@ -7534,6 +7534,12 @@
       "resolved": "https://registry.npmjs.org/requires-port/-/requires-port-1.0.0.tgz",
       "dev": true
     },
+    "reselect": {
+      "version": "2.5.4",
+      "from": "reselect@latest",
+      "resolved": "https://registry.npmjs.org/reselect/-/reselect-2.5.4.tgz",
+      "dev": true
+    },
     "resolve": {
       "version": "1.2.0",
       "from": "resolve@>=1.1.4 <2.0.0",
