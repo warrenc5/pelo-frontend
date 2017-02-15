@@ -55,3 +55,4 @@ export const MessagesContainer = connect(
 )(Messages)
 
 
+export default MessagesContainer

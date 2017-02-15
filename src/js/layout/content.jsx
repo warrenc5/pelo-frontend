@@ -3,7 +3,7 @@ import React from 'react'
 export default class ContentLayout extends React.Component {
   constructor(props) {
     super(props)
-      alert('hello cl')
+      console.log('content constructed')
   }
 
   getPageTitle = () => {

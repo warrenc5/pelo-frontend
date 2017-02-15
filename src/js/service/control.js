@@ -1,12 +1,12 @@
 import 'angular'
 import $ from 'jquery'
+import 'ngreact/ngReact'
+import moment from 'moment'
 import {debug, debug2, debugJSON} from './misc'
 import * as buildTime from '../build'
-import moment from 'moment'
-import 'ngreact/ngReact'
 import * as globals from './init'
 
-import {App} from '../App'
+import {App} from '../App.jsx'
 
 var local = {
     scope: function () {

@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { initialState }  from '../TestData'
 
 import {debug, debug2, debugJSON} from '../service/misc'
 /**
@@ -34,33 +33,45 @@ import {debug, debug2, debugJSON} from '../service/misc'
  return state
  }
  }
+
+ import 'angular'
+ import $ from 'jquery'
+ try {
+ alert("*" + angular.element($("#app")).scope())
+ } catch (e) {
+ alert(e)
+ }
  */
 
-const groups = (state , action) => {
+const login = (state = {}, action) => {
+    debug2("login reducer action" + action.type)
+    switch (action.type) {
+        default:
+            return state;
+    }
+}
+
+const groups = (state = [{id: 0}], action) => {
     debug2("group reducer action" + action.type)
     switch (action.type) {
         case 'LOAD':
             return action.payload
         default:
-            if (typeof state == 'undefined') {
-                return [{id:0}] //some dummy group with no members
-            } else {
-                return state //these are the groups
-            };
+            return state
     }
 }
 
-const todaysRides = (state = {} , action) => {
-    debug2(" action" + action.type )
+const todaysRides = (state = {}, action) => {
+    debug2(" action" + action.type)
     switch (action.type) {
         case 'LOAD':
             return {todaysRides: {id: action.payload.id}}
         case 'TOGGLE_TRACK':
             debug2("handling action" + action.type + "  " + action.payload.id)
             if (action.payload.id)
-                return {id:false}
+                return {id: false}
             else
-                return {id:true}
+                return {id: true}
         case 'ADD_TODO':
             return [
                 ...state,
@@ -82,7 +93,7 @@ const todaysRides = (state = {} , action) => {
 }
 
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
-export const MyReducer = combineReducers({todaysRides,groups})
+export const MyReducer = combineReducers({todaysRides, groups, login})
 //alert (typeof MyReducer )
 
 exports.default = MyReducer

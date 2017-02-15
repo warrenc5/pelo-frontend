@@ -2,19 +2,20 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-router'
 
-import MainLayout from './layout/mainlayout'
-import ContentLayout from './layout/contentlayout'
-import Home from './pages/home'
-import {HomeContainer} from './pages/home'
-import {GroupsContainer} from './view/groups.jsx'
-import {MessagesContainer} from './view/messages.jsx'
-import {RidesContainer} from './view/rides.jsx'
-import {SettingsContainer} from './view/settings.jsx'
-import {LoginContainer} from './view/login.jsx'
-import BikeComponent from './pages/bikecomponent'
-import About from './pages/about'
+import MainLayout from './layout/main.jsx'
+import ContentLayout from './layout/content.jsx'
+import HomeContainer from './pages/home.jsx'
+import GroupsContainer from './pages/groups.jsx'
+import MessagesContainer from './pages/messages.jsx'
+import RidesContainer from './pages/rides.jsx'
+import SettingsContainer from './pages/settings.jsx'
+import LoginContainer from './pages/login.jsx'
+import BikeComponent from './pages/bike.jsx'
+import About from './pages/about.jsx'
+import Working from './pages/about.jsx'
 
 let onUpdate = () => {
+
     window.scrollTo(0, 0)
 }
 
@@ -34,6 +35,7 @@ export default class RouterPath extends React.Component {
     render() {
         return (
             <div>
+                <Working/>
                 <Router history={hashHistory}>
                     <Route path="/" component={MainLayout}>
                         <IndexRoute component={GroupsContainer}/>

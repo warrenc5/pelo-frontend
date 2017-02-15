@@ -109,6 +109,7 @@ gulp.task('compile-css', function () {
 
 gulp.task('compile-js', ['build-time'], function () {
     createBuildTime()
+
     browserify(paths.jsSrc + '/' + paths.mainApplicationJS)
         .transform(babelify.configure({
             ignore: /(node_modules)/
@@ -117,7 +118,9 @@ gulp.task('compile-js', ['build-time'], function () {
         .on('error', console.error.bind(console))
         .pipe(src(paths.jsDestName))
         .pipe(gulp.dest(paths.jsDest))
-    console.log(buildTime)
+
+    console.log(`================================ ${buildTime} ============================================`)
+
     return true
 })
 

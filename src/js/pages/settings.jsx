@@ -75,3 +75,6 @@ export const SettingsContainer = connect(
     }
 )(Settings)
 
+
+export default SettingsContainer
+

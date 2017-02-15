@@ -48,11 +48,10 @@ class Groups extends React.Component {
         </div>
     );
 
-
     render() {
         return (
             <div>
-                <h2>Test2</h2>
+                <h2>Groups</h2>
                 <div>
                     {this.GridListExampleSimple()}
                 </div>
@@ -85,3 +84,4 @@ export const GroupsContainer = connect(
         }
     }
 )(Groups)
+export default GroupsContainer

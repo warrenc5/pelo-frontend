@@ -55,7 +55,7 @@ Login.propTypes = {
 export const LoginContainer = connect(
     (state) => {
         return {
-            id: state.todaysRides.id
+            login: state.login
         }
     },
     (dispatch) => {
@@ -66,3 +66,4 @@ export const LoginContainer = connect(
         }
     }
 )(Login)
+export default LoginContainer

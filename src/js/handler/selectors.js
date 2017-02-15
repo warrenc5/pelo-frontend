@@ -1,5 +1,10 @@
 import { createSelector } from 'reselect'
 
+/**
+ * reselectors are cached for computation optimization, and can be nested so in this example the total is only calculated once
+ *
+ */
+
 const shopItemsSelector = state => state.shop.items
 const taxPercentSelector = state => state.shop.taxPercent
 

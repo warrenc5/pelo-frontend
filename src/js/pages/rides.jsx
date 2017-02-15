@@ -56,3 +56,4 @@ export const RidesContainer = connect(
     }
 )(Rides)
 
+export default RidesContainer
