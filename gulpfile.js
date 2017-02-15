@@ -284,7 +284,7 @@ gulp.task('start', [], function () {
     // Watch changes
 
     gulp.watch(paths.cssSrc + '/**/*.scss', ['compile-css'])
-    gulp.watch(paths.jsSrc + '/**/*.js', ['compile-js'])
+    gulp.watch([paths.jsSrc + '/**/*.js*', paths.jsSrc + '/**/*.jsx'], ['compile-js'])
     //gulp.watch(paths.jsComponent + '/**/*', ['application-js'])
     gulp.watch(paths.htmlSrc + '/**/*.jade', ['copy-html'])
     gulp.watch(paths.htmlSrc + '/**/*.html', ['copy-html'])
@@ -293,7 +293,7 @@ gulp.task('start', [], function () {
 
     gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*'],
         {ignoreInitial: true}).on('change',
-        batch({timeout: 1000}, function (events, cb) {
+        batch({timeout: 500}, function (events, cb) {
             events
                 .on('data', console.log)
                 .on('end', browserSync.reload)

@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { initialState }  from '../TestData'
 
 import {debug, debug2, debugJSON} from '../service/misc'
 /**
@@ -35,6 +36,19 @@ import {debug, debug2, debugJSON} from '../service/misc'
  }
  */
 
+const groups = (state , action) => {
+    debug2("group reducer action" + action.type)
+    switch (action.type) {
+        case 'LOAD':
+            return action.payload
+        default:
+            if (typeof state == 'undefined') {
+                return [{id:0}] //some dummy group with no members
+            } else {
+                return state //these are the groups
+            };
+    }
+}
 
 const todaysRides = (state = {} , action) => {
     debug2(" action" + action.type )
@@ -68,7 +82,7 @@ const todaysRides = (state = {} , action) => {
 }
 
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
-export const MyReducer = combineReducers({todaysRides})
+export const MyReducer = combineReducers({todaysRides,groups})
 //alert (typeof MyReducer )
 
 exports.default = MyReducer

@@ -14,7 +14,9 @@ import { createStore } from 'redux'
 
 import actions from './model/actions'
 import filters from './model/filters'
+
 import {MyReducer} from './model/reducers'
+import {initialState}  from './TestData'
 
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
@@ -37,8 +39,8 @@ const muiTheme = getMuiTheme({
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin()
 
-
-const store2 = createStore(MyReducer, {todaysRides: {id: true}})
+//debug2(JSON.stringify(initialState))
+const store2 = createStore(MyReducer, initialState);
 
 
 //store2.subscribe((state = []) => {

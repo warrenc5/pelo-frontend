@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 
+import { connect } from 'react-redux'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
@@ -91,4 +92,19 @@ Home.propTypes = {
 
 }
 
-export default Home
+export const HomeContainer = connect(
+    (state) => {
+        return {
+            id: state.todaysRides.id
+        }
+    },
+    (dispatch) => {
+        return {
+            onClick2: (id) => {
+                dispatch(toggleTracking(id))
+            }
+        }
+    }
+)(Home)
+
+export default HomeContainer

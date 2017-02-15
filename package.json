@@ -14,6 +14,7 @@
   },
   "author": "",
   "license": "ISC",
+
   "dependencies": {
     "babel-polyfill": "^6.13.0",
     "babel-runtime": "^6.11.6",
@@ -22,7 +23,8 @@
     "material-ui": "^0.15.2",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
-    "react-router": "^2.7.0"
+    "react-router": "^2.7.0",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "angular": "^1.6.1",
@@ -73,7 +75,7 @@
     "react-addons-create-fragment": "^15.4.1",
     "react-redux": "^5.0.2",
     "react-tap-event-plugin": "https://registry.npmjs.org/react-tap-event-plugin/-/react-tap-event-plugin-1.0.0.tgz",
-    "redux": "^3.6.0",
+    "redux-connected-proptypes": "^1.0.0",
     "require": "^2.4.20",
     "reselect": "^2.5.4",
     "vinyl-source-stream": "^1.1.0",

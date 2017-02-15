@@ -5,7 +5,7 @@ import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-ro
 import MainLayout from './layout/mainlayout'
 import ContentLayout from './layout/contentlayout'
 import Home from './pages/home'
-import {HomeContainer} from './model/containers'
+import {HomeContainer} from './pages/home'
 import {GroupsContainer} from './view/groups.jsx'
 import {MessagesContainer} from './view/messages.jsx'
 import {RidesContainer} from './view/rides.jsx'
@@ -36,7 +36,7 @@ export default class RouterPath extends React.Component {
             <div>
                 <Router history={hashHistory}>
                     <Route path="/" component={MainLayout}>
-                        <IndexRoute component={HomeContainer}/>
+                        <IndexRoute component={GroupsContainer}/>
                         <Route component={ContentLayout}>
                             <Route path="/bike-component" component={BikeComponent} pageTitle={this.props.DB_VERSION}/>
                             <Route path="/bike-component/:componentType" component={BikeComponent} pageTitle="{:componentType}"/>
