@@ -32,16 +32,21 @@ export default class Navigation extends React.Component {
             <nav className="main-nav">
                 <Drawer width={250} open={this.state.open}>
                     <div className="main-logo">
-                        <Link to="/">Pelo<span className="type-italic">Riders App</span></Link>
+                        <Link to="/"><span className="type-italic">Main</span></Link>
                     </div>
                     <List>
                         <ListItem primaryText="Home" containerElement={<Link activeClassName="active" to="/" />}/>
-                        <ListItem primaryText="Bike component" containerElement={<Link activeClassName="active" to="/bike-component" />}/>
+                        <ListItem primaryText="Bike component"
+                                  containerElement={<Link activeClassName="active" to="/bike-component" />}/>
                         <ListItem primaryText="Rides" containerElement={<Link activeClassName="active" to="/rides" />}/>
-                        <ListItem primaryText="Groups" containerElement={<Link activeClassName="active" to="/groups" />}/>
-                        <ListItem primaryText="Messages" containerElement={<Link activeClassName="active" to="/messages" />}/>
-                        <ListItem primaryText="Settings" containerElement={<Link activeClassName="active" to="/settings" />}/>
-                        <ListItem primaryText="Logout" containerElement={<Link activeClassName="active" to="/logout" />}/>
+                        <ListItem primaryText="Groups"
+                                  containerElement={<Link activeClassName="active" to="/groups" />}/>
+                        <ListItem primaryText="Messages"
+                                  containerElement={<Link activeClassName="active" to="/messages" />}/>
+                        <ListItem primaryText="Settings"
+                                  containerElement={<Link activeClassName="active" to="/settings" />}/>
+                        <ListItem primaryText="Logout"
+                                  containerElement={<Link activeClassName="active" to="/logout" />}/>
 
                     </List>
                     <Divider />

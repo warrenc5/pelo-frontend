@@ -9,29 +9,18 @@ import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import reduxConnectedPropTypes from 'redux-connected-proptypes';
 
-const styles = {
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-    },
-    gridList: {
-        width: 500,
-        height: 450,
-        overflowY: 'auto',
-    },
-};
-
+import style from '../layout/style'
 class Groups extends React.Component {
     constructor(props) {
         super(props)
    }
 
+    
     GridListExampleSimple = () => (
-        <div style={styles.root}>
+        <div style={style.root}>
             <GridList
                 cellHeight={180}
-                style={styles.gridList}
+                style={style.gridList}
             >
                 <Subheader>December</Subheader>
                 {this.props.groups.map((tile) => (

@@ -4,7 +4,6 @@ import Search from '../component/search'
 
 export default class MainLayout extends React.Component {
   constructor(props) {
-    //alert('hellml' + props.auth)
     super(props)
   }
 
