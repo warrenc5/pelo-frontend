@@ -110,4 +110,7 @@ export class MyStorage {
 }
 
 const storage = new MyStorage()
+export default storage
+
 module.exports = storage
+exports.default = storage

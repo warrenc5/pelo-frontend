@@ -217,7 +217,7 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
         ajax.baseUrl = n
     })
 
-    $scope.$watch("auth", function (n, o, scope) {
+    $scope.$watch("auth", functin (n, o, scope) {
         debug2("watch auth " + o + "  " + n + " ")
     })
 

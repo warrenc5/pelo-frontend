@@ -10,12 +10,12 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import reduxConnectedPropTypes from 'redux-connected-proptypes';
 
 import style from '../layout/style'
+
 class Groups extends React.Component {
     constructor(props) {
         super(props)
-   }
+    }
 
-    
     GridListExampleSimple = () => (
         <div style={style.root}>
             <GridList
@@ -23,19 +23,22 @@ class Groups extends React.Component {
                 style={style.gridList}
             >
                 <Subheader>December</Subheader>
-                {this.props.groups.map((tile) => (
+                {this.props.groups.map((group) => (
                 <GridTile
-                    key={tile.id}
-                    title={tile.name}
-                    subtitle={<span>Creator: <b>{tile.id}</b></span>}
+                    key={group.id}
+                    title={group.name}
+                    subtitle={<span>Creator: <b>{group.id}</b></span>}
                     actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
-                >
-                    <img src={tile.id}/>
+                    onTouchTap={e => {
+                        e.preventDefault()
+                        this.props.joinGroup(this.props.userId,group.id)
+                    }}>
+                    <img src={group.avatar}/>
                 </GridTile>
                     ))}
             </GridList>
         </div>
-    );
+    )
 
     render() {
         return (
@@ -46,31 +49,37 @@ class Groups extends React.Component {
                 </div>
             </div>
         )
-
     }
 }
 
 Groups.propTypes = {
-    onClick2: PropTypes.func.isRequired,
+    joinGroup: PropTypes.func.isRequired,
     groups: PropTypes.array.isRequired
 }
 
-
 //TODO: can we use redux-connected-proptypes here? - only for state - not for dispatch..
-
 //export const GroupsContainer = reduxConnectedPropTypes(Groups);
 export const GroupsContainer = connect(
     (mainState) => {
         return {
-            groups: mainState.groups
+            groups: mainState.groups,
+            userId: mainState.login.id
         }
     },
     (dispatch) => {
         return {
-            onClick2: (id) => {
-                dispatch(toggleTracking(id))
+            joinGroup: (userId, groupId) => {
+                dispatch(joinGroup(userId, groupId))
             }
         }
     }
 )(Groups)
 export default GroupsContainer
+
+export function joinGroup(userId, groupId) {
+    return {
+        type: 'JOIN_GROUP',
+        payload: {userId: userId, groupId: groupId}
+    }
+}
+

@@ -5,6 +5,7 @@ import moment from 'moment'
 import {debug, debug2, debugJSON} from './misc'
 import * as buildTime from '../build'
 import * as globals from './init'
+import storage from './storage'
 
 import {App} from '../App.jsx'
 
@@ -15,7 +16,7 @@ var local = {
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, true);
         document.addEventListener('onpluginsready', this.onPluginsReady, true);
-        document.addEventListener('onbodyload', this.onBodyLoad, false);
+        document.addEventListener('onload', this.onBodyLoad, false);
         document.addEventListener("resume", this.resume, false);
 
         angular.element(document).ready(function () {
@@ -25,16 +26,24 @@ var local = {
             }
         });
     },
-    onDeviceReady: function () {
+    onDeviceReady: function () { //cordova only
         debug2('device ready')
         angular.element($("#app")).scope().init()
     },
     onPluginsReady: function () {
         debug2('plugins ready')
-        alert(window.plugins)
     },
     onBodyLoad: function () {
         debug2('bodyload')
+    },
+    banner: function() {
+        var now = moment().format('MMMM Do YYYY, h:mm:ss a');
+        debug2("PELO APP " + JSON.stringify({
+                build: buildTime.buildTime,
+                run: now,
+                APP: globals.APP_VERSION,
+                DB: globals.DB_VERSION
+            }))
     },
     resume: function () {
 
@@ -86,7 +95,11 @@ local.bindEvents()
 var peloApp = angular.module('peloApp', ['ng', 'react'])
 
 peloApp.controller("main", function ($scope, platform, fb) {
+    local.banner()
+
     $scope.inited = false
+
+    $scope.state = {}
 
     $scope.init = function () {
 
@@ -97,13 +110,6 @@ peloApp.controller("main", function ($scope, platform, fb) {
 
         platform.configure()
 
-        var now = moment().format('MMMM Do YYYY, h:mm:ss a');
-        debug2("PELO APP " + JSON.stringify({
-                build: buildTime.buildTime,
-                run: now,
-                APP: globals.APP_VERSION,
-                DB: globals.DB_VERSION
-            }))
 
         platform.cordovaOnly(function () {
             try {
@@ -129,6 +135,37 @@ peloApp.controller("main", function ($scope, platform, fb) {
         });
     }
 
+    $scope.initializeStorage = function initializeStorage() {
+
+        if (checkStorageVersion()) {
+            debug2("loading storage")
+            return loadStorageIntoScope()
+        } else {
+            debug2("storage db incompatible with DB_VERSION. clearing storage")
+            storage.clear()
+            storage.put("DB_VERSION", globals.DB_VERSION)
+        }
+
+    }
+
+    function loadStorageIntoScope() {
+        storage.forEach(function (name, value) {
+            debug2("scope " + name + " " + value)
+            $scope.state[name] = value
+        })
+
+        debug2("storage loaded")
+        return $scope.state;
+    }
+
+    function checkStorageVersion() {
+        var storageVersion = storage.get("DB_VERSION")
+        return storageVersion === undefined || storageVersion == globals.DB_VERSION
+    }
+
+    $scope.hello = function () {
+        alert('hello')
+    }
 
     $scope.cordovaOnly = platform.cordovaOnly
 
@@ -331,6 +368,7 @@ function showMap() {
         }
     );
 }
+
 function hide() {
     Mapbox.hide(
         {},
@@ -339,4 +377,7 @@ function hide() {
         }
     );
 }
-peloApp.value('App', App)
+peloApp.directive('peloApp', function (reactDirective) {
+    debug2('initialing React App')
+    return reactDirective(App);
+});

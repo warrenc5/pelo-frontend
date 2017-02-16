@@ -11,7 +11,7 @@ export class Working extends React.Component {
 
     //TODO: show rotating cog
     render () {
-        return <span>thinking</span><img src="img/sprocket.gif"/>
+        return <div><span>thinking</span><img src='/img/sprocket.gif'/></div>
     }
 }
 

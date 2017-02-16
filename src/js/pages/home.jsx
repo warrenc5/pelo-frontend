@@ -45,11 +45,9 @@ class Home extends React.Component {
                 <h2>What's new</h2>
                 <a href="#"
                    onClick={e => {
-         e.preventDefault()
-         //this.handleClick("nothing")
-        this.props.onClick2(this.props.id)
-
-       }}> SomeLink {this.props.id?'true':'false'} </a>
+                        e.preventDefault()
+                        this.props.onClick2(this.props.id)
+                   }}> SomeLink {this.props.id?'true':'false'} </a>
                 <div className="row">
                     //TODO: how to get xyz from here
                     <div className="col-xs-4">
@@ -88,7 +86,7 @@ class Home extends React.Component {
 //https://toddmotto.com/react-create-class-versus-component/
 Home.propTypes = {
     onClick2: PropTypes.func.isRequired,
-    id : PropTypes.bool.isRequired
+    id: PropTypes.bool.isRequired
 
 }
 

@@ -291,12 +291,13 @@ gulp.task('start', [], function () {
     //gulp.watch(paths.jsComponent + '/**/*', ['application-js'])
     gulp.watch(paths.htmlSrc + '/**/*.jade', ['copy-html'])
     gulp.watch(paths.htmlSrc + '/**/*.html', ['copy-html'])
+    gulp.watch(paths.dataSrc + '/**/*', ['copy-data'])
 
     gulp.watch(paths.root + '/src_old/**/*', ['old'])
 
     gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*'],
         {ignoreInitial: true}).on('change',
-        batch({timeout: 500}, function (events, cb) {
+        batch({timeout: 50}, function (events, cb) {
             events
                 .on('data', console.log)
                 .on('end', browserSync.reload)

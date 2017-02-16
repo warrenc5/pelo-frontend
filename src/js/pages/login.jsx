@@ -5,6 +5,8 @@ import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 
+import style from '../layout/style'
+
 class Login extends React.Component {
     constructor(props) {
         super(props)
@@ -12,7 +14,6 @@ class Login extends React.Component {
     }
 
     render() {
-
         <div class="login" id="login" ng-show="viz.auth">
             <p id="error">
                 <b>Welcome to the Riders app.</b>

@@ -33,15 +33,10 @@ import {debug, debug2, debugJSON} from '../service/misc'
  return state
  }
  }
-
- import 'angular'
- import $ from 'jquery'
- try {
- alert("*" + angular.element($("#app")).scope())
- } catch (e) {
- alert(e)
- }
  */
+
+import 'angular'
+import $ from 'jquery'
 
 const login = (state = {}, action) => {
     debug2("login reducer action" + action.type)
@@ -52,11 +47,15 @@ const login = (state = {}, action) => {
 }
 
 const groups = (state = [{id: 0}], action) => {
-    debug2("group reducer action" + action.type)
+    debug2("group reducer action" + JSON.stringify(action))
     switch (action.type) {
-        case 'LOAD':
-            return action.payload
+        case 'JOIN_GROUP':
+            //call join group
+
+
+
         default:
+
             return state
     }
 }
@@ -93,7 +92,9 @@ const todaysRides = (state = {}, action) => {
 }
 
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
-export const MyReducer = combineReducers({todaysRides, groups, login})
+export default function MyReducer() {
+    return combineReducers({todaysRides, groups, login})
+}
 //alert (typeof MyReducer )
 
 exports.default = MyReducer

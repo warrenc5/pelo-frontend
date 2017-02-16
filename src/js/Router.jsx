@@ -12,7 +12,6 @@ import SettingsContainer from './pages/settings.jsx'
 import LoginContainer from './pages/login.jsx'
 import BikeComponent from './pages/bike.jsx'
 import About from './pages/about.jsx'
-import Working from './pages/about.jsx'
 
 let onUpdate = () => {
 
@@ -35,7 +34,6 @@ export default class RouterPath extends React.Component {
     render() {
         return (
             <div>
-                <Working/>
                 <Router history={hashHistory}>
                     <Route path="/" component={MainLayout}>
                         <IndexRoute component={GroupsContainer}/>
