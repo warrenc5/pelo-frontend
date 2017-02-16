@@ -9,7 +9,10 @@ import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import reduxConnectedPropTypes from 'redux-connected-proptypes';
 
+import { createSelector } from 'reselect'
 import style from '../layout/style'
+
+const mySelector = createSelector((state) => state.login.id, (result) => result * 2)
 
 class Groups extends React.Component {
     constructor(props) {
@@ -22,7 +25,7 @@ class Groups extends React.Component {
                 cellHeight={180}
                 style={style.gridList}
             >
-                <Subheader>December</Subheader>
+                <Subheader>{this.props.total}</Subheader>
                 {this.props.groups.map((group) => (
                 <GridTile
                     key={group.id}
@@ -54,14 +57,15 @@ class Groups extends React.Component {
 
 Groups.propTypes = {
     joinGroup: PropTypes.func.isRequired,
-    groups: PropTypes.array.isRequired
+    groups: PropTypes.array.isRequired,
 }
 
 //TODO: can we use redux-connected-proptypes here? - only for state - not for dispatch..
 //export const GroupsContainer = reduxConnectedPropTypes(Groups);
 export const GroupsContainer = connect(
-    (mainState) => {
+    (mainState, props) => {
         return {
+            total: mySelector(mainState,props),
             groups: mainState.groups,
             userId: mainState.login.id
         }

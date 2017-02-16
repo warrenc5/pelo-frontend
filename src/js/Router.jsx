@@ -14,7 +14,6 @@ import BikeComponent from './pages/bike.jsx'
 import About from './pages/about.jsx'
 
 let onUpdate = () => {
-
     window.scrollTo(0, 0)
 }
 

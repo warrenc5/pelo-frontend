@@ -16,7 +16,7 @@ import filters from './handler/filters'
 
 import {createTestData}  from './TestData'
 import MyReducer from './handler/reducers'
-import {muiTheme} from './layout/theme'
+import {myTheme} from './layout/theme'
 
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
@@ -26,7 +26,6 @@ import {muiTheme} from './layout/theme'
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin()
-
 
 class App extends React.Component {
     constructor(props) {
@@ -38,7 +37,6 @@ class App extends React.Component {
         //LOAD TEST DATA
         $.extend(this.props.state, createTestData());
 
-        //Props is linked the angular $scope.state
         this.store = createStore(MyReducer(), this.props.state);
 
         /*
@@ -49,7 +47,7 @@ class App extends React.Component {
     }
 
     render() {
-        return <MuiThemeProvider muiTheme={muiTheme}>
+        return <MuiThemeProvider muiTheme={myTheme}>
             <Provider store={this.store}>
                 <RouterPath props={this.props}/>
             </Provider>
@@ -61,5 +59,6 @@ module.exports = {App: App}
 exports.default = App
 
 App.propTypes = {
-    state: PropTypes.array.isRequired,
+    //Props is linked the angular $scope.state
+    state: PropTypes.object.isRequired,
 }
