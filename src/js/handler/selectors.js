@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect'
 
 /**
- * reselectors are cached for computation optimization, and can be nested so in this example the total is only calculated once
+ * reselectors are caches for computation optimization, and can be nested so in this example the total is only calculated once
+ *
+ * the first parameters for createSelector are selectors and the last parameter argument is the transformer - which takes each selector as a parameter
  *
  */
 
