@@ -6,6 +6,7 @@ import {debug, debug2, debugJSON} from './misc'
 import * as buildTime from '../build'
 import * as globals from './init'
 import storage from './storage'
+import _client from './client'
 
 import {App} from '../App.jsx'
 
@@ -98,6 +99,8 @@ peloApp.controller("main", function ($scope, platform, fb) {
     local.banner()
 
     $scope.inited = false
+
+    $scope.client = _client
 
     $scope.state = {}
 

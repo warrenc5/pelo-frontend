@@ -6,6 +6,7 @@ import { createSelector } from 'reselect'
  * the first parameters for createSelector are selectors and the last parameter argument is the transformer - which takes each selector as a parameter
  *
  */
+export const mySelector = createSelector((state) => state.login.id, (result) => result * 2)
 
 const shopItemsSelector = state => state.shop.items
 const taxPercentSelector = state => state.shop.taxPercent

@@ -8,11 +8,12 @@ import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import reduxConnectedPropTypes from 'redux-connected-proptypes';
-
 import { createSelector } from 'reselect'
-import style from '../layout/style'
 
-const mySelector = createSelector((state) => state.login.id, (result) => result * 2)
+import style from '../layout/style'
+import * as action from '../handler/actions'
+import * as select from '../handler/selectors'
+
 
 class Groups extends React.Component {
     constructor(props) {
@@ -63,27 +64,19 @@ Groups.propTypes = {
 //TODO: can we use redux-connected-proptypes here? - only for state - not for dispatch..
 //export const GroupsContainer = reduxConnectedPropTypes(Groups);
 export const GroupsContainer = connect(
-    (mainState, props) => {
+    (state, props) => {
         return {
-            total: mySelector(mainState,props),
-            groups: mainState.groups,
-            userId: mainState.login.id
+            total: select.mySelector(state,props),
+            groups: state.groups,
+            userId: state.login.id
         }
     },
     (dispatch) => {
         return {
-            joinGroup: (userId, groupId) => {
-                dispatch(joinGroup(userId, groupId))
-            }
+            joinGroup: (...args) => dispatch(action.joinGroup(args))
         }
     }
 )(Groups)
-export default GroupsContainer
 
-export function joinGroup(userId, groupId) {
-    return {
-        type: 'JOIN_GROUP',
-        payload: {userId: userId, groupId: groupId}
-    }
-}
+export default GroupsContainer
 

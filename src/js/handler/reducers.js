@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux'
 
+import * as actions from './actions'
+
 import {debug, debug2, debugJSON} from '../service/misc'
 /**
  *
@@ -39,7 +41,7 @@ import 'angular'
 import $ from 'jquery'
 
 const login = (state = {}, action) => {
-    debug2("login reducer action" + action.type)
+    debug2("group reducer action" + JSON.stringify(action))
     switch (action.type) {
         default:
             return state;
@@ -47,13 +49,12 @@ const login = (state = {}, action) => {
 }
 
 const groups = (state = [{id: 0}], action) => {
-    debug2("group reducer action" + JSON.stringify(action))
+    debug2("group reducer " + JSON.stringify(action))
     switch (action.type) {
-        case 'JOIN_GROUP':
+        case actions.JOIN_GROUP:
             //call join group
 
-
-
+            alert ('join the group')
         default:
 
             return state
@@ -61,7 +62,7 @@ const groups = (state = [{id: 0}], action) => {
 }
 
 const todaysRides = (state = {}, action) => {
-    debug2(" action" + action.type)
+    debug2("ride reducer action" + JSON.stringify(action))
     switch (action.type) {
         case 'LOAD':
             return {todaysRides: {id: action.payload.id}}
