@@ -8,7 +8,6 @@ import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import reduxConnectedPropTypes from 'redux-connected-proptypes';
-import { createSelector } from 'reselect'
 
 import style from '../layout/style'
 import * as action from '../handler/actions'

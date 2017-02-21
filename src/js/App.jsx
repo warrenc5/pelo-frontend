@@ -1,4 +1,3 @@
-import 'angular'
 import React, {Component,PropTypes} from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 import Dialog from 'material-ui/Dialog'
@@ -11,12 +10,11 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import {debug, debug2, debugJSON} from './service/misc'
 import RouterPath from './Router.jsx'
-import actions from './handler/actions'
-import filters from './handler/filters'
 
 import {createTestData}  from './TestData'
 import MyReducer from './handler/reducers'
 import {myTheme} from './layout/theme'
+import ngScope from './service/bridge'
 
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
@@ -31,11 +29,11 @@ class App extends React.Component {
     constructor(props) {
         super(props)
         this.props = props
-
-        angular.element($("#app")).scope().initializeStorage()
+        ngScope().initializeStorage()
 
         //LOAD TEST DATA
         $.extend(this.props.state, createTestData());
+        debug2(JSON.stringify(this.props.state))
 
         this.store = createStore(MyReducer(), this.props.state);
 

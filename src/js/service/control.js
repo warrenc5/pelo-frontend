@@ -6,7 +6,7 @@ import {debug, debug2, debugJSON} from './misc'
 import * as buildTime from '../build'
 import * as globals from './init'
 import storage from './storage'
-import _client from './client'
+import MyClient from './client'
 
 import {App} from '../App.jsx'
 
@@ -99,8 +99,7 @@ peloApp.controller("main", function ($scope, platform, fb) {
     local.banner()
 
     $scope.inited = false
-
-    $scope.client = _client
+    $scope.client = new MyClient()
 
     $scope.state = {}
 
@@ -146,7 +145,7 @@ peloApp.controller("main", function ($scope, platform, fb) {
         } else {
             debug2("storage db incompatible with DB_VERSION. clearing storage")
             storage.clear()
-            storage.put("DB_VERSION", globals.DB_VERSION)
+            storage.put("globals", globals)
         }
 
     }
@@ -162,8 +161,8 @@ peloApp.controller("main", function ($scope, platform, fb) {
     }
 
     function checkStorageVersion() {
-        var storageVersion = storage.get("DB_VERSION")
-        return storageVersion === undefined || storageVersion == globals.DB_VERSION
+        var storageVersion = storage.get("globals")
+        return storageVersion == null || storageVersion.DB_VERSION == globals.DB_VERSION
     }
 
     $scope.hello = function () {

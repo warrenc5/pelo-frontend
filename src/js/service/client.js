@@ -92,6 +92,3 @@ export default class MyClient {
     }
 
 }
-const _client = new MyClient()
-exports = module.exports = _client
-exports.default = _client

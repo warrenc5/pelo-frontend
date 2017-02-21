@@ -26,9 +26,11 @@ var browserify = require('browserify')
 //var reactify = require('reactify')
 var babelify = require('babelify')
 var src = require('vinyl-source-stream') // text stream for gulp
-
+var install = require("gulp-install")
 var cordova = require("cordova-lib").cordova
+var cordovaCmd = require("gulp-cordova")
 
+var diff = require('gulp-diff-build')
 //paths
 var paths = new (function () {
     this.root = '.'
@@ -153,7 +155,7 @@ gulp.task('release', function () {
 })
 gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
-gulp.task('default', ['compile', 'start'])
+gulp.task('default', ['install','compile', 'start'])
 
 gulp.task('stop', function () {
     browserSync.exit()
@@ -198,10 +200,10 @@ gulp.task('clean-dist', [], function () {
     return del([paths.dest + '/**/*'])
 })
 
-gulp.task('android-run', [], function () {
+gulp.task('android-run', ['setup'], function () {
     cordova_run()
 })
-gulp.task('android', [], function () {
+gulp.task('android', ['setup'], function () {
 
     gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 10000},
         batch({timeout: 1000}, function (events, cb) {
@@ -308,6 +310,19 @@ gulp.task('start', [], function () {
 
 })
 
+gulp.task('install', function () {
+    var SRC = "package.json"
+    gulp.src(SRC)
+        .pipe(diff())
+        .pipe(install())
+})
+
+gulp.task('setup', ['install'], function () {
+    SRC = "cordova.json"
+    gulp.src(SRC)
+        .pipe(diff())
+        .pipe(cordovaCmd([{cwd: 'cordova'}]))
+})
 
 gulp.task('pix-resize', function () {
     var andRes = 'cordova/res/android/'
@@ -322,7 +337,7 @@ gulp.task('pix-resize', function () {
             crop: true,
             upscale: false
         }))
-        .pipe(gulp.dest(andRes)).on('error',function () {
+        .pipe(gulp.dest(andRes)).on('error', function () {
         console.log("install http://www.graphicsmagick.org/ or http://www.imagemagick.org")
     })
 

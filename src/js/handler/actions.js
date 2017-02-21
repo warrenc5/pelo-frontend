@@ -29,6 +29,7 @@ export function toggleTracking (newId) {
     payload: {id:newId}
   }
 }
+
 export const JOIN_GROUP = Symbol('JOIN_GROUP')
 
 export function joinGroup(userId, groupId) {
@@ -37,8 +38,3 @@ export function joinGroup(userId, groupId) {
         payload: {userId: userId, groupId: groupId}
     }
 }
-
-export const actions = [addBike,toggleTracking,searchFilter]
-
-exports.default = actions
-exports.actions = actions

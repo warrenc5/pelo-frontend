@@ -14,7 +14,6 @@
   },
   "author": "",
   "license": "ISC",
-
   "dependencies": {
     "babel-polyfill": "^6.13.0",
     "babel-runtime": "^6.11.6",
@@ -46,8 +45,11 @@
     "gulp": "https://registry.npmjs.org/gulp/-/gulp-3.9.1.tgz",
     "gulp-batch": "^1.0.5",
     "gulp-concat": "^2.6.0",
+    "gulp-cordova": "^6.0.0",
+    "gulp-diff-build": "^1.0.0",
     "gulp-file": "^0.3.0",
     "gulp-image-resize": "^0.12.0",
+    "gulp-install": "^0.6.0",
     "gulp-jade": "^1.1.0",
     "gulp-load-plugins": "^1.4.0",
     "gulp-plumber": "^1.1.0",
