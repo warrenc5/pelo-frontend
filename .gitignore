@@ -8,3 +8,4 @@ npm-debug.log
 .*.*.sw*
 cordova/www/
 /src/js/build.js
+.gulp

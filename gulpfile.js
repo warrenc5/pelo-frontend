@@ -99,6 +99,7 @@ gulp.task('compile-css', function () {
 
     gulp.src(paths.cssSrc + "/*.scss")
         .pipe(plumber())
+        .pipe(diff())
         .pipe(sass({
             outputStyle: 'compressed',
             includePaths: bourbon
@@ -129,9 +130,11 @@ gulp.task('compile-js', ['build-time'], function () {
 gulp.task('copy-html', function () {
     createBuildTime()
     gulp.src(paths.htmlSrc + '/**/*.html')
+        .pipe(diff())
         .pipe(gulp.dest(paths.htmlDest))
 
     gulp.src(paths.htmlSrc + '/**/*.jade')
+        .pipe(diff())
         .pipe(gulpJade({
             jade: jade,
             pretty: true
@@ -142,11 +145,13 @@ gulp.task('copy-html', function () {
 
 gulp.task('copy-data', function () {
     return gulp.src(paths.dataSrc + '/**/*')
+        .pipe(diff())
         .pipe(gulp.dest(paths.dataDest))
 })
 
 gulp.task('copy-images', [], function () {
     return gulp.src(paths.imgSrc + '/**/*')
+        .pipe(diff())
         .pipe(gulp.dest(paths.imgDest))
 })
 
