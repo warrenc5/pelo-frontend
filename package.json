@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp default",
+    "compile": "gulp release",
     "compile": "gulp compile && cd cordova && cordova build",
     "cordova-clean": "gulp compile && cd cordova && cordova clean",
     "android": "gulp compile && cd cordova && cordova run android --debug",

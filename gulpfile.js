@@ -155,8 +155,13 @@ gulp.task('copy-images', [], function () {
         .pipe(gulp.dest(paths.imgDest))
 })
 
-gulp.task('release', function () {
-//run shrink-wrap
+gulp.task('release', ['compile'],function () {
+    console.log('released')
+    //TODO if !exists
+    //cordova/platforms/android/build/outputs/apk/android-x86-debug.apk
+    //rename files
+    //run shrink-wrap
+
 })
 gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
@@ -209,6 +214,7 @@ gulp.task('android-run', ['setup'], function () {
     cordova_run()
 })
 gulp.task('android', ['setup'], function () {
+
 
     gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 10000},
         batch({timeout: 1000}, function (events, cb) {
@@ -276,7 +282,7 @@ function cordova_run() {
         process.chdir(dir)
     })
 }
-function reload() {
+function showBuildTime() {
     console.log(buildTime)
 }
 
@@ -304,11 +310,11 @@ gulp.task('start', [], function () {
 
     gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*'],
         {ignoreInitial: true}).on('change',
-        batch({timeout: 50}, function (events, cb) {
+        batch({timeout: 100}, function (events, cb) {
             events
                 .on('data', console.log)
                 .on('end', browserSync.reload)
-                .on('end', reload)
+                .on('end', showBuildTime)
                 .on('end', cb)
         })
     )
