@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp default",
-    "compile": "gulp release",
+    "release": "gulp release",
     "compile": "gulp compile && cd cordova && cordova build",
     "cordova-clean": "gulp compile && cd cordova && cordova clean",
     "android": "gulp compile && cd cordova && cordova run android --debug",
@@ -71,6 +71,7 @@
     "ng-redux": "^3.4.0-beta.1",
     "ngreact": "^0.3.0",
     "node-bourbon": "^4.2.8",
+    "npm-run-script": "0.0.4",
     "npm-shrinkwrap": "^6.0.2",
     "parsejson": "0.0.3",
     "parseqs": "0.0.5",
