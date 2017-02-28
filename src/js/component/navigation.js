@@ -45,8 +45,8 @@ export default class Navigation extends React.Component {
                                   containerElement={<Link activeClassName="active" to="/messages" />}/>
                         <ListItem primaryText="Settings"
                                   containerElement={<Link activeClassName="active" to="/settings" />}/>
-                        <ListItem primaryText="Logout"
-                                  containerElement={<Link activeClassName="active" to="/logout" />}/>
+                        <ListItem primaryText="Login"
+                                  containerElement={<Link activeClassName="active" to="/login" />}/>
 
                     </List>
                     <Divider />
