@@ -22,25 +22,26 @@ class Login extends React.Component {
                 type="Password"
             /><br />
         </div>
-            )
+    )
 
     Username = () => (
         <div style={style.root}>
-        <TextField
-            hintText="Username Field"
-            floatingLabelText="Username"
-            type="password"
-        /><br />
-            </div>
+            <TextField
+                hintText="Username Field"
+                floatingLabelText="Username"
+                type="password"
+            /><br />
+        </div>
     )
 
     SubmitButton = () => (
         <div>
-            <FlatButton label="Submit" />
+            <FlatButton label="Submit"/>
         </div>
     );
 
     render() {
+        return (
         <div class="login" id="login" ng-show="viz.auth">
             <p id="error">
                 <b>Welcome to the Riders app.</b>
@@ -79,6 +80,7 @@ class Login extends React.Component {
                 <button ng-click="login(username,password);" type="submit" value="login">login</button>
             </form>
         </div>
+        )
     }
 }
 
