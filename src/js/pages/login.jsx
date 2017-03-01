@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import TextField from 'material-ui/TextField';
 
 import { connect } from 'react-redux'
 import FlatButton from 'material-ui/FlatButton'
@@ -12,6 +13,32 @@ class Login extends React.Component {
         super(props)
         this.props = props
     }
+
+    Password = () => (
+        <div style={style.root}>
+            <TextField
+                hintText="Password Field"
+                floatingLabelText="Password"
+                type="Password"
+            /><br />
+        </div>
+            )
+
+    Username = () => (
+        <div style={style.root}>
+        <TextField
+            hintText="Username Field"
+            floatingLabelText="Username"
+            type="password"
+        /><br />
+            </div>
+    )
+
+    SubmitButton = () => (
+        <div>
+            <FlatButton label="Submit" />
+        </div>
+    );
 
     render() {
         <div class="login" id="login" ng-show="viz.auth">
@@ -27,6 +54,9 @@ class Login extends React.Component {
                         <td>
                             <span class="dark">Username or Email</span>
                         </td>
+                        <div>
+                            {this.Username()}
+                        </div>
                         <td>
                             <input ng-model="username" type="text"/>
                         </td>
@@ -35,12 +65,17 @@ class Login extends React.Component {
                         <td>
                             <span class="dark">Password</span>
                         </td>
+                        <div>
+                            {this.Password()}
+                        </div>
                         <td>
                             <input ng-model="password" type="password"/>
                         </td>
                     </tr>
                 </table>
-
+                <div>
+                    {this.SubmitButton()}
+                </div>
                 <button ng-click="login(username,password);" type="submit" value="login">login</button>
             </form>
         </div>
