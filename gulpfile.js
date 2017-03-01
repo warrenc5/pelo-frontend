@@ -326,6 +326,8 @@ gulp.task('install', function () {
     gulp.src(SRC)
         .pipe(diff())
         .pipe(install())
+
+    gulp.watch(SRC, ['install'])
 })
 
 gulp.task('setup', ['install'], function () {
