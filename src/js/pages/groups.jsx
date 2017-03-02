@@ -19,7 +19,7 @@ class Groups extends React.Component {
         super(props)
     }
 
-    GridListExampleSimple = () => (
+    GridListExampleSimple = () => {
         <div style={style.root}>
             <GridList
                 cellHeight={180}
@@ -41,7 +41,7 @@ class Groups extends React.Component {
                     ))}
             </GridList>
         </div>
-    )
+    }
 
     render() {
         return (

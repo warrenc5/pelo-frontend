@@ -33,7 +33,7 @@ class App extends React.Component {
 
         //LOAD TEST DATA
         $.extend(this.props.state, createTestData());
-        debug2(JSON.stringify(this.props.state))
+        //debug2(JSON.stringify(this.props.state))
 
         this.store = createStore(MyReducer(), this.props.state);
 

@@ -49,6 +49,7 @@ class Comp extends Component {
 
   render() {
     const standardActions = (
+
       <FlatButton
         label="Ok"
         primary={true}

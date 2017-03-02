@@ -1,14 +1,23 @@
 import React, { PropTypes } from 'react'
-import TextField from 'material-ui/TextField';
+//import TextField from 'material-ui/TextField';
 
 import { connect } from 'react-redux'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-
+import { Field, reduxForm } from 'redux-form'
+import {
+    Checkbox,
+    RadioButtonGroup,
+    SelectField,
+    TextField,
+    Toggle,
+    DatePicker
+} from 'redux-form-material-ui'
 import style from '../layout/style'
 
 class Login extends React.Component {
+
     constructor(props) {
         super(props)
         this.props = props
@@ -34,60 +43,56 @@ class Login extends React.Component {
         </div>
     )
 
-    SubmitButton = () => (
+    SubmitButton = ({ input, label, meta: { touched, error }, children, ...custom}) => (
         <div>
             <FlatButton label="Submit"/>
         </div>
-    );
+    )
+
+    LoginForm = (props) => {
+        const { handleSubmit, pristine, reset, submitting } = props
+        alert(props)
+        return (
+            <div class="login" id="login" ng-show="viz.auth">
+                <p id="error">
+                    <b>Welcome to the Riders app.</b>
+                </p>
+                <button ng-click="loginFB(username);">Login with facebook</button>
+                <p class="dark">Or login locally</p>
+
+                <form onSubmit={handleSubmit()}>
+                    <table align="center">
+                        <tr>
+                            <Field name="firstName" component={UserName} label="Username or Email"/>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="dark">Password</span>
+                            </td>
+                            <div>
+                                {this.Password()}
+                            </div>
+                        </tr>
+                    </table>
+                    <div>
+                        {this.SubmitButton()}
+                    </div>
+                </form>
+            </div>
+        )
+    }
 
     render() {
         return (
-        <div class="login" id="login" ng-show="viz.auth">
-            <p id="error">
-                <b>Welcome to the Riders app.</b>
-            </p>
-            <button ng-click="loginFB(username);">login with facebook</button>
-            <p class="dark">Or login locally</p>
-
-            <form name="alice" target="_self" ng-submit="login();">
-                <table align="center">
-                    <tr>
-                        <td>
-                            <span class="dark">Username or Email</span>
-                        </td>
-                        <div>
-                            {this.Username()}
-                        </div>
-                        <td>
-                            <input ng-model="username" type="text"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="dark">Password</span>
-                        </td>
-                        <div>
-                            {this.Password()}
-                        </div>
-                        <td>
-                            <input ng-model="password" type="password"/>
-                        </td>
-                    </tr>
-                </table>
-                <div>
-                    {this.SubmitButton()}
-                </div>
-                <button ng-click="login(username,password);" type="submit" value="login">login</button>
-            </form>
-        </div>
+            <div>{this.LoginForm()}</div>
         )
     }
+
 }
 
 Login.propTypes = {
     onClick2: PropTypes.func.isRequired,
     id: PropTypes.bool.isRequired
-
 }
 
 export const LoginContainer = connect(
@@ -103,5 +108,8 @@ export const LoginContainer = connect(
             }
         }
     }
-)(Login)
+)
+(reduxForm({form: 'LoginForm'})(Login))
+
+
 export default LoginContainer

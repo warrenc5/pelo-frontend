@@ -15,6 +15,7 @@ import {debug2, debugJSON} from '../service/misc'
  */
 import 'angular'
 import $ from 'jquery'
+import { reducer as formReducer } from 'redux-form'
 
 const login = (state = {}, action) => {
     switch (action.type) {
@@ -72,5 +73,5 @@ const todaysRides = (state = {}, action) => {
 
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
 export default function MyReducer() {
-return combineReducers({debug,todaysRides, groups, login})
+return combineReducers({form:formReducer, debug,todaysRides, groups, login})
 }

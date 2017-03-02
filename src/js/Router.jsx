@@ -35,7 +35,7 @@ export default class RouterPath extends React.Component {
             <div>
                 <Router history={hashHistory}>
                     <Route path="/" component={MainLayout}>
-                        <IndexRoute component={GroupsContainer}/>
+                        <IndexRoute component={LoginContainer}/>
                         <Route component={ContentLayout}>
                             <Route path="/bike-component" component={BikeComponent} pageTitle={this.props.DB_VERSION}/>
                             <Route path="/bike-component/:componentType" component={BikeComponent} pageTitle="{:componentType}"/>

@@ -1,6 +1,6 @@
 import React from 'react'
 import Working from '../component/working.jsx'
-
+import moment from 'moment'
 export default class ContentLayout extends React.Component {
     constructor(props) {
         super(props)
@@ -31,6 +31,8 @@ export default class ContentLayout extends React.Component {
                 <div>
                     {this.props.children}
                 </div>
+
+                now: {moment.format()}
             </div>
         )
     }
