@@ -43,15 +43,16 @@ class Login extends React.Component {
         </div>
     )
 
-    SubmitButton = ({ input, label, meta: { touched, error }, children, ...custom}) => (
+    SubmitButton = () => (
+        //({ input, label, meta: { touched, error }, children, ...custom}) => (
         <div>
             <FlatButton label="Submit"/>
         </div>
     )
 
+
+
     LoginForm = (props) => {
-        const { handleSubmit, pristine, reset, submitting } = props
-        alert(props)
         return (
             <div class="login" id="login" ng-show="viz.auth">
                 <p id="error">
@@ -60,10 +61,10 @@ class Login extends React.Component {
                 <button ng-click="loginFB(username);">Login with facebook</button>
                 <p class="dark">Or login locally</p>
 
-                <form onSubmit={handleSubmit()}>
+                <form >
                     <table align="center">
                         <tr>
-                            <Field name="firstName" component={UserName} label="Username or Email"/>
+                            <Field name="firstName" component={this.Username} label="Username or Email"/>
                         </tr>
                         <tr>
                             <td>
