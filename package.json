@@ -6,12 +6,9 @@
   "scripts": {
     "start": "gulp default",
     "release": "gulp release",
-    "compile": "gulp compile && cd cordova && cordova build",
+    "compile": "gulp compile",
     "cordova-clean": "gulp compile && cd cordova && cordova clean",
-    "android": "gulp compile && cd cordova && cordova run android --debug",
-    "redeploy": "cd cordova && cordova run android --debug",
-    "android2": "gulp old && cd cordova && cordova run android",
-    "setup": "cd cordova && cordova platform add android"
+    "android": "gulp android"
   },
   "author": "",
   "license": "ISC",
