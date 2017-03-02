@@ -30,6 +30,14 @@ export function toggleTracking (newId) {
   }
 }
 
+export function doLogin (user,password) {
+    alert(`tt ${user} ${password}`)
+    return {
+        type: 'TOGGLE_TRACK',
+        payload: {id:newId}
+    }
+}
+
 export const JOIN_GROUP = Symbol('JOIN_GROUP')
 
 export function joinGroup(userId, groupId) {

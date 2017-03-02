@@ -15,6 +15,7 @@ import {
     DatePicker
 } from 'redux-form-material-ui'
 import style from '../layout/style'
+import doLogin from '../handler/actions'
 
 class Login extends React.Component {
 
@@ -53,6 +54,7 @@ class Login extends React.Component {
 
 
     LoginForm = (props) => {
+        const { handleSubmit, pristine, reset, submitting } = props
         return (
             <div class="login" id="login" ng-show="viz.auth">
                 <p id="error">
@@ -61,7 +63,7 @@ class Login extends React.Component {
                 <button ng-click="loginFB(username);">Login with facebook</button>
                 <p class="dark">Or login locally</p>
 
-                <form >
+                <form onSubmit={handleSubmit}>
                     <table align="center">
                         <tr>
                             <Field name="firstName" component={this.Username} label="Username or Email"/>
@@ -77,6 +79,7 @@ class Login extends React.Component {
                     </table>
                     <div>
                         {this.SubmitButton()}
+                        <button type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -85,14 +88,14 @@ class Login extends React.Component {
 
     render() {
         return (
-            <div>{this.LoginForm()}</div>
+            <div>{this.LoginForm(this.props)}</div>
         )
     }
 
 }
 
 Login.propTypes = {
-    onClick2: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
     id: PropTypes.bool.isRequired
 }
 
@@ -104,8 +107,8 @@ export const LoginContainer = connect(
     },
     (dispatch) => {
         return {
-            onClick2: (id) => {
-                dispatch(toggleTracking(id))
+            handleSubmit: () => {
+                dispatch(doLogin('user','pass'))
             }
         }
     }
