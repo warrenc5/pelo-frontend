@@ -17,6 +17,7 @@ import {
 import style from '../layout/style'
 import doLogin from '../handler/actions'
 
+const data = { name: "Wozza"}
 class Login extends React.Component {
 
     constructor(props) {
@@ -39,7 +40,7 @@ class Login extends React.Component {
             <TextField
                 hintText="Username Field"
                 floatingLabelText="Username"
-                type="password"
+                type="text"
             /><br />
         </div>
     )
@@ -52,9 +53,8 @@ class Login extends React.Component {
     )
 
 
-
     LoginForm = (props) => {
-        const { handleSubmit, pristine, reset, submitting } = props
+        const { handleSubmit, load, pristine, reset, submitting } = props
         return (
             <div class="login" id="login" ng-show="viz.auth">
                 <p id="error">
@@ -66,20 +66,22 @@ class Login extends React.Component {
                 <form onSubmit={handleSubmit()}>
                     <table align="center">
                         <tr>
-                            <Field name="firstName" component={this.Username} label="Username or Email"/>
+                            <Field name="name" component={this.Username} label="Username or Email"/>
                         </tr>
                         <tr>
                             <td>
                                 <span class="dark">Password</span>
                             </td>
                             <div>
-                                {this.Password()}
+                                <Field name="name" component={this.Password} label="Pasword"/>
                             </div>
                         </tr>
                     </table>
                     <div>
                         {this.SubmitButton()}
                         <button type="submit">Submit</button>
+
+                        <button onClick={load(data)}>Load</button>
                     </div>
                 </form>
             </div>
@@ -106,18 +108,19 @@ Login.propTypes = {
 export const LoginContainer = connect(
     (state) => {
         return {
+            initialValues: state.login,
             login: state.login
         }
     },
     (dispatch) => {
         return {
-            onSubmit: (values) => {
+            load: (...args) => {dispatch({ type: 'LOAD', payload: {...args} })},
+            onSubmit: (form) => {
                 dispatch({
                     type: 'LOGIN',
-                    payload: {values}
+                    payload: {form}
                 })
             }
-
         }
     }
 )

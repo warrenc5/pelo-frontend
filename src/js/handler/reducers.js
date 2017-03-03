@@ -1,4 +1,7 @@
+import 'angular'
+import $ from 'jquery'
 import { combineReducers } from 'redux'
+import { reducer as formReducer } from 'redux-form'
 
 import * as action from './actions'
 import ngScope from '../service/bridge'
@@ -13,9 +16,30 @@ import {debug2, debugJSON} from '../service/misc'
  * @param action
  * @returns {the new state map to be grafted onto the global state}
  */
-import 'angular'
-import $ from 'jquery'
-import { reducer as formReducer } from 'redux-form'
+
+const formReducers = {
+    form: formReducer.plugin({
+        LoginForm: (state, action) => {   // <----- 'login' is name of form given to reduxForm()
+            alert(state + " " + JSON.stringify(action))
+            switch (action.type) {
+                case AUTH_LOGIN_FAIL:
+                    return {
+                        ...state,
+                        values: {
+                            ...state.values,
+                            password: undefined // <----- clear password value
+                        },
+                        fields: {
+                            ...state.fields,
+                            password: undefined // <----- clear field state, too (touched, etc.)
+                        }
+                    }
+                default:
+                    return state
+            }
+        }
+    })
+}
 
 const login = (state = {}, action) => {
     switch (action.type) {
@@ -32,8 +56,8 @@ const debug = (state = {}, action) => {
 const groups = (state = [{id: 0}], action) => {
     switch (action.type) {
         case action.JOIN_GROUP:
-            alert ('join the group')
-            ngScope().client.login('wozza','123')
+            alert('join the group')
+            ngScope().client.login('wozza', '123')
 
         default:
 
@@ -73,6 +97,6 @@ const todaysRides = (state = {}, action) => {
 
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
 export default function MyReducer() {
-return combineReducers({form:formReducer, debug,todaysRides, groups, login})
+    return combineReducers({formReducers, debug, todaysRides, groups, login})
 
 }

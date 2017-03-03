@@ -143,7 +143,6 @@ gulp.task('compile-css', function () {
 
 gulp.task('compile-js', ['build-time'], function () {
     createBuildTime()
-    //var combined = combiner.obj([
     var b = browserify(paths.jsSrc + '/' + paths.mainApplicationJS)
 
         .transform(babelify.configure({
@@ -152,30 +151,29 @@ gulp.task('compile-js', ['build-time'], function () {
         }))
 
         .bundle()
-        .pipe(source('bundle.js'))
-        .pipe(buffer())
         .on('error', (e) => {
                 console.log(`${e.filename} (${e.loc.line}:${e.loc.column}) \n ${e.codeFrame}`)
             }
         )
+        .pipe(source('bundle.js'))
+        .pipe(buffer())
 
-        if (env == 'prod') {
-            console.log("production")
-            //.pipe(src(paths.jsDestName))
-            b.pipe(sourcemaps.init({loadMaps: true}))
-                .pipe(streamify(uglify({
-                        mangle: false
-                        /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
-                    }
-                )))
-        }
-        //.pipe(sourcemaps.write('./'))
-        b.pipe(diff())
+    if (env == 'prod') {
+        console.log("production")
+        //.pipe(src(paths.jsDestName))
+        b.pipe(sourcemaps.init({loadMaps: true}))
+            .pipe(streamify(uglify({
+                    mangle: false
+                    /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
+                }
+            )))
+    }
+    //var combined = combiner.obj([
+    //.pipe(sourcemaps.write('./'))
+    b.pipe(diff())
         .pipe(gulp.dest(paths.jsDest))
-//])
+    //])
 
-    // any errors in the above streams will get caught
-    // by this listener, instead of being thrown:
     // combined.on('error', console.error.bind(console));
 
     console.log(`================================ ${buildTime} ====================${env}========================`)
@@ -366,7 +364,7 @@ gulp.task('start', [], function () {
 
     gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*'],
         {ignoreInitial: true}).on('change',
-        batch({timeout: 100}, function (events, cb) {
+        batch({timeout: 2000}, function (events, cb) {
             events
                 .on('data', console.log)
                 .on('end', browserSync.reload)
