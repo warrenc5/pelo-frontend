@@ -152,7 +152,7 @@ gulp.task('compile-js', ['build-time'], function () {
 
         .bundle()
         .on('error', (e) => {
-                console.log(`${e.filename} (${e.loc.line}:${e.loc.column}) \n ${e.codeFrame}`)
+                console.log(`${e.message}\n${e.codeFrame}`)
             }
         )
         .pipe(source('bundle.js'))
