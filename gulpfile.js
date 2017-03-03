@@ -16,10 +16,13 @@ var sass = require('gulp-sass')
 var bourbon = require('node-bourbon').includePaths
 var concat = require('gulp-concat')
 var gulp_plugins = require('gulp-load-plugins')()
-
 //html
 var gulpJade = require('gulp-jade')
 var jade = require('jade')
+
+var uglify = require('gulp-uglify');
+var combiner = require('stream-combiner2');
+var spawn = require('child_process').spawn;
 
 //react
 var browserify = require('browserify')
@@ -31,6 +34,18 @@ var cordova = require("cordova-lib").cordova
 var cordovaCmd = require("gulp-cordova")
 
 var diff = require('gulp-diff-build')
+
+var source = require('vinyl-source-stream');
+var streamify = require('gulp-streamify');
+var browserify = require('browserify');
+var buffer = require('vinyl-buffer');
+
+var sourcemaps = require('gulp-sourcemaps');
+
+const env = require('get-env')({
+    staging: 'staging',
+    test: ['test', 'testing']
+});
 //paths
 var paths = new (function () {
     this.root = '.'
@@ -95,6 +110,22 @@ function createBuildTime() {
         .pipe(gulp.dest(paths.jsSrc))
 }
 
+gulp.task('autoreload', function () {
+    var p;
+
+    gulp.watch('gulpfile.js', spawnChildren);
+
+    spawnChildren();
+
+    function spawnChildren(e) {
+        if (p) {
+            p.kill();
+        }
+
+        p = spawn('gulp', ['default'], {stdio: 'inherit'});
+    }
+});
+
 gulp.task('compile-css', function () {
 
     gulp.src(paths.cssSrc + "/*.scss")
@@ -112,19 +143,41 @@ gulp.task('compile-css', function () {
 
 gulp.task('compile-js', ['build-time'], function () {
     createBuildTime()
-
+    //var combined = combiner.obj([
     browserify(paths.jsSrc + '/' + paths.mainApplicationJS)
+
         .transform(babelify.configure({
-            ignore: /(node_modules)/
+            ignore: /(node_modules)/,
+            comments: false,
         }))
+
         .bundle()
-        .on('error', console.error.bind(console))
-        .pipe(src(paths.jsDestName))
+        .pipe(source('bundle.js'))
+        .pipe(buffer())
+        //.pipe(sourcemaps.init({loadMaps: true}))
+        .on('error', (e) => {
+                console.log(`${e.filename} (${e.loc.line}:${e.loc.column}) \n ${e.codeFrame}`)
+            }
+        )
+        //.pipe(src(paths.jsDestName))
+        .pipe(streamify(uglify({
+                mangle: false
+                /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
+            }
+        )))
+        //.pipe(sourcemaps.write('./'))
+        .pipe(diff())
         .pipe(gulp.dest(paths.jsDest))
+//])
+
+    // any errors in the above streams will get caught
+    // by this listener, instead of being thrown:
+    // combined.on('error', console.error.bind(console));
 
     console.log(`================================ ${buildTime} ============================================`)
 
-    return true
+    return true;
+    //  return combiner
 })
 
 gulp.task('copy-html', function () {
@@ -155,7 +208,7 @@ gulp.task('copy-images', [], function () {
         .pipe(gulp.dest(paths.imgDest))
 })
 
-gulp.task('release', ['compile'],function () {
+gulp.task('release', ['compile'], function () {
     console.log('released')
     //TODO if !exists
     //cordova/platforms/android/build/outputs/apk/android-x86-debug.apk
@@ -165,7 +218,7 @@ gulp.task('release', ['compile'],function () {
 })
 gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
-gulp.task('default', ['install','compile', 'start'])
+gulp.task('default', ['install', 'compile', 'start'])
 
 gulp.task('stop', function () {
     browserSync.exit()
@@ -213,9 +266,8 @@ gulp.task('clean-dist', [], function () {
 gulp.task('android-run', ['setup'], function () {
     cordova_run()
 })
+
 gulp.task('android', ['setup'], function () {
-
-
     gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 10000},
         batch({timeout: 1000}, function (events, cb) {
             events
@@ -321,8 +373,14 @@ gulp.task('start', [], function () {
 
 })
 
-gulp.task('install', function () {
+gulp.task('rerun', function () {
+    return run('gulp ' + this.currentTask.name).exec()  // prints "[echo] Hello World\n".
+        .pipe(gulp.dest('output'))           // writes "Hello World\n" to output/echo.
+        ;
+})
+gulp.task('install', [], function () {
     var SRC = "package.json"
+
     gulp.src(SRC)
         .pipe(diff())
         .pipe(install())

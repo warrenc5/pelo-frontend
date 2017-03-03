@@ -33,7 +33,7 @@ export function toggleTracking (newId) {
 export function doLogin (user,password) {
     alert(`tt ${user} ${password}`)
     return {
-        type: 'TOGGLE_TRACK',
+        type: 'LOGIN',
         payload: {id:newId}
     }
 }
