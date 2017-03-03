@@ -144,7 +144,7 @@ gulp.task('compile-css', function () {
 gulp.task('compile-js', ['build-time'], function () {
     createBuildTime()
     //var combined = combiner.obj([
-    browserify(paths.jsSrc + '/' + paths.mainApplicationJS)
+    var b = browserify(paths.jsSrc + '/' + paths.mainApplicationJS)
 
         .transform(babelify.configure({
             ignore: /(node_modules)/,
@@ -154,19 +154,23 @@ gulp.task('compile-js', ['build-time'], function () {
         .bundle()
         .pipe(source('bundle.js'))
         .pipe(buffer())
-        //.pipe(sourcemaps.init({loadMaps: true}))
         .on('error', (e) => {
                 console.log(`${e.filename} (${e.loc.line}:${e.loc.column}) \n ${e.codeFrame}`)
             }
         )
-        //.pipe(src(paths.jsDestName))
-        .pipe(streamify(uglify({
-                mangle: false
-                /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
-            }
-        )))
+
+        if (env == 'prod') {
+            console.log("production")
+            //.pipe(src(paths.jsDestName))
+            b.pipe(sourcemaps.init({loadMaps: true}))
+                .pipe(streamify(uglify({
+                        mangle: false
+                        /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
+                    }
+                )))
+        }
         //.pipe(sourcemaps.write('./'))
-        .pipe(diff())
+        b.pipe(diff())
         .pipe(gulp.dest(paths.jsDest))
 //])
 
@@ -174,7 +178,7 @@ gulp.task('compile-js', ['build-time'], function () {
     // by this listener, instead of being thrown:
     // combined.on('error', console.error.bind(console));
 
-    console.log(`================================ ${buildTime} ============================================`)
+    console.log(`================================ ${buildTime} ====================${env}========================`)
 
     return true;
     //  return combiner
