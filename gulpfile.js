@@ -3,6 +3,7 @@ var gulp = require('gulp')
 var run = require('gulp-run')
 var batch = require('gulp-batch')
 var file = require('gulp-file')
+var util = require('gulp-util')
 var del = require('del')
 var moment = require('moment')
 var fs = require('fs')
@@ -88,10 +89,10 @@ var npmShrinkwrap = require("npm-shrinkwrap")
  }
 
  optionalWarnings.forEach(function (err) {
- console.warn(err.message)
+ util.warn(err.message)
  })
 
- console.log("wrote npm-shrinkwrap.json")
+ util.log("wrote npm-shrinkwrap.json")
  })
  */
 
@@ -103,7 +104,7 @@ gulp.task('build-time', function () {
 
 function createBuildTime() {
     buildTime = moment().format('MMMM Do YYYY, h:mm:ss a')
-    console.log(buildTime)
+    //console.log(buildTime)
     var str = 'export const buildTime = \"' + buildTime + '\"'
 
     return file('build.js', str, {src: true})
@@ -152,14 +153,15 @@ gulp.task('compile-js', ['build-time'], function () {
 
         .bundle()
         .on('error', (e) => {
-                console.log(`${e.message}\n${e.codeFrame}`)
+                util.log(`${e.message}\n${e.codeFrame}`)
+                return true
             }
         )
         .pipe(source('bundle.js'))
         .pipe(buffer())
 
     if (env == 'prod') {
-        console.log("production")
+        util.log("production")
         //.pipe(src(paths.jsDestName))
         b.pipe(sourcemaps.init({loadMaps: true}))
             .pipe(streamify(uglify({
@@ -170,15 +172,15 @@ gulp.task('compile-js', ['build-time'], function () {
     }
     //var combined = combiner.obj([
     //.pipe(sourcemaps.write('./'))
-    b.pipe(diff())
-        .pipe(gulp.dest(paths.jsDest))
+    //b.pipe(diff()) //takes tooo long
+    b.pipe(gulp.dest(paths.jsDest))
     //])
 
-    // combined.on('error', console.error.bind(console));
+    // combined.on('error', util.error.bind(console));
 
-    console.log(`================================ ${buildTime} ====================${env}========================`)
+    util.log(`================================ ${buildTime} ====================${env}========================`)
 
-    return true;
+    return b;
     //  return combiner
 })
 
@@ -211,7 +213,7 @@ gulp.task('copy-images', [], function () {
 })
 
 gulp.task('release', ['compile'], function () {
-    console.log('released')
+    util.log('released')
     //TODO if !exists
     //cordova/platforms/android/build/outputs/apk/android-x86-debug.apk
     //rename files
@@ -230,11 +232,11 @@ var dir = process.cwd()
 function readBuildTime() {
     fs.readFile(dir + "/src/js/build.js", function (e, data) {
         if (e) {
-            console.log(e)
+            util.log(e)
             cwd = process.cwd()
-            console.log('cwd ' + cwd)
+            util.log('cwd ' + cwd)
         } else {
-            console.log("***" + data)
+            util.log("***" + data)
         }
     })
 }
@@ -242,7 +244,7 @@ function readBuildTime() {
 gulp.task('run', [], function () {
     process.chdir(dir + "/cordova")
     cwd = process.cwd()
-    console.log('building ' + cwd)
+    util.log('building ' + cwd)
     cordova.run({
         "verbose": true,
         "platforms": ["android"],
@@ -251,16 +253,16 @@ gulp.task('run', [], function () {
         }
     }, function (e) {
         if (e) {
-            console.log('build result:' + e)
+            util.log('build result:' + e)
         }
-        console.log('run ' + buildTime)
+        util.log('run ' + buildTime)
         process.chdir(dir)
     })
 })
 
 gulp.task('clean-dist', [], function () {
     cwd = process.cwd()
-    console.log(`deleting ${cwd}/${paths.dest}`)
+    util.log(`deleting ${cwd}/${paths.dest}`)
 
     return del([paths.dest + '/**/*'])
 })
@@ -273,7 +275,7 @@ gulp.task('android', ['setup'], function () {
     gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 10000},
         batch({timeout: 1000}, function (events, cb) {
             events
-                .on('data', console.log)
+                .on('data', util.log)
                 .on('end', cb)
                 .on('end', cordova_run)
         }))
@@ -283,12 +285,12 @@ gulp.task('android', ['setup'], function () {
 function cordova_serve() {
     process.chdir(`${dir}/cordova`)
     cwd = process.cwd()
-    console.log('serving cordova on port 8000')
+    util.log('serving cordova on port 8000')
     cordova.serve({
         "verbose": true
     }, function (e) {
         if (e) {
-            console.log('build result:' + e)
+            util.log('build result:' + e)
         }
     })
     process.chdir(dir)
@@ -298,7 +300,7 @@ function cordova_build() {
     {
         process.chdir(dir + "/cordova")
         cwd = process.cwd()
-        console.log('building ' + cwd)
+        util.log('building ' + cwd)
         cordova.build({
             "verbose": true,
             "platforms": ["android"],
@@ -307,7 +309,7 @@ function cordova_build() {
             }
         }, function (e) {
             if (e) {
-                console.log('build result:' + e)
+                util.log('build result:' + e)
             } else {
                 cordova_run
             }
@@ -319,7 +321,7 @@ function cordova_run() {
 
     process.chdir(dir + "/cordova")
     cwd = process.cwd()
-    console.log('running ' + cwd)
+    util.log('running ' + cwd)
     cordova.run({
         "verbose": true,
         "platforms": ["android"],
@@ -328,7 +330,7 @@ function cordova_run() {
         }
     }, function (e) {
         if (e) {
-            console.log('install result:' + e)
+            util.log('install result:' + e)
         } else {
 
         }
@@ -337,9 +339,12 @@ function cordova_run() {
     })
 }
 function showBuildTime() {
-    console.log(buildTime)
+    util.log(buildTime)
 }
 
+function dateLog(s) {
+    util.log(`${s}`)
+}
 gulp.task('start', [], function () {
     // Fire up a web server.
     browserSync.init({
@@ -364,9 +369,9 @@ gulp.task('start', [], function () {
 
     gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*'],
         {ignoreInitial: true}).on('change',
-        batch({timeout: 2000}, function (events, cb) {
+        batch({timeout: 1000}, function (events, cb) {
             events
-                .on('data', console.log)
+                .on('data', util.log)
                 .on('end', browserSync.reload)
                 .on('end', showBuildTime)
                 .on('end', cb)
@@ -411,7 +416,7 @@ gulp.task('pix-resize', function () {
             upscale: false
         }))
         .pipe(gulp.dest(andRes)).on('error', function () {
-        console.log("install http://www.graphicsmagick.org/ or http://www.imagemagick.org")
+        util.log("install http://www.graphicsmagick.org/ or http://www.imagemagick.org")
     })
 
     gulp.src(paths.imgSrc + '/logo.png')
