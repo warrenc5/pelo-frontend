@@ -2,7 +2,10 @@ import {debug, debug2, debugJSON} from '../service/misc'
 /**
  * These Actions are like our own custom events descriptors.
  *
- * All actions have some parameters, type and a payload or error
+ * The name of the action is arbitary,
+ * Every action useally has some parameters
+ * The standard format for the data struct is
+ * type and a payload or error
  *
  * see
  * https://github.com/acdlite/flux-standard-action

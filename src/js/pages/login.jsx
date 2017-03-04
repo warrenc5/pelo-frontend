@@ -17,7 +17,6 @@ import {
 import style from '../layout/style'
 import doLogin from '../handler/actions'
 
-const data = { name: "Wozza"}
 class Login extends React.Component {
 
     constructor(props) {
@@ -94,18 +93,28 @@ class Login extends React.Component {
         )
     }
 
-    submitValidation (values) {
+    submitValidation(values) {
         alert('submit validation')
     }
 }
 
+const data = {name: "WozzaTest"}
+
 Login.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-    id: PropTypes.bool.isRequired,
-    propTypes
+    ...propTypes,
+    onSubmit: PropTypes.func.isRequired
+
+}
+var t = {
+    type: 'LOGIN',
+    payload: {data: data}
 }
 
-export const LoginContainer = connect(
+function fun1(data) {
+    return t
+}
+
+var LoginContainer = connect(
     (state) => {
         return {
             initialValues: state.login,
@@ -114,24 +123,20 @@ export const LoginContainer = connect(
     },
     (dispatch) => {
         return {
-            load: (...args) => {dispatch({ type: 'LOAD', payload: {...args} })},
-            onSubmit: (form) => {
-                dispatch({
-                    type: 'LOGIN',
-                    payload: {form}
-                })
-            }
+            load: () => (data) => dispatch(fun1(data)),
+            onSubmit: () => (data) => dispatch(fun1(data))
         }
     }
-)
-(reduxForm({
-    form: 'LoginForm',
-    validate: function(values) {
-        console.log('validate')
-    },
-    warn: function(values) {
-        console.log('warn')
-    }
-})(Login))
+)(
+    reduxForm({
+        form: 'LoginForm',
+        validate: function (values) {
+            console.log('validate')
+        },
+        warn: function (values) {
+            console.log('warn')
+        }
+    })(Login))
+
 
 export default LoginContainer

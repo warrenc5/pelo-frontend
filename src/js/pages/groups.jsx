@@ -72,7 +72,7 @@ export const GroupsContainer = connect(
     },
     (dispatch) => {
         return {
-            joinGroup: (...args) => dispatch(action.joinGroup(args))
+            joinGroup: () => (...args) => dispatch(action.joinGroup(args))
         }
     }
 )(Groups)

@@ -9,8 +9,9 @@ import ngScope from '../service/bridge'
 import {debug2, debugJSON} from '../service/misc'
 /**
  *
- * Reducers are like event handlers which read the action and then do something and return the result of that something
- * their names are the states object name eg. const login = reducer for state.login
+ * Reducers are like event handlers which receive the action and then do something
+ * and return the result of that something as a data structure
+ * their names are important, they are the states member object name eg. const login = reducer for state.login
  *
  * @param state
  * @param action
@@ -22,7 +23,7 @@ const formReducers = {
         LoginForm: (state, action) => {   // <----- 'login' is name of form given to reduxForm()
             alert(state + " " + JSON.stringify(action))
             switch (action.type) {
-                case AUTH_LOGIN_FAIL:
+                case LOGIN:
                     return {
                         ...state,
                         values: {
@@ -50,6 +51,8 @@ const login = (state = {}, action) => {
 
 const debug = (state = {}, action) => {
     debug2("reduce: " + String(action.type) + " " + JSON.stringify(action.payload))
+    debug2(JSON.stringify(state))
+
     return state;
 }
 
