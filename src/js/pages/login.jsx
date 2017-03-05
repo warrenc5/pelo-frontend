@@ -25,13 +25,11 @@ class Login extends React.Component {
     }
 
     Password = () => (
-        <div style={style.root}>
-            <TextField
-                hintText="Password Field"
-                floatingLabelText="Password"
-                type="Password"
-            /><br />
-        </div>
+        <TextField
+            hintText="Password Field"
+            floatingLabelText="Password"
+            type="Password"
+        />
     )
 
     Username = ({ input, label, meta: { touched, error }, ...custom }) => (
@@ -63,13 +61,13 @@ class Login extends React.Component {
                 <form onSubmit={handleSubmit()}>
                     <table align="center">
                         <tr>
-                            <Field name="name" component={this.Username} label="Username or Email"/>
+                            <div style={style.root}>
+                                <Field name="name" component={this.Username} label="Username or Email"/>
+                            </div>
+
                         </tr>
                         <tr>
-                            <td>
-                                <span class="dark">Password</span>
-                            </td>
-                            <div>
+                            <div style={style.root}>
                                 <Field name="name" component={this.Password} label="Pasword"/>
                             </div>
                         </tr>
@@ -99,15 +97,11 @@ class Login extends React.Component {
 const data = {name: "WozzaTest"}
 
 Login.propTypes = {
-    ...propTypes,
-    onSubmit: PropTypes.func.isRequired
+    ...propTypes
 }
 
 var LoginContainer = connect(
-
     (state) => {
-
-
         return {
             initialValues: state.login,
         }
