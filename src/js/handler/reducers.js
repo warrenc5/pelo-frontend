@@ -18,29 +18,32 @@ import {debug2, debugJSON} from '../service/misc'
  * @returns {the new state map to be grafted onto the global state}
  */
 
-const formReducers = {
-    form: formReducer.plugin({
-        LoginForm: (state, action) => {   // <----- 'login' is name of form given to reduxForm()
-            alert(state + " " + JSON.stringify(action))
-            switch (action.type) {
-                case LOGIN:
-                    return {
-                        ...state,
-                        values: {
-                            ...state.values,
-                            password: undefined // <----- clear password value
-                        },
-                        fields: {
-                            ...state.fields,
-                            password: undefined // <----- clear field state, too (touched, etc.)
-                        }
+const form = formReducer.plugin({
+    form: (state, action) => {
+ //       console.log("1",JSON.stringify(action) + " " + JSON.stringify(state))
+
+    },
+    LoginForm: (state, action) => {   // <----- 'login' is name of form given to reduxForm()
+        //console.log("2"+JSON.stringify(action)+ " " + JSON.stringify(state))
+        switch (action.type) {
+            case `LOGIN`:
+                alert(JSON.stringify(state))
+                return {
+                    ...state,
+                    values: {
+                        ...state.values,
+                        password: undefined // <----- clear password value
+                    },
+                    fields: {
+                        ...state.fields,
+                        password: undefined // <----- clear field state, too (touched, etc.)
                     }
-                default:
-                    return state
-            }
+                }
+            default:
+                return state
         }
-    })
-}
+    }
+})
 
 const login = (state = {}, action) => {
     switch (action.type) {
@@ -100,6 +103,6 @@ const todaysRides = (state = {}, action) => {
 
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
 export default function MyReducer() {
-    return combineReducers({formReducers, debug, todaysRides, groups, login})
+    return combineReducers({form})//, debug, todaysRides, groups, login})
 
 }

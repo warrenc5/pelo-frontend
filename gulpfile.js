@@ -4,6 +4,9 @@ var run = require('gulp-run')
 var batch = require('gulp-batch')
 var file = require('gulp-file')
 var util = require('gulp-util')
+var gulpsync = require('gulp-sync')(gulp)
+var changed = require('gulp-changed')
+
 var del = require('del')
 var moment = require('moment')
 var fs = require('fs')
@@ -47,6 +50,7 @@ const env = require('get-env')({
     staging: 'staging',
     test: ['test', 'testing']
 });
+var SRC = "package.json"
 //paths
 var paths = new (function () {
     this.root = '.'
@@ -79,6 +83,42 @@ var paths = new (function () {
 
 
 var npmShrinkwrap = require("npm-shrinkwrap")
+gulp.task('start', [], function () {
+    // Fire up a web server.
+    browserSync.init({
+        server: {
+            baseDir: paths.dest,
+            online: true
+        }
+    })
+
+    // Watch main files and reload browser.
+
+    // Watch changes
+
+    gulp.watch(paths.cssSrc + '/**/*.scss', ['compile-css'])
+
+
+    //gulp.watch(paths.jsComponent + '/**/*', ['application-js'])
+    gulp.watch(paths.htmlSrc + '/**/*.jade', ['copy-html'])
+    gulp.watch(paths.htmlSrc + '/**/*.html', ['copy-html'])
+    gulp.watch(paths.dataSrc + '/**/*', ['copy-data'])
+
+    gulp.watch(paths.root + '/src_old/**/*', ['old'])
+
+    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*'],
+        {ignoreInitial: true}).on('change',
+        batch({timeout: 1000}, function (events, cb) {
+            events
+                .on('data', util.log)
+                .on('end', browserSync.reload)
+                .on('end', showBuildTime)
+                .on('end', cb)
+        })
+    )
+
+    gulp.watch(SRC, ['install'])
+})
 
 /*
  npmShrinkwrap({
@@ -104,21 +144,21 @@ gulp.task('build-time', function () {
 
 function createBuildTime() {
     buildTime = moment().format('MMMM Do YYYY, h:mm:ss a')
-    //console.log(buildTime)
+    console.log(buildTime)
     var str = 'export const buildTime = \"' + buildTime + '\"'
 
     return file('build.js', str, {src: true})
         .pipe(gulp.dest(paths.jsSrc))
 }
 
-gulp.task('autoreload', function () {
+gulp.task('auto', function () {
     var p;
 
-    gulp.watch('gulpfile.js', spawnChildren);
-
+    gulp.watch('gulpfile.js', spawnChildren)
     spawnChildren();
 
     function spawnChildren(e) {
+        util.log('gulp changed, reloading')
         if (p) {
             p.kill();
         }
@@ -144,44 +184,59 @@ gulp.task('compile-css', function () {
 
 gulp.task('compile-js', ['build-time'], function () {
     createBuildTime()
-    var b = browserify(paths.jsSrc + '/' + paths.mainApplicationJS)
+    return gulp.watch([`!${paths.jsSrc}/**/build.js`, paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx'], {ignoreInitial: false})
+        .on('change', batch({timeout: 2500}, function (events, done) {
+            events
+                .on('data', util.log)
+                .on('end', done)
+                .on('end', function (done1) {
+                    var b = browserify(paths.jsSrc + paths.mainApplicationJS)
+                        .transform(babelify.configure({
+                            ignore: /(node_modules)/,
+                            comments: false,
+                        }))
+                        .bundle()
+                    ////**
+                    // .pipe(plumber((e) => {
+                    // util.log(`*** ${e.message}\n${e.codeFrame}`)
+                    // this.emit('end');
+                    // }))
+                    // *!/
+                    ////.pipe(changed(d))*/ // Ignore unchanged files
+                    return b.on('end', () => {
+                            util.log(`================================ ${buildTime} ====================${env}========================`)
+                            done1
+                        })
+                        .on('error', (e) => {
+                                try {
+                                    util.log(`${e.message}\n${e.codeFrame}`)
+                                } catch (e) {
+                                }
+                                b.emit('end')
+                            }
+                        )
+                        //var combined = combiner.obj([b])
+                        .pipe(source('bundle.js'))
+                        .pipe(buffer())
+                        //.pipe(diff()) //takes tooo long
+                        .pipe(gulp.dest(paths.jsDest))
 
-        .transform(babelify.configure({
-            ignore: /(node_modules)/,
-            comments: false,
+                    //
+                    //
+                    //if (env == 'prod') {
+                    //    util.log("production")
+                    //    //.pipe(src(paths.jsDestName))
+                    //    b.pipe(sourcemaps.init({loadMaps: true}))
+                    //        .pipe(streamify(uglify({
+                    //                mangle: false
+                    //                /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
+                    //            }
+                    //        )))
+                    //    //.pipe(sourcemaps.write('./'))
+                    //}
+                })
         }))
 
-        .bundle()
-        .on('error', (e) => {
-                util.log(`${e.message}\n${e.codeFrame}`)
-                return true
-            }
-        )
-        .pipe(source('bundle.js'))
-        .pipe(buffer())
-
-    if (env == 'prod') {
-        util.log("production")
-        //.pipe(src(paths.jsDestName))
-        b.pipe(sourcemaps.init({loadMaps: true}))
-            .pipe(streamify(uglify({
-                    mangle: false
-                    /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
-                }
-            )))
-    }
-    //var combined = combiner.obj([
-    //.pipe(sourcemaps.write('./'))
-    //b.pipe(diff()) //takes tooo long
-    b.pipe(gulp.dest(paths.jsDest))
-    //])
-
-    // combined.on('error', util.error.bind(console));
-
-    util.log(`================================ ${buildTime} ====================${env}========================`)
-
-    return b;
-    //  return combiner
 })
 
 gulp.task('copy-html', function () {
@@ -222,7 +277,7 @@ gulp.task('release', ['compile'], function () {
 })
 gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
-gulp.task('default', ['install', 'compile', 'start'])
+gulp.task('default', ['install', 'start', 'compile'])
 
 gulp.task('stop', function () {
     browserSync.exit()
@@ -230,7 +285,9 @@ gulp.task('stop', function () {
 
 var dir = process.cwd()
 function readBuildTime() {
-    fs.readFile(dir + "/src/js/build.js", function (e, data) {
+    var f = `${dir}/${paths.jsDest}/build.js`
+    console.log(f)
+    fs.readFile(f, function (e, data) {
         if (e) {
             util.log(e)
             cwd = process.cwd()
@@ -272,7 +329,7 @@ gulp.task('android-run', ['setup'], function () {
 })
 
 gulp.task('android', ['setup'], function () {
-    gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 10000},
+    return gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 10000},
         batch({timeout: 1000}, function (events, cb) {
             events
                 .on('data', util.log)
@@ -345,40 +402,6 @@ function showBuildTime() {
 function dateLog(s) {
     util.log(`${s}`)
 }
-gulp.task('start', [], function () {
-    // Fire up a web server.
-    browserSync.init({
-        server: {
-            baseDir: paths.dest,
-            online: true
-        }
-    })
-
-    // Watch main files and reload browser.
-
-    // Watch changes
-
-    gulp.watch(paths.cssSrc + '/**/*.scss', ['compile-css'])
-    gulp.watch([paths.jsSrc + '/**/*.js*', paths.jsSrc + '/**/*.jsx'], ['compile-js'])
-    //gulp.watch(paths.jsComponent + '/**/*', ['application-js'])
-    gulp.watch(paths.htmlSrc + '/**/*.jade', ['copy-html'])
-    gulp.watch(paths.htmlSrc + '/**/*.html', ['copy-html'])
-    gulp.watch(paths.dataSrc + '/**/*', ['copy-data'])
-
-    gulp.watch(paths.root + '/src_old/**/*', ['old'])
-
-    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*'],
-        {ignoreInitial: true}).on('change',
-        batch({timeout: 1000}, function (events, cb) {
-            events
-                .on('data', util.log)
-                .on('end', browserSync.reload)
-                .on('end', showBuildTime)
-                .on('end', cb)
-        })
-    )
-
-})
 
 gulp.task('rerun', function () {
     return run('gulp ' + this.currentTask.name).exec()  // prints "[echo] Hello World\n".
@@ -386,22 +409,21 @@ gulp.task('rerun', function () {
         ;
 })
 gulp.task('install', [], function () {
-    var SRC = "package.json"
 
-    gulp.src(SRC)
+    return gulp.src(SRC)
         .pipe(diff())
         .pipe(install())
 
-    gulp.watch(SRC, ['install'])
 })
 
 gulp.task('setup', ['install'], function () {
     SRC = "cordova.json"
-    gulp.src(SRC)
+    return gulp.src(SRC)
         .pipe(diff())
         .pipe(cordovaCmd([{cwd: 'cordova'}]))
 })
 
+//----------------------------------------------------------------------------------------------------------------------
 gulp.task('pix-resize', function () {
     var andRes = 'cordova/res/android/'
     var andScreenRes = 'cordova/res/screen/android/'

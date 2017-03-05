@@ -15,7 +15,7 @@ import {
     DatePicker,
 } from 'redux-form-material-ui'
 import style from '../layout/style'
-import doLogin from '../handler/actions'
+import * as action from '../handler/actions'
 
 class Login extends React.Component {
 
@@ -34,14 +34,12 @@ class Login extends React.Component {
         </div>
     )
 
-    Username = () => (
-        <div style={style.root}>
-            <TextField
-                hintText="Username Field"
-                floatingLabelText="Username"
-                type="text"
-            /><br />
-        </div>
+    Username = ({ input, label, meta: { touched, error }, ...custom }) => (
+        <TextField
+            hintText="Username Field"
+            floatingLabelText="Username"
+            type="text"
+        />
     )
 
     SubmitButton = () => (
@@ -103,28 +101,24 @@ const data = {name: "WozzaTest"}
 Login.propTypes = {
     ...propTypes,
     onSubmit: PropTypes.func.isRequired
-
-}
-var t = {
-    type: 'LOGIN',
-    payload: {data: data}
-}
-
-function fun1(data) {
-    return t
 }
 
 var LoginContainer = connect(
+
     (state) => {
+
+
         return {
             initialValues: state.login,
-            login: state.login
         }
     },
     (dispatch) => {
         return {
-            load: () => (data) => dispatch(fun1(data)),
-            onSubmit: () => (data) => dispatch(fun1(data))
+            load: () => (...args) => dispatch(fun1(args)),
+            onSubmit: () => (...args) => dispatch({
+                type: 'LOGIN',
+                payload: args
+            })
         }
     }
 )(
