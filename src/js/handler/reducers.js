@@ -20,14 +20,20 @@ import {debug2, debugJSON} from '../service/misc'
 
 const form = formReducer.plugin({
     form: (state, action) => {
- //       console.log("1",JSON.stringify(action) + " " + JSON.stringify(state))
-
+        //every form
     },
-    LoginForm: (state, action) => {   // <----- 'login' is name of form given to reduxForm()
+    LoginForm: (state, action) => {
         //console.log("2"+JSON.stringify(action)+ " " + JSON.stringify(state))
         switch (action.type) {
+            case `FBLOGIN`:
+                try {
+                    ngScope().fb.loginFB(null)
+                } catch (e) {
+                    debug2(e.message)
+                }
+                break;
             case `LOGIN`:
-                alert(JSON.stringify(state))
+                ngScope().client.login('wozza', '123')
                 return {
                     ...state,
                     values: {
@@ -45,25 +51,49 @@ const form = formReducer.plugin({
     }
 })
 
-const login = (state = {}, action) => {
-    switch (action.type) {
-        default:
-            return state;
-    }
-}
-
 const debug = (state = {}, action) => {
-    debug2("reduce: " + String(action.type) + " " + JSON.stringify(action.payload))
-    debug2(JSON.stringify(state))
+    try {
+        debug2("action: " + String(action.type))
+    } catch (e) {
+        debug2(e.message)
+    }
+    try {
+        debug2("payload: " + JSON.stringify(action.payload))
+    } catch (e) {
+        debug2(e.message)
+        oo(action.payload)
+
+    }
+
+    try {
+        debug2("state: " + JSON.stringify(state))
+    } catch (e) {
+        debug2(e.message)
+    }
 
     return state;
 }
+var seen = {}
+function oo(o) {
+    for (var p in o) {
+        if (seen[p] == true) {
+            //debug2(`seen ${p}`)
+            continue
+        } else {
+            seen[p] = true
+            try {
+                debug2("payload p: " + p + " " + JSON.stringify(o[p]))
+            } catch (e) {
+                oo(o[p])
+            }
+        }
 
+    }
+}
 const groups = (state = [{id: 0}], action) => {
     switch (action.type) {
         case action.JOIN_GROUP:
             alert('join the group')
-            ngScope().client.login('wozza', '123')
 
         default:
 
@@ -103,6 +133,5 @@ const todaysRides = (state = {}, action) => {
 
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
 export default function MyReducer() {
-    return combineReducers({form})//, debug, todaysRides, groups, login})
-
+    return combineReducers({debug, form})//, debug, todaysRides, groups, login})
 }

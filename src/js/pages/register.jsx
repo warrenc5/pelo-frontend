@@ -21,17 +21,17 @@ import {
     materialSelectField
 } from './material.jsx'
 
-class Login extends React.Component {
+class Register extends React.Component {
 
     constructor(props) {
         super(props)
         this.props = props
     }
 
-    LoginForm = (props) => {
+    RegisterForm = (props) => {
         const { handleSubmit, fbConnect, pristine, reset, submitting } = props
         return (
-            <div id="login">
+            <div class="login" id="login">
                 <p id="error">
                     <b>Welcome to the Riders app.</b>
                 </p>
@@ -71,13 +71,11 @@ class Login extends React.Component {
     }
 }
 
-const data = {name: "WozzaTest"}
-
-Login.propTypes = {
+Register.propTypes = {
     ...propTypes
 }
 
-var LoginContainer = connect(
+var RegisterContainer = connect(
     (state) => {
         return {
             initialValues: state.login,
@@ -85,26 +83,22 @@ var LoginContainer = connect(
     },
     (dispatch) => {
         return {
-            fbConnect: () => (...args) => dispatch({
-                type: `FBLOGIN`,
-                payload: args
-            }),
             onSubmit: () => (...args) => dispatch({
-                type: `LOGIN`,
+                type: `REGISTER`,
                 payload: args
             })
         }
     }
 )(
     reduxForm({
-        form: 'LoginForm',
+        form: 'RegisterForm',
         validate: function (values) {
             console.log('validate')
         },
         warn: function (values) {
             console.log('warn')
         }
-    })(Login))
+    })(Register))
 
 
-export default LoginContainer
+export default RegisterContainer
