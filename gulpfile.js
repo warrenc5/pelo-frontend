@@ -37,6 +37,7 @@ var install = require("gulp-install")
 var cordova = require("cordova-lib").cordova
 var cordovaCmd = require("gulp-cordova")
 
+
 var diff = require('gulp-diff-build')
 
 var source = require('vinyl-source-stream');
@@ -50,7 +51,8 @@ const env = require('get-env')({
     staging: 'staging',
     test: ['test', 'testing']
 });
-var SRC = "package.json"
+var packageConfig = "package.json"
+var cordovaConfig = "cordova.json"
 //paths
 var paths = new (function () {
     this.root = '.'
@@ -117,7 +119,8 @@ gulp.task('start', [], function () {
         })
     )
 
-    gulp.watch(SRC, ['install'])
+    gulp.watch(packageConfig, ['install'])
+    gulp.watch(cordovaConfig, {verbose: true, ignoreInitial: false}, ['setup'])
 })
 
 /*
@@ -144,11 +147,12 @@ gulp.task('build-time', function () {
 
 function createBuildTime() {
     buildTime = moment().format('MMMM Do YYYY, h:mm:ss a')
-    console.log(buildTime)
+    console.log(`stamping build ${buildTime}`)
     var str = 'export const buildTime = \"' + buildTime + '\"'
 
     return file('build.js', str, {src: true})
         .pipe(gulp.dest(paths.jsSrc))
+        .pipe(gulp.dest(paths.jsDest))
 }
 
 gulp.task('auto', function () {
@@ -163,12 +167,13 @@ gulp.task('auto', function () {
             p.kill();
         }
 
-        p = spawn('gulp', ['default'], {stdio: 'inherit'});
+        //TODO relaunch the original gulp task
+        //p = spawn('gulp', ['default'], {stdio: 'inherit'});
+        p = spawn('gulp', ['setup'], {stdio: 'inherit'});
     }
 });
 
 gulp.task('compile-css', function () {
-
     gulp.src(paths.cssSrc + "/*.scss")
         .pipe(plumber())
         .pipe(diff())
@@ -184,7 +189,7 @@ gulp.task('compile-css', function () {
 
 gulp.task('compile-js', ['build-time'], function () {
     createBuildTime()
-    return gulp.watch([`!${paths.jsSrc}/**/build.js`, paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx'], {ignoreInitial: false})
+    return gulp.watch([`${paths.jsSrc}/**/build.js`, paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx'], {ignoreInitial: false})
         .on('change', batch({timeout: 2500}, function (events, done) {
             events
                 .on('data', util.log)
@@ -277,7 +282,7 @@ gulp.task('release', ['compile'], function () {
 })
 gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
-gulp.task('default', ['install', 'start', 'compile'])
+gulp.task('default', ['setup', 'install', 'start', 'compile'])
 
 gulp.task('stop', function () {
     browserSync.exit()
@@ -286,7 +291,7 @@ gulp.task('stop', function () {
 var dir = process.cwd()
 function readBuildTime() {
     var f = `${dir}/${paths.jsDest}/build.js`
-    console.log(f)
+    //console.log(f)
     fs.readFile(f, function (e, data) {
         if (e) {
             util.log(e)
@@ -328,12 +333,12 @@ gulp.task('android-run', ['setup'], function () {
     cordova_run()
 })
 
-gulp.task('android', ['setup'], function () {
+gulp.task('android', ['setup'], function (done) {
     return gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 10000},
-        batch({timeout: 1000}, function (events, cb) {
+        batch({timeout: 1000}, function (events, doneBatch) {
             events
                 .on('data', util.log)
-                .on('end', cb)
+                .on('end', doneBatch)
                 .on('end', cordova_run)
         }))
     cordova_serve()
@@ -376,24 +381,28 @@ function cordova_build() {
 }
 function cordova_run() {
 
-    process.chdir(dir + "/cordova")
-    cwd = process.cwd()
-    util.log('running ' + cwd)
-    cordova.run({
-        "verbose": true,
-        "platforms": ["android"],
-        "options": {
-            argv: ["--debug"] //"--gradleArg=--no-daemon"]
-        }
-    }, function (e) {
-        if (e) {
-            util.log('install result:' + e)
-        } else {
+    try {
+        process.chdir(dir + "/cordova")
+        cwd = process.cwd()
+        util.log('running ' + cwd)
+        cordova.run({
+            "verbose": true,
+            "platforms": ["android"],
+            "options": {
+                argv: ["--debug"] //"--gradleArg=--no-daemon"]
+            }
+        }, function (e) {
+            if (e) {
+                util.log('install result:' + e)
+            } else {
 
-        }
-        readBuildTime()
-        process.chdir(dir)
-    })
+            }
+            readBuildTime()
+            process.chdir(dir)
+        })
+    } catch (e) {
+        util.log(e.message + " " + e)
+    }
 }
 function showBuildTime() {
     util.log(buildTime)
@@ -403,25 +412,27 @@ function dateLog(s) {
     util.log(`${s}`)
 }
 
+//TODO use this somehow with auto to rerun the current task
 gulp.task('rerun', function () {
     return run('gulp ' + this.currentTask.name).exec()  // prints "[echo] Hello World\n".
         .pipe(gulp.dest('output'))           // writes "Hello World\n" to output/echo.
-        ;
 })
 gulp.task('install', [], function () {
-
-    return gulp.src(SRC)
+    return gulp.src(packageConfig)
         .pipe(diff())
         .pipe(install())
 
 })
 
-gulp.task('setup', ['install'], function () {
-    SRC = "cordova.json"
-    return gulp.src(SRC)
-        .pipe(diff())
-        .pipe(cordovaCmd([{cwd: 'cordova'}]))
-})
+gulp.task('setup', ['install'], (done)=> {
+        return gulp.src(cordovaConfig)
+            .pipe(diff())
+            .on('error', () => {
+                this.emit('end')
+            })
+            .pipe(cordovaCmd(undefined, {verbose: true, cwd: 'cordova'}))
+    }
+)
 
 //----------------------------------------------------------------------------------------------------------------------
 gulp.task('pix-resize', function () {

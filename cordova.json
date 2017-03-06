@@ -1,18 +1,18 @@
 {
-        "cordova": [
-                [
-                        "platform",
-                "add",
-                "ios",
-                "android",
-                "browser"
-                ],
-                [
-                        "plugin",
-                "add",
-                "org.apache.cordova.device",
-                "org.apache.cordova.geolocation",
-                "org.apache.cordova.console"
-                ]
-        ]
+  "cordova": [
+    [
+      "platform",
+      "add",
+      "android"
+
+    ],
+    [
+      "plugin",
+      "add",
+      "org.apache.cordova.device",
+      "org.apache.cordova.geolocation",
+      "org.apache.cordova.console"
+    ]
+  ]
 }
+   

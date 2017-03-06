@@ -43,9 +43,11 @@
 
     <preference name="cdvBuildArch" value="x86"/>
     <preference name="cdvBuildMultipleApks" value="false"/>
-    <preference name="android-minSdkVersion" value="16"/>
+    <preference name="android-minSdkVersion" value="18"/>
 
+    <!--
     <preference name="tools:overrideLibrary" value="org.xwalk.core"/>
+    -->
     <!-- http://cordova.apache.org/docs/en/4.0.0/config_ref_images.md.html -->
     <!--
     <hook type="before_build" src="scripts/gulp_default.js" />
