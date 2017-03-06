@@ -103,6 +103,7 @@ peloApp.controller("main", function ($scope, platform, fb) {
 
     $scope.state = {}
 
+    $scope.fb = fb
     $scope.init = function () {
 
         if ($scope.inited)
