@@ -119,7 +119,7 @@ gulp.task('start', [], function () {
         })
     )
 
-    gulp.watch(packageConfig, ['install'])
+    gulp.watch(packageConfig, {verbose: true, ignoreInitial: false},['install'])
     gulp.watch(cordovaConfig, {verbose: true, ignoreInitial: false}, ['setup'])
 })
 
@@ -169,7 +169,7 @@ gulp.task('auto', function () {
 
         //TODO relaunch the original gulp task
         //p = spawn('gulp', ['default'], {stdio: 'inherit'});
-        p = spawn('gulp', ['setup'], {stdio: 'inherit'});
+        p = spawn('gulp', ['default'], {stdio: 'inherit'});
     }
 });
 
@@ -189,7 +189,7 @@ gulp.task('compile-css', function () {
 
 gulp.task('compile-js', ['build-time'], function () {
     createBuildTime()
-    return gulp.watch([`${paths.jsSrc}/**/build.js`, paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx'], {ignoreInitial: false})
+    return gulp.watch([`!${paths.jsSrc}/**/build.js`, paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx'], {ignoreInitial: false})
         .on('change', batch({timeout: 2500}, function (events, done) {
             events
                 .on('data', util.log)
@@ -329,7 +329,7 @@ gulp.task('clean-dist', [], function () {
     return del([paths.dest + '/**/*'])
 })
 
-gulp.task('android-run', ['setup'], function () {
+gulp.task('android-run', ['setup','compile'], function () {
     cordova_run()
 })
 
@@ -379,6 +379,7 @@ function cordova_build() {
         })
     }
 }
+
 function cordova_run() {
 
     try {
