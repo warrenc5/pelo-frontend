@@ -24,18 +24,12 @@ import {
 
 const validate = (values, dispatch) => {
     if (!['wozza'].includes(values.username)) {
-        //throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
+        throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
     } else {
         dispatch({
             type: `LOGIN`,
             payload: values
         })
-    }
-}
-
-const asyncValidate = (values/*, dispatch */) => {
-    if (!['wozza'].includes(values.username)) {
-        throw {username: 'That username is taken'}
     }
 }
 
@@ -123,11 +117,16 @@ var LoginContainer = connect(
 )(
     reduxForm({
         form: 'LoginForm',
-        warn: function (values) {
-            console.log('warn')
-        },
-        validate,
-        asyncValidate,
+        asyncValidate: (values/*, dispatch */) => new Promise((resolve,reject)=> {
+            console.log('promise')
+            //doSomething
+            resolve(true)
+        }).then(()=> {
+            console.log("v: " + values.username)
+            if (!values.username.startsWith('wozza')) {
+                throw {username: 'That username is taken'}
+            }
+        }),
         asyncBlurFields: ['username']
     })(Login))
 
