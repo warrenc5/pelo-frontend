@@ -288,9 +288,9 @@ gulp.task('stop', function () {
     browserSync.exit()
 })
 
-var dir = process.cwd()
+var baseDir = process.cwd()
 function readBuildTime() {
-    var f = `${dir}/${paths.jsDest}/build.js`
+    var f = `${baseDir}/${paths.jsDest}/build.js`
     //console.log(f)
     fs.readFile(f, function (e, data) {
         if (e) {
@@ -304,7 +304,7 @@ function readBuildTime() {
 }
 
 gulp.task('run', [], function () {
-    process.chdir(dir + "/cordova")
+    process.chdir(baseDir + "/cordova")
     cwd = process.cwd()
     util.log('building ' + cwd)
     cordova.run({
@@ -318,7 +318,7 @@ gulp.task('run', [], function () {
             util.log('build result:' + e)
         }
         util.log('run ' + buildTime)
-        process.chdir(dir)
+        process.chdir(baseDir)
     })
 })
 
@@ -329,42 +329,41 @@ gulp.task('clean-dist', [], function () {
     return del([paths.dest + '/**/*'])
 })
 
-gulp.task('android-run', ['setup', 'compile'], function () {
-    cordova_run()
+gulp.task('android-run', ['setup', 'compile'], function (done) {
+    cordova_run(done)
 })
 
 gulp.task('android', ['setup'], function (done) {
     cordova_serve()
-    done
     return gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 10000},
         batch({timeout: 1000}, function (events, doneBatch) {
             events
                 .on('data', util.log)
-                .on('end', doneBatch)
-                .on('end', cordova_refresh)
-                .on('end', cordova_run)
+                .on('end', cordova_run(doneBatch))
         }))
 })
 //https://github.com/apache/cordova-lib/blob/master/cordova-lib/src/cordova/util.js#L294
 function cordova_serve() {
 
-    process.chdir(`${dir}/cordova/platforms/android/assets/www/`)
+    process.chdir(`${baseDir}/cordova/platforms/android/assets/www/`)
+    
     cwd = process.cwd()
     util.log('serving cordova on port 8000')
     cordova.serve({
         "verbose": true
     }, function (e) {
         if (e) {
-            util.log('build result:' + e)
+            util.log('cordova error build result:' + e)
         }
     })
 
-    cordova_refesh();
 
-    process.chdir(dir)
+    process.chdir(baseDir)
+
+    cordova_refresh()
 }
 
-function cordova_refesh(){
+function cordova_refresh(){
     var options = {
         uri: 'http://localhost:8000/',
         app: 'google-chrome'
@@ -374,9 +373,9 @@ function cordova_refesh(){
         .pipe(open(options))
 }
 
-function cordova_build() {
+function cordova_build(done) {
     {
-        process.chdir(dir + "/cordova")
+        process.chdir(baseDir + "/cordova")
         cwd = process.cwd()
         util.log('building ' + cwd)
         cordova.build({
@@ -387,19 +386,22 @@ function cordova_build() {
             }
         }, function (e) {
             if (e) {
-                util.log('build result:' + e)
+                util.log('cordova build result:' + e)
             } else {
-                cordova_run
+                //cordova_run
+                util.log('cordova build finshed')
+                cordova_refresh()
+                done
             }
-            process.chdir(dir)
+            process.chdir(baseDir)
         })
     }
 }
 
-function cordova_run() {
+function cordova_run(done) {
 
     try {
-        process.chdir(dir + "/cordova")
+        process.chdir(baseDir + "/cordova")
         cwd = process.cwd()
         util.log('running ' + cwd)
         cordova.run({
@@ -410,12 +412,14 @@ function cordova_run() {
             }
         }, function (e) {
             if (e) {
-                util.log('install result:' + e)
+                util.log('cordova run result:' + e)
             } else {
-
+                util.log('cordova run finshed')
+                cordova_refresh()
             }
+            done
             readBuildTime()
-            process.chdir(dir)
+            process.chdir(baseDir)
         })
     } catch (e) {
         util.log(e.message + " " + e)

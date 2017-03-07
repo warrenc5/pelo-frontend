@@ -23,7 +23,6 @@ import {
 } from './material.jsx'
 
 class Login extends React.Component {
-
     constructor(props) {
         super(props)
         this.props = props
@@ -44,8 +43,9 @@ class Login extends React.Component {
         return (
             <div id="login">
                 <p id="error">
-                    <b>Welcome to the Riders app.</b>
+                    <b>Welcome to the Riders App9.</b>
                 </p>
+
                 <Field component={materialButton} onClick={fbConnect()} label="Login with facebook" />
                 <p class="dark">Or login locally</p>
 
