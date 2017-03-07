@@ -29,8 +29,18 @@ class Login extends React.Component {
         this.props = props
     }
 
+    submitter(values) {
+        if (!['john', 'paul', 'george', 'ringo'].includes(values.username)) {
+            throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
+        } else if (values.password !== 'redux-form') {
+            throw new SubmissionError({password: 'Wrong password', _error: 'Login failed!'})
+        } else {
+            window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`)
+        }
+    }
+
     LoginForm = (props) => {
-        const { handleSubmit, fbConnect, pristine, reset, submitting } = props
+        const { handleSubmit, fbConnect, pristine, reset, submitting , touched,submitter    } = props
         return (
             <div id="login">
                 <p id="error">
@@ -39,7 +49,8 @@ class Login extends React.Component {
                 <Field component={materialButton} onClick={fbConnect()} label="Login with facebook" />
                 <p class="dark">Or login locally</p>
 
-                <form onSubmit={handleSubmit()}>
+                {touched && error && <span>{error}</span>}
+                <form onSubmit={handleSubmit(submitter)}>
                     <table align="center">
                         <tr>
                             <div style={style.root}>
@@ -54,7 +65,7 @@ class Login extends React.Component {
                         </tr>
                     </table>
                     <div>
-                        <Field label="LOGIN" type="submit" component={materialButton}/>
+                        <Field label="LOGIN" type="submit" component={materialButton} disabled={submitting}/>
                     </div>
                 </form>
             </div>
@@ -73,15 +84,6 @@ class Login extends React.Component {
 
     // const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-    submit(values) {
-        if (!['john', 'paul', 'george', 'ringo'].includes(values.username)) {
-            throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
-        } else if (values.password !== 'redux-form') {
-            throw new SubmissionError({password: 'Wrong password', _error: 'Login failed!'})
-        } else {
-            window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`)
-        }
-    }
 }
 
 Login.propTypes = {

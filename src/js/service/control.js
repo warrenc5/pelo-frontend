@@ -113,8 +113,8 @@ peloApp.controller("main", function ($scope, platform, fb) {
 
         platform.configure()
 
-
         platform.cordovaOnly(function () {
+
             try {
                 navigator.splashscreen.hide()
             } catch (e) {
@@ -180,6 +180,8 @@ peloApp.factory('platform', function ($rootScope) {
 
     function configurePlatform() {
         p = platform()
+        
+        debug2(`platform detected ${p}`)
 
         if (p == 'Dev') {
             $rootScope.peloBaseUrl = "http://localhost/pelo/rest/view/"

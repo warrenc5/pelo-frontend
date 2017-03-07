@@ -27,7 +27,7 @@ var jade = require('jade')
 var uglify = require('gulp-uglify');
 var combiner = require('stream-combiner2');
 var spawn = require('child_process').spawn;
-
+var open = require('gulp-open');
 //react
 var browserify = require('browserify')
 //var reactify = require('reactify')
@@ -119,7 +119,7 @@ gulp.task('start', [], function () {
         })
     )
 
-    gulp.watch(packageConfig, {verbose: true, ignoreInitial: false},['install'])
+    gulp.watch(packageConfig, {verbose: true, ignoreInitial: false}, ['install'])
     gulp.watch(cordovaConfig, {verbose: true, ignoreInitial: false}, ['setup'])
 })
 
@@ -169,7 +169,7 @@ gulp.task('auto', function () {
 
         //TODO relaunch the original gulp task
         //p = spawn('gulp', ['default'], {stdio: 'inherit'});
-        p = spawn('gulp', ['default'], {stdio: 'inherit'});
+        p = spawn('gulp', ['android'], {stdio: 'inherit'});
     }
 });
 
@@ -329,7 +329,7 @@ gulp.task('clean-dist', [], function () {
     return del([paths.dest + '/**/*'])
 })
 
-gulp.task('android-run', ['setup','compile'], function () {
+gulp.task('android-run', ['setup', 'compile'], function () {
     cordova_run()
 })
 
@@ -341,12 +341,14 @@ gulp.task('android', ['setup'], function (done) {
             events
                 .on('data', util.log)
                 .on('end', doneBatch)
+                .on('end', cordova_refresh)
                 .on('end', cordova_run)
         }))
 })
 //https://github.com/apache/cordova-lib/blob/master/cordova-lib/src/cordova/util.js#L294
 function cordova_serve() {
-    process.chdir(`${dir}/cordova`)
+
+    process.chdir(`${dir}/cordova/platforms/android/assets/www/`)
     cwd = process.cwd()
     util.log('serving cordova on port 8000')
     cordova.serve({
@@ -356,7 +358,20 @@ function cordova_serve() {
             util.log('build result:' + e)
         }
     })
+
+    cordova_refesh();
+
     process.chdir(dir)
+}
+
+function cordova_refesh(){
+    var options = {
+        uri: 'http://localhost:8000/',
+        app: 'google-chrome'
+    }
+
+    gulp.src(__filename)
+        .pipe(open(options))
 }
 
 function cordova_build() {
