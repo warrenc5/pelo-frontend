@@ -1,16 +1,18 @@
+
 export default class MyClient {
 
-    constructor() {
+    constructor(ajax) {
+        this.ajax = ajax
     }
 
-    login(ajax, username, password, resumeLoginSuccess, resumeLoginFailure) {
-        ajax.call("auth", "login/" + username,
+    login(username, password, resumeLoginSuccess, resumeLoginFailure) {
+        this.ajax.call("auth", "login/" + username,
             resumeLoginSuccess, resumeLoginFailure,
             "POST", JSON.stringify({password: password}))
     }
 
     checkRidersLocations(rideId, success, failure) {
-        ajax("rideLoctions" + rideId, "last-known-location/" + rideId + "?since=" + new Date((new Date().getTime() - 1000 * 60 * 60 * 24 * 15)).toISOString(), success, failure, "GET")
+        this.ajax("rideLoctions" + rideId, "last-known-location/" + rideId + "?since=" + new Date((new Date().getTime() - 1000 * 60 * 60 * 24 * 15)).toISOString(), success, failure, "GET")
     }
 
     updateUserLocation(userId, rideId, pos, success, failure) {

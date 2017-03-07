@@ -65,7 +65,7 @@ class Login extends React.Component {
                         <tr>
                             <td>
                                 <div style={style.root}>
-                                    <Field name="password" component={materialTextField} label="Pasword"/>
+                                    <Field name="password" type="password" component={materialTextField} label="Pasword"/>
                                 </div>
                             </td>
                         </tr>
@@ -103,7 +103,7 @@ Login.propTypes = {
 var LoginContainer = connect(
     (state) => {
         return {
-            initialValues: state.login,
+            initialValues: {username: 'wozza',password:'password'}
         }
     },
     (dispatch) => {

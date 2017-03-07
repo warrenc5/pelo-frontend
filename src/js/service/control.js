@@ -7,6 +7,7 @@ import * as buildTime from '../build'
 import * as globals from './init'
 import storage from './storage'
 import MyClient from './client'
+import MyAjax from './ajax'
 
 import {App} from '../App.jsx'
 
@@ -95,11 +96,10 @@ local.bindEvents()
 
 var peloApp = angular.module('peloApp', ['ng', 'react'])
 
-peloApp.controller("main", function ($scope, platform, fb) {
+peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
     local.banner()
 
     $scope.inited = false
-    $scope.client = new MyClient()
 
     $scope.state = {}
 
@@ -114,7 +114,6 @@ peloApp.controller("main", function ($scope, platform, fb) {
         platform.configure()
 
         platform.cordovaOnly(function () {
-
             try {
                 navigator.splashscreen.hide()
             } catch (e) {
@@ -123,19 +122,13 @@ peloApp.controller("main", function ($scope, platform, fb) {
 
         platform.cordovaOnly(function () {
             try {
-                fb.loginFB('wozza.xing@gmail.com')
-            } catch (e) {
-                debug2(e)
-            }
-        });
-
-        platform.cordovaOnly(function () {
-            try {
                 showMap()
             } catch (e) {
                 debug2(e)
             }
         });
+
+        $scope.client = new MyClient(new MyAjax(platform.baseUrl))
     }
 
     $scope.initializeStorage = function initializeStorage() {
@@ -182,13 +175,16 @@ peloApp.factory('platform', function ($rootScope) {
         p = platform()
         
         debug2(`platform detected ${p}`)
+        //TODO remove
+        this.baseUrl = "http://localhost/pelo/rest/view/"
 
         if (p == 'Dev') {
-            $rootScope.peloBaseUrl = "http://localhost/pelo/rest/view/"
+            this.baseUrl = "http://localhost/pelo/rest/view/"
         }
 
         cordovaOnly(function () {
-            $rootScope.peloBaseUrl = "http://10.0.0.69/pelo/rest/view/"
+            this.baseUrl = "http://10.0.0.69/pelo/rest/view/"
+            //this.baseUrl = "http://dev.testpelo1.cc/pelo/rest/view/"
         })
     }
 
@@ -210,6 +206,7 @@ peloApp.factory('platform', function ($rootScope) {
 
     function platform() {
 
+        //FIXME
         var platforms = new Array("Android", "BlackBerry", "iOS", "webOS", "WinCE", "Tizen")
 
         if (typeof(device) === 'undefined') {

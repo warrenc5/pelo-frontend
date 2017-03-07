@@ -33,8 +33,10 @@ const form = formReducer.plugin({
                 }
                 break;
             case `LOGIN`:
-                alert('login')
-                ngScope().client.login('wozza', '123')
+                ngScope().client.login(action.payload.username, action.payload.password, (name,data)=> {
+                    debugJSON(`${name}` + JSON.stringify(data))
+                }, ()=> {
+                })
                 return {
                     ...state,
                     values: {

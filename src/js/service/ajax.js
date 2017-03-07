@@ -1,13 +1,14 @@
 import {debug2} from './misc'
 import storage from './storage'
 
-export class MyAjax {
+export default class MyAjax {
 
     constructor(baseUrl) {
+        debug2(`ajax using ${baseUrl}`)
         this.baseUrl = baseUrl
     }
 
-    remote(name, url, success, failure, method, data) {
+    call(name, url, success, failure, method, data) {
         var storageApply = this.storageApply
         var xhttp
 

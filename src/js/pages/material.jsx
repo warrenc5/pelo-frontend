@@ -20,6 +20,7 @@ export const materialTextField = ({ input, label, type, meta: { asyncValidating,
         <TextField hintText={label}
                    floatingLabelText={label}
                    errorText={touched && error}
+                   type={type}
             {...input}
             {...custom}
         />
