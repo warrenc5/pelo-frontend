@@ -33,7 +33,7 @@ class Register extends React.Component {
         return (
             <div class="login" id="login">
                 <p id="error">
-                    <b>Welcome to the Riders app.</b>
+                    <b>Welcome to the Riders application.</b>
                 </p>
                 <button onClick={fbConnect()}>Login with facebook</button>
                 <p class="dark">Or login locally</p>
@@ -42,13 +42,23 @@ class Register extends React.Component {
                     <table align="center">
                         <tr>
                             <div style={style.root}>
-                                <Field name="name" component={materialTextField} label="Username or Email"/>
+                                <Field name="First Name" component={materialTextField} label="First Name"/>
                             </div>
 
                         </tr>
                         <tr>
                             <div style={style.root}>
-                                <Field name="password" component={materialTextField} label="Pasword"/>
+                                <Field name="Last Name" component={materialTextField} label="Last Name"/>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div style={style.root}>
+                                <Field name="Email" component={materialTextField} label="Email"/>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div style={style.root}>
+                                <Field name="Password" type="password" component={materialTextField} label="Password"/>
                             </div>
                         </tr>
                     </table>
