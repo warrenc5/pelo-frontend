@@ -334,6 +334,8 @@ gulp.task('android-run', ['setup','compile'], function () {
 })
 
 gulp.task('android', ['setup'], function (done) {
+    cordova_serve()
+    done
     return gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 10000},
         batch({timeout: 1000}, function (events, doneBatch) {
             events
@@ -341,7 +343,6 @@ gulp.task('android', ['setup'], function (done) {
                 .on('end', doneBatch)
                 .on('end', cordova_run)
         }))
-    cordova_serve()
 })
 //https://github.com/apache/cordova-lib/blob/master/cordova-lib/src/cordova/util.js#L294
 function cordova_serve() {

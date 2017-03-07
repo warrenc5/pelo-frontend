@@ -11,6 +11,7 @@ import RidesContainer from './pages/rides.jsx'
 import SettingsContainer from './pages/settings.jsx'
 import LoginContainer from './pages/login.jsx'
 import BikeComponent from './pages/bike.jsx'
+import RegisterContainer from './pages/register.jsx'
 import About from './pages/about.jsx'
 
 let onUpdate = () => {
@@ -24,6 +25,7 @@ let onUpdate = () => {
  *
  * Currently all the Links are in component/navigation.js
  **/
+
 export default class RouterPath extends React.Component {
 
     constructor(props, context) {
@@ -40,6 +42,7 @@ export default class RouterPath extends React.Component {
                             <Route path="/bike-component" component={BikeComponent} pageTitle={this.props.DB_VERSION}/>
                             <Route path="/bike-component/:componentType" component={BikeComponent} pageTitle="{:componentType}"/>
                             <Route path="/login" component={LoginContainer} pageTitle="{:componentType}"/>
+                            <Route path="/register" component={RegisterContainer} pageTitle="{:componentType}"/>
                             <Route path="/rides" component={RidesContainer} pageTitle="{:componentType}"/>
                             <Route path="/groups" component={GroupsContainer} pageTitle="{:componentType}"/>
                             <Route path="/messages" component={MessagesContainer} pageTitle="{:componentType}"/>
