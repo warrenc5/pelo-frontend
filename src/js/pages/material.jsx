@@ -10,8 +10,8 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import React, { PropTypes } from 'react'
 
 
-export const materialButton =({ label }) => (
-    <FlatButton label={label}/>
+export const materialButton = ({ label , onClick}, ...custom) => (
+    <FlatButton label={label} onClick={onClick} {...custom}/>
 )
 
 export const materialTextField = ({ input, label, meta: { touched, error }, ...custom }) => (

@@ -9,6 +9,7 @@ import {
     Toggle,
     DatePicker,
 } from 'redux-form-material-ui'
+import { SubmissionError } from 'redux-form'
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
@@ -35,14 +36,14 @@ class Login extends React.Component {
                 <p id="error">
                     <b>Welcome to the Riders app.</b>
                 </p>
-                <button onClick={fbConnect()}>Login with facebook</button>
+                <Field component={materialButton} onClick={fbConnect()} label="Login with facebook" />
                 <p class="dark">Or login locally</p>
 
                 <form onSubmit={handleSubmit()}>
                     <table align="center">
                         <tr>
                             <div style={style.root}>
-                                <Field name="name" component={materialTextField} label="Username or Email"/>
+                                <Field name="username" component={materialTextField} label="Username or Email"/>
                             </div>
 
                         </tr>
@@ -53,7 +54,7 @@ class Login extends React.Component {
                         </tr>
                     </table>
                     <div>
-                        <button type="submit" component={materialButton}>Submit</button>
+                        <Field label="LOGIN" type="submit" component={materialButton}/>
                     </div>
                 </form>
             </div>
@@ -69,9 +70,19 @@ class Login extends React.Component {
     submitValidation(values) {
         alert('submit validation')
     }
-}
 
-const data = {name: "WozzaTest"}
+    // const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+    submit(values) {
+        if (!['john', 'paul', 'george', 'ringo'].includes(values.username)) {
+            throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
+        } else if (values.password !== 'redux-form') {
+            throw new SubmissionError({password: 'Wrong password', _error: 'Login failed!'})
+        } else {
+            window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`)
+        }
+    }
+}
 
 Login.propTypes = {
     ...propTypes
