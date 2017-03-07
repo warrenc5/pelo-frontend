@@ -339,7 +339,7 @@ gulp.task('android', ['setup'], function (done) {
         batch({timeout: 1000}, function (events, doneBatch) {
             events
                 .on('data', util.log)
-                .on('end', cordova_run(doneBatch))
+                .on('end', cordova_build(doneBatch))
         }))
 })
 //https://github.com/apache/cordova-lib/blob/master/cordova-lib/src/cordova/util.js#L294
@@ -357,16 +357,15 @@ function cordova_serve() {
         }
     })
 
-
     process.chdir(baseDir)
-
     cordova_refresh()
 }
 
 function cordova_refresh(){
     var options = {
-        uri: 'http://localhost:8000/',
-        app: 'google-chrome'
+        uri: 'http://localhost:8000',
+        app: 'google-chrome' //Just 'chrome' on Microsoft
+
     }
 
     gulp.src(__filename)
@@ -388,7 +387,6 @@ function cordova_build(done) {
             if (e) {
                 util.log('cordova build result:' + e)
             } else {
-                //cordova_run
                 util.log('cordova build finshed')
                 cordova_refresh()
                 done
