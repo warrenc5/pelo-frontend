@@ -22,51 +22,71 @@ import {
     materialSelectField
 } from './material.jsx'
 
+const validate = (values, dispatch) => {
+    if (!['wozza'].includes(values.username)) {
+        //throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
+    } else {
+        dispatch({
+            type: `LOGIN`,
+            payload: values
+        })
+    }
+}
+
+const asyncValidate = (values/*, dispatch */) => {
+    if (!['wozza'].includes(values.username)) {
+        throw {username: 'That username is taken'}
+    }
+}
+
 class Login extends React.Component {
     constructor(props) {
         super(props)
         this.props = props
     }
 
-    submitter(values) {
-        if (!['john', 'paul', 'george', 'ringo'].includes(values.username)) {
-            throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
-        } else if (values.password !== 'redux-form') {
-            throw new SubmissionError({password: 'Wrong password', _error: 'Login failed!'})
-        } else {
-            window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`)
-        }
-    }
-
     LoginForm = (props) => {
-        const { handleSubmit, fbConnect, pristine, reset, submitting , touched,submitter    } = props
+        const { handleSubmit, fbConnect, pristine, error, reset, submitting, touched , asyncValidating} = props
         return (
             <div id="login">
                 <p id="error">
                     <b>Welcome to the Riders App9.</b>
                 </p>
 
-                <Field component={materialButton} onClick={fbConnect()} label="Login with facebook" />
-                <p class="dark">Or login locally</p>
+                <Field name="loginFB" component={materialButton} onClick={fbConnect()} label="Login with facebook"/>
+                <p>Or login locally</p>
 
-                {touched && error && <span>{error}</span>}
-                <form onSubmit={handleSubmit(submitter)}>
-                    <table align="center">
+                {touched && error && <span>Any Error: {error}</span>}
+                <form>
+                    <table>
+                        <tbody>
                         <tr>
-                            <div style={style.root}>
-                                <Field name="username" component={materialTextField} label="Username or Email"/>
-                            </div>
-
+                            <td>
+                                <div style={style.root}>
+                                    <Field name="username" component={materialTextField} label="Username or Email"
+                                           asyncValidating={asyncValidating}/>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
-                            <div style={style.root}>
-                                <Field name="password" component={materialTextField} label="Pasword"/>
-                            </div>
+                            <td>
+                                <div style={style.root}>
+                                    <Field name="password" component={materialTextField} label="Pasword"/>
+                                </div>
+                            </td>
                         </tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <Field name="login" label="LOGIN" type="button"
+                                           onClick={this.props.handleSubmit(validate)}
+                                           component={materialButton} disabled={pristine || submitting}/>
+                                </div>
+                            </td>
+                        </tr>
+
+                        </tbody>
                     </table>
-                    <div>
-                        <Field label="LOGIN" type="submit" component={materialButton} disabled={submitting}/>
-                    </div>
                 </form>
             </div>
         )
@@ -76,10 +96,6 @@ class Login extends React.Component {
         return (
             <div>{this.LoginForm(this.props)}</div>
         )
-    }
-
-    submitValidation(values) {
-        alert('submit validation')
     }
 
     // const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -101,22 +117,18 @@ var LoginContainer = connect(
             fbConnect: () => (...args) => dispatch({
                 type: `FBLOGIN`,
                 payload: args
-            }),
-            onSubmit: () => (...args) => dispatch({
-                type: `LOGIN`,
-                payload: args
             })
         }
     }
 )(
     reduxForm({
         form: 'LoginForm',
-        validate: function (values) {
-            console.log('validate')
-        },
         warn: function (values) {
             console.log('warn')
-        }
+        },
+        validate,
+        asyncValidate,
+        asyncBlurFields: ['username']
     })(Login))
 
 

@@ -9,18 +9,21 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 
 import React, { PropTypes } from 'react'
 
+//http://redux-form.com/6.1.0/examples/material-ui/
 
-export const materialButton = ({ label , onClick}, ...custom) => (
-    <FlatButton label={label} onClick={onClick} {...custom}/>
+export const materialButton = ({ label , onClick }, ...custom) => (
+    <FlatButton label={label} onClick={onClick} />
 )
 
-export const materialTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-    <TextField hintText={label}
-               floatingLabelText={label}
-               errorText={touched && error}
-        {...input}
-        {...custom}
-    />
+export const materialTextField = ({ input, label, type, meta: { asyncValidating, touched, error } }, ...custom) => (
+    <div className={asyncValidating ? 'async-validating' : ''}>
+        <TextField hintText={label}
+                   floatingLabelText={label}
+                   errorText={touched && error}
+            {...input}
+            {...custom}
+        />
+    </div>
 )
 
 export const materialCheckbox = ({ input, label }) => (

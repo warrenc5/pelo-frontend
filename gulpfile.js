@@ -342,6 +342,7 @@ gulp.task('android', ['setup'], function (done) {
                 .on('end', cordova_build(doneBatch))
         }))
 })
+
 //https://github.com/apache/cordova-lib/blob/master/cordova-lib/src/cordova/util.js#L294
 function cordova_serve() {
 
