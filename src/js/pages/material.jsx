@@ -12,7 +12,7 @@ import React, { PropTypes } from 'react'
 //http://redux-form.com/6.1.0/examples/material-ui/
 
 export const materialButton = ({ label , onClick }, ...custom) => (
-    <FlatButton label={label} onClick={onClick} />
+    <FlatButton label={label} onClick={onClick}/>
 )
 
 export const materialTextField = ({ input, label, type, meta: { asyncValidating, touched, error } }, ...custom) => (

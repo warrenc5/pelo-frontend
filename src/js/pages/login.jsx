@@ -13,6 +13,7 @@ import { SubmissionError } from 'redux-form'
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
+import keydown from 'react-keydown'
 
 import {
     materialButton,
@@ -22,18 +23,11 @@ import {
     materialSelectField
 } from './material.jsx'
 
-const validate = (values, dispatch) => {
-    if (!['wozza'].includes(values.username)) {
-        throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
-    } else {
-        dispatch({
-            type: `LOGIN`,
-            payload: values
-        })
-    }
-}
+import submit from "redux-form-submit"
+
 
 class Login extends React.Component {
+
     constructor(props) {
         super(props)
         this.props = props
@@ -51,34 +45,45 @@ class Login extends React.Component {
                 <p>Or login locally</p>
 
                 {touched && error && <span>Any Error: {error}</span>}
-                <form>
+
+                <form onSubmit={handleSubmit(validate)}>
                     <table>
                         <tbody>
                         <tr>
                             <td>
                                 <div style={style.root}>
-                                    <Field name="username" component={materialTextField} label="Username or Email"
-                                           asyncValidating={asyncValidating}/>
+                                    <Field name="username"
+                                           component={materialTextField}
+                                           label="Username or Email"
+                                           asyncValidating={asyncValidating}
+                                    />
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <div style={style.root}>
-                                    <Field name="password" type="password" component={materialTextField} label="Pasword"/>
+                                    <Field name="password"
+                                           type="password"
+                                           component={materialTextField}
+                                           label="Pasword"
+                                    />
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <div>
-                                    <Field name="login" label="LOGIN" type="button"
+                                    <Field name="login"
+                                           label="LOGIN"
+                                           type="submit"
                                            onClick={this.props.handleSubmit(validate)}
-                                           component={materialButton} disabled={pristine || submitting}/>
+                                           component={materialButton}
+                                           disabled={pristine || submitting}
+                                    />
                                 </div>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
                 </form>
@@ -92,18 +97,38 @@ class Login extends React.Component {
         )
     }
 
-    // const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+    /*
+    @keydown('enter')
+    manualSubmit(event) {
+        console.log('hello')
+        dispatch(submit({
+            form: 'LoginForm',
+            onSubmit
+        }))
+    }
+    */
+}
 
+const validate = (values, dispatch) => {
+    if (!['wozza'].includes(values.username)) {
+        throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
+    } else {
+        dispatch({
+            type: `LOGIN`,
+            payload: values
+        })
+    }
 }
 
 Login.propTypes = {
     ...propTypes
 }
 
+
 var LoginContainer = connect(
     (state) => {
         return {
-            initialValues: {username: 'wozza',password:'password'}
+            initialValues: {username: 'wozza', password: 'password'}
         }
     },
     (dispatch) => {
@@ -117,12 +142,11 @@ var LoginContainer = connect(
 )(
     reduxForm({
         form: 'LoginForm',
-        asyncValidate: (values/*, dispatch */) => new Promise((resolve,reject)=> {
+        asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
             console.log('promise')
             //doSomething
             resolve(true)
-        }).then(()=> {
-            console.log("v: " + values.username)
+        }).then((b)=> {
             if (!values.username.startsWith('wozza')) {
                 throw {username: 'That username is taken'}
             }

@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import reduxConnectedPropTypes from 'redux-connected-proptypes';
+//import reduxConnectedPropTypes from 'redux-connected-proptypes';
 
 import style from '../layout/style'
 import * as action from '../handler/actions'

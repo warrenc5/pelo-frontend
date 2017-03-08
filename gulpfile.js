@@ -36,8 +36,7 @@ var src = require('vinyl-source-stream') // text stream for gulp
 var install = require("gulp-install")
 var cordova = require("cordova-lib").cordova
 var cordovaCmd = require("gulp-cordova")
-
-
+var cordovaServer = require('cordova-serve');
 var diff = require('gulp-diff-build')
 
 var source = require('vinyl-source-stream');
@@ -140,6 +139,7 @@ gulp.task('start', [], function () {
  */
 
 var buildTime = moment().format('MMMM Do YYYY, h:mm:ss a')
+var buildTimeFile = 'build.js'
 
 gulp.task('build-time', function () {
     createBuildTime()
@@ -150,26 +150,32 @@ function createBuildTime() {
     console.log(`stamping build ${buildTime}`)
     var str = 'export const buildTime = \"' + buildTime + '\"'
 
-    return file('build.js', str, {src: true})
+    return file(buildTimeFile, str, {src: true})
         .pipe(gulp.dest(paths.jsSrc))
         .pipe(gulp.dest(paths.jsDest))
 }
 
+
+var args = process.argv
 gulp.task('auto', function () {
     var p;
 
     gulp.watch('gulpfile.js', spawnChildren)
-    spawnChildren();
 
     function spawnChildren(e) {
-        util.log('gulp changed, reloading')
+        util.log('gulp changed, reloading ' + JSON.stringify(args))
+
+        gulp.start('stop')
+
         if (p) {
             p.kill();
         }
 
         //TODO relaunch the original gulp task
         //p = spawn('gulp', ['default'], {stdio: 'inherit'});
-        p = spawn('gulp', ['android'], {stdio: 'inherit'});
+        p = spawn(args[0],args.splice(1), {stdio: 'inherit'});
+
+
     }
 });
 
@@ -189,7 +195,7 @@ gulp.task('compile-css', function () {
 
 gulp.task('compile-js', ['build-time'], function () {
     createBuildTime()
-    return gulp.watch([`!${paths.jsSrc}/**/build.js`, paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx'], {ignoreInitial: false})
+    return gulp.watch([`!${paths.jsSrc}/**/${buildTimeFile}`, paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx'], {ignoreInitial: false})
         .on('change', batch({timeout: 2500}, function (events, done) {
             events
                 .on('data', util.log)
@@ -220,6 +226,7 @@ gulp.task('compile-js', ['build-time'], function () {
                                 b.emit('end')
                             }
                         )
+
                         //var combined = combiner.obj([b])
                         .pipe(source('bundle.js'))
                         .pipe(buffer())
@@ -266,6 +273,7 @@ gulp.task('copy-data', function () {
         .pipe(gulp.dest(paths.dataDest))
 })
 
+
 gulp.task('copy-images', [], function () {
     return gulp.src(paths.imgSrc + '/**/*')
         .pipe(diff())
@@ -282,15 +290,17 @@ gulp.task('release', ['compile'], function () {
 })
 gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
-gulp.task('default', ['setup', 'install', 'start', 'compile'])
+gulp.task('default', ['setup', 'install', 'auto', 'start', 'compile'])
+
 
 gulp.task('stop', function () {
+
     browserSync.exit()
 })
 
 var baseDir = process.cwd()
 function readBuildTime() {
-    var f = `${baseDir}/${paths.jsDest}/build.js`
+    var f = `${baseDir}/${paths.jsDest}/${buildTimeFile}`
     //console.log(f)
     fs.readFile(f, function (e, data) {
         if (e) {
@@ -326,43 +336,53 @@ gulp.task('clean-dist', [], function () {
     cwd = process.cwd()
     util.log(`deleting ${cwd}/${paths.dest}`)
 
+    del([`${baseDir}/.gulp/gulp-diff-build`])
     return del([paths.dest + '/**/*'])
 })
 
-gulp.task('android-run', ['setup', 'compile'], function (done) {
-    cordova_run(done)
+gulp.task('android-run', ['setup'], function (done) {
+    gulp.start('cordova_run')
 })
 
-gulp.task('android', ['setup'], function (done) {
-    cordova_serve()
-    return gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 10000},
-        batch({timeout: 1000}, function (events, doneBatch) {
+gulp.task('android', ['setup', 'auto'], function (done) {
+    return gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 5000},
+        batch({timeout: 2000}, function (events, doneBatch) {
             events
                 .on('data', util.log)
-                .on('end', cordova_build(doneBatch))
+                .on('end', gulp.start('cordova_run'))
         }))
 })
 
 //https://github.com/apache/cordova-lib/blob/master/cordova-lib/src/cordova/util.js#L294
-function cordova_serve() {
+gulp.task('cordova_serve', ['auto'], function (done) {
 
-    process.chdir(`${baseDir}/cordova/platforms/android/assets/www/`)
-    
-    cwd = process.cwd()
-    util.log('serving cordova on port 8000')
-    cordova.serve({
-        "verbose": true
+    //process.chdir(`${baseDir}/cordova/platforms/android/assets/www/`)
+    process.chdir(`${baseDir}/cordova`)
+
+    return cordova.serve({
+        verbose: true,
+        cwd: 'cordova',
     }, function (e) {
         if (e) {
             util.log('cordova error build result:' + e)
+        } else {
+            util.log('serving cordova on port 8000')
+            cordovaServer.launchBrowser(opts);
+            // cordova_refresh()
         }
+
+        process.chdir(baseDir)
     })
 
-    process.chdir(baseDir)
-    cordova_refresh()
-}
+    /*
+     var opts = {}
+     var platform = "android"
+     cordovaServer.launchServer(opts);
+     cordovaServer.servePlatform(platform, opts);
+     */
+})
 
-function cordova_refresh(){
+function cordova_refresh() {
     var options = {
         uri: 'http://localhost:8000',
         app: 'google-chrome' //Just 'chrome' on Microsoft
@@ -389,7 +409,7 @@ function cordova_build(done) {
                 util.log('cordova build result:' + e)
             } else {
                 util.log('cordova build finshed')
-                cordova_refresh()
+                //cordova_refresh()
                 done
             }
             process.chdir(baseDir)
@@ -397,13 +417,13 @@ function cordova_build(done) {
     }
 }
 
-function cordova_run(done) {
+gulp.task('cordova_run', function (done) {
 
     try {
         process.chdir(baseDir + "/cordova")
         cwd = process.cwd()
-        util.log('running ' + cwd)
-        cordova.run({
+        util.log('running cordova' + cwd)
+        return cordova.run({
             "verbose": true,
             "platforms": ["android"],
             "options": {
@@ -414,7 +434,7 @@ function cordova_run(done) {
                 util.log('cordova run result:' + e)
             } else {
                 util.log('cordova run finshed')
-                cordova_refresh()
+                //cordova_refresh()
             }
             done
             readBuildTime()
@@ -423,7 +443,7 @@ function cordova_run(done) {
     } catch (e) {
         util.log(e.message + " " + e)
     }
-}
+})
 function showBuildTime() {
     util.log(buildTime)
 }
@@ -455,11 +475,12 @@ gulp.task('setup', ['install'], (done)=> {
 )
 
 //----------------------------------------------------------------------------------------------------------------------
-gulp.task('pix-resize', function () {
+gulp.task('pix-resize', function (done) {
     var andRes = 'cordova/res/android/'
     var andScreenRes = 'cordova/res/screen/android/'
 
     gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
         .pipe(rename("ldpi.png"))
         .pipe(imageResize({
             imageMagick: true,
@@ -473,6 +494,7 @@ gulp.task('pix-resize', function () {
     })
 
     gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
         .pipe(rename("mdpi.png"))
         .pipe(imageResize({
             imageMagick: true,
@@ -484,6 +506,7 @@ gulp.task('pix-resize', function () {
         .pipe(gulp.dest(andRes))
 
     gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
         .pipe(rename("hdpi.png"))
         .pipe(imageResize({
             imageMagick: true,
@@ -495,6 +518,7 @@ gulp.task('pix-resize', function () {
         .pipe(gulp.dest(andRes))
 
     gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
         .pipe(rename("xhdpi.png"))
         .pipe(imageResize({
             imageMagick: true,
@@ -506,6 +530,7 @@ gulp.task('pix-resize', function () {
         .pipe(gulp.dest(andRes))
 
     gulp.src(paths.imgSrc + '/splash-land.png')
+        .pipe(diff())
         .pipe(rename("splash-land-hdpi.png"))
         .pipe(imageResize({
             imageMagick: true,
@@ -515,6 +540,7 @@ gulp.task('pix-resize', function () {
         .pipe(gulp.dest(andScreenRes))
 
     gulp.src(paths.imgSrc + '/splash-land.png')
+        .pipe(diff())
         .pipe(rename("splash-land-ldpi.png"))
         .pipe(imageResize({
             imageMagick: true,
@@ -524,6 +550,7 @@ gulp.task('pix-resize', function () {
         .pipe(gulp.dest(andScreenRes))
 
     gulp.src(paths.imgSrc + '/splash-land.png')
+        .pipe(diff())
         .pipe(rename("splash-land-mdpi.png"))
         .pipe(imageResize({
             imageMagick: true,
@@ -533,6 +560,7 @@ gulp.task('pix-resize', function () {
         .pipe(gulp.dest(andScreenRes))
 
     gulp.src(paths.imgSrc + '/splash-land.png')
+        .pipe(diff())
         .pipe(rename("splash-land-xhdpi.png"))
         .pipe(imageResize({
             imageMagick: true,
@@ -542,6 +570,7 @@ gulp.task('pix-resize', function () {
         .pipe(gulp.dest(andScreenRes))
 
     gulp.src(paths.imgSrc + '/splash-port.png')
+        .pipe(diff())
         .pipe(rename("splash-port-hdpi.png"))
         .pipe(imageResize({
             imageMagick: true,
@@ -551,6 +580,7 @@ gulp.task('pix-resize', function () {
         .pipe(gulp.dest(andScreenRes))
 
     gulp.src(paths.imgSrc + '/splash-port.png')
+        .pipe(diff())
         .pipe(rename("splash-port-ldpi.png"))
         .pipe(imageResize({
             imageMagick: true,
@@ -560,6 +590,7 @@ gulp.task('pix-resize', function () {
         .pipe(gulp.dest(andScreenRes))
 
     gulp.src(paths.imgSrc + '/splash-port.png')
+        .pipe(diff())
         .pipe(rename("splash-port-mdpi.png"))
         .pipe(imageResize({
             imageMagick: true,
@@ -569,6 +600,7 @@ gulp.task('pix-resize', function () {
         .pipe(gulp.dest(andScreenRes))
 
     gulp.src(paths.imgSrc + '/splash-port.png')
+        .pipe(diff())
         .pipe(rename("splash-port-xhdpi.png"))
         .pipe(imageResize({
             imageMagick: true,

@@ -173,7 +173,7 @@ peloApp.factory('platform', function ($rootScope) {
 
     function configurePlatform() {
         p = platform()
-        
+
         debug2(`platform detected ${p}`)
         //TODO remove
         this.baseUrl = "http://localhost/pelo/rest/view/"
@@ -182,10 +182,14 @@ peloApp.factory('platform', function ($rootScope) {
             this.baseUrl = "http://localhost/pelo/rest/view/"
         }
 
-        cordovaOnly(function () {
-            this.baseUrl = "http://10.0.0.69/pelo/rest/view/"
+        this.baseUrl = "http://localhost:8085/pelo/rest/view/"
+
+        /**
+        cordovaOnly(() => {
+            this.baseUrl = production
             //this.baseUrl = "http://dev.testpelo1.cc/pelo/rest/view/"
         })
+        */
     }
 
     function cordovaOnly(func) {

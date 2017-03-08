@@ -37,6 +37,9 @@ const form = formReducer.plugin({
                     debugJSON(`${name}` + JSON.stringify(data))
                 }, ()=> {
                 })
+
+                return state
+                /*
                 return {
                     ...state,
                     values: {
@@ -47,7 +50,7 @@ const form = formReducer.plugin({
                         ...state.fields,
                         password: undefined // <----- clear field state, too (touched, etc.)
                     }
-                }
+                }*/
             default:
                 return state
         }
@@ -64,7 +67,7 @@ const debug = (state = {}, action) => {
         debug2("payload: " + JSON.stringify(action.payload))
     } catch (e) {
         debug2(e.message)
-        oo(action.payload)
+        //oo(action.payload)
 
     }
 
