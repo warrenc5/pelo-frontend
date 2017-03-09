@@ -32,24 +32,10 @@ const onSubmit = (values) => {
 }
 class Login extends React.Component {
 
-    static config = {
-        form: 'LoginForm',
-        onSubmit,
-        asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
-            console.log('promise')
-            //doSomething
-            resolve(true)
-        }).then((b)=> {
-            if (!values.username.startsWith('wozza')) {
-                throw {username: 'That username is taken'}
-            }
-        }),
-        asyncBlurFields: ['username']
-    }
-
     constructor(props) {
         super(props)
         this.props = props
+        this.config = Login.config
     }
 
     LoginForm = (props) => {
@@ -116,7 +102,6 @@ class Login extends React.Component {
         )
     }
 
-
     static propTypes = {
         ...propTypes
     }
@@ -124,8 +109,23 @@ class Login extends React.Component {
     @keydown('enter')
     doSubmit(event) {
         const { dispatch} = this.props
-        dispatch(submit(Login.config))
+        dispatch(submit(config))
     }
+}
+
+const config = {
+    form: 'LoginForm',
+    onSubmit,
+    asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
+        console.log('promise')
+        //doSomething
+        resolve(true)
+    }).then((b)=> {
+        if (!values.username.startsWith('wozza')) {
+            throw {username: 'That username is taken'}
+        }
+    }),
+    asyncBlurFields: ['username']
 }
 
 const validate = (values, dispatch) => {
@@ -146,7 +146,7 @@ const validate = (values, dispatch) => {
         }).catch((e)=> {
             dispatch({
                 type: `LOGIN_ERROR`,
-                payload: {error: 'there was some error ' +e.message }
+                payload: {error: 'there was some error ' + e.message}
             })
         })
     }
@@ -161,13 +161,27 @@ var LoginContainer = connect(
     },
     (dispatch) => {
         return {
-            fbConnect: () => (...args) => dispatch({
-                type: `FBLOGIN`,
-                payload: args
+            fbConnect: () => (event) => new Promise((resolve, reject)=> {
+
+                event.preventDefault
+
+                ngScope().fb.loginFB(null, (response)=> {
+                    resolve(response)
+                }, (e)=> {
+                    reject(e)
+                })
+            }).then((response)=> {
+                dispatch({
+                    type: `FBLOGIN`,
+                    payload: response
+                })
+            }).catch((e)=> {
+                dispatch({
+                    type: `FBLOGIN_ERROR`,
+                    payload: {error: e}
+                })
             })
         }
-    }
-)(
-    reduxForm(Login.config)(Login))
+    })(reduxForm(config)(Login))
 
 export default LoginContainer

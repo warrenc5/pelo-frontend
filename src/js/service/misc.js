@@ -85,5 +85,26 @@ export class MyWorkers {
     }
 }
 
+var seen = {}
+export function debug0(o) {
+    seen = {}
+    oo(o)
+}
+function oo(o) {
+    for (var p in o) {
+        if (seen[p] == true) {
+            //debug2(`seen ${p}`)
+            continue
+        } else {
+            seen[p] = true
+            try {
+                debug2("payload p: " + p + " " + JSON.stringify(o[p]))
+            } catch (e) {
+                oo(o[p])
+            }
+        }
+
+    }
+}
 const workers = new MyWorkers()
 exports.default = workers

@@ -38,7 +38,7 @@ var local = {
     onBodyLoad: function () {
         debug2('bodyload')
     },
-    banner: function() {
+    banner: function () {
         var now = moment().format('MMMM Do YYYY, h:mm:ss a');
         debug2("PELO APP " + JSON.stringify({
                 build: buildTime.buildTime,
@@ -185,11 +185,11 @@ peloApp.factory('platform', function ($rootScope) {
         this.baseUrl = "http://localhost:8085/pelo/rest/view/"
 
         /**
-        cordovaOnly(() => {
+         cordovaOnly(() => {
             this.baseUrl = production
             //this.baseUrl = "http://dev.testpelo1.cc/pelo/rest/view/"
         })
-        */
+         */
     }
 
     function cordovaOnly(func) {
@@ -246,7 +246,7 @@ peloApp.factory("fb", function () {
     var appId = "1697342230545684"
     var version = "2.5"
 
-    function loginFB(username) {
+    function loginFB(username, success, failure) {
 
         if (username == undefined) {
         }
@@ -255,6 +255,8 @@ peloApp.factory("fb", function () {
             facebookConnectPlugin.browserInit(appId, version)
         } catch (e) {
             debug2(e)
+            failure("fb plugin error " + e)
+            return
         }
 
         debug2('login to facebook')
@@ -265,11 +267,13 @@ peloApp.factory("fb", function () {
                         //login2(response.email, userData.accessToken)
                         debug2("success" + JSON.stringify(userData))
                         //response.name
-                        logoutFB()
+                        success(response)
+                        //logoutFB()
                     })
             },
             function (error) {
                 debug2('fb api error')
+                failure(error)
             })
     }
 

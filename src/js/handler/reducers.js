@@ -25,12 +25,9 @@ const form = formReducer.plugin({
         //console.log("2"+JSON.stringify(action)+ " " + JSON.stringify(state))
         switch (action.type) {
             case `FBLOGIN`:
-                try {
-                    ngScope().fb.loginFB(null)
-                } catch (e) {
-                    debug2(e.message)
-                }
-                break;
+                return state
+            case `FBLOGIN_ERROR`:
+                return {... state, error: action.payload.error}
             case `LOGIN`:
                 //console.log("2" + JSON.stringify(action) + " " + JSON.stringify(state))
                 return {
@@ -78,23 +75,6 @@ const debug = (state = {}, action) => {
     return state;
 }
 
-var seen = {}
-function oo(o) {
-    for (var p in o) {
-        if (seen[p] == true) {
-            //debug2(`seen ${p}`)
-            continue
-        } else {
-            seen[p] = true
-            try {
-                debug2("payload p: " + p + " " + JSON.stringify(o[p]))
-            } catch (e) {
-                oo(o[p])
-            }
-        }
-
-    }
-}
 const groups = (state = [{id: 0}], action) => {
     switch (action.type) {
         case action.JOIN_GROUP:
