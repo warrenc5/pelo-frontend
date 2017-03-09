@@ -255,26 +255,29 @@ peloApp.factory("fb", function () {
             facebookConnectPlugin.browserInit(appId, version)
         } catch (e) {
             debug2(e)
-            failure("fb plugin error " + e)
-            return
         }
 
         debug2('login to facebook')
-        facebookConnectPlugin.login(['email', 'public_profile'], function (userData) {
-                facebookConnectPlugin.api('/me?fields=email', null,
-                    function (response) {
-                        debug2("me: " + JSON.stringify(response))
-                        //login2(response.email, userData.accessToken)
-                        debug2("success" + JSON.stringify(userData))
-                        //response.name
-                        success(response)
-                        //logoutFB()
-                    })
-            },
-            function (error) {
-                debug2('fb api error')
-                failure(error)
-            })
+        try {
+            facebookConnectPlugin.login(['email', 'public_profile'], function (userData) {
+                    facebookConnectPlugin.api('/me?fields=email', null,
+                        function (response) {
+                            debug2("me: " + JSON.stringify(response))
+                            //login2(response.email, userData.accessToken)
+                            debug2("success" + JSON.stringify(userData))
+                            //response.name
+                            success(response)
+                            //logoutFB()
+                        })
+                },
+                function (error) {
+                    debug2('fb api error')
+                    failure("fb API error " + e)
+                })
+        } catch (e) {
+            failure("fb plugin error 2 " + e)
+        }
+
     }
 
     function logoutFB() {
