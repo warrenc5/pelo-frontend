@@ -20,6 +20,7 @@ export default class ContentLayout extends React.Component {
         console.log(this.props.routes[this.props.routes.length - 1])
         //console.log(this.props.location.pathname)
         //console.log(this.props.location)
+        //now: {moment().format()}
 
         return (
             <div>
@@ -32,7 +33,6 @@ export default class ContentLayout extends React.Component {
                     {this.props.children}
                 </div>
 
-                now: {moment.format()}
             </div>
         )
     }

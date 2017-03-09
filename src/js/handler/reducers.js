@@ -27,7 +27,9 @@ const form = formReducer.plugin({
             case `FBLOGIN`:
                 return state
             case `FBLOGIN_ERROR`:
-                return {... state, error: action.payload.error}
+                return {... state, error: action.payload.error,
+                    ok:true
+                }
             case `LOGIN`:
                 //console.log("2" + JSON.stringify(action) + " " + JSON.stringify(state))
                 return {
@@ -44,7 +46,7 @@ const form = formReducer.plugin({
                 }
             case `LOGIN_ERROR`:
                 return {
-                    ... state, error: action.payload.error
+                    ... state, error: action.payload.error,
                 }
             default:
                 return state

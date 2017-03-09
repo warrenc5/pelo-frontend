@@ -24,11 +24,12 @@ import {
 } from './material.jsx'
 
 import submit from "redux-form-submit"
-import {debug2, debugJSON} from '../service/misc'
+import {debug0,debug2, debugJSON} from '../service/misc'
 import ngScope from '../service/bridge'
+import { browserHistory } from 'react-router'
 
 const onSubmit = (values) => {
-    alert(values)
+    alert('values' + values)
 }
 class Login extends React.Component {
 
@@ -49,6 +50,7 @@ class Login extends React.Component {
                 <Field name="loginFB" component={materialButton} onClick={fbConnect()} label="Login with facebook"/>
                 <p>Or login locally</p>
 
+                {submitting && <span>Logging you in now.</span>}
                 {error && <span>Any Error: {error}</span>}
 
                 <form onSubmit={handleSubmit(validate)}>
@@ -96,6 +98,27 @@ class Login extends React.Component {
         )
     }
 
+    componentDidMount() {
+        const { submitting } = this.props
+        //this.props.params.userId -- this is from the router?
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.submitting) {
+            const { submitting } = nextProps
+        }
+        //FIXME - how to call with
+        const { ok } = nextProps
+        alert(ok)
+        if(ok) {
+            alert('OK')
+            const { router } = nextProps
+            router.push('/groups')
+        }
+        this.props.test()
+    }
+
     render() {
         return (
             <div>{this.LoginForm(this.props)}</div>
@@ -103,29 +126,36 @@ class Login extends React.Component {
     }
 
     static propTypes = {
+        ok: PropTypes.bool.isRequired,
+        test: PropTypes.func.isRequired,
         ...propTypes
     }
 
     @keydown('enter')
     doSubmit(event) {
         const { dispatch} = this.props
-        dispatch(submit(config))
+        dispatch(submit(Login.config))
     }
-}
 
-const config = {
-    form: 'LoginForm',
-    onSubmit,
-    asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
-        console.log('promise')
-        //doSomething
-        resolve(true)
-    }).then((b)=> {
-        if (!values.username.startsWith('wozza')) {
-            throw {username: 'That username is taken'}
+    static contextTypes:{
+        router: React.PropTypes.object
         }
-    }),
-    asyncBlurFields: ['username']
+
+    static config = {
+        form: 'LoginForm',
+        onSubmit,
+        asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
+            console.log('promise')
+            resolve(true)
+        }).then((b)=> {
+            //FIXME move up to the promise - use resolve and catch and reject
+            if (!values.username.startsWith('wozza')) {
+                throw {username: 'That username is taken'}
+            }
+        }).catch((e)=> {
+        }),
+        asyncBlurFields: ['username']
+    }
 }
 
 const validate = (values, dispatch) => {
@@ -143,6 +173,7 @@ const validate = (values, dispatch) => {
                 type: `LOGIN`,
                 payload: result
             })
+
         }).catch((e)=> {
             dispatch({
                 type: `LOGIN_ERROR`,
@@ -154,18 +185,27 @@ const validate = (values, dispatch) => {
 
 
 var LoginContainer = connect(
-    (state) => {
+    (state,props) => {
         return {
+            ok: false,
+            test: () => () => {
+                alert('hello' + props.ok)
+            },
             initialValues: {username: 'wozza', password: 'password'} //202
+            //initialValues: {username: 'wozza', password: 'password1'} //401
         }
     },
     (dispatch) => {
         return {
             fbConnect: () => (event) => new Promise((resolve, reject)=> {
 
+                //FIXME --event or event1?
                 event.preventDefault
 
-                ngScope().fb.loginFB(null, (response)=> {
+                //TODO how to preset users email?
+                var email = 'wozza@nowhere.com'
+                ngScope().fb.loginFB(email, (response)=> {
+
                     resolve(response)
                 }, (e)=> {
                     reject(e)
@@ -182,6 +222,6 @@ var LoginContainer = connect(
                 })
             })
         }
-    })(reduxForm(config)(Login))
+    })(reduxForm(Login.config)(Login))
 
 export default LoginContainer
