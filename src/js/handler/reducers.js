@@ -4,7 +4,6 @@ import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 
 import * as action from './actions'
-import ngScope from '../service/bridge'
 
 import {debug2, debugJSON} from '../service/misc'
 /**
@@ -33,24 +32,23 @@ const form = formReducer.plugin({
                 }
                 break;
             case `LOGIN`:
-                ngScope().client.login(action.payload.username, action.payload.password, (name,data)=> {
-                    debugJSON(`${name}` + JSON.stringify(data))
-                }, ()=> {
-                })
-
-                return state
-                /*
+                //console.log("2" + JSON.stringify(action) + " " + JSON.stringify(state))
                 return {
                     ...state,
                     values: {
                         ...state.values,
-                        password: undefined // <----- clear password value
+                        username: action.payload.id,
+                        password: undefined
                     },
                     fields: {
                         ...state.fields,
-                        password: undefined // <----- clear field state, too (touched, etc.)
+                        password: undefined
                     }
-                }*/
+                }
+            case `LOGIN_ERROR`:
+                return {
+                    ... state, error: action.payload.error
+                }
             default:
                 return state
         }
@@ -79,6 +77,7 @@ const debug = (state = {}, action) => {
 
     return state;
 }
+
 var seen = {}
 function oo(o) {
     for (var p in o) {

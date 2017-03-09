@@ -7,15 +7,16 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import $ from 'jquery'
 
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import {debug, debug2, debugJSON} from './service/misc'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+
 import RouterPath from './Router.jsx'
 
 import {createTestData}  from './TestData'
 import MyReducer from './handler/reducers'
 import {myTheme} from './layout/theme'
 import ngScope from './service/bridge'
-
+import {debug, debug2, debugJSON} from './service/misc'
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
  **/
@@ -35,13 +36,14 @@ class App extends React.Component {
         $.extend(this.props.state, createTestData());
         //debug2(JSON.stringify(this.props.state))
 
-        this.store = createStore(MyReducer(), this.props.state);
+        const middleware = [thunk]
+        this.store = createStore(MyReducer(), this.props.state, applyMiddleware(...middleware));
 
         /*
-        this.store.subscribe((state = [], dispatch) => {
-            debug2("sub " + JSON.stringify(state))
-        })
-        */
+         this.store.subscribe((state = [], dispatch) => {
+         debug2("sub " + JSON.stringify(state))
+         })
+         */
     }
 
     render() {

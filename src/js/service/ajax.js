@@ -44,20 +44,17 @@ export default class MyAjax {
                         case 200:
                         case 202:
                         case 204:
-
                             var data = storage.storeJSON(name, xhttp.responseText)
                             debug2(xhttp.getResponseHeader('Set-Cookie'))
 
                             if (data === undefined) {
                                 debug2("error:" + xhttp.responseText)
                             }
-
                             success(name, data)
-
                             break
                         case 0:
                         default:
-                            failure(name)
+                            failure({message: xhttp.status})
                     }
                     break
                 default:

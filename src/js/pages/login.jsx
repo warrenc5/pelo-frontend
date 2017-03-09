@@ -24,9 +24,28 @@ import {
 } from './material.jsx'
 
 import submit from "redux-form-submit"
+import {debug2, debugJSON} from '../service/misc'
+import ngScope from '../service/bridge'
 
-
+const onSubmit = (values) => {
+    alert(values)
+}
 class Login extends React.Component {
+
+    static config = {
+        form: 'LoginForm',
+        onSubmit,
+        asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
+            console.log('promise')
+            //doSomething
+            resolve(true)
+        }).then((b)=> {
+            if (!values.username.startsWith('wozza')) {
+                throw {username: 'That username is taken'}
+            }
+        }),
+        asyncBlurFields: ['username']
+    }
 
     constructor(props) {
         super(props)
@@ -44,7 +63,7 @@ class Login extends React.Component {
                 <Field name="loginFB" component={materialButton} onClick={fbConnect()} label="Login with facebook"/>
                 <p>Or login locally</p>
 
-                {touched && error && <span>Any Error: {error}</span>}
+                {error && <span>Any Error: {error}</span>}
 
                 <form onSubmit={handleSubmit(validate)}>
                     <table>
@@ -97,38 +116,47 @@ class Login extends React.Component {
         )
     }
 
-    /*
-    @keydown('enter')
-    manualSubmit(event) {
-        console.log('hello')
-        dispatch(submit({
-            form: 'LoginForm',
-            onSubmit
-        }))
+
+    static propTypes = {
+        ...propTypes
     }
-    */
+
+    @keydown('enter')
+    doSubmit(event) {
+        const { dispatch} = this.props
+        dispatch(submit(Login.config))
+    }
 }
 
 const validate = (values, dispatch) => {
     if (!['wozza'].includes(values.username)) {
         throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
     } else {
-        dispatch({
-            type: `LOGIN`,
-            payload: values
+        var p = new Promise((resolve, reject)=> {
+            ngScope().client.login(values.username, values.password, (name, data)=> {
+                resolve(data)
+            }, (e)=> {
+                reject(e)
+            })
+        }).then((result)=> {
+            dispatch({
+                type: `LOGIN`,
+                payload: result
+            })
+        }).catch((e)=> {
+            dispatch({
+                type: `LOGIN_ERROR`,
+                payload: {error: 'there was some error ' +e.message }
+            })
         })
     }
-}
-
-Login.propTypes = {
-    ...propTypes
 }
 
 
 var LoginContainer = connect(
     (state) => {
         return {
-            initialValues: {username: 'wozza', password: 'password'}
+            initialValues: {username: 'wozza', password: 'password'} //202
         }
     },
     (dispatch) => {
@@ -140,19 +168,6 @@ var LoginContainer = connect(
         }
     }
 )(
-    reduxForm({
-        form: 'LoginForm',
-        asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
-            console.log('promise')
-            //doSomething
-            resolve(true)
-        }).then((b)=> {
-            if (!values.username.startsWith('wozza')) {
-                throw {username: 'That username is taken'}
-            }
-        }),
-        asyncBlurFields: ['username']
-    })(Login))
-
+    reduxForm(Login.config)(Login))
 
 export default LoginContainer
