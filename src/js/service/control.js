@@ -41,7 +41,7 @@ var local = {
     banner: function () {
         var now = moment().format('MMMM Do YYYY, h:mm:ss a');
         debug2("PELO APP " + JSON.stringify({
-                build: buildTime.buildTime,
+                build: globals.buildTime,
                 run: now,
                 APP: globals.APP_VERSION,
                 DB: globals.DB_VERSION
@@ -101,8 +101,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
 
     $scope.inited = false
 
-    $scope.state = {}
-
+    $scope.state = {globals: globals}
     $scope.fb = fb
     $scope.init = function () {
 
@@ -139,9 +138,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
         } else {
             debug2("storage db incompatible with DB_VERSION. clearing storage")
             storage.clear()
-            storage.put("globals", globals)
         }
-
     }
 
     function loadStorageIntoScope() {

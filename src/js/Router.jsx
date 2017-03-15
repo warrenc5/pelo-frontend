@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-router'
+import { ReduxAsyncConnect, asyncConnect, reducer as reduxAsyncConnect } from 'redux-connect'
 
 import MainLayout from './layout/main.jsx'
 import ContentLayout from './layout/content.jsx'
@@ -32,15 +33,19 @@ export default class RouterPath extends React.Component {
         super(props, context)
     }
 
+//<Router history={hashHistory}>
+//<Router render={(props) => <ReduxAsyncConnect {...props} /> } history={browserHistory}>
+    //render={applyRouterMiddleware()}
     render() {
         return (
             <div>
-                <Router history={hashHistory}>
+                <Router render={(props) => <ReduxAsyncConnect {...props} /> } history={browserHistory}>
                     <Route path="/" component={MainLayout}>
                         <IndexRoute component={LoginContainer}/>
                         <Route component={ContentLayout}>
                             <Route path="/bike-component" component={BikeComponent} pageTitle={this.props.DB_VERSION}/>
-                            <Route path="/bike-component/:componentType" component={BikeComponent} pageTitle="{:componentType}"/>
+                            <Route path="/bike-component/:componentType" component={BikeComponent}
+                                   pageTitle="{:componentType}"/>
                             <Route path="/login" component={LoginContainer} pageTitle="{:componentType}"/>
                             <Route path="/register" component={RegisterContainer} pageTitle="{:componentType}"/>
                             <Route path="/rides" component={RidesContainer} pageTitle="{:componentType}"/>

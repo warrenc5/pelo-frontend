@@ -2,10 +2,10 @@ import 'angular'
 import $ from 'jquery'
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
-
+import { reducer as reduxAsyncConnect } from 'redux-connect'
 import * as action from './actions'
-
 import {debug2, debugJSON} from '../service/misc'
+
 /**
  *
  * Reducers are like event handlers which receive the action and then do something
@@ -22,13 +22,13 @@ const form = formReducer.plugin({
         //every form
     },
     LoginForm: (state, action) => {
-        //console.log("2"+JSON.stringify(action)+ " " + JSON.stringify(state))
         switch (action.type) {
             case `FBLOGIN`:
                 return state
             case `FBLOGIN_ERROR`:
-                return {... state, error: action.payload.error,
-                    ok:true
+                return {... state,
+                    ok: true,
+                    error: action.payload.error
                 }
             case `LOGIN`:
                 //console.log("2" + JSON.stringify(action) + " " + JSON.stringify(state))
@@ -42,11 +42,16 @@ const form = formReducer.plugin({
                     fields: {
                         ...state.fields,
                         password: undefined
-                    }
+                    },
                 }
             case `LOGIN_ERROR`:
                 return {
                     ... state, error: action.payload.error,
+                    values: {
+                        ...state.values,
+                        password: undefined
+                    },
+                    ok: true,
                 }
             default:
                 return state
@@ -65,7 +70,6 @@ const debug = (state = {}, action) => {
     } catch (e) {
         debug2(e.message)
         //oo(action.payload)
-
     }
 
     try {
@@ -120,5 +124,6 @@ const todaysRides = (state = {}, action) => {
 
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
 export default function MyReducer() {
-    return combineReducers({debug, form})//, debug, todaysRides, groups, login})
+    return combineReducers({debug, reduxAsyncConnect, form})//, debug, todaysRides, groups, login})
+    //return combineReducers({globals:debug, debug, form})//, debug, todaysRides, groups, login})
 }

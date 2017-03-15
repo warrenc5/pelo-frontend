@@ -1,7 +1,20 @@
-import React from 'react'
+import React, {Component, PropTypes } from 'react'
 import Working from '../component/working.jsx'
 import moment from 'moment'
-export default class ContentLayout extends React.Component {
+import {connect} from 'react-redux'
+
+const config = (
+    (state, props) => {
+        return {
+            buildTime: state.globals.buildTime
+        }
+    })
+
+function reduxConnect(config) {
+    return target => connect(config)(target)
+}
+@reduxConnect(config)
+export default class ContentLayout extends Component {
     constructor(props) {
         super(props)
         console.log('content constructed')
@@ -25,15 +38,18 @@ export default class ContentLayout extends React.Component {
         return (
             <div>
                 <h1>{this.getPageTitle()}</h1>
-
+                Content
                 <Working/>
                 <hr />
-
+                <span>build time {this.props.buildTime}</span>
                 <div>
                     {this.props.children}
                 </div>
-
             </div>
         )
     }
+}
+
+ContentLayout.propTypes = {
+    buildTime: PropTypes.string.isRequired,
 }

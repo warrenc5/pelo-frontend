@@ -1,7 +1,4 @@
 import React, {Component,PropTypes} from 'react'
-import RaisedButton from 'material-ui/RaisedButton'
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 //import injectTapEventPlugin from 'react-tap-event-plugin'
 import $ from 'jquery'
@@ -9,19 +6,16 @@ import $ from 'jquery'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
-
 import RouterPath from './Router.jsx'
-
 import {createTestData}  from './TestData'
 import MyReducer from './handler/reducers'
 import {myTheme} from './layout/theme'
 import ngScope from './service/bridge'
 import {debug, debug2, debugJSON} from './service/misc'
+
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
  **/
-
-
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 //injectTapEventPlugin()
@@ -37,7 +31,7 @@ class App extends React.Component {
         //debug2(JSON.stringify(this.props.state))
 
         const middleware = [thunk]
-        this.store = createStore(MyReducer(), this.props.state, applyMiddleware(...middleware));
+        this.store = createStore(MyReducer(), {...this.props.state, ok:false}, applyMiddleware(...middleware));
 
         /*
          this.store.subscribe((state = [], dispatch) => {
@@ -48,7 +42,7 @@ class App extends React.Component {
 
     render() {
         return <MuiThemeProvider muiTheme={myTheme}>
-            <Provider store={this.store}>
+            <Provider store={this.store} key="provider">
                 <RouterPath props={this.props}/>
             </Provider>
         </MuiThemeProvider>

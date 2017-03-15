@@ -150,8 +150,10 @@ function createBuildTime() {
     console.log(`stamping build ${buildTime}`)
     var str = 'export const buildTime = \"' + buildTime + '\"'
 
-    return file(buildTimeFile, str, {src: true})
+    file(buildTimeFile, str, {src: true})
         .pipe(gulp.dest(paths.jsSrc))
+
+    return file(buildTimeFile, str, {src: true})
         .pipe(gulp.dest(paths.jsDest))
 }
 
@@ -193,7 +195,8 @@ gulp.task('compile-css', function () {
     return true
 })
 
-gulp.task('compile-js', ['build-time'], function () {
+gulp.task('compile-js', [], function () {
+
     createBuildTime()
     return gulp.watch([`!${paths.jsSrc}/**/${buildTimeFile}`, paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx'], {ignoreInitial: false})
         .on('change', batch({timeout: 2500}, function (events, done) {
