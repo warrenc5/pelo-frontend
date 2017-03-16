@@ -101,7 +101,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
 
     $scope.inited = false
 
-    $scope.state = {globals: globals}
+    $scope.state = {globals: globals,ok:false}
     $scope.fb = fb
     $scope.init = function () {
 

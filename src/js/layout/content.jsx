@@ -2,17 +2,20 @@ import React, {Component, PropTypes } from 'react'
 import Working from '../component/working.jsx'
 import moment from 'moment'
 import {connect} from 'react-redux'
+import * as select from '../handler/selectors'
 
 const config = (
     (state, props) => {
         return {
             buildTime: state.globals.buildTime
+            //buildTime: select.buildTime
         }
     })
 
 function reduxConnect(config) {
     return target => connect(config)(target)
 }
+
 @reduxConnect(config)
 export default class ContentLayout extends Component {
     constructor(props) {

@@ -65,7 +65,7 @@ Groups.propTypes = {
 export const GroupsContainer = connect(
     (state, props) => {
         return {
-            total: select.mySelector(state,props),
+            total: 3,//select.mySelector(state,props),
             groups: state.groups,
             userId: state.login.id
         }

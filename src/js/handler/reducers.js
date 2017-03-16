@@ -3,6 +3,8 @@ import $ from 'jquery'
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 import { reducer as reduxAsyncConnect } from 'redux-connect'
+import { routerReducer, push } from 'react-router-redux'
+
 import * as action from './actions'
 import {debug2, debugJSON} from '../service/misc'
 
@@ -11,6 +13,8 @@ import {debug2, debugJSON} from '../service/misc'
  * Reducers are like event handlers which receive the action and then do something
  * and return the result of that something as a data structure
  * their names are important, they are the states member object name eg. const login = reducer for state.login
+ *
+ * Warning state will not be visible in the reduxProps config if there is not a reducer for it
  *
  * @param state
  * @param action
@@ -44,9 +48,10 @@ const form = formReducer.plugin({
                         password: undefined
                     },
                 }
+                //store.dispatch(push('/foo'))
             case `LOGIN_ERROR`:
                 return {
-                    ... state, error: action.payload.error,
+                    ... state, _error: action.payload.error,
                     values: {
                         ...state.values,
                         password: undefined
@@ -58,6 +63,10 @@ const form = formReducer.plugin({
         }
     }
 })
+
+const none = (state = {}, action) => {
+    return state
+}
 
 const debug = (state = {}, action) => {
     try {
@@ -124,6 +133,15 @@ const todaysRides = (state = {}, action) => {
 
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
 export default function MyReducer() {
-    return combineReducers({debug, reduxAsyncConnect, form})//, debug, todaysRides, groups, login})
+    return combineReducers({
+        debug,
+        globals:none,
+        groups,
+        auth:none,
+        login:none,
+        router: routerReducer,
+        reduxAsyncConnect,
+        form
+    })//, debug, todaysRides, groups, login})
     //return combineReducers({globals:debug, debug, form})//, debug, todaysRides, groups, login})
 }

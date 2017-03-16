@@ -2,6 +2,7 @@ import React, {Component,PropTypes} from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 //import injectTapEventPlugin from 'react-tap-event-plugin'
 import $ from 'jquery'
+import { routerMiddleware } from 'react-router-redux'
 
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
@@ -30,8 +31,9 @@ class App extends React.Component {
         $.extend(this.props.state, createTestData());
         //debug2(JSON.stringify(this.props.state))
 
-        const middleware = [thunk]
-        this.store = createStore(MyReducer(), {...this.props.state, ok:false}, applyMiddleware(...middleware));
+        const middle = [thunk,routerMiddleware(history)]
+
+        this.store = createStore(MyReducer(), this.props.state, applyMiddleware(...middle));
 
         /*
          this.store.subscribe((state = [], dispatch) => {

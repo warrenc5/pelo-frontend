@@ -29,12 +29,9 @@ import ngScope from '../service/bridge'
 import { asyncConnect as reduxAsyncConnect } from 'redux-connect'
 
 
-function myConnect(reduxPropsConfig, reduxDispatchConfig, reduxFormConfig) {
+function myConnect(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig, reduxFormConfig) {
     return target => reduxAsyncConnect(
-        [{
-            key: 'lunch',
-            promise: ({ params, helpers }) => Promise.resolve({id: 1, name: 'Borsch'})
-        }], reduxPropsConfig, reduxDispatchConfig)(reduxForm(reduxFormConfig)(target))
+        reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(reduxForm(reduxFormConfig)(target))
 }
 
 class Login extends Component {
@@ -66,7 +63,7 @@ class Login extends Component {
                 <span>OK?{ok?'Nigz':'Nups'}</span>
                 <p>Or login locally</p>
 
-                {submitting && <span>Logging you in now.</span>}
+                {submitting && <span>Logging you in now..</span>}
                 {error && <span>Any Error: {error}</span>}
 
                 <form onSubmit={handleSubmit(Login.validate)}>
@@ -116,30 +113,47 @@ class Login extends Component {
 
     componentDidMount() {
         debug2('component did mount')
+        this.context.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
 
-        const { submitting } = this.props
+        //this.transition()
+
+    }
+
+    routerWillLeave(nextLocation) {
+        // return false to prevent a transition w/o prompting the user,
+        // or return a string to allow the user to decide:
+        //if (!this.state.isSaved)
+            return 'Your work is not saved! Are you sure you want to leave?'
+    }
+    transition() {
+        const { submitFailed, submitSucceeded, router } = this.props
+
         //this.props.params.userId -- this is from the router?
-        const { hasSubmitFailed } = this.props
-
-        if (hasSubmitFailed) {
-            alert('OK')
-            const { router } = this.props
-            router.push('/groups')
+        if (submitSucceeded) {
+            console.log('push')
+            router.push('#/groups')
         }
-
 
     }
 
     componentWillReceiveProps(nextProps) {
         debug2('component will receive props')
+        try {
+            this.transition()
+        } catch (e) {
 
-        const { ok,submitting } = nextProps
-
-        if (ok) {
-            alert('OK')
-            const { router } = nextProps
-            router.push('/groups')
+            console.log(e.message)
         }
+
+        //this.
+        /*
+         if (hasSubmitFailed) {
+         //count 3 times ?? ban
+         alert('OK')
+         const { router } = this.props
+         router.push('/groups')
+         }
+         */
         //this.props.test()
     }
 
@@ -156,20 +170,29 @@ class Login extends Component {
         dispatch(submit(Login.reduxFormConfig))
     }
 
+    static willTransitionTo(transition, params, query, callback) {
+        console.log(`transit 2:  ${transition}`)
+    }
+
+    static willTransitionFrom(component, transition, params, query, callback) {
+        console.log(`transit:  ${transition}`)
+    }
+
     static contextTypes:{
         router: React.PropTypes.object
-        }
+    }
 
     static validate = (values, dispatch) => {
         if (!['wozza'].includes(values.username)) {
             throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
         } else {
-            var p = new Promise((resolve, reject)=> {
-                ngScope().client.login(values.username, values.password, (name, data)=> {
-                    resolve(data)
-                }, (e)=> {
-                    reject(e)
-                })
+            return new Promise((resolve, reject)=> {
+                resolve({})
+                /*ngScope().client.login(values.username, values.password, (name, data)=> {
+                 resolve(data)
+                 }, (e)=> {
+                 reject(e)
+                 })*/
             }).then((result)=> {
                 dispatch({
                     type: `LOGIN`,
@@ -180,6 +203,7 @@ class Login extends Component {
                     type: `LOGIN_ERROR`,
                     payload: {error: 'there was some error ' + e.message}
                 })
+                throw new SubmissionError({username: 'User sux', _error: 'Login failed!'})
             })
         }
     }
@@ -191,12 +215,15 @@ class Login extends Component {
         //test: PropTypes.func.isRequired,
         ...propTypes
     }
-
+    static reduxAsyncConfig = [{
+        key: 'lunch',
+        promise: ({ params, helpers }) => Promise.resolve({id: 1, name: 'Borsch'})
+    }]
     static reduxPropsConfig = (state, props) => ({
-        ok: props.ok,
+        ok: state.ok,
         test: () => () => {
-            this.props.ok = true
-            alert('hello' + props.ok)
+            //this.props.ok = true
+            //alert('hello' + props.ok)
         },
         initialValues: {
             username: 'wozza', password: 'password'
@@ -238,22 +265,23 @@ class Login extends Component {
         form: 'LoginForm',
         onSubmit: (values) => debug2('values' + JSON.stringify(values)),
         asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
-            //FIXME move up to the promise - use resolve and catch and reject
-            if (!values.username.startsWith('Riley')) {
+            const {username, password} = values
+            if (password == null || password.length == 0)
+                reject({password: 'put a password'})
+            else if (!values.username.startsWith('Riley')) {
                 resolve(true)
             } else {
                 reject({username: 'That username is taken'})
             }
-
         }).then((b)=> {
+            //all is well
         }).catch((e)=> {
             throw e
         }),
-        asyncBlurFields: ['username']
+        asyncBlurFields: ['username', 'password']
     }
 }
 
-
-@myConnect(Login.reduxPropsConfig, Login.reduxDispatchConfig, Login.reduxFormConfig)
+@myConnect(Login.reduxAsyncConfig, Login.reduxPropsConfig, Login.reduxDispatchConfig, Login.reduxFormConfig)
 export default class LoginContainer extends Login {
 }

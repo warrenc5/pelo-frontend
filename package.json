@@ -30,6 +30,7 @@
     "react-keydown": "^1.6.9",
     "react-redux": "^5.0.3",
     "react-router": "^3.0.2",
+    "react-router-redux": "^5.0.0-alpha.3",
     "react-tap-event-plugin": "https://registry.npmjs.org/react-tap-event-plugin/-/react-tap-event-plugin-1.0.0.tgz",
     "redux": "^3.6.0",
     "redux-connect": "^5.0.0",

@@ -6,8 +6,10 @@ import { createSelector } from 'reselect'
  * the first parameters for createSelector are selectors and the last parameter argument is the transformer - which takes each selector as a parameter
  *
  */
-export const mySelector = createSelector((state) => state.login.id, (result) => result * 2)
+export const buildTime = createSelector((state) => state.globals.buildTime, (result) => result)
 
+/*
+ export const mySelector = createSelector((state) => state.auth.id, (result) => result * 2)
 const shopItemsSelector = state => state.shop.items
 const taxPercentSelector = state => state.shop.taxPercent
 
@@ -41,3 +43,4 @@ let exampleState = {
 console.log(subtotalSelector(exampleState)) // 2.15
 console.log(taxSelector(exampleState))      // 0.172
 console.log(totalSelector(exampleState))    // { total: 2.322 }
+ */
