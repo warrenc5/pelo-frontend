@@ -113,7 +113,7 @@ class Login extends Component {
 
     componentDidMount() {
         debug2('component did mount')
-        this.context.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
+        //this.context.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
 
         //this.transition()
 
@@ -131,13 +131,15 @@ class Login extends Component {
         //this.props.params.userId -- this is from the router?
         if (submitSucceeded) {
             console.log('push')
-            router.push('#/groups')
+            //router.push('#/groups')
+            router.transitionTo('#/groups')
         }
 
     }
 
     componentWillReceiveProps(nextProps) {
         debug2('component will receive props')
+
         try {
             this.transition()
         } catch (e) {

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-router'
 import { ReduxAsyncConnect, asyncConnect, reducer as reduxAsyncConnect } from 'redux-connect'
 import { ConnectedRouter } from 'react-router-redux'
+import { BrowserHistory } from 'react-history'
 
 import MainLayout from './layout/main.jsx'
 import ContentLayout from './layout/content.jsx'
@@ -35,12 +36,12 @@ export default class RouterPath extends React.Component {
     }
 
 //<Router history={hashHistory}>
+//<ConnectedRouter render={(props) => <ReduxAsyncConnect {...props} /> } history={this.props.history}>
 //<Router render={(props) => <ReduxAsyncConnect {...props} /> } history={browserHistory}>
     //render={applyRouterMiddleware()}
-//<ConnectedRouter render={(props) => <ReduxAsyncConnect {...props} /> } history={hashHistory}>
     render() {
         return (
-            <Router render={(props) => <ReduxAsyncConnect {...props} /> } history={browserHistory}>
+            <Router render={(props) => <ReduxAsyncConnect {...props} /> } history={this.props.history}>
                 <Route path="/" component={MainLayout}>
                     <IndexRoute component={LoginContainer}/>
                     <Route component={ContentLayout}>
