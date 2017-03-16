@@ -137,6 +137,7 @@ class Login extends Component {
         if (submitSucceeded) {
             console.log('push')
             //router.push('#/groups')
+            //router.transitionTo('/groups')
             browserHistory.push('/groups')
         }
 
