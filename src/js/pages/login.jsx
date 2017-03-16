@@ -10,6 +10,7 @@ import {
     DatePicker,
 } from 'redux-form-material-ui'
 import { SubmissionError } from 'redux-form'
+import { Link } from 'react-router'
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
@@ -27,6 +28,7 @@ import submit from "redux-form-submit"
 import {debug0,debug2, debugJSON} from '../service/misc'
 import ngScope from '../service/bridge'
 import { asyncConnect as reduxAsyncConnect } from 'redux-connect'
+import { hashHistory,browserHistory } from 'react-router'
 
 
 function myConnect(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig, reduxFormConfig) {
@@ -40,6 +42,7 @@ class Login extends Component {
         super(props)
         this.props = props
         //this.reduxFormConfig = Login.reduxFormConfig
+        this.navigateProgramatically = this.navigateProgramatically.bind(this);
     }
 
     LoginForm = (props) => {
@@ -107,14 +110,15 @@ class Login extends Component {
                         </tbody>
                     </table>
                 </form>
+                <Link to={"/groups"} onClick={this.navigateProgramatically}>Continue</Link>
             </div>
         )
     }
 
     componentDidMount() {
         debug2('component did mount')
-        //this.context.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
-
+        //debug0(this.props.route)
+        this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
         //this.transition()
 
     }
@@ -123,8 +127,9 @@ class Login extends Component {
         // return false to prevent a transition w/o prompting the user,
         // or return a string to allow the user to decide:
         //if (!this.state.isSaved)
-            return 'Your work is not saved! Are you sure you want to leave?'
+        return 'Your work is not saved! Are you sure you want to leave?'
     }
+
     transition() {
         const { submitFailed, submitSucceeded, router } = this.props
 
@@ -132,9 +137,14 @@ class Login extends Component {
         if (submitSucceeded) {
             console.log('push')
             //router.push('#/groups')
-            router.transitionTo('#/groups')
+            browserHistory.push('/groups')
         }
 
+    }
+
+    navigateProgramatically(e) {
+        e.preventDefault();
+        this.context.router.transitionTo(e.target.href)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -180,7 +190,7 @@ class Login extends Component {
         console.log(`transit:  ${transition}`)
     }
 
-    static contextTypes:{
+    static contextTypes={
         router: React.PropTypes.object
     }
 
