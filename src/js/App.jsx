@@ -31,7 +31,8 @@ class App extends React.Component {
         $.extend(this.props.state, createTestData());
         //debug2(JSON.stringify(this.props.state))
 
-        this.history = browserHistory
+        //this.history = browserHistory
+        this.history = hashHistory
         const middle = [thunk,routerMiddleware(this.history)]
         //const middle = routerMiddleware(this.history)
 

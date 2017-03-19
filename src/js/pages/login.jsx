@@ -11,6 +11,7 @@ import {
 } from 'redux-form-material-ui'
 import { SubmissionError } from 'redux-form'
 import { Link } from 'react-router'
+import { push } from 'react-router-redux'
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
@@ -110,7 +111,7 @@ class Login extends Component {
                         </tbody>
                     </table>
                 </form>
-                <Link to={"/groups"} onClick={this.navigateProgramatically}>Continue</Link>
+                <Link to="/terms" onClick={this.navigateProgramatically}>Read Terms & Conditions</Link>
             </div>
         )
     }
@@ -119,8 +120,7 @@ class Login extends Component {
         debug2('component did mount')
         //debug0(this.props.route)
         this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
-        //this.transition()
-
+        debug0(router.getCurrentLocation())
     }
 
     routerWillLeave(nextLocation) {
@@ -130,44 +130,15 @@ class Login extends Component {
         return 'Your work is not saved! Are you sure you want to leave?'
     }
 
-    transition() {
-        const { submitFailed, submitSucceeded, router } = this.props
-
-        //this.props.params.userId -- this is from the router?
-        if (submitSucceeded) {
-            console.log('push')
-            //router.push('#/groups')
-            //router.transitionTo('/groups')
-            browserHistory.push('/groups')
-        }
-
-    }
-
     navigateProgramatically(e) {
         e.preventDefault();
-        this.context.router.transitionTo(e.target.href)
+        const { router } = this.props
+        console.log(e.target.href)
+        router.push(e.target.href)
     }
 
     componentWillReceiveProps(nextProps) {
         debug2('component will receive props')
-
-        try {
-            this.transition()
-        } catch (e) {
-
-            console.log(e.message)
-        }
-
-        //this.
-        /*
-         if (hasSubmitFailed) {
-         //count 3 times ?? ban
-         alert('OK')
-         const { router } = this.props
-         router.push('/groups')
-         }
-         */
-        //this.props.test()
     }
 
     render() {
@@ -211,6 +182,7 @@ class Login extends Component {
                     type: `LOGIN`,
                     payload: result
                 })
+                dispatch(push('/groups'))
             }).catch((e)=> {
                 dispatch({
                     type: `LOGIN_ERROR`,

@@ -48,7 +48,6 @@ const form = formReducer.plugin({
                         password: undefined
                     },
                 }
-                //store.dispatch(push('/foo'))
             case `LOGIN_ERROR`:
                 return {
                     ... state, _error: action.payload.error,
