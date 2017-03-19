@@ -179,7 +179,8 @@ peloApp.factory('platform', function ($rootScope) {
             this.baseUrl = "http://localhost/pelo/rest/view/"
         }
 
-        this.baseUrl = "http://localhost:8085/pelo/rest/view/"
+        //this.baseUrl = "http://localhost:8085/pelo/rest/view/"
+        this.baseUrl = "http://128.199.224.128:8085/pelo/rest/view/"
 
         /**
          cordovaOnly(() => {

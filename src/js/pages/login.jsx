@@ -9,7 +9,7 @@ import {
     Toggle,
     DatePicker,
 } from 'redux-form-material-ui'
-import { SubmissionError } from 'redux-form'
+import { Form, SubmissionError } from 'redux-form'
 import { Link } from 'react-router'
 import { push } from 'react-router-redux'
 
@@ -25,7 +25,7 @@ import {
     materialSelectField
 } from './material.jsx'
 
-import submit from "redux-form-submit"
+import submit from "redux-form"
 import {debug0,debug2, debugJSON} from '../service/misc'
 import ngScope from '../service/bridge'
 import { asyncConnect as reduxAsyncConnect } from 'redux-connect'
@@ -33,8 +33,10 @@ import { hashHistory,browserHistory } from 'react-router'
 
 
 function myConnect(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig, reduxFormConfig) {
-    return target => reduxAsyncConnect(
-        reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(reduxForm(reduxFormConfig)(target))
+    return target => {
+        return reduxAsyncConnect(
+            reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(reduxForm(reduxFormConfig)(target))
+    }
 }
 
 class Login extends Component {
@@ -47,7 +49,9 @@ class Login extends Component {
     }
 
     LoginForm = (props) => {
-        const {handleSubmit,
+        const {
+            dispatch,
+            handleSubmit,
             fbConnect,
             pristine,
             error,
@@ -55,6 +59,7 @@ class Login extends Component {
             submitting,
             touched,
             asyncValidating,
+            submit,
             ok,
             } = props
         return (
@@ -70,7 +75,7 @@ class Login extends Component {
                 {submitting && <span>Logging you in now..</span>}
                 {error && <span>Any Error: {error}</span>}
 
-                <form onSubmit={handleSubmit(Login.validate)}>
+                <Form onSubmit={handleSubmit(Login.validate)}>
                     <table>
                         <tbody>
                         <tr>
@@ -80,6 +85,7 @@ class Login extends Component {
                                            component={materialTextField}
                                            label="Username or Email"
                                            asyncValidating={asyncValidating}
+                                           onKeyDown={(e) => e.keyCode==13 && blur}
                                     />
                                 </div>
                             </td>
@@ -91,6 +97,7 @@ class Login extends Component {
                                            type="password"
                                            component={materialTextField}
                                            label="Pasword"
+                                           onKeyDown={(e) => e.keyCode==13 && dispatch(submit(this))}
                                     />
                                 </div>
                             </td>
@@ -110,7 +117,7 @@ class Login extends Component {
                         </tr>
                         </tbody>
                     </table>
-                </form>
+                </Form>
                 <Link to="/terms" onClick={this.navigateProgramatically}>Read Terms & Conditions</Link>
             </div>
         )
@@ -132,9 +139,9 @@ class Login extends Component {
 
     navigateProgramatically(e) {
         e.preventDefault();
-        const { router } = this.props
-        console.log(e.target.href)
-        router.push(e.target.href)
+
+        const {dispatch} = this.props
+        dispatch(submit())
     }
 
     componentWillReceiveProps(nextProps) {
@@ -162,8 +169,9 @@ class Login extends Component {
         console.log(`transit:  ${transition}`)
     }
 
-    static contextTypes={
-        router: React.PropTypes.object
+    static contextTypes = {
+        router: React.PropTypes.func,
+        dispatch: React.PropTypes.func
     }
 
     static validate = (values, dispatch) => {
@@ -171,12 +179,12 @@ class Login extends Component {
             throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
         } else {
             return new Promise((resolve, reject)=> {
-                resolve({})
-                /*ngScope().client.login(values.username, values.password, (name, data)=> {
-                 resolve(data)
-                 }, (e)=> {
-                 reject(e)
-                 })*/
+                //resolve({})
+                ngScope().client.login(values.username, values.password, (name, data)=> {
+                    resolve(data)
+                }, (e)=> {
+                    reject(e)
+                })
             }).then((result)=> {
                 dispatch({
                     type: `LOGIN`,
@@ -194,22 +202,16 @@ class Login extends Component {
     }
 
     static propTypes = {
-        ok: PropTypes.bool.isRequired,
-        onSubmit: PropTypes.func.isRequired,
         fbConnect: PropTypes.func.isRequired,
-        //test: PropTypes.func.isRequired,
         ...propTypes
     }
+
     static reduxAsyncConfig = [{
         key: 'lunch',
         promise: ({ params, helpers }) => Promise.resolve({id: 1, name: 'Borsch'})
     }]
     static reduxPropsConfig = (state, props) => ({
         ok: state.ok,
-        test: () => () => {
-            //this.props.ok = true
-            //alert('hello' + props.ok)
-        },
         initialValues: {
             username: 'wozza', password: 'password'
         } //202
@@ -217,7 +219,6 @@ class Login extends Component {
     })
 
     static reduxDispatchConfig = (dispatch) => ({
-        onSubmit: () => debug2('values2' + JSON.stringify(values)),
         fbConnect: ()=> (event) =>
             new Promise((resolve, reject)=> {
                 //FIXME --event or event1?
@@ -248,7 +249,6 @@ class Login extends Component {
 
     static reduxFormConfig = {
         form: 'LoginForm',
-        onSubmit: (values) => debug2('values' + JSON.stringify(values)),
         asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
             const {username, password} = values
             if (password == null || password.length == 0)

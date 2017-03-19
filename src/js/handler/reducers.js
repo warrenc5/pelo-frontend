@@ -53,7 +53,7 @@ const form = formReducer.plugin({
                     ... state, _error: action.payload.error,
                     values: {
                         ...state.values,
-                        password: undefined
+                    //    password: undefined
                     },
                     ok: true,
                 }

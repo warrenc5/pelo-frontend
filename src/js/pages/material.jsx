@@ -1,4 +1,5 @@
 import TextField from 'material-ui/TextField'
+import submit from "redux-form"
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import Checkbox from 'material-ui/Checkbox'
 import SelectField from 'material-ui/SelectField'
@@ -15,12 +16,13 @@ export const materialButton = ({ label , onClick }, ...custom) => (
     <FlatButton label={label} onClick={onClick}/>
 )
 
-export const materialTextField = ({ input, label, type, meta: { asyncValidating, touched, error } }, ...custom) => (
+export const materialTextField = ({dispatch, input, label, type, onKeyDown, meta: { asyncValidating, touched, error } }, ...custom) => (
     <div className={asyncValidating ? 'async-validating' : ''}>
         <TextField hintText={label}
                    floatingLabelText={label}
                    errorText={touched && error}
                    type={type}
+                   onKeyDown={onKeyDown}
             {...input}
             {...custom}
         />

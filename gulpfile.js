@@ -303,7 +303,7 @@ gulp.task('stop', function () {
 
 var baseDir = process.cwd()
 function readBuildTime() {
-    var f = `${baseDir}/${paths.jsDest}/${buildTimeFile}`
+    var f = `${baseDir}/${paths.jsSrc}/${buildTimeFile}`
     //console.log(f)
     fs.readFile(f, function (e, data) {
         if (e) {
@@ -426,6 +426,7 @@ gulp.task('cordova_run', function (done) {
         process.chdir(baseDir + "/cordova")
         cwd = process.cwd()
         util.log('running cordova' + cwd)
+
         return cordova.run({
             "verbose": true,
             "platforms": ["android"],

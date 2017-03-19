@@ -43,7 +43,9 @@ export default class RouterPath extends React.Component {
         return (
             <Router render={(props) => <ReduxAsyncConnect {...props} /> } history={this.props.history}>
                 <Route path="/" component={MainLayout}>
-                    <IndexRoute component={LoginContainer}/>
+                    <Route component={ContentLayout}>
+                        <IndexRoute component={LoginContainer}/>
+                    </Route>
                     <Route component={ContentLayout}>
                         <Route path="/bike-component" component={BikeComponent} pageTitle={this.props.DB_VERSION}/>
                         <Route path="/bike-component/:componentType" component={BikeComponent}
