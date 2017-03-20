@@ -404,9 +404,7 @@ gulp.task('cordova_build', function (done) {
         return cordova.build({
             "verbose": true,
             "platforms": ["android"],
-            "options": {
-                argv: ["--release","--browserify"] //"--gradleArg=--no-daemon"]
-            }
+            "options": ["--release","--browserify"]
         }, function (e) {
             if (e) {
                 util.log('cordova build result:' + e)
@@ -433,9 +431,7 @@ gulp.task('cordova_run', function (done) {
         return cordova.run({
             "verbose": true,
             "platforms": ["android"],
-            "options": {
-                argv: ["--debug"] //"--gradleArg=--no-daemon"]
-            }
+            "options": ["--debug"] //"--gradleArg=--no-daemon"]
         }, function (e) {
             if (e) {
                 util.log('cordova run result:' + e)
