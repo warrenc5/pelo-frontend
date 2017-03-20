@@ -344,10 +344,10 @@ gulp.task('clean-dist', [], function () {
 })
 
 gulp.task('android-run', ['setup'], function (done) {
-    gulp.start('cordova_run')
+    return gulp.start('cordova_run')
 })
 
-gulp.task('android', ['setup', 'auto'], function (done) {
+gulp.task('android', ['setup', 'auto','default'], function (done) {
     return gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 5000},
         batch({timeout: 2000}, function (events, doneBatch) {
             events
@@ -439,9 +439,9 @@ gulp.task('cordova_run', function (done) {
                 util.log('cordova run finshed')
                 //cordova_refresh()
             }
-            done
             readBuildTime()
             process.chdir(baseDir)
+            done
         })
     } catch (e) {
         util.log(e.message + " " + e)
@@ -462,14 +462,15 @@ gulp.task('rerun', function () {
     return run('gulp ' + this.currentTask.name).exec()  // prints "[echo] Hello World\n".
         .pipe(gulp.dest('output'))           // writes "Hello World\n" to output/echo.
 })
-gulp.task('install', [], function () {
+gulp.task('install', [], function (done) {
     return gulp.src(packageConfig)
         .pipe(diff())
         .pipe(install())
-
+        .on('end',done)
 })
 
 gulp.task('setup', ['install'], (done)=> {
+
         return gulp.src(cordovaConfig)
             .pipe(diff())
             .on('error', () => {

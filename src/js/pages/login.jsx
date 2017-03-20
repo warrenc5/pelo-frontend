@@ -85,7 +85,7 @@ class Login extends Component {
                                            component={materialTextField}
                                            label="Username or Email"
                                            asyncValidating={asyncValidating}
-                                           onKeyDown={(e) => e.keyCode==13 && blur}
+                                           onKeyDown={(e) => e.keyCode==13 && e.target.blur()}
                                     />
                                 </div>
                             </td>
@@ -97,7 +97,7 @@ class Login extends Component {
                                            type="password"
                                            component={materialTextField}
                                            label="Pasword"
-                                           onKeyDown={(e) => e.keyCode==13 && dispatch(submit(this))}
+                                           onKeyDown={(e) => e.keyCode==13 && dispatch(submit(this)) && e.target.blur() }
                                     />
                                 </div>
                             </td>
