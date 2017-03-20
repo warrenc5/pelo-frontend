@@ -175,7 +175,7 @@ gulp.task('auto', function () {
 
         //TODO relaunch the original gulp task
         //p = spawn('gulp', ['default'], {stdio: 'inherit'});
-        p = spawn(args[0],args.splice(1), {stdio: 'inherit'});
+        p = spawn(args[0], args.splice(1), {stdio: 'inherit'});
 
 
     }
@@ -283,7 +283,7 @@ gulp.task('copy-images', [], function () {
         .pipe(gulp.dest(paths.imgDest))
 })
 
-gulp.task('release', ['compile'], function () {
+gulp.task('release', ['compile', 'cordova_build'], function () {
     util.log('released')
     //TODO if !exists
     //cordova/platforms/android/build/outputs/apk/android-x86-debug.apk
@@ -396,29 +396,32 @@ function cordova_refresh() {
         .pipe(open(options))
 }
 
-function cordova_build(done) {
-    {
-        process.chdir(baseDir + "/cordova")
-        cwd = process.cwd()
-        util.log('building ' + cwd)
-        cordova.build({
+gulp.task('cordova_build', function (done) {
+    process.chdir(baseDir + "/cordova")
+    cwd = process.cwd()
+    util.log('building ' + cwd)
+    try {
+        return cordova.build({
             "verbose": true,
             "platforms": ["android"],
             "options": {
-                argv: ["--debug"] //"--gradleArg=--no-daemon"]
+                argv: ["--release","--browserify"] //"--gradleArg=--no-daemon"]
             }
         }, function (e) {
             if (e) {
                 util.log('cordova build result:' + e)
             } else {
                 util.log('cordova build finshed')
-                //cordova_refresh()
-                done
             }
             process.chdir(baseDir)
+            readBuildTime()
+            done
         })
+    } catch (e) {
+        util.log(e.message + " " + e)
+        done
     }
-}
+})
 
 gulp.task('cordova_run', function (done) {
 
@@ -446,8 +449,10 @@ gulp.task('cordova_run', function (done) {
         })
     } catch (e) {
         util.log(e.message + " " + e)
+        done
     }
 })
+
 function showBuildTime() {
     util.log(buildTime)
 }

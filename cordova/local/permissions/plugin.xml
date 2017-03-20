@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://cordova.apache.org/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="my-apps-android-permissions-dummy" version="0.0.1">
+  <name>AndroidAppPermissionPlugin</name>
+  <keywords>cordova,android,permission</keywords>
+  <description> dummy plugin for adding permissions to Android's manifest XML file </description>
+  <engines>
+    <engine name="cordova" version="&gt;=5.0"/>
+  </engines>
+  <platform name="android">
+    <!-- add here the permissions that the app requires: -->
+    <config-file target="AndroidManifest.xml" parent="/*">
+      <uses-permission android:name="android.permission.INTERNET"/>
+    </config-file>
+  </platform>
+</plugin>
