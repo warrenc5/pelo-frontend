@@ -17,7 +17,7 @@
     <plugin name="cordova-plugin-splashscreen"/>
     <plugin name="cordova-plugin-geolocation"/>
     <plugin name="cordova-plugin-network-information"/>
-    <plugin name="permissions" spec="./local/permissions"/>
+    <plugin name="permissions-dummy" spec="./local/permissions"/>
 
     <allow-navigation href="*"/>
     <access origin="*"/>
@@ -44,8 +44,10 @@
     <preference name="SplashScreenWidth" value="600"/>
     <preference name="SplashScreenHeight" value="300"/>
 
+<!--
     <preference name="cdvBuildArch" value="x86"/>
     <preference name="cdvBuildMultipleApks" value="false"/>
+-->
     <preference name="android-minSdkVersion" value="18"/>
 
     <!--
