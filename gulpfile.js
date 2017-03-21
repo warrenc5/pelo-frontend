@@ -52,7 +52,8 @@ const env = require('get-env')({
     test: ['test', 'testing']
 });
 var packageConfig = "package.json"
-var cordovaConfig = "cordova.json"
+var cordovaConfig = "cordova/config.xml"
+var cordovaCmds = "cordova.json"
 //paths
 var paths = new (function () {
     this.root = '.'
@@ -515,7 +516,7 @@ gulp.task('install', [], function (done) {
 
 gulp.task('setup', ['install'], (done)=> {
     try {
-        return gulp.src(cordovaConfig)
+        return gulp.src(cordovaCmds)
             .pipe(plumber())
             .pipe(diff())
             .pipe(cordovaCmd(null, {verbose: true, cwd: process.cwd()+'/cordova'}))
