@@ -10,3 +10,5 @@ cordova/www/
 /src/js/build.js
 .gulp
 npm-shrinkwrap.json
+/src/js/cordova/build.js
+/cordova/src/js/build.js
