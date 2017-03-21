@@ -56,7 +56,7 @@ var cordovaConfig = "cordova/config.xml"
 var cordovaCmds = "cordova.json"
 //paths
 var paths = new (function () {
-    this.root = '.'
+    this.root = process.cwd()
 
     // src
     this.src = this.root + '/src'
@@ -68,6 +68,7 @@ var paths = new (function () {
     this.dataSrc = this.src + '/data'
     //this.fontSrc  =  this.src + '/font'
     this.mainApplicationJS = '/service/control.js'
+    this.buildTimeFile = this.jsSrc+'/build.js'
 
     // destination
 
@@ -100,7 +101,7 @@ gulp.task('start', [], function () {
     // Watch changes
 
     gulp.watch(paths.cssSrc + '/**/*.scss', ['compile-css'])
-    gulp.watch([paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx', '!' + paths.jsSrc + '/' + buildTimeFile], {ignoreInitial: false})
+    gulp.watch([paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx', '!'+ paths.buildTimeFile], {ignoreInitial: false})
         .on('change', batch({timeout: 2500}, function (events, done) {
             events
                 .on('data', util.log)
@@ -117,7 +118,7 @@ gulp.task('start', [], function () {
 
     gulp.watch(paths.root + '/src_old/**/*', ['old'])
 
-    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*',`!${paths.jsDest}/cordova/**`],
+    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*',"!"+paths.jsDest+"/cordova/**/*","!"+paths.jsDest+"/"+buildTimeFile],
         {ignoreInitial: true}).on('change',
         batch({timeout: 1000}, function (events, cb) {
             events
@@ -148,8 +149,8 @@ gulp.task('start', [], function () {
  })
  */
 
-var buildTime = moment().format('MMMM Do YYYY, h:mm:ss a')
 var buildTimeFile = 'build.js'
+var buildTime = moment().format('MMMM Do YYYY, h:mm:ss a')
 
 gulp.task('build-time', function () {
     createBuildTime()
@@ -309,15 +310,13 @@ gulp.task('stop', function () {
     browserSync.exit()
 })
 
-var baseDir = process.cwd()
 function readBuildTime() {
-    var f = `${baseDir}/${paths.jsSrc}/${buildTimeFile}`
+    var f = `${paths.buildTimeFile}`
     //console.log(f)
     fs.readFile(f, function (e, data) {
         if (e) {
             util.log(e)
-            cwd = process.cwd()
-            util.log('cwd ' + cwd)
+            util.log('cwd ' + process.cwd)
         } else {
             util.log("***" + data)
         }
@@ -325,9 +324,9 @@ function readBuildTime() {
 }
 
 gulp.task('run', [], function () {
-    process.chdir(baseDir + "/cordova")
-    cwd = process.cwd()
-    util.log('building ' + cwd)
+    process.chdir(paths.root + "/cordova")
+
+    util.log('building ' + process.cwd())
     cordova.run({
         "verbose": true,
         "platforms": ["android"],
@@ -339,13 +338,13 @@ gulp.task('run', [], function () {
             util.log('build result:' + e)
         }
         util.log('run ' + buildTime)
-        process.chdir(baseDir)
+        process.chdir(paths.root)
     })
 })
 
-gulp.task('clean', ['cordova_clean'], function (done) {
+gulp.task('clean',gulpsync.sync(['cordova_clean']), function (done) {
 
-    return del([`${baseDir}/.gulp/gulp-diff-build`,
+    return del([`${paths.root}/.gulp/gulp-diff-build`,
             `${paths.root}/cordova/platforms/**`,
             `!${paths.root}/cordova/platforms`,
             `${paths.root}/cordova/www/**`,
@@ -359,12 +358,12 @@ gulp.task('clean', ['cordova_clean'], function (done) {
      */
 })
 
-gulp.task('android-run', ['setup'], function (done) {
+gulp.task('android-run', ['setup','compile'], function (done) {
     return gulp.start('cordova_run')
 })
 
-gulp.task('android', ['setup', 'auto', 'default'], function (done) {
-        return gulp.watch([paths.dest + '/**/*'], {ignoreInitial: true, readDelay: 5000},
+gulp.task('android', gulpsync.sync(['setup', 'auto', 'default']), function (done) {
+        return gulp.watch([paths.dest + '/**/*',"!"+paths.jsDest+"/cordova/**", "!"+paths.jsDest+"/"+buildTimeFile], {ignoreInitial: true, readDelay: 5000},
             batch({timeout: 2000}, function (events, doneBatch) {
                 events
                     .on('data', util.log)
@@ -378,7 +377,7 @@ gulp.task('cordova_serve', ['auto'], function (done) {
 
     //process.chdir( //`${baseDir}/cordova/platforms/android/assets/www/`)
     process.chdir(
-        `${baseDir}/cordova`
+        `${paths.root}/cordova`
     )
 
     return cordova.serve({
@@ -393,7 +392,7 @@ gulp.task('cordova_serve', ['auto'], function (done) {
             // cordova_refresh()
         }
 
-        process.chdir(baseDir)
+        process.chdir(paths.root)
     })
 
     /*
@@ -416,8 +415,7 @@ function cordova_refresh() {
 }
 
 gulp.task('cordova_build', function (done) {
-    process.chdir(baseDir + "/cordova")
-    cwd = process.cwd()
+    process.chdir(paths.root + "/cordova")
     util.log('building ' + cwd)
     try {
         return cordova.build({
@@ -432,7 +430,7 @@ gulp.task('cordova_build', function (done) {
             } else {
                 util.log('cordova build finshed')
             }
-            process.chdir(baseDir)
+            process.chdir(paths.root)
             readBuildTime()
             done()
         })
@@ -443,6 +441,7 @@ gulp.task('cordova_build', function (done) {
 })
 
 gulp.task('cordova_clean', function (done) {
+    //FIXME
     return cordovaCmd(["clean"], {verbose: true, cwd: process.cwd()+'/cordova'})
 })
 
@@ -450,7 +449,7 @@ gulp.task('cordova_clean', function (done) {
 gulp.task('cordova_run', function (done) {
 
     try {
-        process.chdir(baseDir + "/cordova")
+        process.chdir(paths.root + "/cordova")
         cwd = process.cwd()
         util.log('running cordova' + cwd)
 
@@ -466,7 +465,7 @@ gulp.task('cordova_run', function (done) {
                 //cordova_refresh()
             }
             readBuildTime()
-            process.chdir(baseDir)
+            process.chdir(paths.root)
             done()
         })
     } catch (e) {

@@ -35,10 +35,12 @@ class App extends React.Component {
         this.history = hashHistory
         const middle = [thunk,routerMiddleware(this.history)]
         //const middle = routerMiddleware(this.history)
-
         this.store = createStore(MyReducer(), this.props.state, applyMiddleware(...middle));
+
         /*
         syncHistoryWithStore(browserHistory, this.store, {
+
+
         //    selectLocationState: createSelectLocationState('routing'),
         });
         */

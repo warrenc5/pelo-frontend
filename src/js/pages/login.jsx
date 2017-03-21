@@ -121,6 +121,7 @@ class Login extends Component {
                 <Link to="/terms" onClick={this.navigateProgramatically}>Read Terms & Conditions</Link>
             </div>
 
+
         )
     }
 
