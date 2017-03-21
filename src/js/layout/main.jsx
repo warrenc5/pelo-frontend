@@ -14,8 +14,6 @@ export default class MainLayout extends Component {
       <div>
         <Navigation />
         <div id="main-wrapper" className="main-wrapper">
-          Main
-          <Search />
           <div className="main-content-wrapper">
             {this.props.children}
           </div>

@@ -120,11 +120,12 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
         })
 
         platform.cordovaOnly(function () {
+            /**
             try {
                 showMap()
             } catch (e) {
                 debug2(e)
-            }
+            }**/
         });
 
         $scope.client = new MyClient(new MyAjax(platform.baseUrl))
@@ -177,10 +178,9 @@ peloApp.factory('platform', function ($rootScope) {
             this.baseUrl = globals.peloBaseUrlLocal
         } else {
             this.baseUrl = globals.peloBaseUrlMock
-
         }
 
-        this.baseUrl = globals.peloBaseUrlMock
+        this.baseUrl = globals.peloBaseUrlTryout
 
         /**
          cordovaOnly(() => {

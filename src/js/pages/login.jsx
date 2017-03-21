@@ -9,6 +9,7 @@ import {
     Toggle,
     DatePicker,
 } from 'redux-form-material-ui'
+import { isEmptyObject } from 'jquery'
 import { Form, SubmissionError } from 'redux-form'
 import { Link } from 'react-router'
 import { push } from 'react-router-redux'
@@ -69,11 +70,11 @@ class Login extends Component {
                 </p>
 
                 <Field name="loginFB" component={materialButton} onClick={fbConnect()} label="Login with facebook"/>
-                <span>OK?{ok?'Nigz':'Nups'}</span>
+                <span></span>
                 <p>Or login locally</p>
 
                 {submitting && <span>Logging you in now..</span>}
-                {error && <span>Any Error: {error}</span>}
+                {error && <span>Error: {error}</span>}
 
                 <Form onSubmit={handleSubmit(Login.validate)}>
                     <table>
@@ -96,6 +97,7 @@ class Login extends Component {
                                     <Field name="password"
                                            type="password"
                                            component={materialTextField}
+                                           asyncValidating={asyncValidating}
                                            label="Pasword"
                                            onKeyDown={(e) => e.keyCode==13 && dispatch(submit(this)) && e.target.blur() }
                                     />
@@ -120,15 +122,14 @@ class Login extends Component {
                 </Form>
                 <Link to="/terms" onClick={this.navigateProgramatically}>Read Terms & Conditions</Link>
             </div>
-
-
         )
     }
 
     componentDidMount() {
         debug2('component did mount')
         //debug0(this.props.route)
-        this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
+        var {router} = this.props
+        router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
         debug0(router.getCurrentLocation())
     }
 
@@ -136,14 +137,13 @@ class Login extends Component {
         // return false to prevent a transition w/o prompting the user,
         // or return a string to allow the user to decide:
         //if (!this.state.isSaved)
-        return 'Your work is not saved! Are you sure you want to leave?'
+        return 'Warning. Hard-hat zone.'
     }
 
     navigateProgramatically(e) {
         e.preventDefault();
-
         const {dispatch} = this.props
-        dispatch(submit())
+        dispatch(submit(LoginForm))
     }
 
     componentWillReceiveProps(nextProps) {
@@ -158,8 +158,9 @@ class Login extends Component {
 
     @keydown('enter')
     doSubmit(event) {
-        const {dispatch} = this.props
-        dispatch(submit(Login.reduxFormConfig))
+        const {dispatch,submit} = this.props
+        //FIXME ?? use a variable to trigger submit??
+        dispatch(submit('LoginForm'))
     }
 
     static willTransitionTo(transition, params, query, callback) {
@@ -171,35 +172,30 @@ class Login extends Component {
     }
 
     static contextTypes = {
-        router: React.PropTypes.func,
         dispatch: React.PropTypes.func
     }
 
     static validate = (values, dispatch) => {
-        if (!['wozza'].includes(values.username)) {
-            throw new SubmissionError({username: 'User does not exist', _error: 'Login failed!'})
-        } else {
-            return new Promise((resolve, reject)=> {
-                //resolve({})
-                ngScope().client.login(values.username, values.password, (name, data)=> {
-                    resolve(data)
-                }, (e)=> {
-                    reject(e)
-                })
-            }).then((result)=> {
-                dispatch({
-                    type: `LOGIN`,
-                    payload: result
-                })
-                dispatch(push('/groups'))
-            }).catch((e)=> {
-                dispatch({
-                    type: `LOGIN_ERROR`,
-                    payload: {error: 'there was some error ' + e.message}
-                })
-                throw new SubmissionError({username: 'User sux', _error: 'Login failed!'})
+        //return Login.reduxFormConfig.asyncValidate(values, dispatch).catch((e)=>())
+        return new Promise((resolve, reject)=> {
+            ngScope().client.login(values.username, values.password, (name, data)=> {
+                resolve(data)
+            }, (e)=> {
+                reject(e)
             })
-        }
+        }).then((result)=> {
+            dispatch({
+                type: `LOGIN`,
+                payload: result
+            })
+            dispatch(push('/groups'))
+        }).catch((e)=> {
+            dispatch({
+                type: `LOGIN_ERROR`,
+                payload: {error: 'there was some error'}
+            })
+            throw new SubmissionError({_error:'whoops' +  JSON.stringify(e)})
+        })
     }
 
     static propTypes = {
@@ -214,7 +210,7 @@ class Login extends Component {
     static reduxPropsConfig = (state, props) => ({
         ok: state.ok,
         initialValues: {
-            username: 'wozza', password: 'password'
+            //    username: 'wozza', password: 'password'
         } //202
         //initialValues: {username: 'wozza', password: 'password1'} //401
     })
@@ -225,8 +221,8 @@ class Login extends Component {
                 //FIXME --event or event1?
                 //event.preventDefault
 
-                //TODO how to preset users email?
-                var email = 'wozza@nowhere.com'
+                //TODO how to preset users email? from cookie??
+                var email = 'wozza.xing@gmail.com'
 
                 ngScope().fb.loginFB(email, (response)=> {
                         resolve(dispatch, response)
@@ -244,7 +240,7 @@ class Login extends Component {
             }).catch((e)=> {
                 dispatch({
                     type: `FBLOGIN_ERROR`,
-                    payload: {error: e}
+                    payload: {error: 'fb ' + e}
                 })
             })
     })
@@ -253,13 +249,23 @@ class Login extends Component {
         form: 'LoginForm',
         asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
             const {username, password} = values
+            debug2("values : " + JSON.stringify(values))
+            var error = {}
+
+            if (username == null || username.length == 0)
+                error['username'] = 'you must put a username'
             if (password == null || password.length == 0)
-                reject({password: 'put a password'})
-            else if (!values.username.startsWith('Riley')) {
+                error['password'] = 'you must put a password'
+            if (username != null && username.startsWith('bill'))
+                error['username'] = 'you win a prize call me now ;)'
+
+            if (isEmptyObject(error))
                 resolve(true)
-            } else {
-                reject({username: 'That username is taken'})
+            else {
+                debug2("errors : " + JSON.stringify(error))
+                reject(error)
             }
+
         }).then((b)=> {
             //all is well
         }).catch((e)=> {

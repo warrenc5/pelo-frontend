@@ -41,8 +41,6 @@ export default class ContentLayout extends Component {
         return (
             <div>
                 <h1>{this.getPageTitle()}</h1>
-                Content
-                <Working/>
                 <hr />
                 <span>build time {this.props.buildTime}</span>
                 <div>

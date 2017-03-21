@@ -8,7 +8,7 @@ export var debugFlag=true
 
 
 export var peloBaseUrlMock = "http://dev.testpelo1.cc:8085/pelo/rest/view/"
-export var peloBaseUrlTest = "http://dev.testpelo1.cc/pelo/rest/view/"
+export var peloBaseUrlTryout = "http://dev.testpelo1.cc/pelo/rest/view/"
 export var peloBaseUrlLive = "http://app.pelo.cc/pelo/rest/view/"
 export var peloBaseUrlLocal = "http://localhost/pelo/rest/view/"
 
