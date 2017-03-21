@@ -117,7 +117,7 @@ gulp.task('start', [], function () {
 
     gulp.watch(paths.root + '/src_old/**/*', ['old'])
 
-    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*'],
+    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*',`!${paths.jsDest}/cordova/**`],
         {ignoreInitial: true}).on('change',
         batch({timeout: 1000}, function (events, cb) {
             events
@@ -227,7 +227,7 @@ gulp.task('compile-js', [], function (done1) {
     // }))
     // *!/
     ////.pipe(changed(d))*/ // Ignore unchanged files
-    return b.on('end', () => {
+    b = b.on('end', () => {
             util.log(`================================ ${buildTime} ====================${env}========================`)
         })
         .on('error', (e) => {
@@ -247,17 +247,19 @@ gulp.task('compile-js', [], function (done1) {
 
     //
     //
-    //if (env == 'prod') {
-    //    util.log("production")
-    //    //.pipe(src(paths.jsDestName))
-    //    b.pipe(sourcemaps.init({loadMaps: true}))
-    //        .pipe(streamify(uglify({
-    //                mangle: false
-    //                /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
-    //            }
-    //        )))
-    //    //.pipe(sourcemaps.write('./'))
-    //}
+    if (env == 'prod') {
+        util.log("production")
+        //.pipe(src(paths.jsDestName))
+        return b.pipe(sourcemaps.init({loadMaps: true}))
+            .pipe(streamify(uglify({
+                    mangle: false
+                    /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
+                }
+            )))
+        //.pipe(sourcemaps.write('./'))
+    } else {
+        return b;
+    }
 })
 
 

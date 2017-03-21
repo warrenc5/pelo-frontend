@@ -173,14 +173,14 @@ peloApp.factory('platform', function ($rootScope) {
 
         debug2(`platform detected ${p}`)
         //TODO remove
-        this.baseUrl = "http://localhost/pelo/rest/view/"
-
         if (p == 'Dev') {
-            this.baseUrl = "http://localhost/pelo/rest/view/"
+            this.baseUrl = globals.peloBaseUrlLocal
+        } else {
+            this.baseUrl = globals.peloBaseUrlMock
+
         }
 
-        //this.baseUrl = "http://localhost:8085/pelo/rest/view/"
-        this.baseUrl = "http://128.199.224.128:8085/pelo/rest/view/"
+        this.baseUrl = globals.peloBaseUrlMock
 
         /**
          cordovaOnly(() => {

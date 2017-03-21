@@ -7,7 +7,11 @@ export var DB_VERSION = 1.1
 export var debugFlag=true
 
 
-export var peloBaseUrl = "http://localhost/pelo/rest/view/"
+export var peloBaseUrlMock = "http://dev.testpelo1.cc:8085/pelo/rest/view/"
+export var peloBaseUrlTest = "http://dev.testpelo1.cc/pelo/rest/view/"
+export var peloBaseUrlLive = "http://app.pelo.cc/pelo/rest/view/"
+export var peloBaseUrlLocal = "http://localhost/pelo/rest/view/"
+
 //var peloBaseUrl = "http://localhost:8085/pelo/rest/view/"
 //var peloBaseUrl = "http://devnull.com.au/pelo/rest/view/"
 //var peloBaseUrl= "http://10.0.0.68/pelo/rest/view/"
