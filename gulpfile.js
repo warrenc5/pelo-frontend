@@ -418,7 +418,7 @@ function cordova_refresh() {
 
 gulp.task('cordova_build', function (done) {
     process.chdir(paths.root + "/cordova")
-    util.log('building ' + cwd)
+    util.log('building ' + process.cwd())
     try {
         return cordova.build({
             "verbose": true,
