@@ -68,7 +68,7 @@ var paths = new (function () {
     this.dataSrc = this.src + '/data'
     //this.fontSrc  =  this.src + '/font'
     this.mainApplicationJS = '/service/control.js'
-    this.buildTimeFile = this.jsSrc+'/build.js'
+    this.buildTimeFile = this.jsSrc + '/build.js'
 
     // destination
 
@@ -101,7 +101,7 @@ gulp.task('start', [], function () {
     // Watch changes
 
     gulp.watch(paths.cssSrc + '/**/*.scss', ['compile-css'])
-    gulp.watch([paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx', '!'+ paths.buildTimeFile], {ignoreInitial: false})
+    gulp.watch([paths.jsSrc + '/**/*.js', paths.jsSrc + '/**/*.jsx', '!' + paths.buildTimeFile], {ignoreInitial: false})
         .on('change', batch({timeout: 2500}, function (events, done) {
             events
                 .on('data', util.log)
@@ -118,7 +118,7 @@ gulp.task('start', [], function () {
 
     gulp.watch(paths.root + '/src_old/**/*', ['old'])
 
-    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*',"!"+paths.jsDest+"/cordova/**/*","!"+paths.jsDest+"/"+buildTimeFile],
+    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*', "!" + paths.jsDest + "/cordova/**/*", "!" + paths.jsDest + "/" + buildTimeFile],
         {ignoreInitial: true}).on('change',
         batch({timeout: 1000}, function (events, cb) {
             events
@@ -245,14 +245,14 @@ gulp.task('compile-js', [], function (done1) {
         //var combined = combiner.obj([b])
         .pipe(source('bundle.js'))
         .pipe(buffer())
-        //.pipe(diff()) //takes tooo long
+    //.pipe(diff()) //takes tooo long
 
     //
     //
     if (env == 'prod') {
         util.log("production")
         //.pipe(src(paths.jsDestName))
-        c=c.pipe(sourcemaps.init({loadMaps: true}))
+        c = c.pipe(sourcemaps.init({loadMaps: true}))
             .pipe(streamify(uglify({
                     mangle: false
                     /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
@@ -344,7 +344,7 @@ gulp.task('run', [], function () {
     })
 })
 
-gulp.task('clean',gulpsync.sync(['cordova_clean']), function (done) {
+gulp.task('clean', gulpsync.sync(['cordova_clean']), function (done) {
 
     return del([`${paths.root}/.gulp/gulp-diff-build`,
             `${paths.root}/cordova/platforms/**`,
@@ -360,12 +360,15 @@ gulp.task('clean',gulpsync.sync(['cordova_clean']), function (done) {
      */
 })
 
-gulp.task('android-run', ['setup','compile'], function (done) {
+gulp.task('android-run', ['setup', 'compile'], function (done) {
     return gulp.start('cordova_run')
 })
 
 gulp.task('android', gulpsync.sync(['setup', 'auto', 'default']), function (done) {
-        return gulp.watch([paths.dest + '/**/*',"!"+paths.jsDest+"/cordova/**", "!"+paths.jsDest+"/"+buildTimeFile], {ignoreInitial: true, readDelay: 5000},
+        return gulp.watch([paths.dest + '/**/*', "!" + paths.jsDest + "/cordova/**", "!" + paths.jsDest + "/" + buildTimeFile], {
+                ignoreInitial: true,
+                readDelay: 5000
+            },
             batch({timeout: 2000}, function (events, doneBatch) {
                 events
                     .on('data', util.log)
@@ -444,7 +447,9 @@ gulp.task('cordova_build', function (done) {
 
 gulp.task('cordova_clean', function (done) {
     //FIXME
-    return cordovaCmd(["clean"], {verbose: true, cwd: process.cwd()+'/cordova'})
+    return gulp.src(cordovaConfig)
+        .pipe(plumber())
+        .pipe(cordovaCmd(["clean"], {verbose: true, cwd: process.cwd() + '/cordova'}))
 })
 
 
@@ -499,14 +504,10 @@ gulp.task('install', [], function (done) {
 })
 
 gulp.task('setup', ['install'], (done)=> {
-    try {
-        return gulp.src(cordovaConfig)
-            .pipe(plumber())
-            .pipe(diff())
-            .pipe(cordovaCmd(["prepare"], {verbose: true, cwd: process.cwd()+'/cordova'}))
-    } catch (e) {
-        console.log(e)
-    }
+    return gulp.src(cordovaConfig)
+        .pipe(plumber())
+        .pipe(diff())
+        .pipe(cordovaCmd(["prepare"], {verbose: true, cwd: process.cwd() + '/cordova'}))
 })
 
 //----------------------------------------------------------------------------------------------------------------------
