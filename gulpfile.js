@@ -217,7 +217,9 @@ gulp.task('compile-js', [], function (done1) {
 
     var b = browserify(paths.jsSrc + paths.mainApplicationJS)
         .transform(babelify.configure({
-            ignore: /(node_modules)/,
+            env: {production: {}},
+            minified: env == 'prod',
+            ignore: ['/node_modules/**'],
             comments: false,
         }))
         .bundle()
@@ -228,7 +230,7 @@ gulp.task('compile-js', [], function (done1) {
     // }))
     // *!/
     ////.pipe(changed(d))*/ // Ignore unchanged files
-    b = b.on('end', () => {
+    var c = b.on('end', () => {
             util.log(`================================ ${buildTime} ====================${env}========================`)
         })
         .on('error', (e) => {
@@ -244,23 +246,23 @@ gulp.task('compile-js', [], function (done1) {
         .pipe(source('bundle.js'))
         .pipe(buffer())
         //.pipe(diff()) //takes tooo long
-        .pipe(gulp.dest(paths.jsDest))
 
     //
     //
-    if (env == 'prod') {
+    if (env != 'prod') {
         util.log("production")
         //.pipe(src(paths.jsDestName))
-        return b.pipe(sourcemaps.init({loadMaps: true}))
+        c=c.pipe(sourcemaps.init({loadMaps: true}))
             .pipe(streamify(uglify({
                     mangle: false
                     /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
                 }
             )))
+            .pipe(gulp.dest(paths.jsDest))
+
         //.pipe(sourcemaps.write('./'))
-    } else {
-        return b;
     }
+    return c.pipe(gulp.dest(paths.jsDest))
 })
 
 

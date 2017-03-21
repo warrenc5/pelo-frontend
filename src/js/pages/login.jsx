@@ -125,7 +125,6 @@ class Login extends Component {
         )
     }
 
-
     componentDidMount() {
         debug2('component did mount')
         //debug0(this.props.route)
@@ -156,7 +155,6 @@ class Login extends Component {
             <div>{this.LoginForm(this.props)}</div>
         )
     }
-
 
     @keydown('enter')
     doSubmit(event) {
@@ -242,6 +240,7 @@ class Login extends Component {
                     type: `FBLOGIN`,
                     payload: response
                 })
+                dispatch(push('/groups'))
             }).catch((e)=> {
                 dispatch({
                     type: `FBLOGIN_ERROR`,

@@ -39,8 +39,6 @@ class App extends React.Component {
 
         /*
         syncHistoryWithStore(browserHistory, this.store, {
-
-
         //    selectLocationState: createSelectLocationState('routing'),
         });
         */
