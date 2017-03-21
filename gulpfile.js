@@ -288,7 +288,7 @@ gulp.task('copy-images', [], function () {
         .pipe(gulp.dest(paths.imgDest))
 })
 
-gulp.task('release', ['setup','compile', 'cordova_build'], function () {
+gulp.task('release', ['setup', 'compile', 'cordova_build'], function () {
     util.log('released')
     //TODO if !exists
     //cordova/platforms/android/build/outputs/apk/android-x86-debug.apk
@@ -514,15 +514,15 @@ gulp.task('install', [], function (done) {
 })
 
 gulp.task('setup', ['install'], (done)=> {
+    try {
         return gulp.src(cordovaConfig)
+            .pipe(plumber())
             .pipe(diff())
-            .on('error', (e) => {
-                util.log(e)
-                this.emit('end')
-            })
-            .pipe(cordovaCmd(undefined, {verbose: true, cwd: 'cordova'}))
+            .pipe(cordovaCmd(null, {verbose: true, cwd: process.cwd()+'/cordova'}))
+    } catch (e) {
+        console.log(e)
     }
-)
+})
 
 //----------------------------------------------------------------------------------------------------------------------
 gulp.task('pix-resize', function (done) {
