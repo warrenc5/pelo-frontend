@@ -441,26 +441,7 @@ gulp.task('cordova_build', function (done) {
 })
 
 gulp.task('cordova_clean', function (done) {
-
-    try {
-        process.chdir(baseDir + "/cordova")
-        cwd = process.cwd()
-        util.log('cleaning cordova ' + cwd)
-
-        return cordova.clean({}, function (e) {
-            if (e) {
-                util.log('cordova clean result:' + e)
-            } else {
-                util.log('cordova clean finshed')
-            }
-            readBuildTime()
-            process.chdir(baseDir)
-            done()
-        })
-    } catch (e) {
-        util.log(e.message + " " + e)
-        done()
-    }
+    return cordovaCmd(["clean"], {verbose: true, cwd: process.cwd()+'/cordova'})
 })
 
 
@@ -508,7 +489,6 @@ gulp.task('rerun', function () {
         .pipe(gulp.dest('output'))           // writes "Hello World\n" to output/echo.
 })
 gulp.task('install', [], function (done) {
-console.log(process.cwd())
     return gulp.src(packageConfig)
         .pipe(diff())
         .pipe(install())
@@ -520,7 +500,7 @@ gulp.task('setup', ['install'], (done)=> {
         return gulp.src(cordovaConfig)
             .pipe(plumber())
             .pipe(diff())
-            .pipe(cordovaCmd(cordovaCmds, {verbose: true, cwd: process.cwd()+'/cordova'}))
+            .pipe(cordovaCmd(["prepare"], {verbose: true, cwd: process.cwd()+'/cordova'}))
     } catch (e) {
         console.log(e)
     }
