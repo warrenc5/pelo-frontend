@@ -61,10 +61,12 @@
         <preference name="cdvBuildArch" value="x86"/>
         <preference name="cdvBuildMultipleApks" value="false"/>
     -->
+    <preference name="xwalkVersion" value="19" />
     <preference name="xwalkMultipleApk" value="true"/>
-    <preference name="android-minSdkVersion" value="18"/>
+    <preference name="android-minSdkVersion" value="15"/>
     <preference name="tools:overrideLibrary" value="org.xwalk.core"/>
-    <preference name="uses-sdk:minSdkVersion" value="16"/>
+    <preference name="uses-sdk:minSdkVersion" value="15"/>
+    <preference name="android-targetSdkVersion" value="21" />
     <!--
     <preference name="tools:overrideLibrary" value="org.xwalk.core"/>
     -->
