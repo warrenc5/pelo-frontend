@@ -211,7 +211,7 @@ gulp.task('compile-css', function () {
 
 gulp.task('compile-js', [], function (done1) {
 
-    createBuildTime()
+    gulp.start('build-time')
 
     var b = browserify(paths.jsSrc + paths.mainApplicationJS)
         .transform(babelify.configure({
@@ -261,7 +261,6 @@ gulp.task('compile-js', [], function (done1) {
 
 
 gulp.task('copy-html', function () {
-    createBuildTime()
     gulp.src(paths.htmlSrc + '/**/*.html')
         .pipe(diff())
         .pipe(gulp.dest(paths.htmlDest))
@@ -421,7 +420,9 @@ gulp.task('cordova_build', function (done) {
         return cordova.build({
             "verbose": true,
             "platforms": ["android"],
-            "options": ["--release", "--browserify"]
+            "options": ["--release",
+                "--browserify",
+                "--gradleArg=--stacktrace"]
         }, function (e) {
             if (e) {
                 util.log('cordova build result:' + e)
