@@ -289,7 +289,7 @@ gulp.task('copy-images', [], function () {
         .pipe(gulp.dest(paths.imgDest))
 })
 
-gulp.task('release', ['setup', 'compile', 'cordova_build'], function () {
+gulp.task('release', gulpsync.sync(['setup', 'compile', 'cordova_build']), function () {
     util.log('released')
     //TODO if !exists
     //cordova/platforms/android/build/outputs/apk/android-x86-debug.apk
@@ -508,6 +508,7 @@ gulp.task('rerun', function () {
         .pipe(gulp.dest('output'))           // writes "Hello World\n" to output/echo.
 })
 gulp.task('install', [], function (done) {
+console.log(process.cwd())
     return gulp.src(packageConfig)
         .pipe(diff())
         .pipe(install())
@@ -516,10 +517,10 @@ gulp.task('install', [], function (done) {
 
 gulp.task('setup', ['install'], (done)=> {
     try {
-        return gulp.src(cordovaCmds)
+        return gulp.src(cordovaConfig)
             .pipe(plumber())
             .pipe(diff())
-            .pipe(cordovaCmd(null, {verbose: true, cwd: process.cwd()+'/cordova'}))
+            .pipe(cordovaCmd(cordovaCmds, {verbose: true, cwd: process.cwd()+'/cordova'}))
     } catch (e) {
         console.log(e)
     }

@@ -3,6 +3,7 @@
         version="1.0.0" android-versionCode="1" ios-CFBundleVersion="1.0.0"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0">
+
     <name>Pelo</name>
     <description>
         The Pelo Rider Application
@@ -60,8 +61,10 @@
         <preference name="cdvBuildArch" value="x86"/>
         <preference name="cdvBuildMultipleApks" value="false"/>
     -->
+    <preference name="xwalkMultipleApk" value="true"/>
     <preference name="android-minSdkVersion" value="18"/>
-
+    <preference name="tools:overrideLibrary" value="org.xwalk.core"/>
+    <preference name="uses-sdk:minSdkVersion" value="16"/>
     <!--
     <preference name="tools:overrideLibrary" value="org.xwalk.core"/>
     -->
