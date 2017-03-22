@@ -352,8 +352,8 @@ gulp.task('clean', gulpsync.sync(['cordova_clean']), function (done) {
             `${paths.root}/cordova/www/**`,
             `!${paths.root}/cordova/www`
         ],
-        {dryRun: false}).then(paths => {
-        console.log('Files and folders that are deleted:\n', paths.join('\n'));
+        {dryRun: false, force: true}).then(paths => {
+        console.log('Files and folders that are deleted:\n', paths.join(' '));
     })
     /*, {read: false})
      .pipe(clean())
@@ -447,9 +447,10 @@ gulp.task('cordova_build', function (done) {
 
 gulp.task('cordova_clean', function (done) {
     //FIXME
-    return gulp.src(cordovaConfig)
+    gulp.src(cordovaConfig)
         .pipe(plumber())
         .pipe(cordovaCmd(["clean"], {verbose: true, cwd: process.cwd() + '/cordova'}))
+    done()
 })
 
 
@@ -514,6 +515,8 @@ gulp.task('setup', ['install'], (done)=> {
 gulp.task('pix-resize', function (done) {
     var andRes = 'cordova/res/android/'
     var andScreenRes = 'cordova/res/screen/android/'
+    var iosRes = 'cordova/res/ios/'
+    var iosScreenRes = 'cordova/res/screen/ios/'
 
     gulp.src(paths.imgSrc + '/logo.png')
         .pipe(diff())
@@ -645,44 +648,267 @@ gulp.task('pix-resize', function (done) {
         }))
         .pipe(gulp.dest(andScreenRes))
 
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-60@3x.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "180", height: "180",
+        }))
+        .pipe(gulp.dest(iosRes))
+    //// iOS 7.0+ -->
+    // iPhone / iPod Touch  -->
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-60.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "60", height: "60",
+        }))
+        .pipe(gulp.dest(iosRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-60@2x.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "120", height: "120",
+        }))
+        .pipe(gulp.dest(iosRes))
+    // iPad -->
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-76.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "76", height: "76",
+        }))
+        .pipe(gulp.dest(iosRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-76@2x.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "152", height: "152",
+        }))
+        .pipe(gulp.dest(iosRes))
+    // iOS 6.1 -->
+    // Spotlight Icon -->
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-40.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "40", height: "40",
+        }))
+        .pipe(gulp.dest(iosRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-40@2x.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "80", height: "80",
+        }))
+        .pipe(gulp.dest(iosRes))
+    // iPhone / iPod Touch -->
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "57", height: "57",
+        }))
+        .pipe(gulp.dest(iosRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon@2x.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "114", height: "114",
+        }))
+        .pipe(gulp.dest(iosRes))
+    // iPad -->
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-72.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "72", height: "72",
+        }))
+        .pipe(gulp.dest(iosRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-72@2x.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "144", height: "144",
+        }))
+        .pipe(gulp.dest(iosRes))
+    // iPhone Spotlight and Settings Icon -->
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-small.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "29", height: "29",
+        }))
+        .pipe(gulp.dest(iosRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-small@2x.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "58", height: "58",
+        }))
+        .pipe(gulp.dest(iosRes))
+    // iPad Spotlight and Settings Icon -->
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-50.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "50", height: "50",
+        }))
+        .pipe(gulp.dest(iosRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("icon-50@2x.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "100", height: "100",
+        }))
+        .pipe(gulp.dest(iosRes))
 
-    /** TODO
-     <icon src="res/ios/icon-60@3x.png" width="180" height="180"/>
-     <!-- iOS 7.0+ -->
-     <!-- iPhone / iPod Touch  -->
-     <icon src="res/ios/icon-60.png" width="60" height="60"/>
-     <icon src="res/ios/icon-60@2x.png" width="120" height="120"/>
-     <!-- iPad -->
-     <icon src="res/ios/icon-76.png" width="76" height="76"/>
-     <icon src="res/ios/icon-76@2x.png" width="152" height="152"/>
-     <!-- iOS 6.1 -->
-     <!-- Spotlight Icon -->
-     <icon src="res/ios/icon-40.png" width="40" height="40"/>
-     <icon src="res/ios/icon-40@2x.png" width="80" height="80"/>
-     <!-- iPhone / iPod Touch -->
-     <icon src="res/ios/icon.png" width="57" height="57"/>
-     <icon src="res/ios/icon@2x.png" width="114" height="114"/>
-     <!-- iPad -->
-     <icon src="res/ios/icon-72.png" width="72" height="72"/>
-     <icon src="res/ios/icon-72@2x.png" width="144" height="144"/>
-     <!-- iPhone Spotlight and Settings Icon -->
-     <icon src="res/ios/icon-small.png" width="29" height="29"/>
-     <icon src="res/ios/icon-small@2x.png" width="58" height="58"/>
-     <!-- iPad Spotlight and Settings Icon -->
-     <icon src="res/ios/icon-50.png" width="50" height="50"/>
-     <icon src="res/ios/icon-50@2x.png" width="100" height="100"/>
-
-     <splash src="res/screen/ios/Default~iphone.png" width="320" height="480"/>
-     <splash src="res/screen/ios/Default@2x~iphone.png" width="640" height="960"/>
-     <splash src="res/screen/ios/Default-Portrait~ipad.png" width="768" height="1024"/>
-     <splash src="res/screen/ios/Default-Portrait@2x~ipad.png" width="1536" height="2048"/>
-     <splash src="res/screen/ios/Default-Landscape~ipad.png" width="1024" height="768"/>
-     <splash src="res/screen/ios/Default-Landscape@2x~ipad.png" width="2048" height="1536"/>
-     <splash src="res/screen/ios/Default-568h@2x~iphone.png" width="640" height="1136"/>
-     <splash src="res/screen/ios/Default-667h.png" width="750" height="1334"/>
-     <splash src="res/screen/ios/Default-736h.png" width="1242" height="2208"/>
-     <splash src="res/screen/ios/Default-Landscape-736h.png" width="2208" height="1242"/>
-     **/
+    //screen
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("Default~iphone.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "320", height: "480",
+        }))
+        .pipe(gulp.dest(iosScreenRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("Default@2x~iphone.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "640", height: "960",
+        }))
+        .pipe(gulp.dest(iosScreenRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("Default-Portrait~ipad.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "768", height: "1024",
+        }))
+        .pipe(gulp.dest(iosScreenRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("Default-Portrait@2x~ipad.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "1536", height: "2048",
+        }))
+        .pipe(gulp.dest(iosScreenRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("Default-Landscape~ipad.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "1024", height: "768",
+        }))
+        .pipe(gulp.dest(iosScreenRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("Default-Landscape@2x~ipad.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "2048", height: "1536",
+        }))
+        .pipe(gulp.dest(iosScreenRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("Default-568h@2x~iphone.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "640", height: "1136",
+        }))
+        .pipe(gulp.dest(iosScreenRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("Default-667h.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "750", height: "1334",
+        }))
+        .pipe(gulp.dest(iosScreenRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("Default-736h.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "1242", height: "2208",
+        }))
+        .pipe(gulp.dest(iosScreenRes))
+    gulp.src(paths.imgSrc + '/logo.png')
+        .pipe(diff())
+        .pipe(rename("Default-Landscape-736h.png"))
+        .pipe(imageResize({
+            imageMagick: true,
+            crop: true,
+            upscale: false,
+            width: "2208", height: "1242",
+        }))
+        .pipe(gulp.dest(iosScreenRes))
 
 })
 

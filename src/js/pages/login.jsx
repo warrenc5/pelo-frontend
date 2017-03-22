@@ -176,6 +176,7 @@ class Login extends Component {
     }
 
     static validate = (values, dispatch) => {
+        //TODO do this first and if it fails then fail.
         //return Login.reduxFormConfig.asyncValidate(values, dispatch).catch((e)=>())
         return new Promise((resolve, reject)=> {
             ngScope().client.login(values.username, values.password, (name, data)=> {
