@@ -12,3 +12,5 @@ cordova/www/
 npm-shrinkwrap.json
 /src/js/cordova/build.js
 /cordova/src/js/build.js
+/cordova/cordova/www/js/build.js
+/src/js/src/js/build.js
