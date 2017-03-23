@@ -6,10 +6,9 @@ plugins
 npm-debug.log
 .config.xml.swp
 .*.*.sw*
-cordova/www/
+cordova/www/*
 /src/js/build.js
 .gulp
-npm-shrinkwrap.json
 /src/js/cordova/build.js
 /cordova/src/js/build.js
 /cordova/cordova/www/js/build.js
