@@ -1,5 +1,6 @@
 import {debug2} from './misc'
 import storage from './storage'
+import Cookie from 'tough-cookie'
 
 export default class MyAjax {
 
@@ -8,9 +9,8 @@ export default class MyAjax {
         this.baseUrl = baseUrl
     }
 
-    call(name, url, success, failure, method, data) {
+    call(name, url, success, failure, method, data1) {
         var storageApply = this.storageApply
-        var xhttp
 
         try {
             this.working()
@@ -21,7 +21,7 @@ export default class MyAjax {
 
         url = this.baseUrl + url
 
-        xhttp = new XMLHttpRequest()
+        var xhttp = new XMLHttpRequest()
 
         xhttp.onreadystatechange = function () {
             switch (xhttp.readyState) {
@@ -30,6 +30,16 @@ export default class MyAjax {
                     break
                 case 1:
                     debug2("connected " + method)
+                    xhttp.withCredentials = true
+
+                    if ("POST" == method) {
+                        xhttp.setRequestHeader("Content-Type", "application/json")
+                        xhttp.setRequestHeader("Content-Length", data1.length)
+                        xhttp.setRequestHeader("Connection", "close")
+                        xhttp.send(data1)
+                    } else if ("GET" == method) {
+                        xhttp.send()
+                    }
                     break
                 case 2:
                     debug2("receiving")
@@ -62,19 +72,10 @@ export default class MyAjax {
             }
         }
 
+        xhttp.open(method, url, true)
         //gEBI("working").className = "shown"
 
-        if ("POST" == method) {
-            xhttp.open(method, url, true)
-            xhttp.setRequestHeader("Content-type", "application/json")
-            xhttp.setRequestHeader("Content-length", data.length)
-            xhttp.setRequestHeader("Connection", "close")
 
-            xhttp.send(data)
-        } else if ("GET" == method) {
-            xhttp.open(method, url, true)
-            xhttp.send()
-        }
     }
 
 }

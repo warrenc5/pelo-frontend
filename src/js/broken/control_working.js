@@ -133,7 +133,7 @@ peloApp.factory('platform', function ($rootScope) {
 peloApp.factory('ajax', function () {
     const _ajax = new MyAjax(null)
     return {
-        call: _ajax.remote,
+        //call: _ajax.remote,
         fail: function () {
             debug2("failed")
         },

@@ -181,6 +181,7 @@ peloApp.factory('platform', function ($rootScope) {
         }
 
         this.baseUrl = globals.peloBaseUrlTryout
+        this.baseUrl = globals.peloBaseUrlLocal
 
         /**
          cordovaOnly(() => {

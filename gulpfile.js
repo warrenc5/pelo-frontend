@@ -346,25 +346,35 @@ gulp.task('run', [], function () {
 
 gulp.task('clean', gulpsync.sync(['cordova_clean']), function (done) {
 
+    //`${paths.root}/cordova/platforms/**`,
+    //`!${paths.root}/cordova/platforms`,
+
     return del([`${paths.root}/.gulp/gulp-diff-build`,
-            `${paths.root}/cordova/platforms/**`,
-            `!${paths.root}/cordova/platforms`,
             `${paths.root}/cordova/www/**`,
             `!${paths.root}/cordova/www`
         ],
         {dryRun: false, force: true}).then(paths => {
         console.log('Files and folders that are deleted:\n', paths.join(' '));
     })
+
     /*, {read: false})
      .pipe(clean())
      */
 })
 
+gulp.task('ios-run', ['setup', 'compile'], function (done) {
+    return gulp.start('cordova_run')
+})
 gulp.task('android-run', ['setup', 'compile'], function (done) {
     return gulp.start('cordova_run')
 })
 
-gulp.task('android', gulpsync.sync(['setup', 'auto', 'default']), function (done) {
+gulp.task('ios', ['watch-dist'], function (done) {
+})
+gulp.task('android', ['watch-dist'], function (done) {
+})
+
+gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'default']), function (done) {
         return gulp.watch([paths.dest + '/**/*', "!" + paths.jsDest + "/cordova/**", "!" + paths.jsDest + "/" + buildTimeFile], {
                 ignoreInitial: true,
                 readDelay: 5000
@@ -447,9 +457,7 @@ gulp.task('cordova_build', function (done) {
 
 gulp.task('cordova_clean', function (done) {
     //FIXME
-    gulp.src(cordovaConfig)
-        .pipe(plumber())
-        .pipe(cordovaCmd(["clean"], {verbose: true, cwd: process.cwd() + '/cordova'}))
+    cordovaCmd(["clean"], {verbose: true, cwd: process.cwd() + '/cordova'})
     done()
 })
 

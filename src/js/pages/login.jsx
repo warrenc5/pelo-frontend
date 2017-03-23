@@ -1,6 +1,6 @@
 import React, {Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Field, reduxForm, propTypes } from 'redux-form'
+import { Field, propTypes } from 'redux-form'
 import {
     Checkbox,
     RadioButtonGroup,
@@ -28,24 +28,14 @@ import {
 
 import submit from "redux-form"
 import {debug0,debug2, debugJSON} from '../service/misc'
-import ngScope from '../service/bridge'
-import { asyncConnect as reduxAsyncConnect } from 'redux-connect'
+import {ngScope,myConnect} from '../service/bridge'
 import { hashHistory,browserHistory } from 'react-router'
-
-
-function myConnect(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig, reduxFormConfig) {
-    return target => {
-        return reduxAsyncConnect(
-            reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(reduxForm(reduxFormConfig)(target))
-    }
-}
 
 class Login extends Component {
 
     constructor(props) {
         super(props)
         this.props = props
-        //this.reduxFormConfig = Login.reduxFormConfig
         this.navigateProgramatically = this.navigateProgramatically.bind(this);
     }
 
@@ -129,7 +119,7 @@ class Login extends Component {
         debug2('component did mount')
         //debug0(this.props.route)
         var {router} = this.props
-        router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
+        //router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
         debug0(router.getCurrentLocation())
     }
 
@@ -195,7 +185,7 @@ class Login extends Component {
                 type: `LOGIN_ERROR`,
                 payload: {error: 'there was some error'}
             })
-            throw new SubmissionError({_error:'whoops' +  JSON.stringify(e)})
+            throw new SubmissionError({_error: 'whoops' + JSON.stringify(e)})
         })
     }
 
@@ -205,13 +195,14 @@ class Login extends Component {
     }
 
     static reduxAsyncConfig = [{
-        key: 'lunch',
-        promise: ({ params, helpers }) => Promise.resolve({id: 1, name: 'Borsch'})
+        key: 'none',
+        promise: ({ params, helpers }) => Promise.resolve({})
     }]
+
     static reduxPropsConfig = (state, props) => ({
         ok: state.ok,
         initialValues: {
-            //    username: 'wozza', password: 'password'
+            username: 'wozza', password: 'uyooho00'
         } //202
         //initialValues: {username: 'wozza', password: 'password1'} //401
     })
@@ -277,5 +268,4 @@ class Login extends Component {
 }
 
 @myConnect(Login.reduxAsyncConfig, Login.reduxPropsConfig, Login.reduxDispatchConfig, Login.reduxFormConfig)
-export default class LoginContainer extends Login {
-}
+export default class LoginContainer extends Login {}

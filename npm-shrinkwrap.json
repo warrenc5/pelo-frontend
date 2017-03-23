@@ -5862,7 +5862,7 @@
     },
     "npm": {
       "version": "2.15.11",
-      "from": "npm@>=2.10.0 <3.0.0",
+      "from": "https://registry.npmjs.org/npm/-/npm-2.15.11.tgz",
       "resolved": "https://registry.npmjs.org/npm/-/npm-2.15.11.tgz",
       "dev": true,
       "dependencies": {
@@ -11457,8 +11457,7 @@
     "punycode": {
       "version": "1.4.1",
       "from": "punycode@>=1.4.1 <2.0.0",
-      "resolved": "https://registry.npmjs.org/punycode/-/punycode-1.4.1.tgz",
-      "dev": true
+      "resolved": "https://registry.npmjs.org/punycode/-/punycode-1.4.1.tgz"
     },
     "q": {
       "version": "1.0.1",
@@ -12819,9 +12818,8 @@
     },
     "tough-cookie": {
       "version": "2.3.2",
-      "from": "tough-cookie@>=2.3.0 <2.4.0",
-      "resolved": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.3.2.tgz",
-      "dev": true
+      "from": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.3.2.tgz",
+      "resolved": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.3.2.tgz"
     },
     "transformers": {
       "version": "2.1.0",
