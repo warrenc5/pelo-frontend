@@ -12,7 +12,7 @@ import RouterPath from './Router.jsx'
 import {createTestData}  from './TestData'
 import MyReducer from './handler/reducers'
 import {myTheme} from './layout/theme'
-import ngScope from './service/bridge'
+import {ngScope} from './service/bridge'
 import {debug, debug2, debugJSON} from './service/misc'
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
@@ -48,6 +48,9 @@ class App extends React.Component {
          debug2("sub " + JSON.stringify(state))
          })
          */
+
+        //FIXME HOWTO??
+        //window.scrollReveal = new scrollReveal();
     }
 
     render() {

@@ -7,75 +7,99 @@ import { connect } from 'react-redux'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-//import reduxConnectedPropTypes from 'redux-connected-proptypes';
+import {ngScope,myConnect} from '../service/bridge'
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
 import * as select from '../handler/selectors'
+import {debug0,debug2, debugJSON} from '../service/misc'
+import 'scrollreveal'
 
-
+/**
+ * TODO: add scrolling
+ * http://blog.vjeux.com/2013/javascript/scroll-position-with-react.html
+ *
+ *
+ */
 class Groups extends React.Component {
     constructor(props) {
         super(props)
     }
 
-    GridListExampleSimple = () => {
-        <div style={style.root}>
-            <GridList
-                cellHeight={180}
-                style={style.gridList}
-            >
-                <Subheader>{this.props.total}</Subheader>
-                {this.props.groups.map((group) => (
-                <GridTile
-                    key={group.id}
-                    title={group.name}
-                    subtitle={<span>Creator: <b>{group.id}</b></span>}
-                    actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
-                    onTouchTap={e => {
+    GridListExampleSimple = (props) => {
+        const {groups} = props
+        return (
+            <div style={style.root}>
+                <GridList
+                    cellHeight={180}
+                    style={style.gridList}
+                >
+                    <Subheader>{this.props.total}</Subheader>
+                    {groups.map((group) => (
+                    <GridTile data-scroll-reveal
+                              key={group.id}
+                              title={group.name}
+                              subtitle={<span>Creator: <b>{group.id}</b></span>}
+                              actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
+                              onTouchTap={e => {
                         e.preventDefault()
                         this.props.joinGroup(this.props.userId,group.id)
                     }}>
-                    <img src={group.avatar}/>
-                </GridTile>
-                    ))}
-            </GridList>
-        </div>
+                        <img src={group.avatar}/>
+                    </GridTile>
+                        ))}
+                </GridList>
+            </div>
+        )
     }
 
     render() {
         return (
             <div>
                 <h2>Groups</h2>
+                <span>size:{this.props.groups.length}</span>
                 <div>
-                    {this.GridListExampleSimple()}
+                    {this.GridListExampleSimple(this.props)}
                 </div>
             </div>
         )
     }
-}
 
-Groups.propTypes = {
-    joinGroup: PropTypes.func.isRequired,
-    groups: PropTypes.array.isRequired,
-}
-
-//TODO: can we use redux-connected-proptypes here? - only for state - not for dispatch..
-//export const GroupsContainer = reduxConnectedPropTypes(Groups);
-export const GroupsContainer = connect(
-    (state, props) => {
-        return {
-            total: 3,//select.mySelector(state,props),
-            groups: state.groups,
-            userId: state.login.id
-        }
-    },
-    (dispatch) => {
-        return {
-            joinGroup: () => (...args) => dispatch(action.joinGroup(args))
-        }
+    static propTypes = {
+        joinGroup: PropTypes.func.isRequired,
+        groups: PropTypes.array.isRequired
     }
-)(Groups)
 
-export default GroupsContainer
 
+    static reduxAsyncConfig = [{
+        key: 'groups',
+        promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
+            const {auth} = store.getState()
+            ngScope().client.groups(auth.id, (name, data)=> {
+                resolve(data)
+            }, (e)=> {
+                reject(e)
+            })
+        }).then((result) =>result).catch((e)=> {
+            console.log(e)
+        })
+    }]
+
+    static reduxPropsConfig = (state, props) => ({
+        total: 3,//select.mySelector(state,props),
+        groups: state.groups,
+        userId: state.login.id
+    })
+
+    static reduxDispatchConfig = (dispatch) => ({
+        joinGroup: () => (...args) => dispatch(action.joinGroup(args))
+    })
+
+    static reduxFormConfig = {
+        form: 'GroupsForm',
+    }
+}
+
+@myConnect(Groups.reduxAsyncConfig, Groups.reduxPropsConfig, Groups.reduxDispatchConfig, Groups.reduxFormConfig)
+export default class GroupsContainer extends Groups {
+}

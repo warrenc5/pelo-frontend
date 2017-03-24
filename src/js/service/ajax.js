@@ -1,5 +1,6 @@
 import {debug2} from './misc'
 import storage from './storage'
+import Cookie from 'tough-cookie'
 
 export default class MyAjax {
 
@@ -8,9 +9,8 @@ export default class MyAjax {
         this.baseUrl = baseUrl
     }
 
-    call(name, url, success, failure, method, data) {
+    call(name, url, success, failure, method, data1) {
         var storageApply = this.storageApply
-        var xhttp
 
         try {
             this.working()
@@ -21,7 +21,7 @@ export default class MyAjax {
 
         url = this.baseUrl + url
 
-        xhttp = new XMLHttpRequest()
+        var xhttp = new XMLHttpRequest()
 
         xhttp.onreadystatechange = function () {
             switch (xhttp.readyState) {
@@ -30,6 +30,18 @@ export default class MyAjax {
                     break
                 case 1:
                     debug2("connected " + method)
+                    xhttp.withCredentials = true
+
+                    //                  xhttp.setRequestHeader("Cookie", "myccookie")
+
+                    if ("POST" == method) {
+                        xhttp.setRequestHeader("Content-Type", "application/json")
+                        xhttp.setRequestHeader("Content-Length", data1.length)
+                        xhttp.setRequestHeader("Connection", "close")
+                        xhttp.send(data1)
+                    } else if ("GET" == method) {
+                        xhttp.send()
+                    }
                     break
                 case 2:
                     debug2("receiving")
@@ -45,13 +57,16 @@ export default class MyAjax {
                         case 202:
                         case 204:
                             var data = storage.storeJSON(name, xhttp.responseText)
-                            debug2(xhttp.getResponseHeader('Set-Cookie'))
+//                            debug2('cookie:' + xhttp.getResponseHeader('Set-Cookie'))
 
                             if (data === undefined) {
                                 debug2("error:" + xhttp.responseText)
                             }
                             success(name, data)
+                            //cookies = xhttp.getResponseHeader['set-cookie'].map(Cookie.parse);
+                            //cookies = [Cookie.parse(xhttp.getResponseHeader('set-cookie'))];
                             break
+
                         case 0:
                         default:
                             failure({message: xhttp.status})
@@ -62,19 +77,10 @@ export default class MyAjax {
             }
         }
 
+        xhttp.open(method, url, true)
         //gEBI("working").className = "shown"
 
-        if ("POST" == method) {
-            xhttp.open(method, url, true)
-            xhttp.setRequestHeader("Content-type", "application/json")
-            xhttp.setRequestHeader("Content-length", data.length)
-            xhttp.setRequestHeader("Connection", "close")
 
-            xhttp.send(data)
-        } else if ("GET" == method) {
-            xhttp.open(method, url, true)
-            xhttp.send()
-        }
     }
 
 }

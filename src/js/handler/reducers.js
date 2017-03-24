@@ -30,7 +30,8 @@ const form = formReducer.plugin({
             case `FBLOGIN`:
                 return state
             case `FBLOGIN_ERROR`:
-                return {... state,
+                return {
+                    ... state,
                     error: action.payload.error
                 }
             case `LOGIN`:
@@ -63,6 +64,15 @@ const form = formReducer.plugin({
     }
 })
 
+const auth = (state = {}, action) => {
+    switch (action.type) {
+        case `LOGIN`:
+            return action.payload
+        default:
+            return state
+    }
+}
+
 const none = (state = {}, action) => {
     return state
 }
@@ -91,11 +101,17 @@ const debug = (state = {}, action) => {
 
 const groups = (state = [{id: 0}], action) => {
     switch (action.type) {
+
         case action.JOIN_GROUP:
             alert('join the group')
 
+            break
+        //case '@redux-conn/LOAD_SUCCESS':
+            //alert(JSON.stringify(state))
+            //return {...state, groups: action.payload.data}
+            //return state
+            //break
         default:
-
             return state
     }
 }
@@ -134,10 +150,10 @@ const todaysRides = (state = {}, action) => {
 export default function MyReducer() {
     return combineReducers({
         debug,
-        globals:none,
+        globals: none,
         groups,
-        auth:none,
-        login:none,
+        auth,
+        login: none,
         router: routerReducer,
         reduxAsyncConnect,
         form

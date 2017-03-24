@@ -2,13 +2,13 @@ import React, {Component, PropTypes } from 'react'
 import Working from '../component/working.jsx'
 import moment from 'moment'
 import {connect} from 'react-redux'
-import * as select from '../handler/selectors'
+//import {buildTime} from '../handler/selectors'
 
 const config = (
     (state, props) => {
         return {
             buildTime: state.globals.buildTime
-            //buildTime: select.buildTime
+            //buildTime: buildTime
         }
     })
 
@@ -49,8 +49,8 @@ export default class ContentLayout extends Component {
             </div>
         )
     }
-}
 
-ContentLayout.propTypes = {
-    buildTime: PropTypes.string.isRequired,
+    static propTypes = {
+        buildTime: PropTypes.string.isRequired,
+    }
 }

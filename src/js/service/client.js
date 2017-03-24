@@ -46,7 +46,7 @@ export default class MyClient {
     }
 
     groups(userId, success, failure) {
-        ajax("groups", "groups/" + userId, success, failure)
+        this.ajax.call("groups", "groups/" + userId, success, failure, "GET")
     }
 
     todaysRides(userId, success, failure) {
