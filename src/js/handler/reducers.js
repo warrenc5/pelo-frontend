@@ -64,6 +64,15 @@ const form = formReducer.plugin({
     }
 })
 
+const auth = (state = {}, action) => {
+    switch (action.type) {
+        case `LOGIN`:
+            return action.payload
+        default:
+            return state
+    }
+}
+
 const none = (state = {}, action) => {
     return state
 }
@@ -143,7 +152,7 @@ export default function MyReducer() {
         debug,
         globals: none,
         groups,
-        auth: none,
+        auth,
         login: none,
         router: routerReducer,
         reduxAsyncConnect,

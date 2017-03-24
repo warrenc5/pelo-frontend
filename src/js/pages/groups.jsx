@@ -13,7 +13,14 @@ import style from '../layout/style'
 import * as action from '../handler/actions'
 import * as select from '../handler/selectors'
 import {debug0,debug2, debugJSON} from '../service/misc'
+import 'scrollreveal'
 
+/**
+ * TODO: add scrolling
+ * http://blog.vjeux.com/2013/javascript/scroll-position-with-react.html
+ *
+ *
+ */
 class Groups extends React.Component {
     constructor(props) {
         super(props)
@@ -29,12 +36,12 @@ class Groups extends React.Component {
                 >
                     <Subheader>{this.props.total}</Subheader>
                     {groups.map((group) => (
-                    <GridTile
-                        key={group.id}
-                        title={group.name}
-                        subtitle={<span>Creator: <b>{group.id}</b></span>}
-                        actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
-                        onTouchTap={e => {
+                    <GridTile data-scroll-reveal
+                              key={group.id}
+                              title={group.name}
+                              subtitle={<span>Creator: <b>{group.id}</b></span>}
+                              actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
+                              onTouchTap={e => {
                         e.preventDefault()
                         this.props.joinGroup(this.props.userId,group.id)
                     }}>
@@ -63,13 +70,14 @@ class Groups extends React.Component {
         groups: PropTypes.array.isRequired
     }
 
+
     static reduxAsyncConfig = [{
         key: 'groups',
-        promise: ({ params, helpers }) => new Promise((resolve, reject)=> {
-            alert(JSON.stringify(params))
-            ngScope().client.groups(7, (name, data)=> {
+        promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
+            const {auth} = store.getState()
+            ngScope().client.groups(auth.id, (name, data)=> {
                 resolve(data)
-            },(e)=> {
+            }, (e)=> {
                 reject(e)
             })
         }).then((result) =>result).catch((e)=> {

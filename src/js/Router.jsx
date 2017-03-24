@@ -16,6 +16,7 @@ import LoginContainer from './pages/login.jsx'
 import BikeComponent from './pages/bike.jsx'
 import RegisterContainer from './pages/register.jsx'
 import About from './pages/about.jsx'
+import Terms from './pages/terms.jsx'
 
 let onUpdate = () => {
     window.scrollTo(0, 0)
@@ -39,9 +40,17 @@ export default class RouterPath extends React.Component {
 //<ConnectedRouter render={(props) => <ReduxAsyncConnect {...props} /> } history={this.props.history}>
 //<Router render={(props) => <ReduxAsyncConnect {...props} /> } history={browserHistory}>
     //render={applyRouterMiddleware()}
+
+    reloadOnPropsChange = (props, nextProps) => {
+        // reload only when path/route has changed
+        return props.location.pathname !== nextProps.location.pathname;
+
+    }
+
     render() {
         return (
-            <Router render={(props) => <ReduxAsyncConnect {...props} /> } history={this.props.history}>
+            <Router render={(props) => <ReduxAsyncConnect helpers={{ }} reloadOnPropsChange={this.reloadOnPropsChange} {...props} /> }
+                    history={this.props.history}>
                 <Route path="/" component={MainLayout}>
                     <Route component={ContentLayout}>
                         <IndexRoute component={LoginContainer}/>
@@ -62,6 +71,7 @@ export default class RouterPath extends React.Component {
                         <Route path="/groups" component={GroupsContainer} pageTitle="{:componentType}"/>
                         <Route path="/messages" component={MessagesContainer} pageTitle="{:componentType}"/>
                         <Route path="/settings" component={SettingsContainer} pageTitle="{:componentType}"/>
+                        <Route path="/terms" component={Terms} pageTitle="{:componentType}"/>
                     </Route>
                     <Route path="/about" component={About}/>
                 </Route>

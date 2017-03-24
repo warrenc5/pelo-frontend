@@ -110,7 +110,7 @@ class Login extends Component {
                         </tbody>
                     </table>
                 </Form>
-                <Link to="/terms" onClick={this.navigateProgramatically}>Read Terms & Conditions</Link>
+                <Link to="/terms">Read Terms & Conditions</Link>
             </div>
         )
     }

@@ -174,6 +174,7 @@ peloApp.factory('platform', function ($rootScope) {
 
         debug2(`platform detected ${p}`)
         //TODO remove
+        
         if (p == 'Dev') {
             this.baseUrl = globals.peloBaseUrlLocal
         } else {
@@ -183,12 +184,9 @@ peloApp.factory('platform', function ($rootScope) {
         this.baseUrl = globals.peloBaseUrlTryout
         this.baseUrl = globals.peloBaseUrlLocal
 
-        /**
          cordovaOnly(() => {
-            this.baseUrl = production
-            //this.baseUrl = "http://dev.testpelo1.cc/pelo/rest/view/"
+            this.baseUrl = globals.peloBaseUrlTryout
         })
-         */
     }
 
     function cordovaOnly(func) {

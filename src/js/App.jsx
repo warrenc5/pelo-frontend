@@ -48,6 +48,9 @@ class App extends React.Component {
          debug2("sub " + JSON.stringify(state))
          })
          */
+
+        //FIXME HOWTO??
+        //window.scrollReveal = new scrollReveal();
     }
 
     render() {

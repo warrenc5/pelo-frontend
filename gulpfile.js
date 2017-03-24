@@ -87,6 +87,7 @@ var paths = new (function () {
 
 
 var npmShrinkwrap = require("npm-shrinkwrap")
+
 gulp.task('start', [], function () {
     // Fire up a web server.
     browserSync.init({
@@ -133,21 +134,22 @@ gulp.task('start', [], function () {
     gulp.watch(cordovaConfig, {verbose: true, ignoreInitial: false}, ['setup'])
 })
 
-/*
- npmShrinkwrap({
- dirname: process.cwd()
- }, function (err, optionalWarnings) {
- if (err) {
- throw err
- }
 
- optionalWarnings.forEach(function (err) {
- util.warn(err.message)
- })
+gulp.task('shrinkwrap', [], function () {
+    npmShrinkwrap({
+        dirname: process.cwd()
+    }, function (err, optionalWarnings) {
+        if (err) {
+            throw err
+        }
 
- util.log("wrote npm-shrinkwrap.json")
- })
- */
+        optionalWarnings.forEach(function (err) {
+            util.warn(err.message)
+        })
+
+        util.log("wrote npm-shrinkwrap.json")
+    })
+})
 
 var buildTimeFile = 'build.js'
 var buildTime = moment().format('MMMM Do YYYY, h:mm:ss a')
@@ -294,7 +296,7 @@ gulp.task('copy-images', [], function () {
         .pipe(gulp.dest(paths.imgDest))
 })
 
-gulp.task('release', gulpsync.sync(['setup', 'compile', 'cordova_build']), function () {
+gulp.task('release', gulpsync.sync(['setup', 'compile', 'cordova_build','shrinkwrap']), function () {
     util.log('released')
     //TODO if !exists
     //cordova/platforms/android/build/outputs/apk/android-x86-debug.apk
@@ -374,7 +376,7 @@ gulp.task('ios', ['watch-dist'], function (done) {
 gulp.task('android', ['watch-dist'], function (done) {
 })
 
-gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'default']), function (done) {
+gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'default','cordova_serve']), function (done) {
         return gulp.watch([paths.dest + '/**/*', "!" + paths.jsDest + "/cordova/**", "!" + paths.jsDest + "/" + buildTimeFile], {
                 ignoreInitial: true,
                 readDelay: 5000
@@ -390,14 +392,11 @@ gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'default']), function (d
 //https://github.com/apache/cordova-lib/blob/master/cordova-lib/src/cordova/util.js#L294
 gulp.task('cordova_serve', ['auto'], function (done) {
 
-    //process.chdir( //`${baseDir}/cordova/platforms/android/assets/www/`)
-    process.chdir(
-        `${paths.root}/cordova`
-    )
+    process.chdir(`${paths.root}/cordova/platforms/android/assets/www/`)
 
     return cordova.serve({
-        verbose: true,
-        cwd: 'cordova',
+       verbose: true,
+       cwd: paths.root+ '/cordova',
     }, function (e) {
         if (e) {
             util.log('cordova error build result:' + e)
@@ -406,10 +405,8 @@ gulp.task('cordova_serve', ['auto'], function (done) {
             cordovaServer.launchBrowser(opts);
             // cordova_refresh()
         }
-
-        process.chdir(paths.root)
+        //process.chdir(paths.root)
     })
-
     /*
      var opts = {}
      var platform = "android"

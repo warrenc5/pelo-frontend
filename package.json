@@ -42,6 +42,7 @@
     "redux-form-submit": "^0.1.3",
     "redux-thunk": "^2.2.0",
     "reselect": "^2.5.4",
+    "scrollreveal": "^3.3.4",
     "tough-cookie": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.3.2.tgz"
   },
   "devDependencies": {

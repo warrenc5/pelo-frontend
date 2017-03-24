@@ -32,6 +32,8 @@ export default class MyAjax {
                     debug2("connected " + method)
                     xhttp.withCredentials = true
 
+                    //                  xhttp.setRequestHeader("Cookie", "myccookie")
+
                     if ("POST" == method) {
                         xhttp.setRequestHeader("Content-Type", "application/json")
                         xhttp.setRequestHeader("Content-Length", data1.length)
@@ -55,13 +57,16 @@ export default class MyAjax {
                         case 202:
                         case 204:
                             var data = storage.storeJSON(name, xhttp.responseText)
-                            debug2(xhttp.getResponseHeader('Set-Cookie'))
+//                            debug2('cookie:' + xhttp.getResponseHeader('Set-Cookie'))
 
                             if (data === undefined) {
                                 debug2("error:" + xhttp.responseText)
                             }
                             success(name, data)
+                            //cookies = xhttp.getResponseHeader['set-cookie'].map(Cookie.parse);
+                            //cookies = [Cookie.parse(xhttp.getResponseHeader('set-cookie'))];
                             break
+
                         case 0:
                         default:
                             failure({message: xhttp.status})
