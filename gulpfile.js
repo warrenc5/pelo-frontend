@@ -484,7 +484,6 @@ gulp.task('cordova_run', function (done) {
 
         return cordova.run({
             "verbose": true,
-            "platforms": ["android"],
             "options": ["--debug"] //"--gradleArg=--no-daemon"]
         }, function (e) {
             if (e) {
@@ -534,10 +533,10 @@ gulp.task('setup', ['install'], (done)=> {
 
 //----------------------------------------------------------------------------------------------------------------------
 gulp.task('pix-resize', function (done) {
-    var andRes = 'cordova/res/android/'
-    var andScreenRes = 'cordova/res/screen/android/'
-    var iosRes = 'cordova/res/ios/'
-    var iosScreenRes = 'cordova/res/screen/ios/'
+    var andRes = paths.root+'/cordova/res/android/'
+    var andScreenRes = paths.root+'/cordova/res/screen/android/'
+    var iosRes = paths.root+'/cordova/res/ios/'
+    var iosScreenRes = paths.root+'/cordova/res/screen/ios/'
 
     gulp.src(paths.imgSrc + '/logo.png')
         .pipe(diff())
@@ -734,6 +733,7 @@ gulp.task('pix-resize', function (done) {
             width: "40", height: "40",
         }))
         .pipe(gulp.dest(iosRes))
+
     gulp.src(paths.imgSrc + '/logo.png')
         .pipe(diff())
         .pipe(rename("icon-40@2x.png"))
@@ -802,7 +802,6 @@ gulp.task('pix-resize', function (done) {
         .pipe(rename("icon-small@2x.png"))
         .pipe(imageResize({
             imageMagick: true,
-            crop: true,
             upscale: false,
             width: "58", height: "58",
         }))
