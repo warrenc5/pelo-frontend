@@ -26,7 +26,11 @@
                   value="pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g"/>
     </plugin>
     <plugin name="cordova-plugin-facebook4">
+
         <variable name="APP_ID" value="1697342230545684"/>
+        <!--
+        <variable name="APP_ID" value="269193253518235"/>
+            -->
         <variable name="APP_NAME" value="Pelo"/>
     </plugin>
 
@@ -50,8 +54,9 @@
     <preference name="SplashScreenDelay" value="3000"/>
     <preference name="SplashMaintainAspectRatio" value="true"/>
     <preference name="SplashShowOnlyFirstTime" value="true"/>
+    <!--
     <preference name="SplashScreen" value="/img/splash1.jpg"/>
-    <preference name="SplashScreenDelay" value="3000"/>
+    -->
     <preference name="SplashScreenBackgroundColor" value="green"/>
     <preference name="ShowSplashScreen" value="true"/>
     <preference name="SplashScreenWidth" value="600"/>
@@ -61,20 +66,24 @@
         <preference name="cdvBuildArch" value="x86"/>
         <preference name="cdvBuildMultipleApks" value="false"/>
     -->
-    <preference name="xwalkVersion" value="19" />
+    <preference name="xwalkVersion" value="19"/>
     <preference name="xwalkMultipleApk" value="true"/>
     <preference name="android-minSdkVersion" value="15"/>
     <preference name="tools:overrideLibrary" value="org.xwalk.core"/>
     <preference name="uses-sdk:minSdkVersion" value="15"/>
-    <preference name="android-targetSdkVersion" value="21" />
+    <preference name="android-targetSdkVersion" value="21"/>
     <!--
     <preference name="tools:overrideLibrary" value="org.xwalk.core"/>
     -->
     <!-- http://cordova.apache.org/docs/en/4.0.0/config_ref_images.md.html -->
     <!--
-    <hook type="before_build" src="scripts/gulp_default.js" />
+    <hook type="before_run" src="scripts/gulp-compile.js" />
     -->
+
+
     <platform name="android">
+        <hook type="before_run" src="scripts/adb-reverse.js" />
+
         <allow-intent href="market:*"/>
         <icon src="res/android/ldpi.png" density="ldpi"/>
         <icon src="res/android/mdpi.png" density="mdpi"/>

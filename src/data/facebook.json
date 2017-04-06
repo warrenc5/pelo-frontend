@@ -1,0 +1,15 @@
+{
+  "fb": {
+    "userData": {
+      "id": "1155594744465449",
+      "email": "wozza.xing@gmail.com"
+    },
+    "auth": {
+      "userID": "1155594744465449",
+      "accessToken": "EAAYHuUi2xRQBAIFcMhmvC3J8r9sRIWEPZALAM0r0kGMrZAZAfAuOtk4v5t2FGRnxNetFrhgyL4QcEvXyMMwDS9EDT3SceCVcXgxtkRzIOK9DyVUOFMdNo1I3w8EsyvDZBhAHxBk7ijzBiRZCAk0XYZCaNJbITmSAYiQHpQsZBeyAGRZAcPRBv8B5vJK0uu4kp3cZD",
+      "session_key": true,
+      "expiresIn": "5183999 ",
+      "sig": "..."
+    }
+  }
+}

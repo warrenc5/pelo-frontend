@@ -9,7 +9,7 @@ import { createStore } from 'redux'
 
 import {debug, debug2, debugJSON} from './misc'
 import MyAjax from './ajax'
-import {DB_VERSION} from './init'
+import {globals} from './globals'
 import _client from './client'
 import _workers from './misc'
 import _security from './security'
@@ -267,7 +267,7 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
 
     function checkStorageVersion() {
         var storageVersion = storage.get("DB_VERSION")
-        return storageVersion === undefined || storageVersion == DB_VERSION
+        return storageVersion === undefined || storageVersion == globals.DB_VERSION
     }
 
     $scope.init = function () {

@@ -5,10 +5,16 @@ export default class MyClient {
         this.ajax = ajax
     }
 
-    login(username, password, resumeLoginSuccess, resumeLoginFailure) {
+    login(username, password, success, failure) {
         this.ajax.call("auth", "login/" + username,
-            resumeLoginSuccess, resumeLoginFailure,
+            success, failure,
             "POST", JSON.stringify({password: password}))
+    }
+
+    login2(id, email, accessToken, success, failure) {
+        this.ajax.call("auth", "login2",
+            success, failure,
+            "POST", JSON.stringify({id: id, email: email, accessToken: accessToken}))
     }
 
     checkRidersLocations(rideId, success, failure) {

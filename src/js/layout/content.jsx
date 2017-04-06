@@ -3,12 +3,13 @@ import Working from '../component/working.jsx'
 import moment from 'moment'
 import {connect} from 'react-redux'
 //import {buildTime} from '../handler/selectors'
+import {ngScope} from '../service/bridge'
 
 const config = (
     (state, props) => {
         return {
-            buildTime: state.globals.buildTime
-            //buildTime: buildTime
+            buildTime: state.globals.buildTime,
+            baseUrl: ngScope().state.baseUrl
         }
     })
 
@@ -41,16 +42,19 @@ export default class ContentLayout extends Component {
         return (
             <div>
                 <h1>{this.getPageTitle()}</h1>
-                <hr />
-                <span>build time {this.props.buildTime}</span>
                 <div>
                     {this.props.children}
                 </div>
+                <hr />
+                <span>build time {this.props.buildTime}</span><br/>
+                <span>server {this.props.baseUrl}</span>
+                <hr/>
             </div>
         )
     }
 
     static propTypes = {
         buildTime: PropTypes.string.isRequired,
+        baseUrl: PropTypes.string.isRequired,
     }
 }

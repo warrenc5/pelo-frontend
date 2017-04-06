@@ -181,6 +181,7 @@ class Login extends Component {
             })
             dispatch(push('/groups'))
         }).catch((e)=> {
+            console.log(JSON.stringify(e))
             dispatch({
                 type: `LOGIN_ERROR`,
                 payload: {error: 'there was some error'}
@@ -215,9 +216,8 @@ class Login extends Component {
 
                 //TODO how to preset users email? from cookie??
                 var email = 'wozza.xing@gmail.com'
-
                 ngScope().fb.loginFB(email, (response)=> {
-                        resolve(dispatch, response)
+                        resolve(response)
                     }
                     , (e)=> {
                         reject(e)
@@ -228,7 +228,26 @@ class Login extends Component {
                     type: `FBLOGIN`,
                     payload: response
                 })
-                dispatch(push('/groups'))
+                return new Promise((resolve, reject)=> {
+                    ngScope().client.login2(response.fb.userData.id,response.fb.userData.email,response.fb.auth.accessToken, (name, data)=> {
+                        resolve(data)
+                    }, (e)=> {
+                        reject(e)
+                    })
+                }).then((result)=> {
+                    dispatch({
+                        type: `LOGIN`,
+                        payload: result
+                    })
+                    dispatch(push('/groups'))
+                }).catch((e)=> {
+                    console.log(JSON.stringify(e))
+                    dispatch({
+                        type: `LOGIN_ERROR`,
+                        payload: {error: 'there was some error '}
+                    })
+                    throw new SubmissionError({_error: 'whoops' + JSON.stringify(e)})
+                })
             }).catch((e)=> {
                 dispatch({
                     type: `FBLOGIN_ERROR`,

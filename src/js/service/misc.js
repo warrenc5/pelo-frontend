@@ -1,4 +1,4 @@
-import * as globals from './init'
+import {globals} from './globals'
 
 export function debug(name, xhttp) {
     debug2(name + " " + xhttp.status + "  " + xhttp.responseText)
