@@ -4,11 +4,12 @@ import 'ngreact/ngReact'
 import moment from 'moment'
 import {debug, debug2, debugJSON} from './misc'
 import * as buildTime from '../build'
-import * as globals from './init'
+import {globals} from './globals'
 import storage from './storage'
 import MyClient from './client'
 import MyAjax from './ajax'
 
+import {createTestData}  from '../TestData'
 import {App} from '../App.jsx'
 
 var local = {
@@ -101,7 +102,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
 
     $scope.inited = false
 
-    $scope.state = {globals: globals,ok:false}
+    $scope.state = {globals: globals,ok:false,baseUrl:"unknown"}
     $scope.fb = fb
     $scope.init = function () {
 
@@ -128,6 +129,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
             }**/
         });
 
+        $scope.state["baseUrl"] = platform.baseUrl
         $scope.client = new MyClient(new MyAjax(platform.baseUrl))
     }
 
@@ -175,16 +177,13 @@ peloApp.factory('platform', function ($rootScope) {
         debug2(`platform detected ${p}`)
         //TODO remove
         
-        if (p == 'Dev') {
+        if (~['Dev','Unknown'].indexOf(p)) {
             this.baseUrl = globals.peloBaseUrlLocal
         } else {
             this.baseUrl = globals.peloBaseUrlMock
         }
 
-        this.baseUrl = globals.peloBaseUrlTryout
-        this.baseUrl = globals.peloBaseUrlLocal
-
-         cordovaOnly(() => {
+        cordovaOnly(() => {
             this.baseUrl = globals.peloBaseUrlTryout
         })
     }
@@ -222,7 +221,6 @@ peloApp.factory('platform', function ($rootScope) {
                     }
                 }
             } catch (e) {
-
                 debug2(e)
             }
         }
@@ -237,11 +235,12 @@ peloApp.factory('platform', function ($rootScope) {
 
 })
 
-peloApp.factory("fb", function () {
+peloApp.service("fb", function () {
 
     //var appId = "1027544200612898"
-    var appId = "1697342230545684"
-    var version = "2.5"
+    //var appId = "1697342230545684";
+    //var appId = "269193253518235";
+    var version = "2.8"
 
     function loginFB(username, success, failure) {
 
@@ -256,14 +255,14 @@ peloApp.factory("fb", function () {
 
         debug2('login to facebook')
         try {
-            facebookConnectPlugin.login(['email', 'public_profile'], function (userData) {
+            facebookConnectPlugin.login(['email', 'public_profile'], function (loginResponse) {
                     facebookConnectPlugin.api('/me?fields=email', null,
-                        function (response) {
-                            debug2("me: " + JSON.stringify(response))
+                        function (emailResponse) {
+                            debug2("me: " + JSON.stringify(emailResponse))
                             //login2(response.email, userData.accessToken)
-                            debug2("success" + JSON.stringify(userData))
+                            debug2("success" + JSON.stringify(loginResponse))
                             //response.name
-                            success(response)
+                            success({fb: {userData: response, auth:loginResponse}})
                             //logoutFB()
                         })
                 },
@@ -275,6 +274,9 @@ peloApp.factory("fb", function () {
             failure("fb plugin error 2 " + e)
         }
 
+    }
+    function loginFBTest(username, success, failure) {
+       return success(createTestData().fb)
     }
 
     function logoutFB() {
@@ -293,7 +295,7 @@ peloApp.factory("fb", function () {
     }
 
     return {
-        loginFB: loginFB,
+        loginFB: loginFBTest,
         logoutFB: logoutFB
     }
 

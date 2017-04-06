@@ -51,6 +51,7 @@ const env = require('get-env')({
     staging: 'staging',
     test: ['test', 'testing']
 });
+var touch = require('gulp-touch');
 var packageConfig = "package.json"
 var cordovaConfig = "cordova/config.xml"
 var cordovaCmds = "cordova.json"
@@ -217,9 +218,11 @@ gulp.task('compile-js', [], function (done1) {
 
     gulp.start('build-time')
 
-    var b = browserify(paths.jsSrc + paths.mainApplicationJS)
+    var b = browserify([`${paths.jsSrc}/${paths.mainApplicationJS}`])
         .transform(babelify.configure({
-            env: {production: {}},
+            env: {
+                production: {}, development: {}
+            },
             minified: env == 'prod',
             ignore: ['/node_modules/**'],
             comments: false,
@@ -296,7 +299,7 @@ gulp.task('copy-images', [], function () {
         .pipe(gulp.dest(paths.imgDest))
 })
 
-gulp.task('release', gulpsync.sync(['setup', 'compile', 'cordova_build','shrinkwrap']), function () {
+gulp.task('release', gulpsync.sync(['setup', 'compile', 'cordova_build', 'shrinkwrap']), function () {
     util.log('released')
     //TODO if !exists
     //cordova/platforms/android/build/outputs/apk/android-x86-debug.apk
@@ -304,13 +307,17 @@ gulp.task('release', gulpsync.sync(['setup', 'compile', 'cordova_build','shrinkw
     //run shrink-wrap
 
 })
+
+gulp.task('touch', function (done) {
+    gulp.src(paths.jsSrc + '/index.js')
+        .pipe(touch());
+})
 gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
 gulp.task('default', ['setup', 'install', 'auto', 'start', 'compile'])
 
 
-gulp.task('stop', function () {
-
+gulp.task('stop', function (done) {
     browserSync.exit()
 })
 
@@ -351,7 +358,7 @@ gulp.task('clean', gulpsync.sync(['cordova_clean']), function (done) {
     //`${paths.root}/cordova/platforms/**`,
     //`!${paths.root}/cordova/platforms`,
 
-    return del([`${paths.root}/.gulp/gulp-diff-build`,
+    return del([`${paths.root}/.gulp/gulp-diff-build/hash.json`,
             `${paths.root}/cordova/www/**`,
             `!${paths.root}/cordova/www`
         ],
@@ -375,8 +382,7 @@ gulp.task('ios', ['watch-dist'], function (done) {
 })
 gulp.task('android', ['watch-dist'], function (done) {
 })
-
-gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'default','cordova_serve']), function (done) {
+gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'default', 'cordova_serve']), function (done) {
         return gulp.watch([paths.dest + '/**/*', "!" + paths.jsDest + "/cordova/**", "!" + paths.jsDest + "/" + buildTimeFile], {
                 ignoreInitial: true,
                 readDelay: 5000
@@ -388,16 +394,25 @@ gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'default','cordova_serve
             }))
     }
 )
-
+gulp.task('mock', ['auto'], function (done) {
+    const mvn = require('maven').create({
+        cwd: '../pelo-it',
+        profiles: ['wiremock']
+    });
+    mvn.execute([], {'skipTests': true}).then(() => {
+        done()
+    });
+})
 //https://github.com/apache/cordova-lib/blob/master/cordova-lib/src/cordova/util.js#L294
 gulp.task('cordova_serve', ['auto'], function (done) {
 
-    process.chdir(`${paths.root}/cordova/platforms/android/assets/www/`)
+    var cordovaDir = `${paths.root}/cordova/www/`
+    process.chdir(cordovaDir)
 
     return cordova.serve({
-       verbose: true,
-       cwd: paths.root+ '/cordova',
+        cwd: `${paths.root}/cordova`,
     }, function (e) {
+        util.log('cordova callback')
         if (e) {
             util.log('cordova error build result:' + e)
         } else {
@@ -405,7 +420,8 @@ gulp.task('cordova_serve', ['auto'], function (done) {
             cordovaServer.launchBrowser(opts);
             // cordova_refresh()
         }
-        //process.chdir(paths.root)
+        process.chdir(paths.root)
+        done()
     })
     /*
      var opts = {}
@@ -504,7 +520,7 @@ gulp.task('rerun', function () {
 })
 gulp.task('install', [], function (done) {
     return gulp.src(packageConfig)
-        .pipe(diff())
+        .pipe(diff({hash:'package'}))
         .pipe(install())
     //.on('end',done)
 })
@@ -512,7 +528,7 @@ gulp.task('install', [], function (done) {
 gulp.task('setup', ['install'], (done)=> {
     return gulp.src(cordovaConfig)
         .pipe(plumber())
-        .pipe(diff())
+        .pipe(diff({hash:'cordova'}))
         .pipe(cordovaCmd(["prepare"], {verbose: true, cwd: process.cwd() + '/cordova'}))
 })
 

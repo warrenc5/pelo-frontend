@@ -17,6 +17,7 @@ export function createTestData() {
         login: ajax('body-login-wozza-xlUCd.json'),
         todaysRides: {id: true},
         groups: ajax("body-groups-7-Ag7Fp.json"),
+        fb: ajax("facebook.json"),
     }
 }
 
