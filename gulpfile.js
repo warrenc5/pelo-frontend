@@ -80,6 +80,7 @@ var paths = new (function () {
     this.jsDest = this.dest + '/js'
     this.imgDest = this.dest + '/img'
     this.dataDest = this.dest + '/data'
+    this.cordova = `${this.root}/cordova`
     //this.fontDest =  this.dest/font'
 
     this.cssDestName = 'bundle.css'
@@ -335,7 +336,7 @@ function readBuildTime() {
 }
 
 gulp.task('run', [], function () {
-    process.chdir(paths.root + "/cordova")
+    process.chdir(`${paths.cordova}`)
 
     util.log('building ' + process.cwd())
     cordova.run({
@@ -484,7 +485,6 @@ gulp.task('cordova_run', function (done) {
 
         return cordova.run({
             "verbose": true,
-            "platforms": ["android"],
             "options": ["--debug"] //"--gradleArg=--no-daemon"]
         }, function (e) {
             if (e) {
@@ -520,7 +520,7 @@ gulp.task('rerun', function () {
 })
 gulp.task('install', [], function (done) {
     return gulp.src(packageConfig)
-        .pipe(diff({hash:'package'}))
+        .pipe(diff({hash: 'package'}))
         .pipe(install())
     //.on('end',done)
 })
@@ -528,408 +528,28 @@ gulp.task('install', [], function (done) {
 gulp.task('setup', ['install'], (done)=> {
     return gulp.src(cordovaConfig)
         .pipe(plumber())
-        .pipe(diff({hash:'cordova'}))
+        .pipe(diff({hash: 'cordova'}))
         .pipe(cordovaCmd(["prepare"], {verbose: true, cwd: process.cwd() + '/cordova'}))
 })
 
 //----------------------------------------------------------------------------------------------------------------------
 gulp.task('pix-resize', function (done) {
-    var andRes = 'cordova/res/android/'
-    var andScreenRes = 'cordova/res/screen/android/'
-    var iosRes = 'cordova/res/ios/'
-    var iosScreenRes = 'cordova/res/screen/ios/'
 
-    gulp.src(paths.imgSrc + '/logo.png')
+    process.chdir(`${paths.cordova}`)
+
+    gulp.src(paths.imgSrc + '/icon.png')
         .pipe(diff())
-        .pipe(rename("ldpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            width: 36,
-            height: 36,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andRes)).on('error', function () {
-        util.log("install http://www.graphicsmagick.org/ or http://www.imagemagick.org")
+        .pipe(gulp.dest(paths.cordova)).on('end', function () {
+        require('cordova-icon')
     })
 
-    gulp.src(paths.imgSrc + '/logo.png')
+    gulp.src(paths.imgSrc + '/splash.png')
         .pipe(diff())
-        .pipe(rename("mdpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            width: 48,
-            height: 48,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andRes))
+        .pipe(gulp.dest(paths.cordova)).on('end', function () {
+            require('cordova-splash')
 
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("hdpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            width: 72,
-            height: 72,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andRes))
+    })
 
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("xhdpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            width: 96,
-            height: 96,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andRes))
-
-    gulp.src(paths.imgSrc + '/splash-land.png')
-        .pipe(diff())
-        .pipe(rename("splash-land-hdpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andScreenRes))
-
-    gulp.src(paths.imgSrc + '/splash-land.png')
-        .pipe(diff())
-        .pipe(rename("splash-land-ldpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andScreenRes))
-
-    gulp.src(paths.imgSrc + '/splash-land.png')
-        .pipe(diff())
-        .pipe(rename("splash-land-mdpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andScreenRes))
-
-    gulp.src(paths.imgSrc + '/splash-land.png')
-        .pipe(diff())
-        .pipe(rename("splash-land-xhdpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andScreenRes))
-
-    gulp.src(paths.imgSrc + '/splash-port.png')
-        .pipe(diff())
-        .pipe(rename("splash-port-hdpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andScreenRes))
-
-    gulp.src(paths.imgSrc + '/splash-port.png')
-        .pipe(diff())
-        .pipe(rename("splash-port-ldpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andScreenRes))
-
-    gulp.src(paths.imgSrc + '/splash-port.png')
-        .pipe(diff())
-        .pipe(rename("splash-port-mdpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andScreenRes))
-
-    gulp.src(paths.imgSrc + '/splash-port.png')
-        .pipe(diff())
-        .pipe(rename("splash-port-xhdpi.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false
-        }))
-        .pipe(gulp.dest(andScreenRes))
-
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-60@3x.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "180", height: "180",
-        }))
-        .pipe(gulp.dest(iosRes))
-    //// iOS 7.0+ -->
-    // iPhone / iPod Touch  -->
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-60.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "60", height: "60",
-        }))
-        .pipe(gulp.dest(iosRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-60@2x.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "120", height: "120",
-        }))
-        .pipe(gulp.dest(iosRes))
-    // iPad -->
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-76.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "76", height: "76",
-        }))
-        .pipe(gulp.dest(iosRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-76@2x.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "152", height: "152",
-        }))
-        .pipe(gulp.dest(iosRes))
-    // iOS 6.1 -->
-    // Spotlight Icon -->
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-40.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "40", height: "40",
-        }))
-        .pipe(gulp.dest(iosRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-40@2x.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "80", height: "80",
-        }))
-        .pipe(gulp.dest(iosRes))
-    // iPhone / iPod Touch -->
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "57", height: "57",
-        }))
-        .pipe(gulp.dest(iosRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon@2x.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "114", height: "114",
-        }))
-        .pipe(gulp.dest(iosRes))
-    // iPad -->
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-72.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "72", height: "72",
-        }))
-        .pipe(gulp.dest(iosRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-72@2x.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "144", height: "144",
-        }))
-        .pipe(gulp.dest(iosRes))
-    // iPhone Spotlight and Settings Icon -->
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-small.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "29", height: "29",
-        }))
-        .pipe(gulp.dest(iosRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-small@2x.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "58", height: "58",
-        }))
-        .pipe(gulp.dest(iosRes))
-    // iPad Spotlight and Settings Icon -->
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-50.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "50", height: "50",
-        }))
-        .pipe(gulp.dest(iosRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("icon-50@2x.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "100", height: "100",
-        }))
-        .pipe(gulp.dest(iosRes))
-
-    //screen
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("Default~iphone.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "320", height: "480",
-        }))
-        .pipe(gulp.dest(iosScreenRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("Default@2x~iphone.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "640", height: "960",
-        }))
-        .pipe(gulp.dest(iosScreenRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("Default-Portrait~ipad.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "768", height: "1024",
-        }))
-        .pipe(gulp.dest(iosScreenRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("Default-Portrait@2x~ipad.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "1536", height: "2048",
-        }))
-        .pipe(gulp.dest(iosScreenRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("Default-Landscape~ipad.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "1024", height: "768",
-        }))
-        .pipe(gulp.dest(iosScreenRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("Default-Landscape@2x~ipad.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "2048", height: "1536",
-        }))
-        .pipe(gulp.dest(iosScreenRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("Default-568h@2x~iphone.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "640", height: "1136",
-        }))
-        .pipe(gulp.dest(iosScreenRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("Default-667h.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "750", height: "1334",
-        }))
-        .pipe(gulp.dest(iosScreenRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("Default-736h.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "1242", height: "2208",
-        }))
-        .pipe(gulp.dest(iosScreenRes))
-    gulp.src(paths.imgSrc + '/logo.png')
-        .pipe(diff())
-        .pipe(rename("Default-Landscape-736h.png"))
-        .pipe(imageResize({
-            imageMagick: true,
-            crop: true,
-            upscale: false,
-            width: "2208", height: "1242",
-        }))
-        .pipe(gulp.dest(iosScreenRes))
 
 })
 
