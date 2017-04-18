@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react'
 
 import { connect } from 'react-redux'
-import FlatButton from 'material-ui/FlatButton'
-import RaisedButton from 'material-ui/RaisedButton'
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import Divider from 'material-ui/Divider';
+import {Menu, MenuItem} from 'material-ui/Menu';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import style from '../layout/style'
+
 
 class Rides extends React.Component {
     constructor(props) {
@@ -11,24 +13,48 @@ class Rides extends React.Component {
         this.props = props
     }
 
-    FlatButtonExampleSimple = () => (
-        <div>
-            <FlatButton label="About Ride" />
-            <FlatButton label="Riders" />
-            <FlatButton label="Discussion" />
-            <FlatButton label="Leaderborard" />
-        </div>
+    DividerExampleMenu = () => (
+        <Menu desktop={true} style={style}>
+            <MenuItem primaryText="Place - Akuna Bay via Church Point" />
+            <MenuItem primaryText="Time - 6:30am - 10:30am" />
+            <MenuItem primaryText="Created by: John Smith" />
+            <Divider />
+            <MenuItem primaryText="Distance - 87km" />
+            <MenuItem primaryText="Elevation - 1400m" />
+            <MenuItem primaryText="Expected Avg pace - This will be a C Group pace 26km/h+" />
+        </Menu>
+    );
+
+    TableExampleSimple = () => (
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHeaderColumn>Yes</TableHeaderColumn>
+                    <TableHeaderColumn>Maybe</TableHeaderColumn>
+                    <TableHeaderColumn>No</TableHeaderColumn>
+                    <TableHeaderColumn>Pending</TableHeaderColumn>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                <TableRow>
+                    <TableRowColumn>4</TableRowColumn>
+                    <TableRowColumn>0</TableRowColumn>
+                    <TableRowColumn>0</TableRowColumn>
+                    <TableRowColumn>14</TableRowColumn>
+                </TableRow>
+            </TableBody>
+        </Table>
     );
 
     render() {
         return(
             <div>
-                <h2>Test6</h2>
+                <h2>Rides</h2>
                 <div>
-                    {this.FlatButtonExampleSimple()}
+                    {this.DividerExampleMenu()}
                 </div>
                 <div>
-                    Text
+                    {this.TableExampleSimple()}
                 </div>
             </div>
 
