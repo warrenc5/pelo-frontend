@@ -17,7 +17,7 @@ export default class MyAjax {
         } catch (e) {
         }
 
-        debug2(name + "@" + this.baseUrl + url)
+        debug2(">>" + name + "@" + this.baseUrl + url)
 
         url = this.baseUrl + url
 

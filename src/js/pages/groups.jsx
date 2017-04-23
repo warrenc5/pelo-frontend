@@ -3,11 +3,10 @@ import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import Subheader from 'material-ui/Subheader';
-import { connect } from 'react-redux'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import {ngScope,myConnect} from '../service/bridge'
+import {ngScope,myAsyncFormConnect} from '../service/bridge'
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
@@ -17,6 +16,10 @@ import 'scrollreveal'
 
 /**
  * TODO: add scrolling
+ * let onUpdate = () => {
+ *   window.scrollTo(0, 0)
+ * }
+ *
  * http://blog.vjeux.com/2013/javascript/scroll-position-with-react.html
  *
  *
@@ -72,7 +75,7 @@ class Groups extends React.Component {
 
 
     static reduxAsyncConfig = [{
-        key: 'groups',
+        key: `groups`,
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
             const {auth} = store.getState()
             ngScope().client.groups(auth.id, (name, data)=> {
@@ -96,10 +99,10 @@ class Groups extends React.Component {
     })
 
     static reduxFormConfig = {
-        form: 'GroupsForm',
+        form: `GroupsForm`,
     }
 }
 
-@myConnect(Groups.reduxAsyncConfig, Groups.reduxPropsConfig, Groups.reduxDispatchConfig, Groups.reduxFormConfig)
+@myAsyncFormConnect(Groups.reduxAsyncConfig, Groups.reduxPropsConfig, Groups.reduxDispatchConfig, Groups.reduxFormConfig)
 export default class GroupsContainer extends Groups {
 }

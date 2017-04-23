@@ -3,6 +3,14 @@ export default class MyClient {
 
     constructor(ajax) {
         this.ajax = ajax
+        console.log('********** Client Initialized ***********')
+    }
+
+
+    sayHello(success, failure) {
+        this.ajax.call("hello", "",
+            success, failure,
+            "GET")
     }
 
     login(username, password, success, failure) {

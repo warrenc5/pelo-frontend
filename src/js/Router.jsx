@@ -18,9 +18,6 @@ import RegisterContainer from './pages/register.jsx'
 import About from './pages/about.jsx'
 import Terms from './pages/terms.jsx'
 
-let onUpdate = () => {
-    window.scrollTo(0, 0)
-}
 
 /**
  * This screen transition logical router handles html a links and anchor refs in the app
@@ -79,3 +76,6 @@ export default class RouterPath extends React.Component {
         )
     }
 }
+
+export const groups = '/groups'
+export const rides = '/rides'

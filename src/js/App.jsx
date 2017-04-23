@@ -12,8 +12,8 @@ import RouterPath from './Router.jsx'
 import {createTestData}  from './TestData'
 import MyReducer from './handler/reducers'
 import {myTheme} from './layout/theme'
-import {ngScope} from './service/bridge'
 import {debug, debug2, debugJSON} from './service/misc'
+import {ngScope,myAsyncFormConnect} from './service/bridge'
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
  **/
@@ -21,7 +21,7 @@ import {debug, debug2, debugJSON} from './service/misc'
 // http://stackoverflow.com/a/34015469/988941
 //injectTapEventPlugin()
 
-class App extends React.Component {
+export default class App extends Component {
     constructor(props) {
         super(props)
         this.props = props
@@ -60,14 +60,16 @@ class App extends React.Component {
             </Provider>
         </MuiThemeProvider>
     }
+
+    static propTypes = {
+        //Props is linked the angular $scope.state through the pelo-app directive in index.jade
+        state: PropTypes.object.isRequired,
+    }
+
+    static reduxPropsConfig = (state, props) => ({
+    })
+
+    static reduxDispatchConfig = (dispatch) => ({
+    })
 }
-
-module.exports = {App: App}
-exports.default = App
-
-App.propTypes = {
-    //Props is linked the angular $scope.state
-    state: PropTypes.object.isRequired,
-}
-
 

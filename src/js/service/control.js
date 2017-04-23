@@ -10,7 +10,7 @@ import MyClient from './client'
 import MyAjax from './ajax'
 
 import {createTestData}  from '../TestData'
-import {App} from '../App.jsx'
+import App from '../App.jsx'
 
 var local = {
     scope: function () {
@@ -77,7 +77,7 @@ var local = {
     showSplash: function () {
 
         try {
-            var splashDuration = 1000;
+            var splashDuration = 2000;
             var fadeDuration = 1000;
             navigator.splashscreen.show();
             /*window.setTimeout(function () {
@@ -104,6 +104,15 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
 
     $scope.state = {globals: globals,ok:false,baseUrl:"unknown"}
     $scope.fb = fb
+    $scope.hideSplash = function () {
+       platform.cordovaOnly(function () {
+            try {
+                navigator.splashscreen.hide()
+            } catch (e) {
+            }
+        })
+    }
+
     $scope.init = function () {
 
         if ($scope.inited)
@@ -111,27 +120,19 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
 
         $scope.inited = true
 
-        platform.configure()
-
         platform.cordovaOnly(function () {
-            try {
-                navigator.splashscreen.hide()
-            } catch (e) {
-            }
-        })
-
-        platform.cordovaOnly(function () {
-            /**
             try {
                 showMap()
             } catch (e) {
                 debug2(e)
-            }**/
+            }
         });
 
-        $scope.state["baseUrl"] = platform.baseUrl
-        $scope.client = new MyClient(new MyAjax(platform.baseUrl))
+
     }
+
+    $scope.client = new MyClient(new MyAjax(platform.configure()))
+    $scope.state["baseUrl"] = platform.baseUrl
 
     $scope.initializeStorage = function initializeStorage() {
 
@@ -159,10 +160,6 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
         return storageVersion == null || storageVersion.DB_VERSION == globals.DB_VERSION
     }
 
-    $scope.hello = function () {
-        alert('hello')
-    }
-
     $scope.cordovaOnly = platform.cordovaOnly
 
 })
@@ -186,6 +183,11 @@ peloApp.factory('platform', function ($rootScope) {
         cordovaOnly(() => {
             this.baseUrl = globals.peloBaseUrlTryout
         })
+
+        //this.baseUrl = globals.peloBaseUrlMockLocal
+        this.baseUrl = globals.peloBaseUrlLocal
+
+        return this.baseUrl
     }
 
     function cordovaOnly(func) {
@@ -390,6 +392,5 @@ function hide() {
     );
 }
 peloApp.directive('peloApp', function (reactDirective) {
-    debug2('initialing React App')
-    return reactDirective(App);
+    return reactDirective(App)
 });

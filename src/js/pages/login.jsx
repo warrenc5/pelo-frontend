@@ -15,6 +15,7 @@ import { Link } from 'react-router'
 import { push } from 'react-router-redux'
 
 import style from '../layout/style'
+import * as Router from '../Router.jsx'
 import * as action from '../handler/actions'
 import keydown from 'react-keydown'
 
@@ -28,7 +29,7 @@ import {
 
 import submit from "redux-form"
 import {debug0,debug2, debugJSON} from '../service/misc'
-import {ngScope,myConnect} from '../service/bridge'
+import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import { hashHistory,browserHistory } from 'react-router'
 
 class Login extends Component {
@@ -51,7 +52,7 @@ class Login extends Component {
             touched,
             asyncValidating,
             submit,
-            ok,
+            hello,
             } = props
         return (
             <div id="login">
@@ -66,6 +67,7 @@ class Login extends Component {
                 {submitting && <span>Logging you in now..</span>}
                 {error && <span>Error: {error}</span>}
 
+                {hello || <span>Can't hello Server</span>}
                 <Form onSubmit={handleSubmit(Login.validate)}>
                     <table>
                         <tbody>
@@ -110,6 +112,8 @@ class Login extends Component {
                         </tbody>
                     </table>
                 </Form>
+                <br/>
+                <hr/>
                 <Link to="/terms">Read Terms & Conditions</Link>
             </div>
         )
@@ -121,6 +125,11 @@ class Login extends Component {
         var {router} = this.props
         //router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
         debug0(router.getCurrentLocation())
+
+        /**TODO: auto login for testing
+         * const {dispatch} = this.props
+        dispatch(submit(LoginForm))
+        */
     }
 
     routerWillLeave(nextLocation) {
@@ -138,6 +147,7 @@ class Login extends Component {
 
     componentWillReceiveProps(nextProps) {
         debug2('component will receive props')
+
     }
 
     render() {
@@ -179,7 +189,7 @@ class Login extends Component {
                 type: `LOGIN`,
                 payload: result
             })
-            dispatch(push('/groups'))
+            dispatch(push(Router.rides))
         }).catch((e)=> {
             console.log(JSON.stringify(e))
             dispatch({
@@ -192,19 +202,30 @@ class Login extends Component {
 
     static propTypes = {
         fbConnect: PropTypes.func.isRequired,
+        hello: PropTypes.bool.isRequired,
+
         ...propTypes
     }
 
     static reduxAsyncConfig = [{
-        key: 'none',
-        promise: ({ params, helpers }) => Promise.resolve({})
+        key: 'hello',
+        promise: ({ params, helpers }) => new Promise((resolve, reject)=> {
+            ngScope().client.sayHello((name, data)=> {
+                resolve(true)
+            }, (e)=> {
+                reject(e)
+            })
+        }).then((result) =>result).catch((e)=> {
+            console.log(e)
+            return false
+        })
     }]
-
     static reduxPropsConfig = (state, props) => ({
         ok: state.ok,
         initialValues: {
             username: 'wozza', password: 'uyooho00'
-        } //202
+        },
+        hello: false
         //initialValues: {username: 'wozza', password: 'password1'} //401
     })
 
@@ -239,12 +260,13 @@ class Login extends Component {
                         type: `LOGIN`,
                         payload: result
                     })
-                    dispatch(push('/groups'))
+
+                    dispatch(push(Router.rides))
                 }).catch((e)=> {
                     console.log(JSON.stringify(e))
                     dispatch({
                         type: `LOGIN_ERROR`,
-                        payload: {error: 'there was some error '}
+                        payload: {error: 'there was some error ' + e}
                     })
                     throw new SubmissionError({_error: 'whoops' + JSON.stringify(e)})
                 })
@@ -257,7 +279,7 @@ class Login extends Component {
     })
 
     static reduxFormConfig = {
-        form: 'LoginForm',
+        form: `LoginForm`,
         asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
             const {username, password} = values
             debug2("values : " + JSON.stringify(values))
@@ -286,5 +308,5 @@ class Login extends Component {
     }
 }
 
-@myConnect(Login.reduxAsyncConfig, Login.reduxPropsConfig, Login.reduxDispatchConfig, Login.reduxFormConfig)
+@myAsyncFormConnect(Login.reduxAsyncConfig, Login.reduxPropsConfig, Login.reduxDispatchConfig, Login.reduxFormConfig)
 export default class LoginContainer extends Login {}
