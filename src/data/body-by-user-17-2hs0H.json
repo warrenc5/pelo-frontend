@@ -1,0 +1,671 @@
+[
+   {
+      "updatedAt" : "2015-08-11+10:00",
+      "participants" : [
+         {
+            "name" : "Wozza",
+            "updatedAt" : "2015-10-05+11:00",
+            "id" : 17,
+            "lastSignInAt" : "2015-10-05+11:00",
+            "slug" : "wozza",
+            "role" : null,
+            "avatar" : "me-office.png"
+         },
+         {
+            "avatar" : "https://graph.facebook.com/10155606927230596/picture?type=small",
+            "role" : null,
+            "slug" : "stackdatmonet",
+            "lastSignInAt" : "2015-09-22+10:00",
+            "name" : "Nick Benson",
+            "updatedAt" : "2015-09-22+10:00",
+            "id" : 2
+         },
+         {
+            "id" : 11,
+            "updatedAt" : "2015-09-22+10:00",
+            "name" : "Tobes",
+            "lastSignInAt" : "2015-09-02+10:00",
+            "role" : null,
+            "slug" : "williamst",
+            "avatar" : null
+         },
+         {
+            "updatedAt" : "2015-10-02+10:00",
+            "id" : 1,
+            "name" : "Matthew James Woodward",
+            "lastSignInAt" : "2015-10-01+10:00",
+            "role" : null,
+            "slug" : "mwdwrd",
+            "avatar" : "https://graph.facebook.com/10153485279938273/picture?type=small"
+         }
+      ],
+      "id" : 4,
+      "description" : "We are all about getting out and enjoying what life has to offer, such as dinners at the best restaurants Sydney has to offer, dancing our little feet off and partying til the early hours, walks and picnics and cruises",
+      "startDate" : "Tue, 25 Apr",
+      "route" : "18",
+      "location" : null,
+      "startTime" : "07:00AM",
+      "name" : "Parramatta Cycles",
+      "group" : {
+         "avatar" : "-1_copy_2.jpeg",
+         "members" : [
+            {
+               "updatedAt" : "2015-10-02+10:00",
+               "name" : "Matthew James Woodward",
+               "id" : 1,
+               "lastSignInAt" : "2015-10-01+10:00",
+               "role" : null,
+               "slug" : "mwdwrd",
+               "avatar" : "https://graph.facebook.com/10153485279938273/picture?type=small"
+            },
+            {
+               "lastSignInAt" : "2015-10-17+11:00",
+               "updatedAt" : "2015-10-24+11:00",
+               "name" : "Matt Young",
+               "id" : 5,
+               "avatar" : "https://graph.facebook.com/10155688307490425/picture?type=small",
+               "slug" : "mattyoung",
+               "role" : null
+            },
+            {
+               "slug" : "wozza",
+               "role" : null,
+               "avatar" : "me-office.png",
+               "id" : 17,
+               "updatedAt" : "2015-10-05+11:00",
+               "name" : "Wozza",
+               "lastSignInAt" : "2015-10-05+11:00"
+            },
+            {
+               "updatedAt" : "2015-06-30+10:00",
+               "name" : "Dan Shepherd",
+               "id" : 4,
+               "lastSignInAt" : "2015-05-25+10:00",
+               "role" : null,
+               "slug" : "kodachrome",
+               "avatar" : "https://graph.facebook.com/10153839283953906/picture?type=small"
+            },
+            {
+               "avatar" : "https://graph.facebook.com/10155606927230596/picture?type=small",
+               "slug" : "stackdatmonet",
+               "role" : null,
+               "lastSignInAt" : "2015-09-22+10:00",
+               "updatedAt" : "2015-09-22+10:00",
+               "id" : 2,
+               "name" : "Nick Benson"
+            },
+            {
+               "lastSignInAt" : "2015-10-26+11:00",
+               "updatedAt" : "2015-10-28+11:00",
+               "name" : "Oscar Syarif",
+               "id" : 8,
+               "avatar" : "https://graph.facebook.com/10153462041315962/picture?type=small",
+               "slug" : "oscar",
+               "role" : null
+            }
+         ],
+         "location" : "Australia",
+         "updatedAt" : "2015-06-29+10:00",
+         "name" : "Inner City Pressure",
+         "id" : 1,
+         "description" : null
+      },
+      "slug" : "parramatta-cycles"
+   },
+   {
+      "participants" : [
+         {
+            "updatedAt" : "2015-10-24+11:00",
+            "id" : 5,
+            "name" : "Matt Young",
+            "lastSignInAt" : "2015-10-17+11:00",
+            "slug" : "mattyoung",
+            "role" : null,
+            "avatar" : "https://graph.facebook.com/10155688307490425/picture?type=small"
+         },
+         {
+            "lastSignInAt" : "2015-10-05+11:00",
+            "id" : 17,
+            "updatedAt" : "2015-10-05+11:00",
+            "name" : "Wozza",
+            "avatar" : "me-office.png",
+            "role" : null,
+            "slug" : "wozza"
+         },
+         {
+            "avatar" : "https://graph.facebook.com/10153462041315962/picture?type=small",
+            "slug" : "oscar",
+            "role" : null,
+            "lastSignInAt" : "2015-10-26+11:00",
+            "updatedAt" : "2015-10-28+11:00",
+            "id" : 8,
+            "name" : "Oscar Syarif"
+         },
+         {
+            "lastSignInAt" : "2015-09-22+10:00",
+            "name" : "Nick Benson",
+            "updatedAt" : "2015-09-22+10:00",
+            "id" : 2,
+            "avatar" : "https://graph.facebook.com/10155606927230596/picture?type=small",
+            "slug" : "stackdatmonet",
+            "role" : null
+         }
+      ],
+      "updatedAt" : "2015-08-12+10:00",
+      "id" : 5,
+      "description" : "Just a bit of fun on a Friday.  Who cares about work",
+      "startDate" : "Tue, 25 Apr",
+      "route" : "14",
+      "location" : null,
+      "name" : "Shits and Giggles",
+      "startTime" : "06:00AM",
+      "group" : {
+         "description" : null,
+         "name" : "Pelo Founders",
+         "updatedAt" : "2015-06-29+10:00",
+         "id" : 4,
+         "avatar" : "PeloLogo.jpg",
+         "location" : "Australia",
+         "members" : [
+            {
+               "updatedAt" : "2015-10-28+11:00",
+               "name" : "Oscar Syarif",
+               "id" : 8,
+               "lastSignInAt" : "2015-10-26+11:00",
+               "slug" : "oscar",
+               "role" : null,
+               "avatar" : "https://graph.facebook.com/10153462041315962/picture?type=small"
+            },
+            {
+               "avatar" : "https://graph.facebook.com/10155688307490425/picture?type=small",
+               "role" : null,
+               "slug" : "mattyoung",
+               "lastSignInAt" : "2015-10-17+11:00",
+               "updatedAt" : "2015-10-24+11:00",
+               "name" : "Matt Young",
+               "id" : 5
+            },
+            {
+               "id" : 2,
+               "updatedAt" : "2015-09-22+10:00",
+               "name" : "Nick Benson",
+               "lastSignInAt" : "2015-09-22+10:00",
+               "slug" : "stackdatmonet",
+               "role" : null,
+               "avatar" : "https://graph.facebook.com/10155606927230596/picture?type=small"
+            }
+         ]
+      },
+      "slug" : "shits-and-giggles"
+   },
+   {
+      "startDate" : "Tue, 25 Apr",
+      "description" : "",
+      "updatedAt" : "2015-06-29+10:00",
+      "id" : 2,
+      "participants" : [
+         {
+            "avatar" : null,
+            "slug" : "williamst",
+            "role" : null,
+            "lastSignInAt" : "2015-09-02+10:00",
+            "name" : "Tobes",
+            "updatedAt" : "2015-09-22+10:00",
+            "id" : 11
+         },
+         {
+            "updatedAt" : "2015-09-22+10:00",
+            "id" : 18,
+            "name" : "Chris S Baker",
+            "lastSignInAt" : "2015-09-22+10:00",
+            "slug" : "mdi0mjfkm",
+            "role" : null,
+            "avatar" : "https://graph.facebook.com/10153543248480295/picture?type=small"
+         },
+         {
+            "avatar" : "me-office.png",
+            "slug" : "wozza",
+            "role" : null,
+            "lastSignInAt" : "2015-10-05+11:00",
+            "id" : 17,
+            "updatedAt" : "2015-10-05+11:00",
+            "name" : "Wozza"
+         },
+         {
+            "avatar" : "https://graph.facebook.com/10153485279938273/picture?type=small",
+            "role" : null,
+            "slug" : "mwdwrd",
+            "lastSignInAt" : "2015-10-01+10:00",
+            "name" : "Matthew James Woodward",
+            "updatedAt" : "2015-10-02+10:00",
+            "id" : 1
+         },
+         {
+            "updatedAt" : "2015-09-22+10:00",
+            "name" : "Nick Benson",
+            "id" : 2,
+            "lastSignInAt" : "2015-09-22+10:00",
+            "slug" : "stackdatmonet",
+            "role" : null,
+            "avatar" : "https://graph.facebook.com/10155606927230596/picture?type=small"
+         }
+      ],
+      "location" : "Australia",
+      "route" : "6",
+      "group" : {
+         "description" : null,
+         "updatedAt" : "2015-06-29+10:00",
+         "name" : "Inner City Pressure",
+         "id" : 1,
+         "location" : "Australia",
+         "members" : [
+            {
+               "role" : null,
+               "slug" : "mwdwrd",
+               "avatar" : "https://graph.facebook.com/10153485279938273/picture?type=small",
+               "id" : 1,
+               "updatedAt" : "2015-10-02+10:00",
+               "name" : "Matthew James Woodward",
+               "lastSignInAt" : "2015-10-01+10:00"
+            },
+            {
+               "avatar" : "https://graph.facebook.com/10155688307490425/picture?type=small",
+               "role" : null,
+               "slug" : "mattyoung",
+               "lastSignInAt" : "2015-10-17+11:00",
+               "updatedAt" : "2015-10-24+11:00",
+               "id" : 5,
+               "name" : "Matt Young"
+            },
+            {
+               "role" : null,
+               "slug" : "wozza",
+               "avatar" : "me-office.png",
+               "updatedAt" : "2015-10-05+11:00",
+               "id" : 17,
+               "name" : "Wozza",
+               "lastSignInAt" : "2015-10-05+11:00"
+            },
+            {
+               "avatar" : "https://graph.facebook.com/10153839283953906/picture?type=small",
+               "role" : null,
+               "slug" : "kodachrome",
+               "lastSignInAt" : "2015-05-25+10:00",
+               "updatedAt" : "2015-06-30+10:00",
+               "id" : 4,
+               "name" : "Dan Shepherd"
+            },
+            {
+               "slug" : "stackdatmonet",
+               "role" : null,
+               "avatar" : "https://graph.facebook.com/10155606927230596/picture?type=small",
+               "name" : "Nick Benson",
+               "updatedAt" : "2015-09-22+10:00",
+               "id" : 2,
+               "lastSignInAt" : "2015-09-22+10:00"
+            },
+            {
+               "updatedAt" : "2015-10-28+11:00",
+               "name" : "Oscar Syarif",
+               "id" : 8,
+               "lastSignInAt" : "2015-10-26+11:00",
+               "slug" : "oscar",
+               "role" : null,
+               "avatar" : "https://graph.facebook.com/10153462041315962/picture?type=small"
+            }
+         ],
+         "avatar" : "-1_copy_2.jpeg"
+      },
+      "startTime" : "11:30AM",
+      "name" : "Drive",
+      "slug" : "drive"
+   },
+   {
+      "updatedAt" : "2015-06-29+10:00",
+      "participants" : [
+         {
+            "role" : null,
+            "slug" : "mattyoung",
+            "avatar" : "https://graph.facebook.com/10155688307490425/picture?type=small",
+            "id" : 5,
+            "updatedAt" : "2015-10-24+11:00",
+            "name" : "Matt Young",
+            "lastSignInAt" : "2015-10-17+11:00"
+         },
+         {
+            "lastSignInAt" : "2015-09-22+10:00",
+            "id" : 18,
+            "updatedAt" : "2015-09-22+10:00",
+            "name" : "Chris S Baker",
+            "avatar" : "https://graph.facebook.com/10153543248480295/picture?type=small",
+            "role" : null,
+            "slug" : "mdi0mjfkm"
+         },
+         {
+            "slug" : "stackdatmonet",
+            "role" : null,
+            "avatar" : "https://graph.facebook.com/10155606927230596/picture?type=small",
+            "updatedAt" : "2015-09-22+10:00",
+            "id" : 2,
+            "name" : "Nick Benson",
+            "lastSignInAt" : "2015-09-22+10:00"
+         },
+         {
+            "role" : null,
+            "slug" : "oscar",
+            "avatar" : "https://graph.facebook.com/10153462041315962/picture?type=small",
+            "name" : "Oscar Syarif",
+            "updatedAt" : "2015-10-28+11:00",
+            "id" : 8,
+            "lastSignInAt" : "2015-10-26+11:00"
+         },
+         {
+            "avatar" : "me-office.png",
+            "slug" : "wozza",
+            "role" : null,
+            "lastSignInAt" : "2015-10-05+11:00",
+            "updatedAt" : "2015-10-05+11:00",
+            "id" : 17,
+            "name" : "Wozza"
+         }
+      ],
+      "id" : 1,
+      "description" : "Starved for cash, Bret and Jemaine apply for jobs as&nbsp;<a target=\"_blank\" href=\"http://en.wikipedia.org/wiki/Human_billboard\">human billboards</a>. Only Bret gets the job however, which causes problems when the band finally gets a gig at a travel expo. Murray and Jemaine confront Bret at his new job, and this leads to a debate on the&nbsp;<a target=\"_blank\" href=\"http://en.wikipedia.org/wiki/Chicken_or_the_egg\">chicken/egg causality dilemma</a>. Unable to attend because of his job, Bret records his part onto a&nbsp;<a target=\"_blank\" href=\"http://en.wikipedia.org/wiki/Compact_Cassette\">cassette tape</a>&nbsp;for Jemaine to play along with. Murray decides the tape is as good as the real thing and fires Bret.",
+      "startDate" : "Tue, 25 Apr",
+      "route" : "11",
+      "location" : "Australia",
+      "startTime" : "17:00PM",
+      "name" : "Friday Sprints",
+      "group" : {
+         "avatar" : "-1_copy_2.jpeg",
+         "location" : "Australia",
+         "members" : [
+            {
+               "avatar" : "https://graph.facebook.com/10153485279938273/picture?type=small",
+               "slug" : "mwdwrd",
+               "role" : null,
+               "lastSignInAt" : "2015-10-01+10:00",
+               "updatedAt" : "2015-10-02+10:00",
+               "name" : "Matthew James Woodward",
+               "id" : 1
+            },
+            {
+               "avatar" : "https://graph.facebook.com/10155688307490425/picture?type=small",
+               "slug" : "mattyoung",
+               "role" : null,
+               "lastSignInAt" : "2015-10-17+11:00",
+               "updatedAt" : "2015-10-24+11:00",
+               "name" : "Matt Young",
+               "id" : 5
+            },
+            {
+               "id" : 17,
+               "updatedAt" : "2015-10-05+11:00",
+               "name" : "Wozza",
+               "lastSignInAt" : "2015-10-05+11:00",
+               "slug" : "wozza",
+               "role" : null,
+               "avatar" : "me-office.png"
+            },
+            {
+               "lastSignInAt" : "2015-05-25+10:00",
+               "updatedAt" : "2015-06-30+10:00",
+               "name" : "Dan Shepherd",
+               "id" : 4,
+               "avatar" : "https://graph.facebook.com/10153839283953906/picture?type=small",
+               "role" : null,
+               "slug" : "kodachrome"
+            },
+            {
+               "slug" : "stackdatmonet",
+               "role" : null,
+               "avatar" : "https://graph.facebook.com/10155606927230596/picture?type=small",
+               "updatedAt" : "2015-09-22+10:00",
+               "name" : "Nick Benson",
+               "id" : 2,
+               "lastSignInAt" : "2015-09-22+10:00"
+            },
+            {
+               "updatedAt" : "2015-10-28+11:00",
+               "name" : "Oscar Syarif",
+               "id" : 8,
+               "lastSignInAt" : "2015-10-26+11:00",
+               "role" : null,
+               "slug" : "oscar",
+               "avatar" : "https://graph.facebook.com/10153462041315962/picture?type=small"
+            }
+         ],
+         "description" : null,
+         "name" : "Inner City Pressure",
+         "updatedAt" : "2015-06-29+10:00",
+         "id" : 1
+      },
+      "slug" : "friday-sprints"
+   },
+   {
+      "location" : null,
+      "route" : "22",
+      "startDate" : "Tue, 25 Apr",
+      "description" : "This will be a smash fest for riders who want to get hurt.  Just try to hold on to the wheel",
+      "updatedAt" : "2015-09-01+10:00",
+      "participants" : [
+         {
+            "avatar" : "me-office.png",
+            "slug" : "wozza",
+            "role" : null,
+            "lastSignInAt" : "2015-10-05+11:00",
+            "name" : "Wozza",
+            "updatedAt" : "2015-10-05+11:00",
+            "id" : 17
+         },
+         {
+            "lastSignInAt" : "2015-10-26+11:00",
+            "updatedAt" : "2015-10-28+11:00",
+            "id" : 8,
+            "name" : "Oscar Syarif",
+            "avatar" : "https://graph.facebook.com/10153462041315962/picture?type=small",
+            "slug" : "oscar",
+            "role" : null
+         },
+         {
+            "role" : null,
+            "slug" : "billy",
+            "avatar" : "https://graph.facebook.com/10153955135904115/picture?type=small",
+            "updatedAt" : "2015-10-10+11:00",
+            "name" : "Billy Baralah",
+            "id" : 6,
+            "lastSignInAt" : "2015-09-26+10:00"
+         },
+         {
+            "updatedAt" : "2015-10-02+10:00",
+            "id" : 1,
+            "name" : "Matthew James Woodward",
+            "lastSignInAt" : "2015-10-01+10:00",
+            "role" : null,
+            "slug" : "mwdwrd",
+            "avatar" : "https://graph.facebook.com/10153485279938273/picture?type=small"
+         },
+         {
+            "lastSignInAt" : "2015-09-02+10:00",
+            "updatedAt" : "2015-09-22+10:00",
+            "id" : 11,
+            "name" : "Tobes",
+            "avatar" : null,
+            "slug" : "williamst",
+            "role" : null
+         },
+         {
+            "avatar" : "https://graph.facebook.com/10155688307490425/picture?type=small",
+            "slug" : "mattyoung",
+            "role" : null,
+            "lastSignInAt" : "2015-10-17+11:00",
+            "name" : "Matt Young",
+            "updatedAt" : "2015-10-24+11:00",
+            "id" : 5
+         },
+         {
+            "lastSignInAt" : "2015-09-22+10:00",
+            "updatedAt" : "2015-09-22+10:00",
+            "name" : "Nick Benson",
+            "id" : 2,
+            "avatar" : "https://graph.facebook.com/10155606927230596/picture?type=small",
+            "slug" : "stackdatmonet",
+            "role" : null
+         }
+      ],
+      "id" : 7,
+      "slug" : "smash-fest-bring-your-legs",
+      "group" : {
+         "avatar" : "-1_copy_2.jpeg",
+         "location" : "Australia",
+         "members" : [
+            {
+               "slug" : "mwdwrd",
+               "role" : null,
+               "avatar" : "https://graph.facebook.com/10153485279938273/picture?type=small",
+               "updatedAt" : "2015-10-02+10:00",
+               "name" : "Matthew James Woodward",
+               "id" : 1,
+               "lastSignInAt" : "2015-10-01+10:00"
+            },
+            {
+               "slug" : "mattyoung",
+               "role" : null,
+               "avatar" : "https://graph.facebook.com/10155688307490425/picture?type=small",
+               "id" : 5,
+               "updatedAt" : "2015-10-24+11:00",
+               "name" : "Matt Young",
+               "lastSignInAt" : "2015-10-17+11:00"
+            },
+            {
+               "avatar" : "me-office.png",
+               "slug" : "wozza",
+               "role" : null,
+               "lastSignInAt" : "2015-10-05+11:00",
+               "id" : 17,
+               "updatedAt" : "2015-10-05+11:00",
+               "name" : "Wozza"
+            },
+            {
+               "lastSignInAt" : "2015-05-25+10:00",
+               "id" : 4,
+               "updatedAt" : "2015-06-30+10:00",
+               "name" : "Dan Shepherd",
+               "avatar" : "https://graph.facebook.com/10153839283953906/picture?type=small",
+               "role" : null,
+               "slug" : "kodachrome"
+            },
+            {
+               "avatar" : "https://graph.facebook.com/10155606927230596/picture?type=small",
+               "role" : null,
+               "slug" : "stackdatmonet",
+               "lastSignInAt" : "2015-09-22+10:00",
+               "updatedAt" : "2015-09-22+10:00",
+               "id" : 2,
+               "name" : "Nick Benson"
+            },
+            {
+               "role" : null,
+               "slug" : "oscar",
+               "avatar" : "https://graph.facebook.com/10153462041315962/picture?type=small",
+               "updatedAt" : "2015-10-28+11:00",
+               "id" : 8,
+               "name" : "Oscar Syarif",
+               "lastSignInAt" : "2015-10-26+11:00"
+            }
+         ],
+         "description" : null,
+         "name" : "Inner City Pressure",
+         "updatedAt" : "2015-06-29+10:00",
+         "id" : 1
+      },
+      "name" : "Smash Fest - Bring your legs",
+      "startTime" : "01:00AM"
+   },
+   {
+      "name" : "Sweat it out.",
+      "startTime" : "05:00AM",
+      "group" : {
+         "avatar" : "29c35227794dd71484fdee00c3de603d.jpg",
+         "location" : null,
+         "members" : [
+            {
+               "slug" : "mattyoung",
+               "role" : null,
+               "avatar" : "https://graph.facebook.com/10155688307490425/picture?type=small",
+               "updatedAt" : "2015-10-24+11:00",
+               "name" : "Matt Young",
+               "id" : 5,
+               "lastSignInAt" : "2015-10-17+11:00"
+            },
+            {
+               "lastSignInAt" : "2015-10-05+11:00",
+               "name" : "Wozza",
+               "updatedAt" : "2015-10-05+11:00",
+               "id" : 17,
+               "avatar" : "me-office.png",
+               "role" : null,
+               "slug" : "wozza"
+            },
+            {
+               "updatedAt" : "2015-10-28+11:00",
+               "id" : 8,
+               "name" : "Oscar Syarif",
+               "lastSignInAt" : "2015-10-26+11:00",
+               "slug" : "oscar",
+               "role" : null,
+               "avatar" : "https://graph.facebook.com/10153462041315962/picture?type=small"
+            },
+            {
+               "lastSignInAt" : "2015-09-26+10:00",
+               "name" : "Billy Baralah",
+               "updatedAt" : "2015-10-10+11:00",
+               "id" : 6,
+               "avatar" : "https://graph.facebook.com/10153955135904115/picture?type=small",
+               "role" : null,
+               "slug" : "billy"
+            }
+         ],
+         "description" : null,
+         "id" : 12,
+         "updatedAt" : "2015-07-14+10:00",
+         "name" : "Chickies with fixies"
+      },
+      "slug" : "sweat-it-out",
+      "startDate" : "Tue, 25 Apr",
+      "participants" : [
+         {
+            "name" : "Oscar Syarif",
+            "updatedAt" : "2015-10-28+11:00",
+            "id" : 8,
+            "lastSignInAt" : "2015-10-26+11:00",
+            "slug" : "oscar",
+            "role" : null,
+            "avatar" : "https://graph.facebook.com/10153462041315962/picture?type=small"
+         },
+         {
+            "role" : null,
+            "slug" : "wozza",
+            "avatar" : "me-office.png",
+            "updatedAt" : "2015-10-05+11:00",
+            "id" : 17,
+            "name" : "Wozza",
+            "lastSignInAt" : "2015-10-05+11:00"
+         },
+         {
+            "name" : "Nick Benson",
+            "updatedAt" : "2015-09-22+10:00",
+            "id" : 2,
+            "lastSignInAt" : "2015-09-22+10:00",
+            "role" : null,
+            "slug" : "stackdatmonet",
+            "avatar" : "https://graph.facebook.com/10155606927230596/picture?type=small"
+         }
+      ],
+      "updatedAt" : "2015-08-13+10:00",
+      "id" : 6,
+      "description" : "Up hill battle. Fixies only. Girls and Pelo founders only.",
+      "route" : "12",
+      "location" : null
+   }
+]

@@ -16,7 +16,7 @@ export function createTestData() {
     console.log('loading test data')
     return {
         login: ajax('body-login-wozza-xlUCd.json'),
-        todaysRides: {id: true},
+        todaysRides: ajax('body-by-user-17-2hs0H.json'),
         groups: ajax("body-groups-7-Ag7Fp.json"),
         fb: ajax("facebook.json"),
     }

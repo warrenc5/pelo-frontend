@@ -21,6 +21,7 @@ export default class Rides extends React.Component {
             <MenuItem primaryText="Place - Akuna Bay via Church Point"/>
             <MenuItem primaryText="Time - 6:30am - 10:30am"/>
             <MenuItem primaryText="Created by: John Smith"/>
+            <MenuItem primaryText="{ride.name}"/>
             <Divider />
             <MenuItem primaryText="Distance - 87km"/>
             <MenuItem primaryText="Elevation - 1400m"/>
@@ -50,15 +51,15 @@ export default class Rides extends React.Component {
     )
 
     render() {
-        const rides = [this.props.todaysRides]
+        const rides = this.props.todaysRides
         return (
             <div>
                 <h2>Rides</h2>
                 <span>size:{rides.length}</span>
                 {rides.map((ride) => (
                 <div key={ride.id}>
-                    {alert(JSON.stringify(ride))}
-                    <span>id :{ride.id}</span>
+                    <span>id :{ride.id}</span><br/>
+                    <span>name :{ride.name}</span>
                     <div>
                         {this.DividerExampleMenu()}
                     </div>
@@ -87,8 +88,6 @@ export default class Rides extends React.Component {
                 resolve({})
                 return
             }
-
-
             ngScope().client.todaysRides(login.id, (name, data)=> {
                 resolve(data)
             }, (e)=> {
@@ -96,6 +95,7 @@ export default class Rides extends React.Component {
             })
         }).then((result) =>result).catch((e)=> {
             console.log(e)
+            throw e
         })
     }]
 

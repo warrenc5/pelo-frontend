@@ -94,6 +94,7 @@ export default class Groups extends React.Component {
             })
         }).then((result) =>result).catch((e)=> {
             console.log(e)
+            throw e
         })
     }]
 

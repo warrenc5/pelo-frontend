@@ -315,6 +315,7 @@ gulp.task('touch', function (done) {
 })
 gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
+gulp.task('1Adefault', ['default'])
 gulp.task('default', ['setup', 'install', 'auto', 'start', 'compile'])
 
 

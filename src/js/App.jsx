@@ -42,7 +42,7 @@ export default class App extends Component {
          */
          this.store.dispatch(({
                 type: `LOAD_TEST_DATA`,
-                payload: {id:-1}
+                payload: {id:17}
             }))
         /*
          syncHistoryWithStore(browserHistory, this.store, {

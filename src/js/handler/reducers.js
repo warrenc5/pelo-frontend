@@ -128,6 +128,8 @@ const groups = (state = [{id: 0}], action) => {
 
 const todaysRides = (state = {}, action) => {
     switch (action.type) {
+        case '@redux-conn/LOAD_FAIL':
+            return state
         case 'LOAD':
             return action.payload
         case 'TOGGLE_TRACK':
