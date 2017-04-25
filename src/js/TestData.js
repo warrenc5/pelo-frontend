@@ -13,6 +13,7 @@ function ajax(url) {
 }
 
 export function createTestData() {
+    console.log('loading test data')
     return {
         login: ajax('body-login-wozza-xlUCd.json'),
         todaysRides: {id: true},

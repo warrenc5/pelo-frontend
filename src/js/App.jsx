@@ -33,15 +33,22 @@ export default class App extends Component {
 
         //this.history = browserHistory
         this.history = hashHistory
-        const middle = [thunk,routerMiddleware(this.history)]
+        const middle = [thunk, routerMiddleware(this.history)]
         //const middle = routerMiddleware(this.history)
         this.store = createStore(MyReducer(), this.props.state, applyMiddleware(...middle));
 
+        /**
+         * can't use this because of accessTokenCookie
+         */
+         this.store.dispatch(({
+                type: `LOAD_TEST_DATA`,
+                payload: {id:-1}
+            }))
         /*
-        syncHistoryWithStore(browserHistory, this.store, {
-        //    selectLocationState: createSelectLocationState('routing'),
-        });
-        */
+         syncHistoryWithStore(browserHistory, this.store, {
+         //    selectLocationState: createSelectLocationState('routing'),
+         });
+         */
 
         /*
          this.store.subscribe((state = [], dispatch) => {
@@ -66,10 +73,8 @@ export default class App extends Component {
         state: PropTypes.object.isRequired,
     }
 
-    static reduxPropsConfig = (state, props) => ({
-    })
+    static reduxPropsConfig = (state, props) => ({})
 
-    static reduxDispatchConfig = (dispatch) => ({
-    })
+    static reduxDispatchConfig = (dispatch) => ({})
 }
 

@@ -8,11 +8,11 @@ import { BrowserHistory } from 'react-history'
 import MainLayout from './layout/main.jsx'
 import ContentLayout from './layout/content.jsx'
 import HomeContainer from './pages/home.jsx'
-import GroupsContainer from './pages/groups.jsx'
+import Groups from './pages/groups.jsx'
 import MessagesContainer from './pages/messages.jsx'
-import RidesContainer from './pages/rides.jsx'
+import Rides from './pages/rides.jsx'
 import SettingsContainer from './pages/settings.jsx'
-import LoginContainer from './pages/login.jsx'
+import Login from './pages/login.jsx'
 import BikeComponent from './pages/bike.jsx'
 import RegisterContainer from './pages/register.jsx'
 import About from './pages/about.jsx'
@@ -50,13 +50,13 @@ export default class RouterPath extends React.Component {
                     history={this.props.history}>
                 <Route path="/" component={MainLayout}>
                     <Route component={ContentLayout}>
-                        <IndexRoute component={LoginContainer}/>
+                        <IndexRoute component={Login}/>
                     </Route>
                     <Route component={ContentLayout}>
                         <Route path="/bike-component" component={BikeComponent} pageTitle={this.props.DB_VERSION}/>
                         <Route path="/bike-component/:componentType" component={BikeComponent}
                                pageTitle="{:componentType}"/>
-                        <Route path="/login" component={LoginContainer} pageTitle="{:componentType}"
+                        <Route path="/login" component={Login} pageTitle="{:componentType}"
                                onEnter={(location, replaceWith) => {
                                     console.log(`enter:  ${location}`)
                                     //return location
@@ -64,8 +64,8 @@ export default class RouterPath extends React.Component {
                                onLeave={() => {console.log('bye')}}
                         />
                         <Route path="/register" component={RegisterContainer} pageTitle="{:componentType}"/>
-                        <Route path="/rides" component={RidesContainer} pageTitle="{:componentType}"/>
-                        <Route path="/groups" component={GroupsContainer} pageTitle="{:componentType}"/>
+                        <Route path="/rides" component={Rides} pageTitle="{:componentType}"/>
+                        <Route path="/groups" component={Groups} pageTitle="{:componentType}"/>
                         <Route path="/messages" component={MessagesContainer} pageTitle="{:componentType}"/>
                         <Route path="/settings" component={SettingsContainer} pageTitle="{:componentType}"/>
                         <Route path="/terms" component={Terms} pageTitle="{:componentType}"/>
@@ -77,5 +77,6 @@ export default class RouterPath extends React.Component {
     }
 }
 
-export const groups = '/groups'
-export const rides = '/rides'
+export const GROUPS = '/groups'
+export const RIDES = '/rides'
+export const LOGIN = '/login'

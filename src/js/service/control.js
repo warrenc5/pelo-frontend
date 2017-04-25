@@ -186,6 +186,8 @@ peloApp.factory('platform', function ($rootScope) {
 
         //this.baseUrl = globals.peloBaseUrlMockLocal
         this.baseUrl = globals.peloBaseUrlLocal
+        //TODO change the url here
+        //this.baseUrl = globals.peloBaseUrlTryout
 
         return this.baseUrl
     }

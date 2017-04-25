@@ -73,6 +73,17 @@ const auth = (state = {}, action) => {
     }
 }
 
+const login = (state = [{}], action) => {
+    switch (action.type) {
+        case `LOGIN`:
+            return action.payload
+        case `LOAD_TEST_DATA`:
+            return action.payload
+        default:
+            return state
+    }
+}
+
 const none = (state = {}, action) => {
     return state
 }
@@ -101,7 +112,6 @@ const debug = (state = {}, action) => {
 
 const groups = (state = [{id: 0}], action) => {
     switch (action.type) {
-
         case action.JOIN_GROUP:
             alert('join the group')
 
@@ -119,7 +129,7 @@ const groups = (state = [{id: 0}], action) => {
 const todaysRides = (state = {}, action) => {
     switch (action.type) {
         case 'LOAD':
-            return {todaysRides: {id: action.payload.id}}
+            return action.payload
         case 'TOGGLE_TRACK':
             debug2("handling action" + action.type + "  " + action.payload.id)
             if (action.payload.id)
@@ -152,11 +162,12 @@ export default function MyReducer() {
         debug,
         globals: none,
         groups,
+        todaysRides,
         auth,
-        login: none,
+        login,
+        hello:none,
         router: routerReducer,
         reduxAsyncConnect,
         form
-    })//, debug, todaysRides, groups, login})
-    //return combineReducers({globals:debug, debug, form})//, debug, todaysRides, groups, login})
+    })
 }

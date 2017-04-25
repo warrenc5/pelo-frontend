@@ -11,13 +11,15 @@ export function ngScope() {
 
 export function reduxConnect() {
     return target => {
-        return connect(target['reduxPropsConfig'],target['reduxDispatchConfig'])(target)
+        return connect(target['reduxPropsConfig'], target['reduxDispatchConfig'])(target)
     }
 }
-export function myAsyncFormConnect(reduxAsyncConfig , reduxPropsConfig ,reduxDispatchConfig , reduxFormConfig) {
+export function myAsyncFormConnect(){
     return target => {
         // TODO: remove Container Class
         // const {reduxAsyncConfig , reduxPropsConfig ,reduxDispatchConfig , reduxFormConfig } = target
+        var {reduxAsyncConfig , reduxPropsConfig ,reduxDispatchConfig , reduxFormConfig } = target
+        //, reduxPropsConfig ,reduxDispatchConfig , reduxFormConfig } = target
 
         if (reduxAsyncConfig == null) {
             if (reduxFormConfig == null) {
@@ -36,5 +38,3 @@ export function myAsyncFormConnect(reduxAsyncConfig , reduxPropsConfig ,reduxDis
         //return reduxConnectedPropTypes(reduxAsyncConnect(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(reduxForm(reduxFormConfig)(target)))
     }
 }
-
-//connect([mapStateToProps], [mapDispatchToProps], [mergeProps], [options])

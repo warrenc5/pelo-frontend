@@ -64,7 +64,7 @@ export default class MyClient {
     }
 
     todaysRides(userId, success, failure) {
-        ajax("todays_rides", "todays-rides/by-user/" + userId, success, failure, "GET")
+        this.ajax.call("todays_rides", "todays-rides/by-user/" + userId, success, failure, "GET")
     }
 
     checkUserLocation(userId, rideId) {

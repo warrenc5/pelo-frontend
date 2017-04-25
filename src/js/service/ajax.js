@@ -32,7 +32,7 @@ export default class MyAjax {
                     debug2("connected " + method)
                     xhttp.withCredentials = true
 
-                    //                  xhttp.setRequestHeader("Cookie", "myccookie")
+                    //xhttp.setRequestHeader("Cookie", "myccookie")
 
                     if ("POST" == method) {
                         xhttp.setRequestHeader("Content-Type", "application/json")

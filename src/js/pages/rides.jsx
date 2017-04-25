@@ -6,8 +6,10 @@ import {Menu, MenuItem} from 'material-ui/Menu'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import style from '../layout/style'
+import * as Router from '../Router.jsx'
 
-class Rides extends React.Component {
+@myAsyncFormConnect()
+export default class Rides extends React.Component {
 
     constructor(props) {
         super(props)
@@ -48,17 +50,24 @@ class Rides extends React.Component {
     )
 
     render() {
+        const rides = [this.props.todaysRides]
         return (
             <div>
                 <h2>Rides</h2>
-                <div>
-                    {this.DividerExampleMenu()}
+                <span>size:{rides.length}</span>
+                {rides.map((ride) => (
+                <div key={ride.id}>
+                    {alert(JSON.stringify(ride))}
+                    <span>id :{ride.id}</span>
+                    <div>
+                        {this.DividerExampleMenu()}
+                    </div>
+                    <div>
+                        {this.TableExampleSimple()}
+                    </div>
                 </div>
-                <div>
-                    {this.TableExampleSimple()}
-                </div>
+                    ))}
             </div>
-
         )
     }
 
@@ -66,14 +75,21 @@ class Rides extends React.Component {
         onClick2: PropTypes.func.isRequired,
         //id: PropTypes.bool.isRequired,
         //joinGroup: PropTypes.func.isRequired,
-        //groups: PropTypes.array.isRequired
+        todaysRides: PropTypes.array.isRequired
     }
 
     static reduxAsyncConfig = [{
         key: `todaysRides`,
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
-            const {auth} = store.getState()
-            ngScope().client.todaysRides(auth.id, (name, data)=> {
+            const {login} = store.getState()
+            if (login.id==-1) {
+                router.push(Router.LOGIN)
+                resolve({})
+                return
+            }
+
+
+            ngScope().client.todaysRides(login.id, (name, data)=> {
                 resolve(data)
             }, (e)=> {
                 reject(e)
@@ -86,8 +102,7 @@ class Rides extends React.Component {
     static reduxPropsConfig = (state, props) => ({
         total: 3,//select.mySelector(state,props),
         todaysRides: state.todaysRides,
-        //userId: state.login.id,
-        //id: state.todaysRides.id
+        userId: state.login.id
     })
 
     static reduxDispatchConfig = (dispatch) => ({
@@ -97,11 +112,6 @@ class Rides extends React.Component {
     })
 
     static reduxFormConfig = {
-        form: `LoginForm`,
+        form: `RidesForm`,
     }
-}
-
-
-@myAsyncFormConnect()
-export default class RidesContainer extends Rides {
 }

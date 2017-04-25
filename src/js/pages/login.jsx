@@ -32,7 +32,8 @@ import {debug0,debug2, debugJSON} from '../service/misc'
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import { hashHistory,browserHistory } from 'react-router'
 
-class Login extends Component {
+@myAsyncFormConnect()
+export default class Login extends Component {
 
     constructor(props) {
         super(props)
@@ -68,7 +69,7 @@ class Login extends Component {
                 {error && <span>Error: {error}</span>}
 
                 {hello || <span>Can't hello Server</span>}
-                <Form onSubmit={handleSubmit(Login.validate)}>
+                <Form onSubmit={handleSubmit(this.validate)}>
                     <table>
                         <tbody>
                         <tr>
@@ -102,7 +103,7 @@ class Login extends Component {
                                     <Field name="login"
                                            label="LOGIN"
                                            type="submit"
-                                           onClick={this.props.handleSubmit(Login.validate)}
+                                           onClick={this.props.handleSubmit(this.validate)}
                                            component={materialButton}
                                            disabled={pristine || submitting}
                                     />
@@ -147,7 +148,6 @@ class Login extends Component {
 
     componentWillReceiveProps(nextProps) {
         debug2('component will receive props')
-
     }
 
     render() {
@@ -175,7 +175,7 @@ class Login extends Component {
         dispatch: React.PropTypes.func
     }
 
-    static validate = (values, dispatch) => {
+    validate = (values, dispatch) => {
         //TODO do this first and if it fails then fail.
         //return Login.reduxFormConfig.asyncValidate(values, dispatch).catch((e)=>())
         return new Promise((resolve, reject)=> {
@@ -189,7 +189,7 @@ class Login extends Component {
                 type: `LOGIN`,
                 payload: result
             })
-            dispatch(push(Router.rides))
+            dispatch(push(Router.RIDES))
         }).catch((e)=> {
             console.log(JSON.stringify(e))
             dispatch({
@@ -203,7 +203,6 @@ class Login extends Component {
     static propTypes = {
         fbConnect: PropTypes.func.isRequired,
         hello: PropTypes.bool.isRequired,
-
         ...propTypes
     }
 
@@ -261,7 +260,7 @@ class Login extends Component {
                         payload: result
                     })
 
-                    dispatch(push(Router.rides))
+                    dispatch(push(Router.RIDES))
                 }).catch((e)=> {
                     console.log(JSON.stringify(e))
                     dispatch({
@@ -307,6 +306,3 @@ class Login extends Component {
         asyncBlurFields: ['username', 'password']
     }
 }
-
-@myAsyncFormConnect(Login.reduxAsyncConfig, Login.reduxPropsConfig, Login.reduxDispatchConfig, Login.reduxFormConfig)
-export default class LoginContainer extends Login {}

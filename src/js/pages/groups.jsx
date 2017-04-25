@@ -24,7 +24,8 @@ import 'scrollreveal'
  *
  *
  */
-class Groups extends React.Component {
+@myAsyncFormConnect()
+export default class Groups extends React.Component {
     constructor(props) {
         super(props)
     }
@@ -78,6 +79,14 @@ class Groups extends React.Component {
         key: `groups`,
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
             const {auth} = store.getState()
+
+            //TODO put this in base class
+            if (login.id == -1) {
+                router.push('/login')
+                resolve({})
+                return
+            }
+
             ngScope().client.groups(auth.id, (name, data)=> {
                 resolve(data)
             }, (e)=> {
@@ -103,6 +112,3 @@ class Groups extends React.Component {
     }
 }
 
-@myAsyncFormConnect(Groups.reduxAsyncConfig, Groups.reduxPropsConfig, Groups.reduxDispatchConfig, Groups.reduxFormConfig)
-export default class GroupsContainer extends Groups {
-}
