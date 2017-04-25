@@ -46,8 +46,9 @@ export default class RouterPath extends React.Component {
 
     render() {
         return (
-            <Router render={(props) => <ReduxAsyncConnect helpers={{ }} reloadOnPropsChange={this.reloadOnPropsChange} {...props} /> }
-                    history={this.props.history}>
+            <Router
+                render={(props) => <ReduxAsyncConnect helpers={{ }} reloadOnPropsChange={this.reloadOnPropsChange} {...props} /> }
+                history={this.props.history}>
                 <Route path="/" component={MainLayout}>
                     <Route component={ContentLayout}>
                         <IndexRoute component={Login}/>
@@ -56,16 +57,10 @@ export default class RouterPath extends React.Component {
                         <Route path="/bike-component" component={BikeComponent} pageTitle={this.props.DB_VERSION}/>
                         <Route path="/bike-component/:componentType" component={BikeComponent}
                                pageTitle="{:componentType}"/>
-                        <Route path="/login" component={Login} pageTitle="{:componentType}"
-                               onEnter={(location, replaceWith) => {
-                                    console.log(`enter:  ${location}`)
-                                    //return location
-                                   }}
-                               onLeave={() => {console.log('bye')}}
-                        />
+                        <Route path="/login" component={Login} pageTitle="{:componentType}"/>
                         <Route path="/register" component={RegisterContainer} pageTitle="{:componentType}"/>
-                        <Route path="/rides" component={Rides} pageTitle="{:componentType}"/>
-                        <Route path="/groups" component={Groups} pageTitle="{:componentType}"/>
+                        <Route path="/rides" component={Rides} pageTitle="Rides" onEnter={this.onEnter}/>
+                        <Route path="/groups" component={Groups} pageTitle="Groups" onEnter={this.onEnter}/>
                         <Route path="/messages" component={MessagesContainer} pageTitle="{:componentType}"/>
                         <Route path="/settings" component={SettingsContainer} pageTitle="{:componentType}"/>
                         <Route path="/terms" component={Terms} pageTitle="{:componentType}"/>
@@ -74,6 +69,11 @@ export default class RouterPath extends React.Component {
                 </Route>
             </Router>
         )
+    }
+
+    onEnter(location, replaceWith, callback) {
+        console.log(`save:  ${location}`)
+        callback()
     }
 }
 

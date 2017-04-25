@@ -20,7 +20,17 @@ import {ngScope,myAsyncFormConnect} from './service/bridge'
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 //injectTapEventPlugin()
-
+/*
+ https://medium.com/the-many/handling-android-back-button-events-in-react-native-with-custom-components-b33c63b0633b
+BackAndroid.addEventListener("hardwareBackPress", () => {
+    if (navigator.getCurrentRoutes().length > 1) {
+        navigator.pop()
+        return true // do not exit app
+    } else {
+        return false // exit app
+    }
+})
+*/
 export default class App extends Component {
     constructor(props) {
         super(props)
@@ -39,11 +49,11 @@ export default class App extends Component {
 
         /**
          * can't use this because of accessTokenCookie
-         */
          this.store.dispatch(({
                 type: `LOAD_TEST_DATA`,
                 payload: {id:17}
             }))
+         */
         /*
          syncHistoryWithStore(browserHistory, this.store, {
          //    selectLocationState: createSelectLocationState('routing'),

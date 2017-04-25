@@ -167,6 +167,7 @@ export default function MyReducer() {
         todaysRides,
         auth,
         login,
+        route:none,
         hello:none,
         router: routerReducer,
         reduxAsyncConnect,

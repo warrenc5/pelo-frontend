@@ -78,7 +78,7 @@ export default class Groups extends React.Component {
     static reduxAsyncConfig = [{
         key: `groups`,
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
-            const {auth} = store.getState()
+            const {login} = store.getState()
 
             //TODO put this in base class
             if (login.id == -1) {
@@ -87,7 +87,7 @@ export default class Groups extends React.Component {
                 return
             }
 
-            ngScope().client.groups(auth.id, (name, data)=> {
+            ngScope().client.groups(login.id, (name, data)=> {
                 resolve(data)
             }, (e)=> {
                 reject(e)

@@ -56,7 +56,7 @@ export default class Login extends Component {
             hello,
             } = props
         return (
-            <div id="login">
+            <div id="loginSection">
                 <p id="error">
                     <b>Welcome to the Riders App9.</b>
                 </p>
@@ -100,7 +100,7 @@ export default class Login extends Component {
                         <tr>
                             <td>
                                 <div>
-                                    <Field name="login"
+                                    <Field name="loginButton"
                                            label="LOGIN"
                                            type="submit"
                                            onClick={this.props.handleSubmit(this.validate)}

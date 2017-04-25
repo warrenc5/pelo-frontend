@@ -14,13 +14,13 @@ export default class MyClient {
     }
 
     login(username, password, success, failure) {
-        this.ajax.call("auth", "login/" + username,
+        this.ajax.call("login", "login/" + username,
             success, failure,
             "POST", JSON.stringify({password: password}))
     }
 
     login2(id, email, accessToken, success, failure) {
-        this.ajax.call("auth", "login2",
+        this.ajax.call("login", "login2",
             success, failure,
             "POST", JSON.stringify({id: id, email: email, accessToken: accessToken}))
     }

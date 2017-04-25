@@ -97,21 +97,22 @@ local.bindEvents()
 
 var peloApp = angular.module('peloApp', ['ng', 'react'])
 
-peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
+peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage) {
     local.banner()
 
     $scope.inited = false
 
-    $scope.state = {globals: globals,ok:false,baseUrl:"unknown"}
+    $scope.state = {globals: globals, ok: false, baseUrl: "unknown"}
     $scope.fb = fb
     $scope.hideSplash = function () {
-       platform.cordovaOnly(function () {
+        platform.cordovaOnly(function () {
             try {
                 navigator.splashscreen.hide()
             } catch (e) {
             }
         })
     }
+
 
     $scope.init = function () {
 
@@ -128,37 +129,19 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
             }
         });
 
+    }
 
+    $scope.initializeStorage = function() {
+        $.extend($scope.state, storage.initializeStorage())
+    }
+
+    $scope.saveCurrentPage = function(page) {
+        alert(page)
+        storage.put('currentPage',page)
     }
 
     $scope.client = new MyClient(new MyAjax(platform.configure()))
     $scope.state["baseUrl"] = platform.baseUrl
-
-    $scope.initializeStorage = function initializeStorage() {
-
-        if (checkStorageVersion()) {
-            debug2("loading storage")
-            return loadStorageIntoScope()
-        } else {
-            debug2("storage db incompatible with DB_VERSION. clearing storage")
-            storage.clear()
-        }
-    }
-
-    function loadStorageIntoScope() {
-        storage.forEach(function (name, value) {
-            debug2("scope " + name + " " + value)
-            $scope.state[name] = value
-        })
-
-        debug2("storage loaded")
-        return $scope.state;
-    }
-
-    function checkStorageVersion() {
-        var storageVersion = storage.get("globals")
-        return storageVersion == null || storageVersion.DB_VERSION == globals.DB_VERSION
-    }
 
     $scope.cordovaOnly = platform.cordovaOnly
 
@@ -173,8 +156,8 @@ peloApp.factory('platform', function ($rootScope) {
 
         debug2(`platform detected ${p}`)
         //TODO remove
-        
-        if (~['Dev','Unknown'].indexOf(p)) {
+
+        if (~['Dev', 'Unknown'].indexOf(p)) {
             this.baseUrl = globals.peloBaseUrlLocal
         } else {
             this.baseUrl = globals.peloBaseUrlMock
@@ -239,6 +222,40 @@ peloApp.factory('platform', function ($rootScope) {
 
 })
 
+peloApp.service("storage", function () {
+    function initializeStorage() {
+
+        if (checkStorageVersion()) {
+            debug2("loading storage")
+            return loadStorage()
+        } else {
+            debug2("storage db incompatible with DB_VERSION. clearing storage")
+            storage.clear()
+            return {}
+        }
+    }
+
+    function loadStorage() {
+        var result = new Array()
+
+        storage.forEach(function (name, value) {
+            debug2("scope " + name + " " + value.substring(0,100))
+            result[name] = value
+        })
+
+        debug2("storage loaded")
+        return result
+    }
+
+    function checkStorageVersion() {
+        var storageVersion = storage.get("globals")
+        return storageVersion == null || storageVersion.DB_VERSION == globals.DB_VERSION
+    }
+
+    return {
+        initializeStorage: initializeStorage
+    }
+})
 peloApp.service("fb", function () {
 
     //var appId = "1027544200612898"
@@ -266,7 +283,7 @@ peloApp.service("fb", function () {
                             //login2(response.email, userData.accessToken)
                             debug2("success" + JSON.stringify(loginResponse))
                             //response.name
-                            success({fb: {userData: response, auth:loginResponse}})
+                            success({fb: {userData: response, auth: loginResponse}})
                             //logoutFB()
                         })
                 },
@@ -279,8 +296,9 @@ peloApp.service("fb", function () {
         }
 
     }
+
     function loginFBTest(username, success, failure) {
-       return success(createTestData().fb)
+        return success(createTestData().fb)
     }
 
     function logoutFB() {

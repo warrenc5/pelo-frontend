@@ -3,6 +3,7 @@ import 'angular'
 import { asyncConnect as reduxAsyncConnect } from 'redux-connect'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
+//FIXME:
 //import reduxConnectedPropTypes from 'redux-connected-proptypes';
 
 export function ngScope() {
@@ -16,10 +17,7 @@ export function reduxConnect() {
 }
 export function myAsyncFormConnect(){
     return target => {
-        // TODO: remove Container Class
-        // const {reduxAsyncConfig , reduxPropsConfig ,reduxDispatchConfig , reduxFormConfig } = target
         var {reduxAsyncConfig , reduxPropsConfig ,reduxDispatchConfig , reduxFormConfig } = target
-        //, reduxPropsConfig ,reduxDispatchConfig , reduxFormConfig } = target
 
         if (reduxAsyncConfig == null) {
             if (reduxFormConfig == null) {
@@ -35,6 +33,7 @@ export function myAsyncFormConnect(){
                 return reduxAsyncConnect(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(reduxForm(reduxFormConfig)(target))
             }
         }
+        //FIXME:
         //return reduxConnectedPropTypes(reduxAsyncConnect(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(reduxForm(reduxFormConfig)(target)))
     }
 }
