@@ -3,7 +3,7 @@ import { createSelector } from 'reselect'
 import moment from 'moment'
 import {connect} from 'react-redux'
 
-import Working from '../component/working.jsx'
+import Working from '../widget/working.jsx'
 //import {buildTime} from '../handler/selectors'
 import {ngScope,reduxConnect} from '../service/bridge'
 import {debug0,debug2, debugJSON} from '../service/misc'

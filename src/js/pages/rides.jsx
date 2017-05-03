@@ -51,13 +51,15 @@ export default class Rides extends React.Component {
     )
 
     render() {
+        //TODO don't do this here - do it up there
         const rides = this.props.todaysRides
+        const {showRide} = this.props
         return (
             <div>
                 <h2>Rides</h2>
                 <span>size:{rides.length}</span>
                 {rides.map((ride) => (
-                <div key={ride.id}>
+                <div key={ride.id} onClick={showRide(ride.id)}>
                     <span>id :{ride.id}</span><br/>
                     <span>name :{ride.name}</span>
                     <div>
@@ -73,14 +75,14 @@ export default class Rides extends React.Component {
     }
 
     static propTypes = {
-        onClick2: PropTypes.func.isRequired,
+        showRide: PropTypes.func.isRequired,
         //id: PropTypes.bool.isRequired,
         //joinGroup: PropTypes.func.isRequired,
         todaysRides: PropTypes.array.isRequired
     }
 
     static reduxAsyncConfig = [{
-        key: `todaysRides`,
+        key: `route`,
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
             const {login} = store.getState()
             if (login.id==-1) {
@@ -102,12 +104,13 @@ export default class Rides extends React.Component {
     static reduxPropsConfig = (state, props) => ({
         total: 3,//select.mySelector(state,props),
         todaysRides: state.todaysRides,
-        userId: state.login.id
+        userId: state.login.id,
     })
 
     static reduxDispatchConfig = (dispatch) => ({
-        onClick2: (id) => {
-            dispatch(toggleTracking(id))
+        showRide: (id) => {
+            alert('showing ride ' + id)
+            //dispatch(toggleTracking(id))
         }
     })
 

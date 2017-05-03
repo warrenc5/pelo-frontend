@@ -17,7 +17,7 @@ import BikeComponent from './pages/bike.jsx'
 import RegisterContainer from './pages/register.jsx'
 import About from './pages/about.jsx'
 import Terms from './pages/terms.jsx'
-
+import MyRouteMap from './widget/routemap'
 
 /**
  * This screen transition logical router handles html a links and anchor refs in the app
@@ -51,21 +51,22 @@ export default class RouterPath extends React.Component {
                 history={this.props.history}>
                 <Route path="/" component={MainLayout}>
                     <Route component={ContentLayout}>
-                        <IndexRoute component={Login}/>
-                    </Route>
-                    <Route component={ContentLayout}>
                         <Route path="/bike-component" component={BikeComponent} pageTitle={this.props.DB_VERSION}/>
                         <Route path="/bike-component/:componentType" component={BikeComponent}
                                pageTitle="{:componentType}"/>
-                        <Route path="/login" component={Login} pageTitle="{:componentType}"/>
-                        <Route path="/register" component={RegisterContainer} pageTitle="{:componentType}"/>
-                        <Route path="/rides" component={Rides} pageTitle="Rides" onEnter={this.onEnter}/>
-                        <Route path="/groups" component={Groups} pageTitle="Groups" onEnter={this.onEnter}/>
-                        <Route path="/messages" component={MessagesContainer} pageTitle="{:componentType}"/>
-                        <Route path="/settings" component={SettingsContainer} pageTitle="{:componentType}"/>
-                        <Route path="/terms" component={Terms} pageTitle="{:componentType}"/>
+                        <Route path={LOGIN} component={Login} pageTitle="{:componentType}"/>
+                        <Route path={REGISTER} component={RegisterContainer} pageTitle="{:componentType}"/>
+                        <Route path={RIDES} component={Rides} pageTitle="Rides" onEnter={this.onEnter}/>
+                        <Route path={GROUPS} component={Groups} pageTitle="Groups" onEnter={this.onEnter}/>
+                        <Route path={MESSAGES} component={MessagesContainer} pageTitle="{:componentType}"/>
+                        <Route path={SETTINGS} component={SettingsContainer} pageTitle="{:componentType}"/>
+                        <Route path={TERMS} component={Terms} pageTitle="{:componentType}"/>
+                        <Route path={ROUTE} component={MyRouteMap} pageTitle="route map test"/>
                     </Route>
-                    <Route path="/about" component={About}/>
+                    <Route component={ContentLayout}>
+                        <IndexRoute component={Login}/>
+                    </Route>
+                    <Route path={ABOUT} component={About}/>
                 </Route>
             </Router>
         )
@@ -77,6 +78,14 @@ export default class RouterPath extends React.Component {
     }
 }
 
+export const LOGIN = '/login'
+export const REGISTER = '/register'
+export const MESSAGES = '/messages'
+export const SETTINGS = '/settings'
+export const TERMS = '/terms'
+export const ROUTE = '/routes'
 export const GROUPS = '/groups'
 export const RIDES = '/rides'
-export const LOGIN = '/login'
+export const ABOUT = '/about'
+
+

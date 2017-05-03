@@ -22,19 +22,23 @@ import {ngScope,myAsyncFormConnect} from './service/bridge'
 //injectTapEventPlugin()
 /*
  https://medium.com/the-many/handling-android-back-button-events-in-react-native-with-custom-components-b33c63b0633b
-BackAndroid.addEventListener("hardwareBackPress", () => {
-    if (navigator.getCurrentRoutes().length > 1) {
-        navigator.pop()
-        return true // do not exit app
-    } else {
-        return false // exit app
-    }
-})
-*/
+ BackAndroid.addEventListener("hardwareBackPress", () => {
+ if (navigator.getCurrentRoutes().length > 1) {
+ navigator.pop()
+ return true // do not exit app
+ } else {
+ return false // exit app
+ }
+ })
+ */
 export default class App extends Component {
     constructor(props) {
         super(props)
         this.props = props
+
+        this.handleRequestClose = this.handleRequestClose.bind(this)
+        this.handleTouchTap = this.handleTouchTap.bind(this)
+
         ngScope().initializeStorage()
 
         //LOAD TEST DATA
@@ -68,6 +72,23 @@ export default class App extends Component {
 
         //FIXME HOWTO??
         //window.scrollReveal = new scrollReveal();
+        //TODO what does this do?
+        this.state = {
+            open: false,
+        }
+    }
+
+    handleRequestClose() {
+        this.setState({
+            open: false,
+        })
+    }
+
+    //TODO should move to material.js?
+    handleTouchTap() {
+        this.setState({
+            open: true,
+        })
     }
 
     render() {
