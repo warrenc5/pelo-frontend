@@ -123,9 +123,9 @@ const groups = (state = [{id: 0}], action) => {
     }
 }
 
-const selectedRides = (state = {4: true}, action) => {
+const selectedRides = (state = {}, action) => {
     switch (action.type) {
-        case 'SELECT':
+        case `SELECT`:
             var id = action.payload.id
             var m = {}
 
@@ -135,6 +135,22 @@ const selectedRides = (state = {4: true}, action) => {
             } else {
                 m[id] = !state[id]
             }
+            return {... state, ... m}
+        default:
+            return state
+    }
+}
+
+const route = (state = {}, action) => {
+    switch (action.type) {
+        case `DOWNLOAD_ROUTE`:
+            var id = action.payload.id
+            var m = {}
+
+            if (state[id] == null) {
+                m[id] = action.payload.route
+            }
+            alert(JSON.stringify(m))
             return {... state, ... m}
         default:
             return state
@@ -178,7 +194,7 @@ export default function MyReducer() {
         todaysRides,
         auth,
         login,
-        route: none,
+        route,
         hello: none,
         router: routerReducer,
         reduxAsyncConnect,

@@ -68,7 +68,7 @@ export default class ContentLayout extends Component {
     }
 
     static propTypes = {
-        buildTime: PropTypes.func.isRequired,
+        buildTime: PropTypes.string.isRequired,
         baseUrl: PropTypes.string.isRequired,
         authId: PropTypes.string.isRequired,
     }

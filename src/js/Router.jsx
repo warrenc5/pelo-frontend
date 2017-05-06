@@ -74,7 +74,6 @@ export default class RouterPath extends MyComponent {
     }
 
     static propTypes = {
-        middleware: PropTypes.object.isRequired,
     }
 }
 

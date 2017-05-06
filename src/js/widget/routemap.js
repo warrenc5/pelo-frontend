@@ -1,4 +1,4 @@
-import { PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 
 import MyComponent from './common'
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
@@ -10,14 +10,17 @@ export default class MyRouteMap extends MyComponent {
         super(props)
     }
 
+    componentWillReceiveProps(nextProps) {
+        debug2('myroutemap component will receive props')
+    }
+
     componentDidMount() {
         debug2('myroutemap component did mount')
         //debug0(this.props.route)
         var {router} = this.props
         //router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
-        debug0(router.getCurrentLocation())
-        this.showMap2()
 
+        this.showMap2()
         /**
          * TODO: auto login for testing
          * const {dispatch} = this.props
@@ -28,13 +31,14 @@ export default class MyRouteMap extends MyComponent {
     render() {
         //TODO add header or footer
         const {route} = this.props
-        return (<div>{route.name}</div>)
+        return (<div></div>)
     }
 
     showMap2() {
         console.log('showing map2')
 
-        console.log('route ' + this.props.route)
+        alert(JSON.stringify(this.props.route))
+        console.log('route ' + this.props.route + " " + this.props.route.length)
         console.log('route center ' + JSON.stringify(this.props.route.center))
 
         try {
@@ -44,17 +48,13 @@ export default class MyRouteMap extends MyComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        debug2('route component will receive props')
-    }
-
     static propTypes = {
-        //route: PropTypes.array.isRequired
+        route: PropTypes.array.isRequired
     }
 
     static reduxPropsConfig = (state, props) => ({
         route: state.route
-
+            //[props.routeId]
     })
 
     static reduxDispatchConfig = (dispatch) => ({

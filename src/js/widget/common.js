@@ -6,7 +6,9 @@ export default class MyComponent extends React.Component {
     }
 
     reloadOnPropsChange(props, nextProps) {
-        console.log('reload on props change')
+
+        console.log('reload on props change ' + props.location.pathName + ' ' + nextProps.location.pathName)
+        return props.location.pathname !== nextProps.location.pathname;
     }
 
     componentDidMount() {

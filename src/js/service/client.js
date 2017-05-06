@@ -1,4 +1,4 @@
-
+//TODO: formalize calls to Promises
 export default class MyClient {
 
     constructor(ajax) {
@@ -45,16 +45,15 @@ export default class MyClient {
     }
 
     rideRoute(rideId, success, failure) {
-       currentRideId = rideId
-        this.ajax("ride_route" + rideId, "ride-route/" + rideId, success, failure, "GET")
+        this.ajax.call("ride_route" + rideId, "ride-route/" + rideId, success, failure, "GET")
     }
 
     messages(userId, success, failure) {
-        this.ajax("messages", "messages/" + userId, success, failure, "GET")
+        this.ajax.call("messages", "messages/" + userId, success, failure, "GET")
     }
 
     images(ids, success, failure) {
-        this.ajax("userimages", "userimageid=1;id=2", success, failure, "GET")
+        this.ajax.call("userimages", "userimageid=1;id=2", success, failure, "GET")
     }
 
     groups(userId, success, failure) {
