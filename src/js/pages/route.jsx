@@ -6,15 +6,16 @@ import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import {debug2} from '../service/misc'
+import MyComponent from '../widget/common'
 
 @myAsyncFormConnect()
-export default class Route extends React.Component {
+export default class Route extends MyComponent {
     constructor(props) {
         super(props)
         this.props = props
     }
 
-    render() {
+    render () {
         return <span>RouteMap {this.props.routeId} goes here.</span>
     }
 
@@ -31,6 +32,7 @@ export default class Route extends React.Component {
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
             //TODO get route if not already present
             //const {ride} = store.getState()
+            alert('hello')
             alert('get ride' + this.props.routeId)
             //TODO get the selected ride
             ngScope().client.rideRoute(this.props.routeId, (name, data)=> {

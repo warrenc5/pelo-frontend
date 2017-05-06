@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import { PropTypes } from 'react'
 
 import MyComponent from './common'
 import {ngScope,myAsyncFormConnect} from '../service/bridge'

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-router'
 import { ReduxAsyncConnect, asyncConnect, reducer as reduxAsyncConnect } from 'redux-connect'
@@ -18,6 +18,7 @@ import RegisterContainer from './pages/register.jsx'
 import About from './pages/about.jsx'
 import Terms from './pages/terms.jsx'
 import MyRouteMap from './widget/routemap'
+import MyComponent from './widget/common'
 
 /**
  * This screen transition logical router handles html a links and anchor refs in the app
@@ -27,7 +28,7 @@ import MyRouteMap from './widget/routemap'
  * Currently all the Links are in component/navigation.js
  **/
 
-export default class RouterPath extends React.Component {
+export default class RouterPath extends MyComponent {
 
     constructor(props, context) {
         super(props, context)
@@ -38,16 +39,11 @@ export default class RouterPath extends React.Component {
 //<Router render={(props) => <ReduxAsyncConnect {...props} /> } history={browserHistory}>
     //render={applyRouterMiddleware()}
 
-    reloadOnPropsChange = (props, nextProps) => {
-        // reload only when path/route has changed
-        return props.location.pathname !== nextProps.location.pathname;
-
-    }
-
     render() {
         return (
             <Router
-                render={(props) => <ReduxAsyncConnect helpers={{ }} reloadOnPropsChange={this.reloadOnPropsChange} {...props} /> }
+                render={(props) => <ReduxAsyncConnect helpers={{ }} reloadOnPropsChange={super.reloadOnPropsChange} {...props}
+                /> }
                 history={this.props.history}>
                 <Route path="/" component={MainLayout}>
                     <Route component={ContentLayout}>
@@ -75,6 +71,10 @@ export default class RouterPath extends React.Component {
     onEnter(location, replaceWith, callback) {
         console.log(`save:  ${location}`)
         callback()
+    }
+
+    static propTypes = {
+        middleware: PropTypes.object.isRequired,
     }
 }
 

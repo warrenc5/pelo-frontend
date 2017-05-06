@@ -47,9 +47,9 @@ export default class App extends Component {
 
         //this.history = browserHistory
         this.history = hashHistory
-        const middle = [thunk, routerMiddleware(this.history)]
+        this.middle = [thunk, routerMiddleware(this.history)]
         //const middle = routerMiddleware(this.history)
-        this.store = createStore(MyReducer(), this.props.state, applyMiddleware(...middle));
+        this.store = createStore(MyReducer(), this.props.state, applyMiddleware(... this.middle));
 
         /**
          * can't use this because of accessTokenCookie
@@ -94,7 +94,7 @@ export default class App extends Component {
     render() {
         return <MuiThemeProvider muiTheme={myTheme}>
             <Provider store={this.store} key="provider">
-                <RouterPath props={this.props} history={this.history}/>
+                <RouterPath middleware={this.middle} props={this.props} history={this.history}/>
             </Provider>
         </MuiThemeProvider>
     }

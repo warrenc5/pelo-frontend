@@ -1,14 +1,15 @@
 import React, { PropTypes } from 'react'
 
 import { Field, propTypes } from 'redux-form'
-
+import * as Router from '../Router.jsx'
 import { connect } from 'react-redux'
 import Divider from 'material-ui/Divider'
 import {Menu, MenuItem} from 'material-ui/Menu'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import style from '../layout/style'
-import * as Router from '../Router.jsx'
+import MyComponent from '../widget/common'
+
 import {
     materialButton,
     materialTextField,
@@ -20,7 +21,7 @@ import {
 import Route from './route.jsx'
 
 @myAsyncFormConnect()
-export default class Rides extends React.Component {
+export default class Rides extends MyComponent {
 
     constructor(props) {
         super(props)
@@ -87,7 +88,7 @@ export default class Rides extends React.Component {
         )
     }
 
-    static propTypes = {
+   static propTypes = {
         showRide: PropTypes.func.isRequired,
         //id: PropTypes.bool.isRequired,
         //joinGroup: PropTypes.func.isRequired,

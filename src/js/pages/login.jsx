@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Field, propTypes } from 'redux-form'
 import {
@@ -18,6 +18,7 @@ import style from '../layout/style'
 import * as Router from '../Router.jsx'
 import * as action from '../handler/actions'
 import keydown from 'react-keydown'
+import MyComponent from '../widget/common'
 
 import {
     materialButton,
@@ -33,7 +34,7 @@ import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import { hashHistory,browserHistory } from 'react-router'
 
 @myAsyncFormConnect()
-export default class Login extends Component {
+export default class Login extends MyComponent {
 
     constructor(props) {
         super(props)
@@ -172,7 +173,7 @@ export default class Login extends Component {
     }
 
     static contextTypes = {
-        dispatch: React.PropTypes.func
+        dispatch: PropTypes.func
     }
 
     validate = (values, dispatch) => {
