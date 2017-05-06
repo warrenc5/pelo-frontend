@@ -72,7 +72,7 @@ export default class Rides extends React.Component {
                 {rides.map((ride) => (
                 <div key={ride.id}>
                     <Field name="showRide" component={materialButton} label={ride.id} onClick={showRide(ride.id)}/>
-                    {selectedRides[ride.id] == true && <Route/>}
+                    {selectedRides[ride.id] == true && <Route routeId={ride.route}/>}
                     <span>id :{ride.id}</span><br/>
                     <span>name :{ride.name}</span>
                     <div>

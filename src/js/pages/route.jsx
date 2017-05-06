@@ -7,8 +7,6 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import {debug2} from '../service/misc'
 
-
-
 @myAsyncFormConnect()
 export default class Route extends React.Component {
     constructor(props) {
@@ -17,11 +15,11 @@ export default class Route extends React.Component {
     }
 
     render() {
-        return <span>RouteMap goes here</span>
+        return <span>RouteMap {this.props.routeId} goes here.</span>
     }
 
     static propTypes = {
-       // route: PropTypes.array.isRequired
+       routeId: PropTypes.string.isRequired
     }
 
     componentDidMount() {
@@ -32,10 +30,10 @@ export default class Route extends React.Component {
         key: `route`,
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
             //TODO get route if not already present
-            const {ride} = store.getState()
-            alert('get ride' + ride.id)
+            //const {ride} = store.getState()
+            alert('get ride' + this.props.routeId)
             //TODO get the selected ride
-            ngScope().client.rideRoute(ride.id, (name, data)=> {
+            ngScope().client.rideRoute(this.props.routeId, (name, data)=> {
                 resolve(data)
             }, (e)=> {
                 reject(e)
@@ -45,5 +43,11 @@ export default class Route extends React.Component {
             throw e
         })
     }]
+
+    static reduxPropsConfig = (state, props) => ({
+    })
+
+    static reduxDispatchConfig = (dispatch) => ({
+    })
 
 }

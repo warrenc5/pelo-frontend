@@ -95,16 +95,13 @@ const debug = (state = {}, action) => {
         debug2(e.message)
     }
     try {
-        debug2("payload: " + JSON.stringify(action.payload).substring(0,100))
+        var p = JSON.stringify(action.payload)
+        if (p == null)
+            p = ""
+        debug2("payload: " + p.substring(p, Math.min(p.length, 100)))
     } catch (e) {
         debug2(e.message)
         //oo(action.payload)
-    }
-
-    try {
-        debug2("state: " + JSON.stringify(state))
-    } catch (e) {
-        debug2(e.message)
     }
 
     return state;
@@ -126,7 +123,7 @@ const groups = (state = [{id: 0}], action) => {
     }
 }
 
-const selectedRides = (state = {4:true}, action) => {
+const selectedRides = (state = {4: true}, action) => {
     switch (action.type) {
         case 'SELECT':
             var id = action.payload.id
@@ -138,7 +135,7 @@ const selectedRides = (state = {4:true}, action) => {
             } else {
                 m[id] = !state[id]
             }
-            return { ... state,  ... m}
+            return {... state, ... m}
         default:
             return state
     }
