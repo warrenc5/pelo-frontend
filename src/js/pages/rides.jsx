@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react'
 
+import { Field, propTypes } from 'redux-form'
+
 import { connect } from 'react-redux'
 import Divider from 'material-ui/Divider'
 import {Menu, MenuItem} from 'material-ui/Menu'
@@ -7,6 +9,15 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import style from '../layout/style'
 import * as Router from '../Router.jsx'
+import {
+    materialButton,
+    materialTextField,
+    materialCheckbox ,
+    materialRadioGroup ,
+    materialSelectField
+} from './material.jsx'
+
+import Route from './route.jsx'
 
 @myAsyncFormConnect()
 export default class Rides extends React.Component {
@@ -53,13 +64,15 @@ export default class Rides extends React.Component {
     render() {
         //TODO don't do this here - do it up there
         const rides = this.props.todaysRides
-        const {showRide} = this.props
+        const {selectedRides,showRide} = this.props
         return (
             <div>
                 <h2>Rides</h2>
-                <span>size:{rides.length}</span>
+                <span>size:{rides.length} rides today</span>
                 {rides.map((ride) => (
-                <div key={ride.id} onClick={showRide(ride.id)}>
+                <div key={ride.id}>
+                    <Field name="showRide" component={materialButton} label={ride.id} onClick={showRide(ride.id)}/>
+                    {selectedRides[ride.id] == true && <Route/>}
                     <span>id :{ride.id}</span><br/>
                     <span>name :{ride.name}</span>
                     <div>
@@ -78,14 +91,15 @@ export default class Rides extends React.Component {
         showRide: PropTypes.func.isRequired,
         //id: PropTypes.bool.isRequired,
         //joinGroup: PropTypes.func.isRequired,
-        todaysRides: PropTypes.array.isRequired
+        todaysRides: PropTypes.array.isRequired,
+        selectedRides: PropTypes.object.isRequired
     }
 
     static reduxAsyncConfig = [{
-        key: `route`,
+        key: `todaysRides`,
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
             const {login} = store.getState()
-            if (login.id==-1) {
+            if (login.id == -1) {
                 router.push(Router.LOGIN)
                 resolve({})
                 return
@@ -103,14 +117,17 @@ export default class Rides extends React.Component {
 
     static reduxPropsConfig = (state, props) => ({
         total: 3,//select.mySelector(state,props),
+        selectedRides: state.selectedRides,
         todaysRides: state.todaysRides,
         userId: state.login.id,
     })
 
     static reduxDispatchConfig = (dispatch) => ({
-        showRide: (id) => {
-            alert('showing ride ' + id)
-            //dispatch(toggleTracking(id))
+        showRide: (id) => (event) => {
+            dispatch({
+                type: `SELECT`,
+                payload: {id: id}
+            })
         }
     })
 

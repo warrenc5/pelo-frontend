@@ -95,7 +95,7 @@ const debug = (state = {}, action) => {
         debug2(e.message)
     }
     try {
-        debug2("payload: " + JSON.stringify(action.payload))
+        debug2("payload: " + JSON.stringify(action.payload).substring(0,100))
     } catch (e) {
         debug2(e.message)
         //oo(action.payload)
@@ -117,10 +117,28 @@ const groups = (state = [{id: 0}], action) => {
 
             break
         //case '@redux-conn/LOAD_SUCCESS':
-            //alert(JSON.stringify(state))
-            //return {...state, groups: action.payload.data}
-            //return state
-            //break
+        //alert(JSON.stringify(state))
+        //return {...state, groups: action.payload.data}
+        //return state
+        //break
+        default:
+            return state
+    }
+}
+
+const selectedRides = (state = {4:true}, action) => {
+    switch (action.type) {
+        case 'SELECT':
+            var id = action.payload.id
+            var m = {}
+
+            if (state[id] == null) {
+
+                m[id] = true
+            } else {
+                m[id] = !state[id]
+            }
+            return { ... state,  ... m}
         default:
             return state
     }
@@ -138,11 +156,6 @@ const todaysRides = (state = {}, action) => {
                 return {id: false}
             else
                 return {id: true}
-        case 'ADD_TODO':
-            return [
-                ...state,
-                todo(undefined, action)
-            ]
         case 'TOGGLE_TODO':
             return state.map(t =>
                 todo(t, action)
@@ -164,11 +177,12 @@ export default function MyReducer() {
         debug,
         globals: none,
         groups,
+        selectedRides,
         todaysRides,
         auth,
         login,
-        route:none,
-        hello:none,
+        route: none,
+        hello: none,
         router: routerReducer,
         reduxAsyncConnect,
         form
