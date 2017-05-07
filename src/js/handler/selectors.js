@@ -3,10 +3,11 @@ import { createSelector } from 'reselect'
 /**
  * reselectors are caches for computation optimization, and can be nested so in this example the total is only calculated once
  *
- * the first parameters for createSelector are selectors and the last parameter argument is the transformer - which takes each selector as a parameter
+ * the first parameters for createSelector are the selectors and the last parameter argument is the transformer
+ * - which takes each selector as a parameter
  *
  */
-export const buildTime = createSelector((state) => state.globals.buildTime, (result) => result)
+export const buildTime = "never";
 
 /*
  export const mySelector = createSelector((state) => state.auth.id, (result) => result * 2)

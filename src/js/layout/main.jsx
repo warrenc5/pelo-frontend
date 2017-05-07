@@ -1,6 +1,6 @@
 import React, {Component,PropTypes} from 'react'
-import Navigation from '../component/navigation'
-import Search from '../component/search'
+import Navigation from '../widget/navigation'
+import Search from '../widget/search'
 import Subheader from 'material-ui/Subheader';
 
 export default class MainLayout extends Component {

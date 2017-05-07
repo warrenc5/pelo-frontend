@@ -1,18 +1,26 @@
-
+//TODO: formalize calls to Promises
 export default class MyClient {
 
     constructor(ajax) {
         this.ajax = ajax
+        console.log('********** Client Initialized ***********')
+    }
+
+
+    sayHello(success, failure) {
+        this.ajax.call("hello", "",
+            success, failure,
+            "GET")
     }
 
     login(username, password, success, failure) {
-        this.ajax.call("auth", "login/" + username,
+        this.ajax.call("login", "login/" + username,
             success, failure,
             "POST", JSON.stringify({password: password}))
     }
 
     login2(id, email, accessToken, success, failure) {
-        this.ajax.call("auth", "login2",
+        this.ajax.call("login", "login2",
             success, failure,
             "POST", JSON.stringify({id: id, email: email, accessToken: accessToken}))
     }
@@ -33,22 +41,19 @@ export default class MyClient {
         data = "{\"when\": " + new Date().getTime() + ", \"location\" :{ \"lat\" : " + pos.lat + ", \"lng\" : " + pos.lng + "}}"
         debug2(data)
 
-        ajax("riderLocation" + rideId, "last-known-location/" + userId + "/" + rideId, success, failure, "POST", data)
+        this.ajax("riderLocation" + rideId, "last-known-location/" + userId + "/" + rideId, success, failure, "POST", data)
     }
 
     rideRoute(rideId, success, failure) {
-        currentRideId = rideId
-        //success
-        //plotFitRoute(data)
-        ajax("ride_route" + rideId, "ride-route/" + rideId, success, failure, "GET")
+        this.ajax.call("ride_route" + rideId, "ride-route/" + rideId, success, failure, "GET")
     }
 
     messages(userId, success, failure) {
-        ajax("messages", "messages/" + userId, success, failure, "GET")
+        this.ajax.call("messages", "messages/" + userId, success, failure, "GET")
     }
 
     images(ids, success, failure) {
-        ajax("userimages", "userimageid=1;id=2", success, failure, "GET")
+        this.ajax.call("userimages", "userimageid=1;id=2", success, failure, "GET")
     }
 
     groups(userId, success, failure) {
@@ -56,7 +61,7 @@ export default class MyClient {
     }
 
     todaysRides(userId, success, failure) {
-        ajax("todays_rides", "todays-rides/by-user/" + userId, success, failure, "GET")
+        this.ajax.call("todays_rides", "todays-rides/by-user/" + userId, success, failure, "GET")
     }
 
     checkUserLocation(userId, rideId) {

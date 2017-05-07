@@ -73,6 +73,17 @@ const auth = (state = {}, action) => {
     }
 }
 
+const login = (state = [{}], action) => {
+    switch (action.type) {
+        case `LOGIN`:
+            return action.payload
+        case `LOAD_TEST_DATA`:
+            return action.payload
+        default:
+            return state
+    }
+}
+
 const none = (state = {}, action) => {
     return state
 }
@@ -84,16 +95,13 @@ const debug = (state = {}, action) => {
         debug2(e.message)
     }
     try {
-        debug2("payload: " + JSON.stringify(action.payload))
+        var p = JSON.stringify(action.payload)
+        if (p == null)
+            p = ""
+        debug2("payload: " + p.substring(p, Math.min(p.length, 100)))
     } catch (e) {
         debug2(e.message)
         //oo(action.payload)
-    }
-
-    try {
-        debug2("state: " + JSON.stringify(state))
-    } catch (e) {
-        debug2(e.message)
     }
 
     return state;
@@ -101,16 +109,49 @@ const debug = (state = {}, action) => {
 
 const groups = (state = [{id: 0}], action) => {
     switch (action.type) {
-
         case action.JOIN_GROUP:
             alert('join the group')
 
             break
         //case '@redux-conn/LOAD_SUCCESS':
-            //alert(JSON.stringify(state))
-            //return {...state, groups: action.payload.data}
-            //return state
-            //break
+        //alert(JSON.stringify(state))
+        //return {...state, groups: action.payload.data}
+        //return state
+        //break
+        default:
+            return state
+    }
+}
+
+const selectedRides = (state = {}, action) => {
+    switch (action.type) {
+        case `SELECT`:
+            var id = action.payload.id
+            var m = {}
+
+            if (state[id] == null) {
+
+                m[id] = true
+            } else {
+                m[id] = !state[id]
+            }
+            return {... state, ... m}
+        default:
+            return state
+    }
+}
+
+const route = (state = {}, action) => {
+    switch (action.type) {
+        case `DOWNLOAD_ROUTE`:
+            var id = action.payload.id
+            var m = {}
+
+            if (state[id] == null) {
+                m[id] = action.payload.route
+            }
+            alert(JSON.stringify(m))
+            return {... state, ... m}
         default:
             return state
     }
@@ -118,19 +159,16 @@ const groups = (state = [{id: 0}], action) => {
 
 const todaysRides = (state = {}, action) => {
     switch (action.type) {
+        case '@redux-conn/LOAD_FAIL':
+            return state
         case 'LOAD':
-            return {todaysRides: {id: action.payload.id}}
+            return action.payload
         case 'TOGGLE_TRACK':
             debug2("handling action" + action.type + "  " + action.payload.id)
             if (action.payload.id)
                 return {id: false}
             else
                 return {id: true}
-        case 'ADD_TODO':
-            return [
-                ...state,
-                todo(undefined, action)
-            ]
         case 'TOGGLE_TODO':
             return state.map(t =>
                 todo(t, action)
@@ -152,11 +190,14 @@ export default function MyReducer() {
         debug,
         globals: none,
         groups,
+        selectedRides,
+        todaysRides,
         auth,
-        login: none,
+        login,
+        route,
+        hello: none,
         router: routerReducer,
         reduxAsyncConnect,
         form
-    })//, debug, todaysRides, groups, login})
-    //return combineReducers({globals:debug, debug, form})//, debug, todaysRides, groups, login})
+    })
 }

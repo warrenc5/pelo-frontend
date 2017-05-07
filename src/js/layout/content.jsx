@@ -1,23 +1,15 @@
 import React, {Component, PropTypes } from 'react'
-import Working from '../component/working.jsx'
+import { createSelector } from 'reselect'
 import moment from 'moment'
 import {connect} from 'react-redux'
+
+import Working from '../widget/working.jsx'
 //import {buildTime} from '../handler/selectors'
-import {ngScope} from '../service/bridge'
+import {ngScope,reduxConnect} from '../service/bridge'
+import {debug0,debug2, debugJSON} from '../service/misc'
 
-const config = (
-    (state, props) => {
-        return {
-            buildTime: state.globals.buildTime,
-            baseUrl: ngScope().state.baseUrl
-        }
-    })
 
-function reduxConnect(config) {
-    return target => connect(config)(target)
-}
-
-@reduxConnect(config)
+@reduxConnect()
 export default class ContentLayout extends Component {
     constructor(props) {
         super(props)
@@ -45,16 +37,41 @@ export default class ContentLayout extends Component {
                 <div>
                     {this.props.children}
                 </div>
-                <hr />
-                <span>build time {this.props.buildTime}</span><br/>
-                <span>server {this.props.baseUrl}</span>
+                <hr/>
+                <span>user id: {this.props.authId}</span><br/>
+                <span>build time: {this.props.buildTime}</span><br/>
+                <span>server: {this.props.baseUrl}</span>
                 <hr/>
             </div>
         )
     }
 
+    componentWillReceiveProps(nextProps) {
+        debug2('content will receive props')
+    }
+
+
+    componentDidMount() {
+        debug2('content did mount')
+        /**TODO: auto login for testing
+         * const {dispatch} = this.props
+        dispatch(submit(LoginForm))
+        */
+    }
+
+    static reduxPropsConfig = (state, props) => {
+        return {
+            buildTime: buildTimeSelector(state),
+            baseUrl: ngScope().state.baseUrl,
+            authId: ngScope().state.login.id
+        }
+    }
+
     static propTypes = {
         buildTime: PropTypes.string.isRequired,
         baseUrl: PropTypes.string.isRequired,
+        authId: PropTypes.string.isRequired,
     }
 }
+
+const buildTimeSelector = createSelector(state => state.globals.buildTime, (result) => (result))

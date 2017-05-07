@@ -18,7 +18,7 @@ html(ng-app="peloApp")
 
         link(rel='stylesheet', href='/css/bundle.css')
     body(id="app",ng-controller="main")
-        pelo-app(state="state", watch-depth= "reference")
+        pelo-app(state="state", client="client" watch-depth="reference")
         div#fb-root
         script(type='text/javascript').
-        p Pelo App Loading
+        p App Loading

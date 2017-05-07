@@ -2,7 +2,7 @@ import * as buildTime1 from '../build'
 
 export const globals = {
     buildTime: buildTime1.buildTime,
-    AUTH: "auth",
+    AUTH: "login",
     APP_VERSION: 1.0,
     DB_VERSION: 1.1,
     debugFlag: true,

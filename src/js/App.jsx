@@ -12,19 +12,33 @@ import RouterPath from './Router.jsx'
 import {createTestData}  from './TestData'
 import MyReducer from './handler/reducers'
 import {myTheme} from './layout/theme'
-import {ngScope} from './service/bridge'
 import {debug, debug2, debugJSON} from './service/misc'
+import {ngScope,myAsyncFormConnect} from './service/bridge'
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
  **/
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 //injectTapEventPlugin()
-
-class App extends React.Component {
+/*
+ https://medium.com/the-many/handling-android-back-button-events-in-react-native-with-custom-components-b33c63b0633b
+ BackAndroid.addEventListener("hardwareBackPress", () => {
+ if (navigator.getCurrentRoutes().length > 1) {
+ navigator.pop()
+ return true // do not exit app
+ } else {
+ return false // exit app
+ }
+ })
+ */
+export default class App extends Component {
     constructor(props) {
         super(props)
         this.props = props
+
+        this.handleRequestClose = this.handleRequestClose.bind(this)
+        this.handleTouchTap = this.handleTouchTap.bind(this)
+
         ngScope().initializeStorage()
 
         //LOAD TEST DATA
@@ -33,15 +47,22 @@ class App extends React.Component {
 
         //this.history = browserHistory
         this.history = hashHistory
-        const middle = [thunk,routerMiddleware(this.history)]
+        this.middle = [thunk, routerMiddleware(this.history)]
         //const middle = routerMiddleware(this.history)
-        this.store = createStore(MyReducer(), this.props.state, applyMiddleware(...middle));
+        this.store = createStore(MyReducer(), this.props.state, applyMiddleware(... this.middle));
 
+        /**
+         * can't use this because of accessTokenCookie
+         this.store.dispatch(({
+                type: `LOAD_TEST_DATA`,
+                payload: {id:17}
+            }))
+         */
         /*
-        syncHistoryWithStore(browserHistory, this.store, {
-        //    selectLocationState: createSelectLocationState('routing'),
-        });
-        */
+         syncHistoryWithStore(browserHistory, this.store, {
+         //    selectLocationState: createSelectLocationState('routing'),
+         });
+         */
 
         /*
          this.store.subscribe((state = [], dispatch) => {
@@ -51,23 +72,40 @@ class App extends React.Component {
 
         //FIXME HOWTO??
         //window.scrollReveal = new scrollReveal();
+        //TODO what does this do?
+        this.state = {
+            open: false,
+        }
+    }
+
+    handleRequestClose() {
+        this.setState({
+            open: false,
+        })
+    }
+
+    //TODO should move to material.js?
+    handleTouchTap() {
+        this.setState({
+            open: true,
+        })
     }
 
     render() {
         return <MuiThemeProvider muiTheme={myTheme}>
             <Provider store={this.store} key="provider">
-                <RouterPath props={this.props} history={this.history}/>
+                <RouterPath middleware={this.middle} props={this.props} history={this.history}/>
             </Provider>
         </MuiThemeProvider>
     }
+
+    static propTypes = {
+        //Props is linked the angular $scope.state through the pelo-app directive in index.jade
+        state: PropTypes.object.isRequired,
+    }
+
+    static reduxPropsConfig = (state, props) => ({})
+
+    static reduxDispatchConfig = (dispatch) => ({})
 }
-
-module.exports = {App: App}
-exports.default = App
-
-App.propTypes = {
-    //Props is linked the angular $scope.state
-    state: PropTypes.object.isRequired,
-}
-
 

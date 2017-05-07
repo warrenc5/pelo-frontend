@@ -17,7 +17,7 @@ export default class MyAjax {
         } catch (e) {
         }
 
-        debug2(name + "@" + this.baseUrl + url)
+        debug2(">>" + name + "@" + this.baseUrl + url)
 
         url = this.baseUrl + url
 
@@ -32,7 +32,7 @@ export default class MyAjax {
                     debug2("connected " + method)
                     xhttp.withCredentials = true
 
-                    //                  xhttp.setRequestHeader("Cookie", "myccookie")
+                    //xhttp.setRequestHeader("Cookie", "myccookie")
 
                     if ("POST" == method) {
                         xhttp.setRequestHeader("Content-Type", "application/json")

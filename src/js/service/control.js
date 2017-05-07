@@ -10,24 +10,24 @@ import MyClient from './client'
 import MyAjax from './ajax'
 
 import {createTestData}  from '../TestData'
-import {App} from '../App.jsx'
+import App from '../App.jsx'
 
 var local = {
     scope: function () {
         return angular.element($("#app")).scope()
     },
     bindEvents: function () {
-        document.addEventListener('deviceready', this.onDeviceReady, true);
-        document.addEventListener('onpluginsready', this.onPluginsReady, true);
-        document.addEventListener('onload', this.onBodyLoad, false);
-        document.addEventListener("resume", this.resume, false);
+        document.addEventListener('deviceready', this.onDeviceReady, true)
+        document.addEventListener('onpluginsready', this.onPluginsReady, true)
+        document.addEventListener('onload', this.onBodyLoad, false)
+        document.addEventListener("resume", this.resume, false)
 
         angular.element(document).ready(function () {
             debug2('angular ready')
             if (typeof cordova == 'undefined') {
                 angular.element($("#app")).scope().init()
             }
-        });
+        })
     },
     onDeviceReady: function () { //cordova only
         debug2('device ready')
@@ -40,7 +40,7 @@ var local = {
         debug2('bodyload')
     },
     banner: function () {
-        var now = moment().format('MMMM Do YYYY, h:mm:ss a');
+        var now = moment().format('MMMM Do YYYY, h:mm:ss a')
         debug2("PELO APP " + JSON.stringify({
                 build: globals.buildTime,
                 run: now,
@@ -50,8 +50,8 @@ var local = {
     },
     resume: function () {
 
-        debug2('resume');
-        debug2(cordova.backgroundapp.resumeType);
+        debug2('resume')
+        debug2(cordova.backgroundapp.resumeType)
 
         if (cordova.backgroundapp.resumeType == 'normal-launch') {
             cordova.backgroundapp.show()
@@ -59,36 +59,36 @@ var local = {
             // You launched programatically (through cordova.backgroundapp.show() perhaps)
             // so you should have already called renderUi() from where you called .show().
         } else {
-            debug5('ready3?');
+            debug5('ready3?')
         }
     },
     setup: function () {
         try {
-            debug2(cordova.backgroundapp.resumeType);
+            debug2(cordova.backgroundapp.resumeType)
             if (cordova.backgroundapp.resumeType == 'launch') {
-                onDeviceReady();
+                onDeviceReady()
             } else {
-                debug2('ready4?');
+                debug2('ready4?')
             }
         } catch (e) {
-            debug2(e);
+            debug2(e)
         }
     },
     showSplash: function () {
 
         try {
-            var splashDuration = 1000;
-            var fadeDuration = 1000;
-            navigator.splashscreen.show();
+            var splashDuration = 2000
+            var fadeDuration = 1000
+            navigator.splashscreen.show()
             /*window.setTimeout(function () {
-             navigator.splashscreen.hide();
-             }, splashDuration - fadeDuration);
+             navigator.splashscreen.hide()
+             }, splashDuration - fadeDuration)
              */
         } catch (e) {
-            debug2(e);
+            debug2(e)
         }
 
-        //document.addEventListener("menubutton", exitApp, false);
+        //document.addEventListener("menubutton", exitApp, false)
 
     },
 }
@@ -97,13 +97,24 @@ local.bindEvents()
 
 var peloApp = angular.module('peloApp', ['ng', 'react'])
 
-peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
+peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, routemap) {
     local.banner()
 
     $scope.inited = false
 
-    $scope.state = {globals: globals,ok:false,baseUrl:"unknown"}
+    $scope.state = {globals: globals, ok: false, baseUrl: "unknown"}
     $scope.fb = fb
+    $scope.routemap = routemap
+    $scope.hideSplash = function () {
+        platform.cordovaOnly(function () {
+            try {
+                navigator.splashscreen.hide()
+            } catch (e) {
+            }
+        })
+    }
+
+
     $scope.init = function () {
 
         if ($scope.inited)
@@ -111,60 +122,29 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb) {
 
         $scope.inited = true
 
-        platform.configure()
-
         platform.cordovaOnly(function () {
-            try {
-                navigator.splashscreen.hide()
-            } catch (e) {
-            }
-        })
-
-        platform.cordovaOnly(function () {
-            /**
             try {
                 showMap()
             } catch (e) {
                 debug2(e)
-            }**/
-        });
-
-        $scope.state["baseUrl"] = platform.baseUrl
-        $scope.client = new MyClient(new MyAjax(platform.baseUrl))
-    }
-
-    $scope.initializeStorage = function initializeStorage() {
-
-        if (checkStorageVersion()) {
-            debug2("loading storage")
-            return loadStorageIntoScope()
-        } else {
-            debug2("storage db incompatible with DB_VERSION. clearing storage")
-            storage.clear()
-        }
-    }
-
-    function loadStorageIntoScope() {
-        storage.forEach(function (name, value) {
-            debug2("scope " + name + " " + value)
-            $scope.state[name] = value
+            }
         })
 
-        debug2("storage loaded")
-        return $scope.state;
     }
 
-    function checkStorageVersion() {
-        var storageVersion = storage.get("globals")
-        return storageVersion == null || storageVersion.DB_VERSION == globals.DB_VERSION
+    $scope.initializeStorage = function () {
+        $.extend($scope.state, storage.initializeStorage())
     }
 
-    $scope.hello = function () {
-        alert('hello')
+    $scope.saveCurrentPage = function (page) {
+        alert(page)
+        storage.put('currentPage', page)
     }
+
+    $scope.client = new MyClient(new MyAjax(platform.configure()))
+    $scope.state["baseUrl"] = platform.baseUrl
 
     $scope.cordovaOnly = platform.cordovaOnly
-
 })
 
 peloApp.factory('platform', function ($rootScope) {
@@ -176,8 +156,8 @@ peloApp.factory('platform', function ($rootScope) {
 
         debug2(`platform detected ${p}`)
         //TODO remove
-        
-        if (~['Dev','Unknown'].indexOf(p)) {
+
+        if (~['Dev', 'Unknown'].indexOf(p)) {
             this.baseUrl = globals.peloBaseUrlLocal
         } else {
             this.baseUrl = globals.peloBaseUrlMock
@@ -186,6 +166,13 @@ peloApp.factory('platform', function ($rootScope) {
         cordovaOnly(() => {
             this.baseUrl = globals.peloBaseUrlTryout
         })
+
+        //FIXME change the url here
+        //this.baseUrl = globals.peloBaseUrlMockLocal
+        this.baseUrl = globals.peloBaseUrlLocal
+        //this.baseUrl = globals.peloBaseUrlTryout
+
+        return this.baseUrl
     }
 
     function cordovaOnly(func) {
@@ -235,11 +222,45 @@ peloApp.factory('platform', function ($rootScope) {
 
 })
 
+peloApp.service("storage", function () {
+    function initializeStorage() {
+
+        if (checkStorageVersion()) {
+            debug2("loading storage")
+            return loadStorage()
+        } else {
+            debug2("storage db incompatible with DB_VERSION. clearing storage")
+            storage.clear()
+            return {}
+        }
+    }
+
+    function loadStorage() {
+        var result = new Array()
+
+        storage.forEach(function (name, value) {
+            debug2("scope " + name + " " + value.substring(0, 100))
+            result[name] = value
+        })
+
+        debug2("storage loaded")
+        return result
+    }
+
+    function checkStorageVersion() {
+        var storageVersion = storage.get("globals")
+        return storageVersion == null || storageVersion.DB_VERSION == globals.DB_VERSION
+    }
+
+    return {
+        initializeStorage: initializeStorage
+    }
+})
 peloApp.service("fb", function () {
 
     //var appId = "1027544200612898"
-    //var appId = "1697342230545684";
-    //var appId = "269193253518235";
+    //var appId = "1697342230545684"
+    //var appId = "269193253518235"
     var version = "2.8"
 
     function loginFB(username, success, failure) {
@@ -262,7 +283,7 @@ peloApp.service("fb", function () {
                             //login2(response.email, userData.accessToken)
                             debug2("success" + JSON.stringify(loginResponse))
                             //response.name
-                            success({fb: {userData: response, auth:loginResponse}})
+                            success({fb: {userData: response, auth: loginResponse}})
                             //logoutFB()
                         })
                 },
@@ -275,8 +296,9 @@ peloApp.service("fb", function () {
         }
 
     }
+
     function loginFBTest(username, success, failure) {
-       return success(createTestData().fb)
+        return success(createTestData().fb)
     }
 
     function logoutFB() {
@@ -300,96 +322,104 @@ peloApp.service("fb", function () {
     }
 
 })
+peloApp.service("routemap", function () {
 //http://plugins.telerik.com/cordova/plugin/mapbox
-function showMap() {
-    debug2("showMap");
+    function getMapbox() {
+        return Mapbox
+    }
 
-    Mapbox.show({
-            style: 'emerald', // light|dark|emerald|satellite|streets , default 'streets'
-            margins: {
-                left: 0, // default 0
-                right: 0, // default 0
-                top: 400, // default 0
-                bottom: 20 // default 0
-            },
-            center: { // optional, without a default
-                lat: 52.3702160,
-                lng: 4.8951680
-            },
-            zoomLevel: 12, // 0 (the entire world) to 20, default 10
-            showUserLocation: false, // your app will ask permission to the user, default false
-            hideAttribution: false, // default false, Mapbox requires this default if you're on a free plan
-            hideLogo: false, // default false, Mapbox requires this default if you're on a free plan
-            hideCompass: false, // default false
-            disableRotation: false, // default false
-            disableScroll: false, // default false
-            disableZoom: false, // default false
-            disablePitch: false, // disable the two-finger perspective gesture, default false
-            markers: [
-                {
-                    lat: 52.3732160,
-                    lng: 4.8941680,
-                    title: 'Nice location',
-                    subtitle: 'Really really nice location'
-                }
-            ]
-        },
+    function showMap(center, points) {
+        debug2("showMap " + JSON.stringify(center))
 
-        // optional success callback
-        function (msg) {
-            debug2("Success :) " + JSON.stringify(msg));
-        },
-
-        // optional error callback
-        function (msg) {
-            debug2("Error " + JSON.stringify(msg));
-        }
-    );
-
-    Mapbox.addMarkerCallback(function (selectedMarker) {
-        debug2("Marker selected: " + JSON.stringify(selectedMarker));
-    });
-
-    Mapbox.addMarkers(
-        [
-            {
-                lat: 52.3602160, // mandatory
-                lng: 4.8891680, // mandatory
-                title: 'One-line title here', // no popup unless set
-                subtitle: 'Infamous subtitle!' // can't span multiple lines, so keep it short and sweet
-            },
-            {}
-        ]
-    );
-    Mapbox.addPolygon(
-        {
-            points: [
-                {
-                    lat: 52.3832160, // mandatory
-                    lng: 4.8991680   // mandatory
+        Mapbox.show({
+                style: 'streets', // light|dark|emerald|satellite|streets , default 'streets'
+                margins: {
+                    left: 0, // default 0
+                    right: 0, // default 0
+                    top: 100, // default 0
+                    bottom: 20 // default 0
                 },
-                {
-                    lat: 52.3632160,
-                    lng: 4.9011680
+                center: { // optional, without a default
+                    lat: center.lat,
+                    lng: center.lng
                 },
-                {
-                    lat: 52.3932160,
-                    lng: 4.8911680
-                }
-            ]
-        }
-    );
-}
+                zoomLevel: 10, // 0 (the entire world) to 20, default 10
+                showUserLocation: false, // your app will ask permission to the user, default false
+                hideAttribution: false, // default false, Mapbox requires this default if you're on a free plan
+                hideLogo: false, // default false, Mapbox requires this default if you're on a free plan
+                hideCompass: false, // default false
+                disableRotation: false, // default false
+                disableScroll: false, // default false
+                disableZoom: false, // default false
+                disablePitch: false, // disable the two-finger perspective gesture, default false
+                markers: [
+                    {
+                        lat: 52.3732160,
+                        lng: 4.8941680,
+                        title: 'Nice location',
+                        subtitle: 'Really really nice location'
+                    }
+                ]
+            },
 
-function hide() {
-    Mapbox.hide(
-        {},
-        function (msg) {
-            console.log("Mapbox successfully hidden");
+            // optional success callback
+            function (msg) {
+                debug2("Success :) " + JSON.stringify(msg))
+            },
+
+            // optional error callback
+            function (msg) {
+                debug2("Error " + JSON.stringify(msg))
+            }
+        )
+
+        Mapbox.addMarkerCallback(function (selectedMarker) {
+            debug2("Marker selected: " + JSON.stringify(selectedMarker))
+        })
+
+        Mapbox.addMarkers(
+            [
+                {
+                    lat: 52.3602160, // mandatory
+                    lng: 4.8891680, // mandatory
+                    title: 'One-line title here', // no popup unless set
+                    subtitle: 'Infamous subtitle!' // can't span multiple lines, so keep it short and sweet
+                },
+                {}
+            ]
+        )
+        const poly = {
+            fillcolor: 0x00666666,
+            alpha: 0.5,
+            points: points
         }
-    );
-}
+
+        try {
+            Mapbox.addPolyline(poly, function () {
+                console.log("done")
+            }, function (e) {
+                console.log("rrrr " + JSON.stringify(e))
+            })
+        } catch (e) {
+            console.log("rats " + e)
+        }
+    }
+
+    function hide() {
+        Mapbox.hide(
+            {},
+            function (msg) {
+                console.log("Mapbox successfully hidden")
+            }
+        )
+    }
+
+    return {
+        showMap: showMap,
+        hide: hide
+    }
+
+})
 peloApp.directive('peloApp', function (reactDirective) {
-    debug2('initialing React App')
-    return reactDirective(App);
-});
+    return reactDirective(App)
+})

@@ -2,8 +2,8 @@ import React { PropTypes } from 'react'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import Navigation from '../component/navigation'
-import Search from '../component/search'
+import Navigation from '../widget/navigation'
+import Search from '../widget/search'
 
 export default class MyBike extends React.Component {
   constructor(props) {
