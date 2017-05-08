@@ -1,43 +1,53 @@
-import React from 'react'
+import React, {Component,PropTypes} from 'react'
 import { Drawer, MenuItem, RaisedButton, List, ListItem, Divider } from 'material-ui'
 import { Link } from 'react-router'
 
+const MIN = 300
 export default class Navigation extends React.Component {
     constructor(props) {
         super(props)
         this.state = {open: true}
     }
 
-    handleToggle = () => {
-        this.setState({open: !this.state.open})
+    show = () => {
+        this.setState({open: true})
     }
 
+    hide = () => {
+        this.setState({open: false})
+    }
+
+    handleToggle = () => {
+        this.setState({open: this.props.open})
+    }
+
+
+    /**
     handleWindowResize = () => {
-        if (window.innerWidth <= 1300 && this.state.open === true) {
+        if (window.innerWidth <= MIN && this.state.open === true) {
             this.setState({open: false})
         }
-        else if (window.innerWidth > 1300 && this.state.open === false) {
+        else if (window.innerWidth > MIN && this.state.open === false) {
             this.setState({open: true})
         }
     }
+     **/
 
     componentDidMount = () => {
-        this.handleWindowResize()
-        window.addEventListener('resize', this.handleWindowResize)
+       // this.handleWindowResize()
+        //window.addEventListener('resize', this.handleWindowResize)
     }
 
     render() {
         return (
             //TODO: can't see this on mobile emulator
             <nav className="main-nav">
-                <Drawer width={250} open={this.state.open}>
+                <Drawer open={this.state.open} openSecondary="true">
                     <div className="main-logo">
                         <Link to="/"><span className="type-italic">Main</span></Link>
                     </div>
                     <List>
                         <ListItem primaryText="Home" containerElement={<Link activeClassName="active" to="/" />}/>
-                        <ListItem primaryText="Bike component"
-                                  containerElement={<Link activeClassName="active" to="/bike-component" />}/>
                         <ListItem primaryText="Rides" containerElement={<Link activeClassName="active" to="/rides" />}/>
                         <ListItem primaryText="Groups"
                                   containerElement={<Link activeClassName="active" to="/groups" />}/>
@@ -49,13 +59,20 @@ export default class Navigation extends React.Component {
                                   containerElement={<Link activeClassName="active" to="/login" />}/>
                         <ListItem primaryText="Route"
                                   containerElement={<Link activeClassName="active" to="/route" />}/>
-
                     </List>
                     <Divider />
-                    <RaisedButton label="Hide" onTouchTap={this.handleToggle}/>
+                    <RaisedButton label="Hide" onClick={this.hide.bind(this)}/>
                 </Drawer>
             </nav>
         )
+    }
+
+    static propTypes = {
+        open: PropTypes.bool.isRequired,
+    }
+
+    static defaultProps = {
+        open: true
     }
 }
 /*

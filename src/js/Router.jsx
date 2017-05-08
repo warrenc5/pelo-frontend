@@ -45,7 +45,7 @@ export default class RouterPath extends MyComponent {
                 render={(props) => <ReduxAsyncConnect helpers={{ }} reloadOnPropsChange={super.reloadOnPropsChange} {...props}
                 /> }
                 history={this.props.history}>
-                <Route path="/" component={MainLayout}>
+                <Route visible="true" path="/" component={MainLayout}>
                     <Route component={ContentLayout}>
                         <Route path="/bike-component" component={BikeComponent} pageTitle={this.props.DB_VERSION}/>
                         <Route path="/bike-component/:componentType" component={BikeComponent}

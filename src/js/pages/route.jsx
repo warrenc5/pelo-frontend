@@ -21,7 +21,7 @@ export default class Route extends MyComponent {
     }
 
     static propTypes = {
-        routeId: PropTypes.string.isRequired,
+        routeId: PropTypes.number.isRequired,
         route: PropTypes.array.isRequired,
         loadRoute: PropTypes.func.isRequired,
     }

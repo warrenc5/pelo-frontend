@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 
 import Working from '../widget/working.jsx'
 //import {buildTime} from '../handler/selectors'
+import { RaisedButton, Divider } from 'material-ui'
 import {ngScope,reduxConnect} from '../service/bridge'
 import {debug0,debug2, debugJSON} from '../service/misc'
 
@@ -34,6 +35,7 @@ export default class ContentLayout extends Component {
         return (
             <div>
                 <h1>{this.getPageTitle()}</h1>
+                <Divider/>
                 <div>
                     {this.props.children}
                 </div>
