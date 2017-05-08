@@ -37,7 +37,8 @@ export default class MyRouteMap extends MyComponent {
     showMap2() {
         console.log('showing map2')
 
-        alert(JSON.stringify(this.props.route))
+        //console.log(JSON.stringify(this.props.route))
+        /**
         console.log('route ' + this.props.route + " " + this.props.route.length)
         console.log('route center ' + JSON.stringify(this.props.route.center))
 
@@ -46,10 +47,11 @@ export default class MyRouteMap extends MyComponent {
         } catch (e) {
             console.log(e)
         }
+         **/
     }
 
     static propTypes = {
-        route: PropTypes.array.isRequired
+        route: PropTypes.object.isRequired
     }
 
     static reduxPropsConfig = (state, props) => ({

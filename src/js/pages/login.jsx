@@ -19,6 +19,7 @@ import * as Router from '../Router.jsx'
 import * as action from '../handler/actions'
 import keydown from 'react-keydown'
 import MyComponent from '../widget/common'
+import { RaisedButton, Divider } from 'material-ui'
 
 import {
     materialButton,
@@ -114,8 +115,8 @@ export default class Login extends MyComponent {
                         </tbody>
                     </table>
                 </Form>
-                <br/>
-                <hr/>
+                <Divider />
+                <Divider />
                 <Link to="/terms">Read Terms & Conditions</Link>
             </div>
         )
