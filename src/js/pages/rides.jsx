@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 
-import { Field, propTypes } from 'redux-form'
 import * as Router from '../Router.jsx'
 import { connect } from 'react-redux'
 import Divider from 'material-ui/Divider'
@@ -9,6 +8,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import style from '../layout/style'
 import MyComponent from '../widget/common'
+import {  RaisedButton} from 'material-ui'
 
 import {
     materialButton,
@@ -63,16 +63,16 @@ export default class Rides extends MyComponent {
     )
 
     render() {
-        //TODO don't do this here - do it up there
         const rides = this.props.todaysRides
         const {selectedRides,showRide} = this.props
+        //TODO don't do this here - do it up there
         return (
             <div>
                 <h2>Rides</h2>
                 <span>size:{rides.length} rides today</span>
                 {rides.map((ride) => (
                 <div key={ride.id}>
-                    <Field name="showRide" component={materialButton} label={ride.id} onClick={showRide(ride.id)}/>
+                    <RaisedButton label={ride.id} onClick={showRide(ride.id)}/>
                     {selectedRides[ride.id] == true && <Route routeId={ride.id}/>}
                     <span>id :{ride.id}</span><br/>
                     <span>name :{ride.name}</span>
@@ -88,7 +88,7 @@ export default class Rides extends MyComponent {
         )
     }
 
-   static propTypes = {
+    static propTypes = {
         showRide: PropTypes.func.isRequired,
         //id: PropTypes.bool.isRequired,
         //joinGroup: PropTypes.func.isRequired,
@@ -106,7 +106,7 @@ export default class Rides extends MyComponent {
                 return
             }
             ngScope().client.todaysRides(login.id, (name, data)=> {
-                resolve(data)
+                resolve(data.sort((a, b)=>a.id > b.id))
             }, (e)=> {
                 reject(e)
             })

@@ -58,4 +58,5 @@
     <plugin name="cordova-plugin-mapbox" spec="~1.2.3">
         <variable name="ACCESS_TOKEN" value="pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g" />
     </plugin>
+    <engine name="android" spec="~6.2.3" />
 </widget>

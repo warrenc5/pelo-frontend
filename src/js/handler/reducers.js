@@ -141,7 +141,9 @@ const selectedRides = (state = {}, action) => {
     }
 }
 
-const route = (state = {}, action) => {
+const route = (state = {
+    title: "not yet", route: []
+}, action) => {
     switch (action.type) {
         case `DOWNLOAD_ROUTE`:
             var id = action.payload.id
@@ -150,8 +152,8 @@ const route = (state = {}, action) => {
             if (state[id] == null) {
                 m[id] = action.payload.route
             }
-            alert(JSON.stringify(m))
-            return {... state, ... m}
+            //return {... state, ... m}
+            return action.payload
         default:
             return state
     }

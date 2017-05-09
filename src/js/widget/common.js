@@ -12,11 +12,13 @@ export default class MyComponent extends React.Component {
     }
 
     componentDidMount() {
-    }
+   }
 
 
     componentWillReceiveProps(nextProps) {
     }
 
+    componentWillUnmount() {
+    }
 
 }

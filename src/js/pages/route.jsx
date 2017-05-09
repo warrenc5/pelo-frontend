@@ -8,28 +8,30 @@ import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import {debug2} from '../service/misc'
 import MyComponent from '../widget/common'
 import MyRouteMap from '../widget/routemap'
+import { Divider } from 'material-ui'
 
 @myAsyncFormConnect()
 export default class Route extends MyComponent {
+
     constructor(props) {
         super(props)
         this.props = props
+        this.props.loadRoute(this.props.routeId)
     }
 
     render() {
-        return <div><MyRouteMap routeId={this.props.routeId} route={this.props.route}/></div>
+        return (
+            <div>
+                <Divider />
+                <MyRouteMap />
+                <Divider />
+            </div>
+        )
+        //routeId={this.props.routeId} route={this.props.route.route}/> -- not loaded yet
     }
-
-    static propTypes = {
-        routeId: PropTypes.number.isRequired,
-        route: PropTypes.array.isRequired,
-        loadRoute: PropTypes.func.isRequired,
-    }
-
 
     componentWillReceiveProps(nextProps) {
         debug2('component will receive props')
-        this.props.loadRoute(this.props.routeId)
     }
 
     componentDidMount() {
@@ -37,10 +39,28 @@ export default class Route extends MyComponent {
         //TODO get route if not already present
     }
 
+    static propTypes = {
+        routeId: PropTypes.number.isRequired,
+        route: PropTypes.object.isRequired,
+        loadRoute: PropTypes.func.isRequired,
+    }
+
+    static defaultProps = {
+        route: {}
+    }
+
     static reduxAsyncConfig = [{
         key: `route`,
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
-        }).then((result) =>result).catch((e)=> {
+            ngScope().client.rideRoute(id, (name, data)=> {
+                resolve(data)
+            }, e=>reject(e))
+        }).then((result) => {
+            this.props.dispatch({
+                type: `DOWNLOAD_ROUTE`,
+                payload: data
+            })
+        }).catch((e)=> {
             console.log(e)
             throw e
         })
@@ -55,13 +75,13 @@ export default class Route extends MyComponent {
             //const {ride} = store.getState()
             //TODO get the selected ride
             ngScope().client.rideRoute(id, (name, data)=> {
-
                 dispatch({
                     type: `DOWNLOAD_ROUTE`,
-                    payload: {id: id, route: data}
+                    payload: data
                 })
             }, (e)=> {
-                alert('fail ' + id)
+                console.log(e)
+                throw e
             })
         }
     })

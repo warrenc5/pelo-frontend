@@ -42,7 +42,7 @@ export default class Navigation extends React.Component {
         return (
             //TODO: can't see this on mobile emulator
             <nav className="main-nav">
-                <Drawer open={this.state.open} openSecondary="true">
+                <Drawer open={this.state.open} openSecondary={true}>
                     <div className="main-logo">
                         <Link to="/"><span className="type-italic">Main</span></Link>
                     </div>

@@ -60,7 +60,7 @@ export default class RouterPath extends MyComponent {
                         <Route path={ROUTE} component={MyRouteMap} pageTitle="route map test"/>
                     </Route>
                     <Route component={ContentLayout}>
-                        <IndexRoute component={Login}/>
+                        <IndexRoute component={Index}/>
                     </Route>
                     <Route path={ABOUT} component={About}/>
                 </Route>
@@ -77,6 +77,7 @@ export default class RouterPath extends MyComponent {
     }
 }
 
+export const Index = Rides
 export const LOGIN = '/login'
 export const REGISTER = '/register'
 export const MESSAGES = '/messages'

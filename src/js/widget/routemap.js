@@ -12,6 +12,7 @@ export default class MyRouteMap extends MyComponent {
 
     componentWillReceiveProps(nextProps) {
         debug2('myroutemap component will receive props')
+        this.showMap2(nextProps)
     }
 
     componentDidMount() {
@@ -20,7 +21,11 @@ export default class MyRouteMap extends MyComponent {
         var {router} = this.props
         //router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
 
-        this.showMap2()
+        this.timerID = setInterval(
+            () => this.tick(),
+            5000
+        )
+
         /**
          * TODO: auto login for testing
          * const {dispatch} = this.props
@@ -28,40 +33,76 @@ export default class MyRouteMap extends MyComponent {
          */
     }
 
-    render() {
-        //TODO add header or footer
-        const {route} = this.props
-        return (<div></div>)
-    }
-
-    showMap2() {
-        console.log('showing map2')
-
-        //console.log(JSON.stringify(this.props.route))
-        /**
-        console.log('route ' + this.props.route + " " + this.props.route.length)
-        console.log('route center ' + JSON.stringify(this.props.route.center))
-
+    componentWillUnmount() {
+        debug2('myroutemap component will unmount')
+        clearInterval(this.timerID)
         try {
-            ngScope().routemap.showMap(this.props.route.center, this.props.route.route)
+            ngScope().routemap.hideMap()
         } catch (e) {
             console.log(e)
         }
-         **/
+    }
+
+    render() {
+        //TODO add header or footer
+        const {route} = this.props
+        return (
+            <div>
+               <span>RouteName {route.title}
+                   RouteId {route.id}: {route.route.length} geos..
+                   {JSON.stringify(route).substring(0, 100)}
+               </span>
+            </div>
+        )
+    }
+
+    tick() {
+        try {
+            ngScope().routemap.getLocation((m) => {
+                ngScope().routemap.addMarker(m,()=>{
+                    alert('My Marker')
+                })
+            }, ()=> {
+                alert('location error')
+
+            }, ()=> {
+                alert('location fatal')
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    showMap2(nextProps) {
+        console.log('showing map2')
+
+        var {route} = nextProps
+        //console.log(JSON.stringify(this.props.route))
+        console.log('route ' + route.id + " " + route.route.length)
+        console.log('route center ' + JSON.stringify(route.center))
+
+        try {
+            ngScope().routemap.showMap(route.center, route.route)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     static propTypes = {
         route: PropTypes.object.isRequired
     }
 
+    static defaultProps = {}
+
     static reduxPropsConfig = (state, props) => ({
         route: state.route
-            //[props.routeId]
     })
 
     static reduxDispatchConfig = (dispatch) => ({
-        updateLocation: (id) => {
+        /**
+         updateLocation: (id) => {
             dispatch({})
         }
+         */
     })
 }

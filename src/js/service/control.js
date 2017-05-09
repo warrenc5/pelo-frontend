@@ -169,8 +169,8 @@ peloApp.factory('platform', function ($rootScope) {
 
         //FIXME change the url here
         //this.baseUrl = globals.peloBaseUrlMockLocal
-        this.baseUrl = globals.peloBaseUrlLocal
-        //this.baseUrl = globals.peloBaseUrlTryout
+        //this.baseUrl = globals.peloBaseUrlLocal
+        this.baseUrl = globals.peloBaseUrlTryout
 
         return this.baseUrl
     }
@@ -329,15 +329,16 @@ peloApp.service("routemap", function () {
     }
 
     function showMap(center, points) {
-        debug2("showMap " + JSON.stringify(center))
+        var fifth = Math.ceil(window.innerHeight / 21)
+        debug2("showMap " + JSON.stringify(center) + " " + fifth)
 
         Mapbox.show({
                 style: 'streets', // light|dark|emerald|satellite|streets , default 'streets'
                 margins: {
                     left: 0, // default 0
                     right: 0, // default 0
-                    top: 100, // default 0
-                    bottom: 20 // default 0
+                    top: fifth, // default 0
+                    bottom: fifth  // default 0
                 },
                 center: { // optional, without a default
                     lat: center.lat,
@@ -352,14 +353,16 @@ peloApp.service("routemap", function () {
                 disableScroll: false, // default false
                 disableZoom: false, // default false
                 disablePitch: false, // disable the two-finger perspective gesture, default false
-                markers: [
-                    {
-                        lat: 52.3732160,
-                        lng: 4.8941680,
-                        title: 'Nice location',
-                        subtitle: 'Really really nice location'
-                    }
-                ]
+                /*
+                 markers: [
+                 {
+                 lat: 52.3732160,
+                 lng: 4.8941680,
+                 title: 'Nice location',
+                 subtitle: 'Really really nice location'
+                 }
+                 ]
+                 */
             },
 
             // optional success callback
@@ -373,21 +376,6 @@ peloApp.service("routemap", function () {
             }
         )
 
-        Mapbox.addMarkerCallback(function (selectedMarker) {
-            debug2("Marker selected: " + JSON.stringify(selectedMarker))
-        })
-
-        Mapbox.addMarkers(
-            [
-                {
-                    lat: 52.3602160, // mandatory
-                    lng: 4.8891680, // mandatory
-                    title: 'One-line title here', // no popup unless set
-                    subtitle: 'Infamous subtitle!' // can't span multiple lines, so keep it short and sweet
-                },
-                {}
-            ]
-        )
         const poly = {
             fillcolor: 0x00666666,
             alpha: 0.5,
@@ -395,7 +383,7 @@ peloApp.service("routemap", function () {
         }
 
         try {
-            Mapbox.addPolyline(poly, function () {
+            Mapbox.addPolygon(poly, function () {
                 console.log("done")
             }, function (e) {
                 console.log("rrrr " + JSON.stringify(e))
@@ -403,6 +391,31 @@ peloApp.service("routemap", function () {
         } catch (e) {
             console.log("rats " + e)
         }
+    }
+
+    function addMarker(marker, cb) {
+        marker = {title: 'MEMO', ... marker}
+
+        Mapbox.addMarkerCallback(function (selectedMarker) {
+            var title = marker.title
+            debug2("Marker selected: " + JSON.stringify(selectedMarker) + " " + title)
+            if (selectedMarker.title == title) {
+                cb()
+            }
+        })
+
+        Mapbox.addMarkers([marker])
+        /*
+         [
+         {
+         lat: 52.3602160, // mandatory
+         lng: 4.8891680, // mandatory
+         title: 'One-line title here', // no popup unless set
+         subtitle: 'Infamous subtitle!' // can't span multiple lines, so keep it short and sweet
+         },
+         ]
+         )*/
+
     }
 
     function hide() {
@@ -414,11 +427,52 @@ peloApp.service("routemap", function () {
         )
     }
 
-    return {
-        showMap: showMap,
-        hide: hide
+    var options = {timeout: 5000, enableHighAccuracy: true, maximumAge: 30000}
+
+    function getLocation(success, error, fatal) {
+        if (navigator.geolocation) {
+            debug2('geolocate ' + JSON.stringify(navigator.geolocation))
+            navigator.geolocation.getCurrentPosition(
+                //var watchID = navigator.geolocation.watchPosition(
+                function (position) {
+                    debug2('geolocated ' + position.coords.latitude + " " + position.coords.longitude)
+
+                    success({'lat': position.coords.latitude, 'lng': position.coords.longitude})
+                    try {
+                        if (watchID)
+                            navigator.geolocation.clearWatch(watchID)
+                    } catch (e) {
+                    }
+                },
+                function (x) {
+                    debug2('geolocate error ' + x.code + " " + x.message)
+                    try {
+                        if (watchID)
+                            navigator.geolocation.clearWatch(watchID)
+                    } catch (e) {
+                    }
+                    error(x)
+                }
+                , options
+            )
+        } else {
+            fatal()
+        }
     }
 
+    function getLocation2(success, error, fatal) {
+        success({
+            lat: -33.908936,
+            lng: 151.1559316
+        })
+    }
+
+    return {
+        showMap: showMap,
+        hideMap: hide,
+        getLocation: getLocation2,
+        addMarker: addMarker
+    }
 })
 peloApp.directive('peloApp', function (reactDirective) {
     return reactDirective(App)

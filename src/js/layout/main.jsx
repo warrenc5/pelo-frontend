@@ -32,6 +32,9 @@ export default class MainLayout extends Component {
     static propTypes = {
         visible: PropTypes.bool.isRequired,
     }
+    static defaultProps = {
+        visible: true
+    }
 }
 
 
