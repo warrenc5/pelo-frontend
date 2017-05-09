@@ -77,7 +77,8 @@ export default class RouterPath extends MyComponent {
     }
 }
 
-export const Index = Rides
+//export const Index = Rides
+export const Index = Login
 export const LOGIN = '/login'
 export const REGISTER = '/register'
 export const MESSAGES = '/messages'
