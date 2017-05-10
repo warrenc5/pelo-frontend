@@ -6,7 +6,7 @@ const MIN = 300
 export default class Navigation extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {open: true}
+        this.state = {open: this.props.open}
     }
 
     show = () => {
@@ -18,7 +18,7 @@ export default class Navigation extends React.Component {
     }
 
     handleToggle = () => {
-        this.setState({open: this.props.open})
+        this.setState({open: !this.state.open})
     }
 
 
@@ -72,8 +72,9 @@ export default class Navigation extends React.Component {
     }
 
     static defaultProps = {
-        open: true
+        open: false
     }
+
 }
 /*
  <span class="dark" ng-click="showPage('rides');">rides</span>

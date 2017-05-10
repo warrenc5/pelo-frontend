@@ -168,9 +168,9 @@ peloApp.factory('platform', function ($rootScope) {
         })
 
         //FIXME change the url here
-        //this.baseUrl = globals.peloBaseUrlMockLocal
+        this.baseUrl = globals.peloBaseUrlMockLocal
         //this.baseUrl = globals.peloBaseUrlLocal
-        this.baseUrl = globals.peloBaseUrlTryout
+        //this.baseUrl = globals.peloBaseUrlTryout
 
         return this.baseUrl
     }

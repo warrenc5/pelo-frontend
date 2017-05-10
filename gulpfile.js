@@ -405,6 +405,15 @@ gulp.task('mock', ['auto'], function (done) {
         done()
     });
 })
+gulp.task('record', ['auto'], function (done) {
+    const mvn = require('maven').create({
+        cwd: '../pelo-it',
+        profiles: ['wiremock-record']
+    });
+    mvn.execute([], {'skipTests': true}).then(() => {
+        done()
+    });
+})
 //https://github.com/apache/cordova-lib/blob/master/cordova-lib/src/cordova/util.js#L294
 gulp.task('cordova_serve', ['auto'], function (done) {
 

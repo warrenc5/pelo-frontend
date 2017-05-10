@@ -33,7 +33,7 @@ export default class MainLayout extends Component {
         visible: PropTypes.bool.isRequired,
     }
     static defaultProps = {
-        visible: true
+        visible: false
     }
 }
 
