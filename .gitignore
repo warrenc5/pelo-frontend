@@ -6,7 +6,6 @@ plugins
 npm-debug.log
 .config.xml.swp
 .*.*.sw*
-cordova/www/*
 /src/js/build.js
 .gulp
 /src/js/cordova/build.js
