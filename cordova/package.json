@@ -1,0 +1,36 @@
+{
+    "name": "cc.pelo.app",
+    "version": "1.0.0",
+    "displayName": "Pelo",
+    "cordova": {
+        "platforms": [
+            "android"
+        ],
+        "plugins": {
+            "cordova-plugin-compat": {},
+            "cordova-plugin-crosswalk-webview": {},
+            "cordova-plugin-device": {},
+            "cordova-plugin-facebook4": {
+                "APP_ID": "269193253518235",
+                "APP_NAME": "PELO"
+            },
+            "cordova-plugin-geolocation": {},
+            "cordova-plugin-mapbox": {
+                "ACCESS_TOKEN": "pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g"
+            },
+            "cordova-plugin-network-information": {},
+            "cordova-plugin-splashscreen": {},
+            "cordova-plugin-whitelist": {},
+            "permissions-dummy": {}
+        }
+    },
+    "dependencies": {
+        "cordova-android": "~6.2.3",
+        "cordova-plugin-compat": "^1.1.0",
+        "cordova-plugin-crosswalk-webview": "^2.3.0",
+        "cordova-plugin-facebook4": "~1.7.4",
+        "cordova-plugin-mapbox": "~1.2.3",
+        "cordova-plugin-whitelist": "1",
+        "permissions-dummy": "./local/permissions"
+    }
+}
