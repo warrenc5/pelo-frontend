@@ -60,7 +60,7 @@
     "browserify": "^14.1.0",
     "classnames": "^2.2.5",
     "component-inherit": "0.0.3",
-    "cordova": "^6.5.0",
+    "cordova": "^7.0.0",
     "cordova-icon": "^0.9.1",
     "cordova-lib": "^6.5.0",
     "cordova-plugin-splashscreen": "^4.0.2",
