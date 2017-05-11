@@ -455,6 +455,7 @@ function cordova_refresh() {
 
 gulp.task('cordova_build', function (done) {
     process.chdir(paths.root + "/cordova")
+    cwd = process.cwd()
     util.log('building ' + cwd)
     try {
         return cordova.build({
