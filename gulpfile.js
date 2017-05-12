@@ -141,13 +141,15 @@ gulp.task('shrinkwrap', [], function () {
     npmShrinkwrap({
         dirname: process.cwd()
     }, function (err, optionalWarnings) {
-        if (err) {
-            throw err
-        }
+
 
         optionalWarnings.forEach(function (err) {
             util.warn(err.message)
         })
+
+        if (err) {
+            throw err
+        }
 
         util.log("wrote npm-shrinkwrap.json")
     })
@@ -308,6 +310,7 @@ gulp.task('release', gulpsync.sync(['setup', 'compile', 'cordova_build', 'shrink
     //run shrink-wrap
 
 })
+gulp.task('.touch', gulpsync.sync(['touch']))
 
 gulp.task('touch', function (done) {
     gulp.src(paths.jsSrc + '/index.js')

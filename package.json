@@ -107,6 +107,7 @@
     "negotiator": "^0.6.1",
     "node-adb": "^0.1.5",
     "node-bourbon": "^4.2.8",
+    "node-sass": "https://registry.npmjs.org/node-sass/-/node-sass-4.5.1.tgz",
     "npm": "https://registry.npmjs.org/npm/-/npm-2.15.11.tgz",
     "npm-check-updates": "^2.10.4",
     "npm-run-script": "0.0.4",
