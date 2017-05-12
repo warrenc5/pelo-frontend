@@ -141,14 +141,16 @@ gulp.task('shrinkwrap', [], function () {
     npmShrinkwrap({
         dirname: process.cwd()
     }, function (err, optionalWarnings) {
-        if (err) {
-            throw err
-        }
 
+	if(optionalWarnings != undefined)
         optionalWarnings.forEach(function (err) {
             util.warn(err.message)
         })
 
+        if (err) {
+	util.log("error! " + err)
+            throw err
+        }
         util.log("wrote npm-shrinkwrap.json")
     })
 })
@@ -455,8 +457,8 @@ function cordova_refresh() {
 
 gulp.task('cordova_build', function (done) {
     process.chdir(paths.root + "/cordova")
-    cwd = process.cwd()
-    util.log('building ' + cwd)
+
+    util.log('building ' + process.cwd())
     try {
         return cordova.build({
             "verbose": true,
