@@ -89,5 +89,13 @@
             "APP_ID": "269193253518235",
             "APP_NAME": "PELO"
         }
+    },
+    "cordova-plugin-cookie-manager": {
+        "source": {
+            "type": "registry",
+            "id": "https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

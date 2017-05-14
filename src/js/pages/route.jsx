@@ -41,19 +41,19 @@ export default class Route extends MyComponent {
         //router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
 
 
-        /*
-         this.timerID = setInterval(
-         () => this.updateMyLocation(),
-         1000
-         )
+        this.timerID = setInterval(
+            () => this.updateMyLocation(),
+            5000
+        )
 
-         this.timerID = setInterval(
-         () => this.updateOthersLocations(),
-         5000
-         )
+        this.timerID = setInterval(
+            () => this.updateOthersLocations(),
+            20000
+        )
+        /*
+         this.updateMyLocation()
+         this.updateOthersLocations()
          */
-        this.updateMyLocation()
-        this.updateOthersLocations()
     }
 
     updateOthersLocations() {

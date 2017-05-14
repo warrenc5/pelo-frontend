@@ -3,7 +3,7 @@
     "version": "1.0.2",
     "displayName": "Pelo",
     "scripts": {
-        "postinstall": "cordova prepare && cordova platform add --nosave android",
+        "postinstall": "cordova prepare",
         "clean": "cordova clean"
     },
     "cordova": {
@@ -15,7 +15,7 @@
             "cordova-plugin-crosswalk-webview": {},
             "cordova-plugin-device": {},
             "cordova-plugin-facebook4": {
-                "APP_ID": "269193253518235",
+                "APP_ID": "300437200400045",
                 "APP_NAME": "PELO"
             },
             "cordova-plugin-geolocation": {},
@@ -24,12 +24,14 @@
             },
             "cordova-plugin-network-information": {},
             "cordova-plugin-splashscreen": {},
-            "cordova-plugin-whitelist": {}
+            "cordova-plugin-whitelist": {},
+            "cordova-plugin-cookie-manager": {}
         }
     },
     "dependencies": {
         "cordova-android": "^6.2.3",
         "cordova-plugin-compat": "^1.1.0",
+        "cordova-plugin-cookie-manager": "git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git",
         "cordova-plugin-crosswalk-webview": "^2.3.0",
         "cordova-plugin-facebook4": "~1.7.4",
         "cordova-plugin-mapbox": "~1.2.3",
