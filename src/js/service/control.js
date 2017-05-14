@@ -270,7 +270,7 @@ peloApp.service("storage", function () {
 peloApp.service("fb", function () {
 
     var version = "2.8"
-    var appId = "269193253518235"
+    var appId = "300437200400045"
 
     function loginFB(username, success, failure) {
 
