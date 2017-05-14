@@ -8,7 +8,7 @@ import {globals} from './globals'
 import storage from './storage'
 import MyClient from './client'
 import MyAjax from './ajax'
-
+import {updateDistanceToRiders,getLocation} from './location.js'
 import {createTestData}  from '../TestData'
 import App from '../App.jsx'
 
@@ -168,9 +168,9 @@ peloApp.factory('platform', function ($rootScope) {
         })
 
         //FIXME change the url here
-        //this.baseUrl = globals.peloBaseUrlMockLocal
+        this.baseUrl = globals.peloBaseUrlMockLocal
         //this.baseUrl = globals.peloBaseUrlLocal
-        this.baseUrl = globals.peloBaseUrlTryout
+        //this.baseUrl = globals.peloBaseUrlTryout
 
         return this.baseUrl
     }
@@ -253,15 +253,15 @@ peloApp.service("storage", function () {
     }
 
     return {
-        initializeStorage: initializeStorage
+        initializeStorage: initializeStorage,
+        loadJSON: storage.loadJSON,
+        storeJSON: storage.storeJSON
     }
 })
 peloApp.service("fb", function () {
 
-    //var appId = "1027544200612898"
-    //var appId = "1697342230545684"
-    //var appId = "269193253518235"
     var version = "2.8"
+    var appId = "269193253518235"
 
     function loginFB(username, success, failure) {
 
@@ -311,8 +311,8 @@ peloApp.service("fb", function () {
         facebookConnectPlugin.logout(function () {
                 debug2('fb logout')
             },
-            function (fail) {
-                debug2('fb logout fail')
+            function (e) {
+                debug2('fb logout fail' + e)
             })
     }
 
@@ -322,14 +322,14 @@ peloApp.service("fb", function () {
     }
 
 })
-peloApp.service("routemap", function () {
+peloApp.service("routemap", function (storage) {
 //http://plugins.telerik.com/cordova/plugin/mapbox
     function getMapbox() {
         return Mapbox
     }
 
     function showMap(center, points) {
-        var fifth = Math.ceil(window.innerHeight / 21)
+        var fifth = Math.ceil(window.innerHeight / 5)
         debug2("showMap " + JSON.stringify(center) + " " + fifth)
 
         Mapbox.show({
@@ -395,16 +395,20 @@ peloApp.service("routemap", function () {
 
     function addMarker(marker, cb) {
         marker = {title: 'MEMO', ... marker}
+        try {
 
-        Mapbox.addMarkerCallback(function (selectedMarker) {
-            var title = marker.title
-            debug2("Marker selected: " + JSON.stringify(selectedMarker) + " " + title)
-            if (selectedMarker.title == title) {
-                cb()
-            }
-        })
+            Mapbox.addMarkerCallback(function (selectedMarker) {
+                var title = marker.title
+                debug2("Marker selected: " + JSON.stringify(selectedMarker) + " " + title)
+                if (selectedMarker.title == title) {
+                    cb()
+                }
+            })
 
-        Mapbox.addMarkers([marker])
+            Mapbox.addMarkers([marker])
+        } catch (e) {
+            console.log(e)
+        }
         /*
          [
          {
@@ -429,36 +433,6 @@ peloApp.service("routemap", function () {
 
     var options = {timeout: 5000, enableHighAccuracy: true, maximumAge: 30000}
 
-    function getLocation(success, error, fatal) {
-        if (navigator.geolocation) {
-            debug2('geolocate ' + JSON.stringify(navigator.geolocation))
-            navigator.geolocation.getCurrentPosition(
-                //var watchID = navigator.geolocation.watchPosition(
-                function (position) {
-                    debug2('geolocated ' + position.coords.latitude + " " + position.coords.longitude)
-
-                    success({'lat': position.coords.latitude, 'lng': position.coords.longitude})
-                    try {
-                        if (watchID)
-                            navigator.geolocation.clearWatch(watchID)
-                    } catch (e) {
-                    }
-                },
-                function (x) {
-                    debug2('geolocate error ' + x.code + " " + x.message)
-                    try {
-                        if (watchID)
-                            navigator.geolocation.clearWatch(watchID)
-                    } catch (e) {
-                    }
-                    error(x)
-                }
-                , options
-            )
-        } else {
-            fatal()
-        }
-    }
 
     function getLocation2(success, error, fatal) {
         success({
@@ -467,11 +441,22 @@ peloApp.service("routemap", function () {
         })
     }
 
+    /*
+    function updateDistanceToRiders2(currentUserPos, riderLocations) {
+        //var currentUserPos = storage.loadJSON("lastKnownLocation")
+        //var riderLocations = storage.loadJSON("rideLocations")
+        var distances = updateDistanceToRiders(currentUserPos, riderLocations)
+        storage.storeJSON("distances", distances)
+        return distances
+    }
+    */
+
     return {
         showMap: showMap,
         hideMap: hide,
         getLocation: getLocation2,
-        addMarker: addMarker
+        addMarker: addMarker,
+        updateDistanceToRiders: updateDistanceToRiders
     }
 })
 peloApp.directive('peloApp', function (reactDirective) {

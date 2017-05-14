@@ -123,7 +123,7 @@ const groups = (state = [{id: 0}], action) => {
     }
 }
 
-const selectedRides = (state = {}, action) => {
+const selectedRides = (state = {6:true}, action) => {
     switch (action.type) {
         case `SELECT`:
             var id = action.payload.id
@@ -136,6 +136,24 @@ const selectedRides = (state = {}, action) => {
                 m[id] = !state[id]
             }
             return {... state, ... m}
+        default:
+            return state
+    }
+}
+
+const rideLocations = (state = {}, action) => {
+    switch (action.type) {
+        case `RIDER_LOCATIONS`:
+            return action.payload
+        default:
+            return state
+    }
+}
+
+const riderLocation = (state = {}, action) => {
+    switch (action.type) {
+        case `LOCATION`:
+            return action.payload
         default:
             return state
     }
@@ -200,6 +218,8 @@ export default function MyReducer() {
         hello: none,
         router: routerReducer,
         reduxAsyncConnect,
+        riderLocation,
+        rideLocations,
         form
     })
 }

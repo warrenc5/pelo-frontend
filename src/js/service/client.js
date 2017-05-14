@@ -26,22 +26,17 @@ export default class MyClient {
     }
 
     checkRidersLocations(rideId, success, failure) {
-        this.ajax("rideLoctions" + rideId, "last-known-location/" + rideId + "?since=" + new Date((new Date().getTime() - 1000 * 60 * 60 * 24 * 15)).toISOString(), success, failure, "GET")
+        this.ajax.call("rideLocations" + rideId, "last-known-location/" + rideId + "?since=" + new Date((new Date().getTime() - 1000 * 60 * 60 * 24 * 15)).toISOString(), success, failure, "GET")
     }
 
-    updateUserLocation(userId, rideId, pos, success, failure) {
+    updateUserLocation(rideId, userId, pos, success, failure) {
 
         if (pos == null || pos == undefined) {
             debug2("no position ")
             return
         }
-        setMapPos(pos)
-
-        storage.put("lastKnownLocation", pos)
-        data = "{\"when\": " + new Date().getTime() + ", \"location\" :{ \"lat\" : " + pos.lat + ", \"lng\" : " + pos.lng + "}}"
-        debug2(data)
-
-        this.ajax("riderLocation" + rideId, "last-known-location/" + userId + "/" + rideId, success, failure, "POST", data)
+        var data = "{\"when\": " + new Date().getTime() + ", \"location\" :{ \"lat\" : " + pos.lat + ", \"lng\" : " + pos.lng + "}}"
+        this.ajax.call("riderLocation" + rideId, "last-known-location/" + userId + "/" + rideId, success, failure, "POST", data)
     }
 
     rideRoute(rideId, success, failure) {

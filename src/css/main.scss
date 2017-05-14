@@ -3,8 +3,48 @@
 
 body {
   color: $black;
-  font-family: 'graphik','Helvetica Neue','Roboto', Arial, sans-serif;
-};
+  font-family: 'graphik', 'Helvetica Neue', 'Roboto', Arial, sans-serif;
+}
+
+.hidden {
+  display: none;
+}
+
+/*
+#bg {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  margin: 0 0 0 0;
+}
+
+#bg img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-width: 50%;
+  min-height: 50%;
+  margin: 0 0 0 0;
+}
+*/
+
+html {
+  background: url(img/splash.png) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+@media screen and (min-width: 480px) {
+  body {
+    font-size: 40px;
+  }
+}
 
 .main-nav {
   xbackground: $teal;
@@ -56,7 +96,7 @@ body {
   }
 
   .main-content-wrapper {
-    width:960px;
+    width: 960px;
     padding: 0;
   }
 }
