@@ -210,6 +210,7 @@ export default class Login extends MyComponent {
 
     static reduxAsyncConfig = [{
         key: 'hello',
+        //TODO: wait a little while and do this again
         promise: ({ params, helpers }) => new Promise((resolve, reject)=> {
             ngScope().client.sayHello((name, data)=> {
                 resolve(true)

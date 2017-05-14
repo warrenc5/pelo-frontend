@@ -427,6 +427,8 @@ peloApp.service("routemap", function (storage) {
 
     function addMarker(marker, cb) {
         marker = {title: 'MEMO', ... marker}
+        console.log("add marker " + JSON.stringify(marker));
+        if(Mapbox.getCenter() != undefined)
         try {
 
             Mapbox.addMarkerCallback(function (selectedMarker) {
