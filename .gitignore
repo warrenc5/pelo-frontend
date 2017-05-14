@@ -11,4 +11,5 @@ npm-debug.log
 /src/js/cordova/build.js
 /cordova/src/js/build.js
 /cordova/cordova/www/js/build.js
+/cordova/www/*
 /src/js/src/js/build.js
