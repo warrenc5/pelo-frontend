@@ -5,6 +5,13 @@ var batch = require('gulp-batch')
 var file = require('gulp-file')
 var util = require('gulp-util')
 var gulpsync = require('gulp-sync')(gulp)
+var gulpNpmRun = require('gulp-npm-run')((gulp), {
+    exclude: ['test'],
+    include: {'necessary': 'a must-have task, because...'},
+    require: ['clean3'],
+    requireStrict: false,
+    npmRun: true
+})
 var changed = require('gulp-changed')
 var clean = require('gulp-clean')
 
@@ -52,6 +59,7 @@ const env = require('get-env')({
     test: ['test', 'testing']
 });
 var touch = require('gulp-touch');
+var cordovaPackageConfig = "cordova/package.json"
 var packageConfig = "package.json"
 var cordovaConfig = "cordova/config.xml"
 var cordovaCmds = "cordova.json"
@@ -135,7 +143,6 @@ gulp.task('start', [], function () {
     gulp.watch(packageConfig, {verbose: true, ignoreInitial: false}, ['install'])
     gulp.watch(cordovaConfig, {verbose: true, ignoreInitial: false}, ['setup'])
 })
-
 
 gulp.task('shrinkwrap', [], function () {
     npmShrinkwrap({
@@ -358,11 +365,10 @@ gulp.task('run', [], function () {
     })
 })
 
-gulp.task('clean', gulpsync.sync(['cordova_clean']), function (done) {
+gulp.task('clean', gulpsync.sync(['clean2']), function (done) {
 
     //`${paths.root}/cordova/platforms/**`,
     //`!${paths.root}/cordova/platforms`,
-
     return del([`${paths.root}/.gulp/gulp-diff-build/hash.json`,
             `${paths.root}/cordova/www/**`,
             `!${paths.root}/cordova/www`
@@ -483,6 +489,7 @@ gulp.task('cordova_build', function (done) {
     }
 })
 
+//TODO deprecated
 gulp.task('cordova_clean', function (done) {
     //FIXME
     cordovaCmd(["clean"], {verbose: true, cwd: process.cwd() + '/cordova'})
@@ -536,7 +543,26 @@ gulp.task('install', [], function (done) {
     return gulp.src(packageConfig)
         .pipe(diff({hash: 'package'}))
         .pipe(install())
-    //.on('end',done)
+
+    /**
+     process.chdir('./cordova');
+     gulp.src(packageConfig)
+     .pipe(plumber((e)=> {
+                console.log(e)
+            }
+     ))
+     .pipe(diff({hash: 'cordova_package'}))
+     .pipe(install({}))
+     .on('error', (e) => {
+            console.log(e)
+            this.emit('end')
+        })
+     //FIXME: never continues
+     .pipe(diff({hash: 'cordova_package'}))
+     .pipe(install({}))
+
+     process.chdir(paths.root)
+     */
 })
 
 gulp.task('setup', ['install'], (done)=> {
@@ -560,7 +586,7 @@ gulp.task('pix-resize', function (done) {
     gulp.src(paths.imgSrc + '/splash.png')
         .pipe(diff())
         .pipe(gulp.dest(paths.cordova)).on('end', function () {
-            require('cordova-splash')
+        require('cordova-splash')
 
     })
 

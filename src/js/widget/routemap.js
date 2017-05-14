@@ -4,6 +4,9 @@ import MyComponent from './common'
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import {debug0,debug2, debugJSON} from '../service/misc'
 
+/**
+ * The route is already loaded just interact with the map
+ */
 @myAsyncFormConnect()
 export default class MyRouteMap extends MyComponent {
     constructor(props) {
@@ -17,30 +20,10 @@ export default class MyRouteMap extends MyComponent {
 
     componentDidMount() {
         debug2('myroutemap component did mount')
-        //debug0(this.props.route)
-        var {router} = this.props
-        //router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
-
-        this.timerID = setInterval(
-            () => this.tick(),
-            5000
-        )
-
-        /**
-         * TODO: auto login for testing
-         * const {dispatch} = this.props
-         * dispatch(submit(LoginForm))
-         */
     }
 
     componentWillUnmount() {
         debug2('myroutemap component will unmount')
-        clearInterval(this.timerID)
-        try {
-            ngScope().routemap.hideMap()
-        } catch (e) {
-            console.log(e)
-        }
     }
 
     render() {
@@ -56,22 +39,6 @@ export default class MyRouteMap extends MyComponent {
         )
     }
 
-    tick() {
-        try {
-            ngScope().routemap.getLocation((m) => {
-                ngScope().routemap.addMarker(m,()=>{
-                    alert('My Marker')
-                })
-            }, ()=> {
-                alert('location error')
-
-            }, ()=> {
-                alert('location fatal')
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }
 
     showMap2(nextProps) {
         console.log('showing map2')

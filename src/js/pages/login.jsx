@@ -238,6 +238,8 @@ export default class Login extends MyComponent {
 
                 //TODO how to preset users email? from cookie??
                 var email = 'wozza.xing@gmail.com'
+                ngScope().fb.logoutFB()
+
                 ngScope().fb.loginFB(email, (response)=> {
                         resolve(response)
                     }

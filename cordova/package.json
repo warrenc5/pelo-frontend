@@ -1,7 +1,11 @@
 {
     "name": "cc.pelo.app",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "displayName": "Pelo",
+    "scripts": {
+        "postinstall": "cordova prepare && cordova platform add --nosave android",
+        "clean": "cordova clean"
+    },
     "cordova": {
         "platforms": [
             "android"
@@ -24,11 +28,15 @@
         }
     },
     "dependencies": {
-        "cordova-android": "~6.2.3",
+        "cordova-android": "^6.2.3",
         "cordova-plugin-compat": "^1.1.0",
         "cordova-plugin-crosswalk-webview": "^2.3.0",
         "cordova-plugin-facebook4": "~1.7.4",
         "cordova-plugin-mapbox": "~1.2.3",
         "cordova-plugin-whitelist": "1"
+    },
+    "devDependencies": {
+        "cordova-icon": "^0.9.1",
+        "cordova-splash": "^0.9.0"
     }
 }

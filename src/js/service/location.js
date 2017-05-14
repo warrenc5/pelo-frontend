@@ -1,32 +1,57 @@
-function updateDistanceToRiders() {
-    var currentUserPos = loadJSON("lastKnownLocation")
+import {debug, debug2, debugJSON} from './misc'
+
+export function getLocation(success, error, fatal) {
+    if (navigator.geolocation) {
+        debug2('geolocate ' + JSON.stringify(navigator.geolocation))
+        navigator.geolocation.getCurrentPosition(
+            //var watchID = navigator.geolocation.watchPosition(
+            function (position) {
+                debug2('geolocated ' + position.coords.latitude + " " + position.coords.longitude)
+
+                success({'lat': position.coords.latitude, 'lng': position.coords.longitude})
+                try {
+                    if (watchID)
+                        navigator.geolocation.clearWatch(watchID)
+                } catch (e) {
+                }
+            },
+            function (x) {
+                debug2('geolocate error ' + x.code + " " + x.message)
+                try {
+                    if (watchID)
+                        navigator.geolocation.clearWatch(watchID)
+                } catch (e) {
+                }
+                error(x)
+            }
+            , options
+        )
+    } else {
+        fatal()
+    }
+}
+
+export function updateDistanceToRiders(currentUser,currentUserPos, riderLocations) {
 
     if (currentUserPos == null) {
         debug2("unknown user location")
-        return
+        return {}
     }
 
-    var data = loadJSON("rideLocations")
-    debug2("calculating distance " + data.length)
+    debug2("calculating distance " + riderLocations.length)
     var distances = {}
 
-    for (var k = 0; k < data.length; k++) {
+    for (var k = 0; k < riderLocations.length; k++) {
 
-        var user = getUser(data[k].userId)
-
-        if (user == null)
+        if (riderLocations[k].location == undefined)
             continue
 
-        if (data[k].location == undefined)
-            continue
+        if (currentUser!=riderLocations[k].userId) {
+            var distance = distanceBetween(currentUserPos, riderLocations[k].location)
 
-        if (!isCurrentUserId(data[k].userId)) {
-            var distance = distanceBetween(currentUserPos, data[k].location)
-
-            debug2("distance to " + data[k].userId + " " + distance)
-            distances[data[k].userId] = formatKm(distance)
+            debug2("distance to " + riderLocations[k].userId + " " + distance)
+            distances[riderLocations[k].userId] = formatKm(distance)
         }
     }
-    storage.put("distances", JSON.stringify(distances))
-    bind("distances", distances)
+    return distances
 }

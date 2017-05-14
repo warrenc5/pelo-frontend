@@ -93,7 +93,7 @@ export class MyStorage {
             return
         }
 
-        storage.put(name, data)
+        storage.put(name, JSON.stringify(data))
 
         try {
             var data = JSON.parse(data)

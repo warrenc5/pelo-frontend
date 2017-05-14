@@ -4,14 +4,16 @@
   "description": "Pelo Riders App",
   "main": "index.js",
   "scripts": {
-    "setup": "npm i -g npm-check-updates cordova gulp gradle cordova-icon cordova-splash",
+    "setup": "npm i -g npm-check-updates cordova gulp gradle",
     "start": "gulp default",
     "release": "gulp release",
     "compile": "gulp compile",
     "build": "gulp compile && cd cordova && cordova build",
     "cordova-clean": "gulp compile && cd cordova && cordova clean",
     "android": "gulp android",
-    "clean": "rm -rf .gulp node_modules cordova/platforms"
+    "clean": "rm -rf .gulp node_modules && cd cordova && cordova clean",
+    "clean3": "cd cordova && npm run clean",
+    "postinstall2": "npm rebuild node-sass --force"
   },
   "author": "Warren Crossing",
   "license": "ISC",
@@ -85,6 +87,7 @@
     "gulp-install": "^0.6.0",
     "gulp-jade": "^1.1.0",
     "gulp-load-plugins": "^1.5.0",
+    "gulp-npm-run": "0.0.3",
     "gulp-open": "^2.0.0",
     "gulp-param": "^1.0.3",
     "gulp-plumber": "^1.1.0",

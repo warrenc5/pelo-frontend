@@ -90,6 +90,9 @@ export default class App extends Component {
             open: true,
         })
     }
+    componentDidMount() {
+        document.getElementById('bg').class='hidden'
+    }
 
     render() {
         return <MuiThemeProvider muiTheme={myTheme}>
