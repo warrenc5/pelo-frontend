@@ -154,6 +154,15 @@ peloApp.factory('platform', function ($rootScope) {
     function configurePlatform() {
         p = platform()
 
+        try {
+            //TODO only do this sometimes
+            window.cookieManager.clear(function () {
+                debug2('Cookies cleared!');
+            })
+        } catch (e) {
+            debug2(JSON.stringify(e))
+        }
+
         debug2(`platform detected ${p}`)
         //TODO remove
 
@@ -168,9 +177,9 @@ peloApp.factory('platform', function ($rootScope) {
         })
 
         //FIXME change the url here
-        this.baseUrl = globals.peloBaseUrlMockLocal
+        //this.baseUrl = globals.peloBaseUrlMockLocal
         //this.baseUrl = globals.peloBaseUrlLocal
-        //this.baseUrl = globals.peloBaseUrlTryout
+        this.baseUrl = globals.peloBaseUrlTryout
 
         return this.baseUrl
     }
@@ -271,10 +280,30 @@ peloApp.service("fb", function () {
         try {
             facebookConnectPlugin.browserInit(appId, version)
         } catch (e) {
-            debug2(e)
+            console.log(e)
+        }
+        try {
+            console.log('login status ' + facebookConnectPlugin.getLoginStatus())
+        } catch (e) {
+            console.log("aerr 2" + JSON.stringify(e))
         }
 
-        debug2('login to facebook')
+        try {
+            console.log('access token ' + facebookConnectPlugin.getAccessTokon())
+        } catch (e) {
+            console.log("aerr 3" + JSON.stringify(e))
+        }
+
+        /**
+        try {
+            facebookConnectPlugin.showDialog()
+        } catch (e) {
+            console.log("aerr 4" + JSON.stringify(e))
+        }
+         **/
+
+        console.log('login to facebook')
+
         try {
             facebookConnectPlugin.login(['email', 'public_profile'], function (loginResponse) {
                     facebookConnectPlugin.api('/me?fields=email', null,
@@ -283,7 +312,7 @@ peloApp.service("fb", function () {
                             //login2(response.email, userData.accessToken)
                             debug2("success" + JSON.stringify(loginResponse))
                             //response.name
-                            success({fb: {userData: response, auth: loginResponse}})
+                            success({fb: {userData: emailResponse, auth: { ... loginResponse.authResponse}}})
                             //logoutFB()
                         })
                 },
@@ -317,8 +346,11 @@ peloApp.service("fb", function () {
     }
 
     return {
-        loginFB: loginFBTest,
-        logoutFB: logoutFB
+        //loginFB: loginFBTest,
+        loginFB: loginFB,
+        logoutFB: logoutFB,
+
+        showDialog:facebookConnectPlugin.showDialog
     }
 
 })
@@ -442,14 +474,14 @@ peloApp.service("routemap", function (storage) {
     }
 
     /*
-    function updateDistanceToRiders2(currentUserPos, riderLocations) {
-        //var currentUserPos = storage.loadJSON("lastKnownLocation")
-        //var riderLocations = storage.loadJSON("rideLocations")
-        var distances = updateDistanceToRiders(currentUserPos, riderLocations)
-        storage.storeJSON("distances", distances)
-        return distances
-    }
-    */
+     function updateDistanceToRiders2(currentUserPos, riderLocations) {
+     //var currentUserPos = storage.loadJSON("lastKnownLocation")
+     //var riderLocations = storage.loadJSON("rideLocations")
+     var distances = updateDistanceToRiders(currentUserPos, riderLocations)
+     storage.storeJSON("distances", distances)
+     return distances
+     }
+     */
 
     return {
         showMap: showMap,

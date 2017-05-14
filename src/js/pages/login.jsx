@@ -238,7 +238,6 @@ export default class Login extends MyComponent {
 
                 //TODO how to preset users email? from cookie??
                 var email = 'wozza.xing@gmail.com'
-                ngScope().fb.logoutFB()
 
                 ngScope().fb.loginFB(email, (response)=> {
                         resolve(response)
@@ -269,9 +268,12 @@ export default class Login extends MyComponent {
                     console.log(JSON.stringify(e))
                     dispatch({
                         type: `LOGIN_ERROR`,
-                        payload: {error: 'there was some error ' + e}
+                        payload: {error: 'there was some error ' + JSON.stringify(e)}
                     })
-                    throw new SubmissionError({_error: 'whoops' + JSON.stringify(e)})
+
+                    ngScope().fb.showDialog()
+
+                    //throw new SubmissionError({_error: 'whoops' + JSON.stringify(e)})
                 })
             }).catch((e)=> {
                 dispatch({
