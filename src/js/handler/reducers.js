@@ -123,7 +123,7 @@ const groups = (state = [{id: 0}], action) => {
     }
 }
 
-const selectedRides = (state = {6:true}, action) => {
+const selectedRides = (state = {}, action) => {
     switch (action.type) {
         case `SELECT`:
             var id = action.payload.id
