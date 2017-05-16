@@ -33,6 +33,7 @@ export default class Rides extends MyComponent {
             <MenuItem primaryText="Place - Akuna Bay via Church Point"/>
             <MenuItem primaryText="Time - 6:30am - 10:30am"/>
             <MenuItem primaryText="Created by: John Smith"/>
+            <MenuItem primaryText="Coffee Stop: ABC Cafe"/>
             <MenuItem primaryText="{ride.name}"/>
             <Divider />
             <MenuItem primaryText="Distance - 87km"/>
@@ -76,6 +77,9 @@ export default class Rides extends MyComponent {
                     {selectedRides[ride.id] == true && <Route rideId={ride.id} routeId={ride.id}/>}
                     <span>id :{ride.id}</span><br/>
                     <span>name :{ride.name}</span>
+                    <div>
+                        <a href="http://placehold.it"><img src="http://placehold.it/350x150"></img></a>
+                    </div>
                     <div>
                         {this.DividerExampleMenu()}
                     </div>
