@@ -61,6 +61,11 @@ class Register extends React.Component {
                                 <Field name="Password" type="password" component={materialTextField} label="Password"/>
                             </div>
                         </tr>
+                        <tr>
+                            <div>
+                                <a href="http://placehold.it"><img src="http://placehold.it/200x200"></img></a>
+                            </div>
+                        </tr>
                     </table>
                     <div>
                         <button type="submit" component={materialButton}>Submit</button>

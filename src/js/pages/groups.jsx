@@ -63,6 +63,9 @@ export default class Groups extends React.Component {
                 <h2>Groups</h2>
                 <span>size:{this.props.groups.length}</span>
                 <div>
+                    <a href="http://placehold.it"><img src="http://placehold.it/250x150"></img></a>
+                </div>
+                <div>
                     {this.GridListExampleSimple(this.props)}
                 </div>
             </div>
