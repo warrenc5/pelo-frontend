@@ -13,7 +13,7 @@
     "android": "gulp android",
     "clean": "rm -rf .gulp node_modules && cd cordova && cordova clean",
     "clean3": "cd cordova && npm run clean",
-    "postinstall2": "npm rebuild node-sass --force"
+    "postinstall": "npm rebuild node-sass --force"
   },
   "author": "Warren Crossing",
   "license": "ISC",

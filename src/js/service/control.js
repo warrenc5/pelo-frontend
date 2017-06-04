@@ -12,99 +12,16 @@ import {updateDistanceToRiders,getLocation} from './location.js'
 import {createTestData}  from '../TestData'
 import App from '../App.jsx'
 
-var local = {
-    scope: function () {
-        return angular.element($("#app")).scope()
-    },
-    bindEvents: function () {
-        document.addEventListener('deviceready', this.onDeviceReady, true)
-        document.addEventListener('onpluginsready', this.onPluginsReady, true)
-        document.addEventListener('onload', this.onBodyLoad, false)
-        document.addEventListener("resume", this.resume, false)
-
-        angular.element(document).ready(function () {
-            debug2('angular ready')
-            if (typeof cordova == 'undefined') {
-                angular.element($("#app")).scope().init()
-            }
-        })
-    },
-    onDeviceReady: function () { //cordova only
-        debug2('device ready')
-        angular.element($("#app")).scope().init()
-    },
-    onPluginsReady: function () {
-        debug2('plugins ready')
-    },
-    onBodyLoad: function () {
-        debug2('bodyload')
-    },
-    banner: function () {
-        var now = moment().format('MMMM Do YYYY, h:mm:ss a')
-        debug2("PELO APP " + JSON.stringify({
-                build: globals.buildTime,
-                run: now,
-                APP: globals.APP_VERSION,
-                DB: globals.DB_VERSION
-            }))
-    },
-    resume: function () {
-
-        debug2('resume')
-        debug2(cordova.backgroundapp.resumeType)
-
-        if (cordova.backgroundapp.resumeType == 'normal-launch') {
-            cordova.backgroundapp.show()
-        } else if (cordova.backgroundapp.resumeType == 'programmatic-launch') {
-            // You launched programatically (through cordova.backgroundapp.show() perhaps)
-            // so you should have already called renderUi() from where you called .show().
-        } else {
-            debug5('ready3?')
-        }
-    },
-    setup: function () {
-        try {
-            debug2(cordova.backgroundapp.resumeType)
-            if (cordova.backgroundapp.resumeType == 'launch') {
-                onDeviceReady()
-            } else {
-                debug2('ready4?')
-            }
-        } catch (e) {
-            debug2(e)
-        }
-    },
-    showSplash: function () {
-
-        try {
-            var splashDuration = 2000
-            var fadeDuration = 1000
-            navigator.splashscreen.show()
-            /*window.setTimeout(function () {
-             navigator.splashscreen.hide()
-             }, splashDuration - fadeDuration)
-             */
-        } catch (e) {
-            debug2(e)
-        }
-
-        //document.addEventListener("menubutton", exitApp, false)
-
-    },
-}
-
-local.bindEvents()
-
-var peloApp = angular.module('peloApp', ['ng', 'react'])
+export var peloApp = angular.module('peloApp', ['ng', 'react'])
 
 peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, routemap) {
-    local.banner()
 
     $scope.inited = false
 
     $scope.state = {globals: globals, ok: false, baseUrl: "unknown"}
     $scope.fb = fb
     $scope.routemap = routemap
+
     $scope.hideSplash = function () {
         platform.cordovaOnly(function () {
             try {
@@ -116,7 +33,6 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
 
 
     $scope.init = function () {
-
         if ($scope.inited)
             return
 
@@ -270,7 +186,7 @@ peloApp.service("storage", function () {
 peloApp.service("fb", function () {
 
     var version = "2.8"
-    var appId = "269193253518235"
+    var appId = "300437200400045"
 
     function loginFB(username, success, failure) {
 
@@ -337,12 +253,16 @@ peloApp.service("fb", function () {
         } catch (e) {
             debug2(e)
         }
+        try {
         facebookConnectPlugin.logout(function () {
                 debug2('fb logout')
             },
             function (e) {
                 debug2('fb logout fail' + e)
             })
+        } catch (e) {
+            debug2(e)
+        }
     }
 
     return {
@@ -350,7 +270,7 @@ peloApp.service("fb", function () {
         loginFB: loginFB,
         logoutFB: logoutFB,
 
-        showDialog:facebookConnectPlugin.showDialog
+        //showDialog:facebookConnectPlugin.showDialog
     }
 
 })

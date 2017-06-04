@@ -33,7 +33,7 @@ var gulpJade = require('gulp-jade')
 var jade = require('jade')
 
 var uglify = require('gulp-uglify');
-var combiner = require('stream-combiner2');
+var combiner = require('stream-combiner2')
 var spawn = require('child_process').spawn;
 var open = require('gulp-open');
 //react
@@ -76,7 +76,7 @@ var paths = new (function () {
     this.imgSrc = this.src + '/img'
     this.dataSrc = this.src + '/data'
     //this.fontSrc  =  this.src + '/font'
-    this.mainApplicationJS = '/service/control.js'
+    this.mainApplicationJS = 'index.js'
     this.buildTimeFile = this.jsSrc + '/build.js'
 
     // destination
@@ -148,16 +148,15 @@ gulp.task('shrinkwrap', [], function () {
     npmShrinkwrap({
         dirname: process.cwd()
     }, function (err, optionalWarnings) {
-
-
+	if(optionalWarnings != undefined)
         optionalWarnings.forEach(function (err) {
             util.warn(err.message)
         })
 
         if (err) {
+	util.log("error! " + err)
             throw err
         }
-
         util.log("wrote npm-shrinkwrap.json")
     })
 })
@@ -464,8 +463,8 @@ function cordova_refresh() {
 
 gulp.task('cordova_build', function (done) {
     process.chdir(paths.root + "/cordova")
-    cwd = process.cwd()
-    util.log('building ' + cwd)
+
+    util.log('building ' + process.cwd())
     try {
         return cordova.build({
             "verbose": true,

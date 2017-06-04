@@ -1,13 +1,25 @@
 {
-  "android": {
-    "debug": {
-    },
-    "release": {
-      "keystore": "pelo.jks",
-        "storePassword": "123456",
-        "password" : "123456",
-        "alias": "pelo",
-        "keystoreType": "jks"
-    }
-  }
+	"android": {
+		"debug": {
+		},
+			"release": {
+				"keystore": "pelo.jks",
+				"storePassword": "123456",
+				"password" : "123456",
+				"alias": "pelo",
+				"keystoreType": "jks"
+			}
+	},
+	"ios": {
+		"debug": {
+			"codeSignIdentity": "iPhone Developer",
+			"provisioningProfile": "8cca45f7-80b5-461b-b15b-57d0424a5ae4",
+			"packageType": "development"
+		},
+			"release": {
+				"codeSignIdentity": "iPhone Distribution",
+				"provisioningProfile": "8cca45f7-80b5-461b-b15b-57d0424a5ae4",
+				"packageType": "app-store"
+			}
+	}
 }

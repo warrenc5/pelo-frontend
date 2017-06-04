@@ -8,7 +8,8 @@
     },
     "cordova": {
         "platforms": [
-            "android"
+            "android",
+            "ios"
         ],
         "plugins": {
             "cordova-plugin-compat": {},
@@ -30,6 +31,7 @@
     },
     "dependencies": {
         "cordova-android": "^6.2.3",
+        "cordova-ios": "^4.4.0",
         "cordova-plugin-compat": "^1.1.0",
         "cordova-plugin-cookie-manager": "git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git",
         "cordova-plugin-crosswalk-webview": "^2.3.0",
