@@ -44,6 +44,7 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <engine name="android" spec="^6.2.3" />
+    <engine name="ios" spec="^4.4.0" />
     <plugin name="cordova-plugin-compat" spec="^1.1.0" />
     <plugin name="cordova-plugin-cookie-manager" spec="git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git" />
     <plugin name="cordova-plugin-crosswalk-webview" spec="^2.3.0" />
@@ -59,5 +60,4 @@
     <plugin name="cordova-plugin-network-information" />
     <plugin name="cordova-plugin-splashscreen" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
-    <engine name="ios" spec="~4.4.0" />
 </widget>

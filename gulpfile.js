@@ -33,7 +33,7 @@ var gulpJade = require('gulp-jade')
 var jade = require('jade')
 
 var uglify = require('gulp-uglify');
-var combiner = require('stream-combiner2');
+var combiner = require('stream-combiner2')
 var spawn = require('child_process').spawn;
 var open = require('gulp-open');
 //react
@@ -76,7 +76,7 @@ var paths = new (function () {
     this.imgSrc = this.src + '/img'
     this.dataSrc = this.src + '/data'
     //this.fontSrc  =  this.src + '/font'
-    this.mainApplicationJS = '/service/control.js'
+    this.mainApplicationJS = 'index.js'
     this.buildTimeFile = this.jsSrc + '/build.js'
 
     // destination
