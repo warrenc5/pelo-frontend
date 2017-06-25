@@ -70,7 +70,9 @@ export default class Navigation extends React.Component {
     }
 
     exitApp(e){
-       alert('exit not yet handled')
+
+        navigator.notification.confirm('', confirmed, 'Exit?')
+        navigator.app.exitApp()
     }
 
 

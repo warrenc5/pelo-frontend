@@ -3,7 +3,6 @@
     "version": "1.0.2",
     "displayName": "Pelo",
     "scripts": {
-        "postinstall": "cordova prepare",
         "clean": "cordova clean"
     },
     "cordova": {
@@ -26,7 +25,9 @@
             "cordova-plugin-network-information": {},
             "cordova-plugin-splashscreen": {},
             "cordova-plugin-whitelist": {},
-            "cordova-plugin-cookie-manager": {}
+            "cordova-plugin-cookie-manager": {},
+            "de.appplant.cordova.plugin.local-notification": {},
+            "cordova.custom.plugins.exitapp": {}
         }
     },
     "dependencies": {
@@ -35,8 +36,14 @@
         "cordova-plugin-compat": "^1.1.0",
         "cordova-plugin-cookie-manager": "git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git",
         "cordova-plugin-crosswalk-webview": "^2.3.0",
+        "cordova-plugin-device": "^1.1.6",
+        "cordova-plugin-exitapp": "^1.0.0",
         "cordova-plugin-facebook4": "~1.7.4",
+        "cordova-plugin-geolocation": "^2.4.3",
+        "cordova-plugin-local-notifications": "^1.0.0",
         "cordova-plugin-mapbox": "~1.2.3",
+        "cordova-plugin-network-information": "^1.3.3",
+        "cordova-plugin-splashscreen": "^4.0.3",
         "cordova-plugin-whitelist": "1"
     },
     "devDependencies": {

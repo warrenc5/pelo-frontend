@@ -37,7 +37,9 @@
             "id": "cordova-plugin-geolocation"
         },
         "is_top_level": true,
-        "variables": {}
+        "variables": {
+            "GEOLOCATION_USAGE_DESCRIPTION": " "
+        }
     },
     "cordova-plugin-network-information": {
         "source": {
@@ -94,6 +96,22 @@
         "source": {
             "type": "registry",
             "id": "cordova-plugin-cookie-manager@git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "de.appplant.cordova.plugin.local-notification": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-local-notifications@^1.0.0"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova.custom.plugins.exitapp": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-exitapp@^1.0.0"
         },
         "is_top_level": true,
         "variables": {}
