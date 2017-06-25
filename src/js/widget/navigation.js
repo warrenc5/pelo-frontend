@@ -62,10 +62,17 @@ export default class Navigation extends React.Component {
                     </List>
                     <Divider />
                     <RaisedButton label="Hide" onClick={this.hide.bind(this)}/>
+                    <RaisedButton label="Exit" onClick={this.exitApp.bind(this)}/>
+
                 </Drawer>
             </nav>
         )
     }
+
+    exitApp(e){
+       alert('exit not yet handled')
+    }
+
 
     static propTypes = {
         open: PropTypes.bool.isRequired,

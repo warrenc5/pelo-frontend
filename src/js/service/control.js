@@ -283,9 +283,11 @@ peloApp.service("routemap", function (storage) {
     function showMap(center, points) {
         var fifth = Math.ceil(window.innerHeight / 5)
         debug2("showMap " + JSON.stringify(center) + " " + fifth)
-
+        //style: 'streets', // light|dark|emerald|satellite|streets , default 'streets'
         Mapbox.show({
-                style: 'streets', // light|dark|emerald|satellite|streets , default 'streets'
+
+            style: 'mapbox://styles/mapbox/streets-v8',
+
                 margins: {
                     left: 0, // default 0
                     right: 0, // default 0
@@ -344,6 +346,7 @@ peloApp.service("routemap", function (storage) {
             console.log("rats " + e)
         }
     }
+
 
     function addMarker(marker, cb) {
         marker = {title: 'MEMO', ... marker}
