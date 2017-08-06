@@ -225,7 +225,7 @@ export default class Login extends MyComponent {
     static reduxPropsConfig = (state, props) => ({
         ok: state.ok,
         initialValues: {
-            username: 'wozza', password: 'uyooho00'
+            username: 'wozza', password: 'password1'
         },
         hello: false
         //initialValues: {username: 'wozza', password: 'password1'} //401
