@@ -1,8 +1,9 @@
 import React, {Component,PropTypes} from 'react'
 import Navigation from '../widget/navigation'
 import Search from '../widget/search'
-import Subheader from 'material-ui/Subheader';
+import Subheader from 'material-ui/Subheader'
 import { RaisedButton, Divider } from 'material-ui'
+import HamburgerMenu from 'react-hamburger-menu'
 
 export default class MainLayout extends Component {
     constructor(props) {
@@ -16,7 +17,19 @@ export default class MainLayout extends Component {
             <div>
                 <Navigation ref={(obj) => { this.nav = obj; }} open={this.props.visible}/>
                 <div id="main-wrapper" className="main-wrapper">
-                    <RaisedButton label='show' onClick={this.func.bind(this)}/>
+                    <div>
+                        <HamburgerMenu
+                            isOpen={this.state.open}
+                            menuClicked={this.handleClick.bind(this)}
+                            width={18}
+                            height={15}
+                            strokeWidth={1}
+                            rotate={0}
+                            color='black'
+                            borderRadius={0}
+                            animationDuration={0.5}
+                        />
+                    </div>
                     <div className="main-content-wrapper">
                         {this.props.children}
                     </div>
@@ -25,8 +38,12 @@ export default class MainLayout extends Component {
         )
     }
 
-    func(e) {
-        this.nav.show()
+    handleClick(e) {
+        if (this.state.open) {
+            this.nav.show()
+        } else {
+            this.nav.hide()
+        }
     }
 
     static propTypes = {

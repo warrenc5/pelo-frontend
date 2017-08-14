@@ -11,9 +11,11 @@ import {
     Toggle,
     DatePicker,
 } from 'redux-form-material-ui'
+import Upload from 'material-ui-upload';
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
+import {ngScope,myAsyncFormConnect} from '../service/bridge'
 
 import {
     materialButton,
@@ -23,7 +25,8 @@ import {
     materialSelectField
 } from './material.jsx'
 
-class Register extends React.Component {
+@myAsyncFormConnect()
+export default class RideEditor extends MyComponent {
 
     constructor(props) {
         super(props)
@@ -32,12 +35,12 @@ class Register extends React.Component {
 
     DatePickerExampleSimple = () => (
         <div>
-            <DatePicker mode="landscape" />
+            <DatePicker mode="landscape"/>
         </div>
     );
 
     SliderExampleStep = () => (
-        <Slider step={0.10} value={0.5} />
+        <Slider step={0.10} value={0.5}/>
     );
 
     TimePickerExampleSimple = () => (
@@ -94,6 +97,15 @@ class Register extends React.Component {
                                 <a href="http://placehold.it"><img src="http://placehold.it/200x200"></img></a>
                             </div>
                         </tr>
+                        <tr>
+                            <div>
+                                <Upload title="Route"
+                                        label="Add"
+                                        initialItems={this.state.route}
+                                        onChange={this.onChange}
+                                        onFileLoad={this.onFileLoad}/>
+                            </div>
+                        </tr>
                     </table>
                     <div>
                         <button type="submit" component={materialButton}>Submit</button>
@@ -112,36 +124,32 @@ class Register extends React.Component {
     submitValidation(values) {
         alert('submit validation')
     }
-}
 
-Register.propTypes = {
-    ...propTypes
-}
+    onFileLoad = (e, file) => console.log(e.target.result, file.name);
+    onChange = (route) => this.setState({route});
 
-var RegisterContainer = connect(
-    (state) => {
-        return {
-            initialValues: state.login,
-        }
-    },
-    (dispatch) => {
-        return {
-            onSubmit: () => (...args) => dispatch({
-                type: `REGISTER`,
-                payload: args
-            })
-        }
+    static propTypes = {
+        ...propTypes
     }
-)(
-    reduxForm({
-        form: 'RegisterForm',
+
+    static reduxPropsConfig = (state, props) => ({
+        initialValues: state.login
+    })
+
+    static reduxDispatchConfig = (dispatch) => ({
+        onSubmit: () => (...args) => dispatch({
+            type: `EDITRIDE`,
+            payload: args
+        })
+    })
+    static reduxAsyncConfig = [{
+        form: 'EditRideForm',
         validate: function (values) {
             console.log('validate')
         },
         warn: function (values) {
             console.log('warn')
         }
-    })(Register))
+    }]
+}
 
-
-export default RegisterContainer

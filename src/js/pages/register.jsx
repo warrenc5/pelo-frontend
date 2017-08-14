@@ -13,6 +13,7 @@ import {
 import style from '../layout/style'
 import * as action from '../handler/actions'
 
+import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import {
     materialButton,
     materialTextField,
@@ -21,7 +22,8 @@ import {
     materialSelectField
 } from './material.jsx'
 
-class Register extends React.Component {
+@myAsyncFormConnect()
+export default class Register extends MyComponent {
 
     constructor(props) {
         super(props)
@@ -84,28 +86,22 @@ class Register extends React.Component {
     submitValidation(values) {
         alert('submit validation')
     }
-}
 
-Register.propTypes = {
-    ...propTypes
-}
-
-var RegisterContainer = connect(
-    (state) => {
-        return {
-            initialValues: state.login,
-        }
-    },
-    (dispatch) => {
-        return {
-            onSubmit: () => (...args) => dispatch({
-                type: `REGISTER`,
-                payload: args
-            })
-        }
+    static propTypes = {
+        ...propTypes
     }
-)(
-    reduxForm({
+
+    static reduxPropsConfig = (state, props) => ({
+        initialValues: state.login
+    })
+
+    static reduxDispatchConfig = (dispatch) => ({
+        onSubmit: () => (...args) => dispatch({
+            type: `REGISTER`,
+            payload: args
+        })
+    })
+    static reduxAsyncConfig = [{
         form: 'RegisterForm',
         validate: function (values) {
             console.log('validate')
@@ -113,7 +109,5 @@ var RegisterContainer = connect(
         warn: function (values) {
             console.log('warn')
         }
-    })(Register))
-
-
-export default RegisterContainer
+    }]
+}

@@ -37,7 +37,6 @@ var combiner = require('stream-combiner2')
 var spawn = require('child_process').spawn;
 var open = require('gulp-open');
 //react
-var browserify = require('browserify')
 //var reactify = require('reactify')
 var babelify = require('babelify')
 var src = require('vinyl-source-stream') // text stream for gulp
@@ -249,6 +248,7 @@ gulp.task('compile-js', [], function (done1) {
         })
         .on('error', (e) => {
                 try {
+                    util.log(e)
                     util.log(`${e.message}\n${e.codeFrame}`)
                 } catch (e) {
                 }
