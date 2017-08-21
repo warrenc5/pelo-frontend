@@ -50,25 +50,25 @@ export default class Navigation extends React.Component {
                     </div>
                     <List>
                         <ListItem primaryText="Add Ride"
-                                  containerElement={<Link activeClassName="active" to="{router.EDITRIDE}" />}/>
+                                  containerElement={<Link activeClassName="active" to={router.EDITRIDE} />}/>
                         <ListItem primaryText="Rides"
-                                  containerElement={<Link activeClassName="active" to="{router.RIDES}" />}/>
+                                  containerElement={<Link activeClassName="active" to={router.RIDES} />}/>
                         <ListItem primaryText="Groups"
-                                  containerElement={<Link activeClassName="active" to="{router.GROUPS}" />}/>
+                                  containerElement={<Link activeClassName="active" to={router.GROUPS} />}/>
                         <ListItem primaryText="Messages"
-                                  containerElement={<Link activeClassName="active" to="{router.MESSAGES}" />}/>
+                                  containerElement={<Link activeClassName="active" to={router.MESSAGES} />}/>
                         <ListItem primaryText="Settings"
-                                  containerElement={<Link activeClassName="active" to="{router.SETTINGS}" />}/>
+                                  containerElement={<Link activeClassName="active" to={router.SETTINGS} />}/>
                         <ListItem primaryText="Route"
-                                  containerElement={<Link activeClassName="active" to="{router.ROUTE}" />}/>
+                                  containerElement={<Link activeClassName="active" to={router.ROUTE} />}/>
                         <ListItem primaryText="Login"
-                                  containerElement={<Link activeClassName="active" to="{router.LOGIN}" />}/>
+                                  containerElement={<Link activeClassName="active" to={router.LOGIN} />}/>
                         <ListItem primaryText="Logout"
-                                  containerElement={<Link activeClassName="active" to="{router.LOGOUT}" />}/>
+                                  containerElement={<Link activeClassName="active" to={router.LOGOUT} />}/>
                         <ListItem primaryText="Terms"
-                                  containerElement={<Link activeClassName="active" to="{router.TERMS}" />}/>
+                                  containerElement={<Link activeClassName="active" to={router.TERMS} />}/>
                         <ListItem primaryText="About"
-                                  containerElement={<Link activeClassName="active" to="{router.ABOUT}" />}/>
+                                  containerElement={<Link activeClassName="active" to={router.ABOUT} />}/>
                     </List>
                     <Divider />
                     <RaisedButton label="Hide" onClick={this.hide.bind(this)}/>

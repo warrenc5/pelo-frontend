@@ -10,6 +10,7 @@ export default class MainLayout extends Component {
     constructor(props) {
         super(props)
         this.props = props
+        this.state = props
     }
 
     render() {
@@ -22,13 +23,13 @@ export default class MainLayout extends Component {
                         <HamburgerMenu
                             isOpen={this.props.open}
                             menuClicked={this.handleClick.bind(this)}
-                            width={18}
-                            height={15}
-                            strokeWidth={1}
+                            width={28}
+                            height={25}
+                            strokeWidth={5}
                             rotate={0}
-                            color='black'
+                            color='red'
                             borderRadius={0}
-                            animationDuration={0.5}
+                            animationDuration={1.5}
                         />
                     </div>
                     <div className="main-content-wrapper">
@@ -40,6 +41,7 @@ export default class MainLayout extends Component {
     }
 
     handleClick(e) {
+        this.setState({open: !this.state.open})
         if (this.state.open) {
             this.nav.show()
         } else {
