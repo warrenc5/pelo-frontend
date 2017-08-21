@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux'
 import { Field, reduxForm, propTypes } from 'redux-form'
 import {
@@ -12,6 +14,7 @@ import {
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
+import MyComponent from '../widget/common'
 
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 import {

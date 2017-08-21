@@ -22,6 +22,7 @@ var imageResize = require('gulp-image-resize')
 var rename = require("gulp-rename");
 //server
 var browserSync = require('browser-sync')
+var browserifyCss = require('browserify-css')
 var plumber = require('gulp-plumber')
 //sass
 var sass = require('gulp-sass')
@@ -147,13 +148,13 @@ gulp.task('shrinkwrap', [], function () {
     npmShrinkwrap({
         dirname: process.cwd()
     }, function (err, optionalWarnings) {
-	if(optionalWarnings != undefined)
-        optionalWarnings.forEach(function (err) {
-            util.warn(err.message)
-        })
+        if (optionalWarnings != undefined)
+            optionalWarnings.forEach(function (err) {
+                util.warn(err.message)
+            })
 
         if (err) {
-	util.log("error! " + err)
+            util.log("error! " + err)
             throw err
         }
         util.log("wrote npm-shrinkwrap.json")
@@ -226,6 +227,80 @@ gulp.task('compile-js', [], function (done1) {
 
     gulp.start('build-time')
 
+    var b = browserify({
+        entries: [`${paths.jsSrc}/${paths.mainApplicationJS}`],
+        debug: true,
+        extensions: ['css', ' ', 'js', 'jsx']
+    })
+
+        .transform(browserifyCss, { verbose: true,
+            autoInject: true })
+        .transform(babelify.configure({
+            env: {
+                production: {}, development: {}
+            },
+            ignore: ['/node_modules/**'],
+            minified: env == 'prod',
+            comments: false,
+        }))
+        /*
+        .transform(babelify.configure({
+            env: {
+                production: {}, development: {}
+            },
+            minified: env == 'prod',
+            ignore: ['/node_modules/**'],
+            comments: false,
+        }))
+        */
+        .bundle()
+    ////**
+    // .pipe(plumber((e) => {
+    // util.log(`*** ${e.message}\n${e.codeFrame}`)
+    // this.emit('end');
+    // }))
+    // *!/
+    ////.pipe(changed(d))*/ // Ignore unchanged files
+    var c = b.on('end', () => {
+            util.log(`================================ ${buildTime} ====================${env}========================`)
+        })
+        .on('error', (e) => {
+                try {
+                    //util.log(e)
+                    util.log(`${e.message}\n${e.codeFrame}`)
+                } catch (e) {
+                }
+                b.emit('end')
+            }
+        )
+
+        //var combined = combiner.obj([b])
+        .pipe(source('bundle.js'))
+        .pipe(buffer())
+    //.pipe(diff()) //takes tooo long
+
+    //
+    //
+    if (env == 'prod') {
+        util.log("production")
+        //.pipe(src(paths.jsDestName))
+        c = c.pipe(sourcemaps.init({loadMaps: true}))
+            .pipe(streamify(uglify({
+                    mangle: false
+                    /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
+                }
+            )))
+            .pipe(gulp.dest(paths.jsDest))
+
+        //.pipe(sourcemaps.write('./'))
+    }
+    return c.pipe(gulp.dest(paths.jsDest))
+})
+
+gulp.task('compile-js2', [], function (done1) {
+
+    gulp.start('build-time')
+
     var b = browserify([`${paths.jsSrc}/${paths.mainApplicationJS}`])
         .transform(babelify.configure({
             env: {
@@ -234,6 +309,7 @@ gulp.task('compile-js', [], function (done1) {
             minified: env == 'prod',
             ignore: ['/node_modules/**'],
             comments: false,
+
         }))
         .bundle()
     ////**

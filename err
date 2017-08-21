@@ -1,0 +1,18 @@
+
+
+
+npm WARN deprecated conventional-changelog@0.0.11: Please update conventional-changelog to >1.0.0. If you are running the cli, use conventional-changelog-cli
+npm WARN deprecated jade-strip-comments@1.0.0: jade-strip-comments will be unpublished soon, please use pug-strip-comments
+npm WARN deprecated jade@1.11.0: Jade has been renamed to pug, please install the latest version of pug instead of jade
+npm WARN deprecated node-uuid@1.4.7: use uuid module instead
+npm WARN deprecated minimatch@2.0.10: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue
+npm WARN deprecated minimatch@0.2.14: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue
+npm WARN deprecated graceful-fs@1.2.3: graceful-fs v3.0.0 and before will fail on node releases >= v7.0. Please update to graceful-fs@^4.0.0 as soon as possible. Use 'npm ls
+graceful-fs' to find it in the tree.
+npm WARN deprecated transformers@2.1.0: Deprecated, use jstransformer
+npm WARN deprecated jade-error@1.2.0: jade-error will be unpublished soon, please use pug-error
+npm WARN prefer global marked@0.3.6 should be installed with -g
+npm WARN prefer global npm@2.15.11 should be installed with -g
+npm WARN prefer global node-gyp@3.6.0 should be installed with -g
+
+> node-sass@4.5.0 install /home/code/pelo/pelo-react/node_modules/node-sas

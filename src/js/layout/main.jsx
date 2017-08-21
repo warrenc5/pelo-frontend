@@ -1,4 +1,5 @@
-import React, {Component,PropTypes} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types';
 import Navigation from '../widget/navigation'
 import Search from '../widget/search'
 import Subheader from 'material-ui/Subheader'
@@ -19,7 +20,7 @@ export default class MainLayout extends Component {
                 <div id="main-wrapper" className="main-wrapper">
                     <div>
                         <HamburgerMenu
-                            isOpen={this.state.open}
+                            isOpen={this.props.open}
                             menuClicked={this.handleClick.bind(this)}
                             width={18}
                             height={15}
@@ -48,9 +49,11 @@ export default class MainLayout extends Component {
 
     static propTypes = {
         visible: PropTypes.bool.isRequired,
+        open: PropTypes.bool.isRequired
     }
     static defaultProps = {
-        visible: false
+        visible: false,
+        open: false
     }
 }
 

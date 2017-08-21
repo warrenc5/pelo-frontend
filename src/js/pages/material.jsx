@@ -1,3 +1,6 @@
+import React from 'react'
+import PropTypes from 'prop-types';
+
 import TextField from 'material-ui/TextField'
 import submit from "redux-form"
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
@@ -7,9 +10,6 @@ import MenuItem from 'material-ui/MenuItem'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-
-import React, { PropTypes } from 'react'
-
 //http://redux-form.com/6.1.0/examples/material-ui/
 
 export const materialButton = ({ label , onClick }, ...custom) => (

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { Field, reduxForm, propTypes } from 'redux-form'
 import Slider from 'material-ui/Slider';
@@ -17,6 +18,7 @@ import style from '../layout/style'
 import * as action from '../handler/actions'
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 
+import MyComponent from '../widget/common'
 import {
     materialButton,
     materialTextField,

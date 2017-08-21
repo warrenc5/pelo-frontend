@@ -1,4 +1,6 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types';
+
 import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-router'
 import { ReduxAsyncConnect, asyncConnect, reducer as reduxAsyncConnect } from 'redux-connect'

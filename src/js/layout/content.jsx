@@ -1,4 +1,5 @@
-import React, {Component, PropTypes } from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types';
 import { createSelector } from 'reselect'
 import moment from 'moment'
 import {connect} from 'react-redux'
