@@ -5,8 +5,12 @@ import Search from '../widget/search'
 import Subheader from 'material-ui/Subheader'
 import { RaisedButton, Divider } from 'material-ui'
 import HamburgerMenu from 'react-hamburger-menu'
+import {ngScope,reduxConnect,myAsyncFormConnect} from '../service/bridge'
+import MyComponent from '../widget/common'
 
-export default class MainLayout extends Component {
+//@myAsyncFormConnect()
+@reduxConnect()
+export default class MainLayout extends MyComponent {
     constructor(props) {
         super(props)
         this.props = props
@@ -17,9 +21,10 @@ export default class MainLayout extends Component {
         let currentRouteName = this.props.location.pathname
         return (
             <div>
-                <Navigation ref={(obj) => { this.nav = obj; }} open={this.props.visible}/>
+                <Navigation ref={(obj) => { this.nav = obj; }} open={this.props.open}/>
                 <div id="main-wrapper" className="main-wrapper">
                     <div>
+                        {this.props.authId > 0  &&
                         <HamburgerMenu
                             isOpen={this.props.open}
                             menuClicked={this.handleClick.bind(this)}
@@ -31,6 +36,7 @@ export default class MainLayout extends Component {
                             borderRadius={0}
                             animationDuration={1.5}
                         />
+                            }
                     </div>
                     <div className="main-content-wrapper">
                         {this.props.children}
@@ -41,22 +47,39 @@ export default class MainLayout extends Component {
     }
 
     handleClick(e) {
-        this.setState({open: !this.state.open})
-        if (this.state.open) {
-            this.nav.show()
-        } else {
-            this.nav.hide()
-        }
+        this.setState({open: !this.props.open})
+        this.nav.toggle()
     }
 
+    static reduxPropsConfig = (state, props) => ({
+        authId: state.login.id
+    })
+
     static propTypes = {
-        visible: PropTypes.bool.isRequired,
-        open: PropTypes.bool.isRequired
+        open: PropTypes.bool.isRequired,
+        authId: PropTypes.number.isRequired
     }
     static defaultProps = {
-        visible: false,
-        open: false
+        open: false,
+        authId: -1
     }
+
+    static reduxAsyncConfig = [{
+        key: `main`,
+        promise: ({ store,router}) => new Promise((resolve, reject)=> {
+            const {login} = store.getState()
+            if (login.id == -1) {
+                alert('login')
+                router.push(Router.LOGIN)
+            }
+            resolve({})
+            return {}
+        }).then((result) =>result).catch((e)=> {
+            console.log(e)
+            throw e
+        })
+    }]
+
 }
 
 

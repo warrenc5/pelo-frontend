@@ -66,7 +66,7 @@ export default class ContentLayout extends Component {
         return {
             buildTime: buildTimeSelector(state),
             baseUrl: ngScope().state.baseUrl,
-            authId: ngScope().state.login.id
+            authId: state.login.id
         }
     }
 

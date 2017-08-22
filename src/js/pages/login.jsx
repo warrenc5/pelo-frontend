@@ -192,7 +192,7 @@ export default class Login extends MyComponent {
                 type: `LOGIN`,
                 payload: result
             })
-            dispatch(push(Router.RIDES))
+            dispatch(push(Router.HOME)) //TODO go home
         }).catch((e)=> {
             console.log(JSON.stringify(e))
             dispatch({
@@ -265,7 +265,7 @@ export default class Login extends MyComponent {
                         payload: result
                     })
 
-                    dispatch(push(Router.RIDES))
+                    dispatch(push(Router.HOME)) //TODO go home
                 }).catch((e)=> {
                     console.log(JSON.stringify(e))
                     dispatch({

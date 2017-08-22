@@ -177,6 +177,19 @@ const route = (state = {
     }
 }
 
+const newRide = (state = {}, action) => {
+    switch (action.type) {
+        default:
+            return state
+    }
+}
+const main = (state = {}, action) => {
+    switch (action.type) {
+        default:
+            return state
+    }
+}
+
 const todaysRides = (state = {}, action) => {
     switch (action.type) {
         case '@redux-conn/LOAD_FAIL':
@@ -220,6 +233,8 @@ export default function MyReducer() {
         reduxAsyncConnect,
         riderLocation,
         rideLocations,
+        newRide,
+        main,
         form
     })
 }

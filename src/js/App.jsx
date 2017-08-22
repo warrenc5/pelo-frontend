@@ -43,7 +43,8 @@ export default class App extends Component {
         ngScope().initializeStorage()
 
         //LOAD TEST DATA
-        $.extend(this.props.state, createTestData());
+
+        //$.extend(this.props.state, createTestData());
         //debug2(JSON.stringify(this.props.state))
 
         //this.history = browserHistory
@@ -57,7 +58,7 @@ export default class App extends Component {
          */
         this.store.dispatch(({
             type: `LOAD_TEST_DATA`,
-            payload: {id: 17}
+            payload: {id: -1} //TODO DEFAULT_USER_ID 17
         }))
         /*
          syncHistoryWithStore(browserHistory, this.store, {

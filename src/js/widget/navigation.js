@@ -20,10 +20,9 @@ export default class Navigation extends React.Component {
         this.setState({open: false})
     }
 
-    handleToggle = () => {
+    toggle = () => {
         this.setState({open: !this.state.open})
     }
-
 
     /**
     handleWindowResize = () => {
@@ -44,9 +43,9 @@ export default class Navigation extends React.Component {
     render() {
         return (
             <nav className="main-nav">
-                <Drawer open={this.state.open} openSecondary={true}>
+                <Drawer ref={(obj) => { this.nav = obj; }} open={this.state.open} openSecondary={true}>
                     <div className="main-logo">
-                        <Link to="/"><span className="type-italic">Home</span></Link>
+                        <Link to={router.HOME}><span className="type-italic">Home</span></Link>
                     </div>
                     <List>
                         <ListItem primaryText="Add Ride"

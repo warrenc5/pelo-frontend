@@ -48,8 +48,7 @@ export default class RideEditor extends MyComponent {
 
     TimePickerExampleSimple = () => (
         <div>
-            <TimePicker
-            />
+            <TimePicker />
         </div>
     );
 
@@ -58,10 +57,8 @@ export default class RideEditor extends MyComponent {
         return (
             <div class="login" id="login">
                 <p id="error">
-                    <b>Welcome to the Riders application.</b>
+                    <b>Edit Ride</b>
                 </p>
-                <button onClick={fbConnect()}>Login with facebook</button>
-                <p class="dark">Or login locally</p>
 
                 <form onSubmit={handleSubmit()}>
                     <table align="center">
@@ -111,7 +108,7 @@ export default class RideEditor extends MyComponent {
                         </tr>
                     </table>
                     <div>
-                        <button type="submit" component={materialButton}>Submit</button>
+                        <button type="submit" component={materialButton}>Add</button>
                     </div>
                 </form>
             </div>
@@ -120,7 +117,7 @@ export default class RideEditor extends MyComponent {
 
     render() {
         return (
-            <div>{this.LoginForm(this.props)}</div>
+            <div>{this.RegisterForm(this.props)}</div>
         )
     }
 
@@ -136,7 +133,7 @@ export default class RideEditor extends MyComponent {
     }
 
     static reduxPropsConfig = (state, props) => ({
-        initialValues: state.login
+
     })
 
     static reduxDispatchConfig = (dispatch) => ({
@@ -145,14 +142,20 @@ export default class RideEditor extends MyComponent {
             payload: args
         })
     })
+
     static reduxAsyncConfig = [{
-        form: 'EditRideForm',
-        validate: function (values) {
-            console.log('validate')
-        },
-        warn: function (values) {
-            console.log('warn')
-        }
+        key: `newRide`,
+        promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
+            console.log("OK HERE")
+            return {}
+        }).then((result) =>result).catch((e)=> {
+            console.log(e)
+            throw e
+        })
     }]
+
+    static reduxFormConfig = {
+        form: `EditRideForm`
+    }
 }
 

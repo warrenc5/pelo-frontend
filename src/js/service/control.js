@@ -48,6 +48,10 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
 
     }
 
+    $scope.authId = function () {
+        return $scope.state.login != null ? $scope.state.login.id : -1
+    }
+
     $scope.initializeStorage = function () {
         $.extend($scope.state, storage.initializeStorage())
     }
@@ -94,8 +98,8 @@ peloApp.factory('platform', function ($rootScope) {
 
         //FIXME change the url here
         //this.baseUrl = globals.peloBaseUrlMockLocal
-        //this.baseUrl = globals.peloBaseUrlLocal
-        this.baseUrl = globals.peloBaseUrlTryout
+        this.baseUrl = globals.peloBaseUrlLocal
+        //this.baseUrl = globals.peloBaseUrlTryout
 
         return this.baseUrl
     }
@@ -211,7 +215,7 @@ peloApp.service("fb", function () {
         }
 
         /**
-        try {
+         try {
             facebookConnectPlugin.showDialog()
         } catch (e) {
             console.log("aerr 4" + JSON.stringify(e))
@@ -228,7 +232,7 @@ peloApp.service("fb", function () {
                             //login2(response.email, userData.accessToken)
                             debug2("success" + JSON.stringify(loginResponse))
                             //response.name
-                            success({fb: {userData: emailResponse, auth: { ... loginResponse.authResponse}}})
+                            success({fb: {userData: emailResponse, auth: {... loginResponse.authResponse}}})
                             //logoutFB()
                         })
                 },
@@ -254,12 +258,12 @@ peloApp.service("fb", function () {
             debug2(e)
         }
         try {
-        facebookConnectPlugin.logout(function () {
-                debug2('fb logout')
-            },
-            function (e) {
-                debug2('fb logout fail' + e)
-            })
+            facebookConnectPlugin.logout(function () {
+                    debug2('fb logout')
+                },
+                function (e) {
+                    debug2('fb logout fail' + e)
+                })
         } catch (e) {
             debug2(e)
         }
@@ -286,7 +290,7 @@ peloApp.service("routemap", function (storage) {
         //style: 'streets', // light|dark|emerald|satellite|streets , default 'streets'
         Mapbox.show({
 
-            style: 'mapbox://styles/mapbox/streets-v8',
+                style: 'mapbox://styles/mapbox/streets-v8',
 
                 margins: {
                     left: 0, // default 0
@@ -351,21 +355,21 @@ peloApp.service("routemap", function (storage) {
     function addMarker(marker, cb) {
         marker = {title: 'MEMO', ... marker}
         console.log("add marker " + JSON.stringify(marker));
-        if(Mapbox.getCenter() != undefined)
-        try {
+        if (Mapbox.getCenter() != undefined)
+            try {
 
-            Mapbox.addMarkerCallback(function (selectedMarker) {
-                var title = marker.title
-                debug2("Marker selected: " + JSON.stringify(selectedMarker) + " " + title)
-                if (selectedMarker.title == title) {
-                    cb()
-                }
-            })
+                Mapbox.addMarkerCallback(function (selectedMarker) {
+                    var title = marker.title
+                    debug2("Marker selected: " + JSON.stringify(selectedMarker) + " " + title)
+                    if (selectedMarker.title == title) {
+                        cb()
+                    }
+                })
 
-            Mapbox.addMarkers([marker])
-        } catch (e) {
-            console.log(e)
-        }
+                Mapbox.addMarkers([marker])
+            } catch (e) {
+                console.log(e)
+            }
         /*
          [
          {

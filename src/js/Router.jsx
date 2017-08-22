@@ -15,6 +15,7 @@ import MessagesContainer from './pages/messages.jsx'
 import Rides from './pages/rides.jsx'
 import SettingsContainer from './pages/settings.jsx'
 import Login from './pages/login.jsx'
+import Logout from './pages/login.jsx'
 import Register from './pages/register.jsx'
 import RideEditor from './pages/editRide.jsx'
 import About from './pages/about.jsx'
@@ -58,6 +59,7 @@ export default class RouterPath extends MyComponent {
                         <Route path={SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
                         <Route path={TERMS} component={Terms} pageTitle="T &amp; C"/>
                         <Route path={ROUTE} component={MyRouteMap} pageTitle="Route"/>
+                        <Route path={LOGOUT} component={Logout} pageTitle="Sign Out"/>
                         <Route path={ABOUT} component={About}/>
                     </Route>
                     <Route component={ContentLayout}>
@@ -80,6 +82,7 @@ export default class RouterPath extends MyComponent {
 //export const Index = Rides
 export const Index = Login
 export const LOGIN = '/login'
+export const LOGOUT = '/logout'
 export const EDITRIDE = '/editRide'
 export const REGISTER = '/register'
 export const MESSAGES = '/messages'
@@ -89,5 +92,5 @@ export const ROUTE = '/routes'
 export const GROUPS = '/groups'
 export const RIDES = '/rides'
 export const ABOUT = '/about'
-
-
+export const HOME = EDITRIDE
+//export const HOME = GROUPS

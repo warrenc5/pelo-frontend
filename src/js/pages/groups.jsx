@@ -14,6 +14,7 @@ import * as action from '../handler/actions'
 import * as select from '../handler/selectors'
 import {debug0,debug2, debugJSON} from '../service/misc'
 import 'scrollreveal'
+import * as router from '../Router.jsx'
 
 /**
  * TODO: add scrolling
@@ -86,7 +87,7 @@ export default class Groups extends React.Component {
 
             //TODO put this in base class
             if (login.id == -1) {
-                router.push('/login')
+                router.push(router.LOGIN);
                 resolve({})
                 return
             }
