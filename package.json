@@ -64,6 +64,7 @@
     "browser-sync": "^2.18.8",
     "browserify": "^14.1.0",
     "browserify-css": "^0.11.1",
+    "browserify-incremental": "^3.1.1",
     "classnames": "^2.2.5",
     "component-inherit": "0.0.3",
     "cordova": "^7.0.0",

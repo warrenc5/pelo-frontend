@@ -68,8 +68,8 @@ export default class RideEditor extends MyComponent {
                             <div style={style.root}>
                                 <Field name="Title" component={materialTextField} label="Title"/>
                             </div>
-
                         </tr>
+                        {/**
                         <tr>
                             <div style={style.root}>
                                 <Field name="Date" label="Date"/>
@@ -107,10 +107,14 @@ export default class RideEditor extends MyComponent {
                                         onFileLoad={this.onFileLoad}/>
                             </div>
                         </tr>
+                        **/}
                         </tbody>
                     </table>
                     <div>
-                        <button type="submit" component={materialButton}>Add</button>
+                        <Field name="add"
+                           label="Add"
+                           type="submit"
+                           onClick={this.props.handleSubmit(this.validate)} />
                     </div>
                 </form>
             </div>
@@ -131,11 +135,14 @@ export default class RideEditor extends MyComponent {
     onChange = (route) => this.setState({route});
 
     static propTypes = {
+        Title : PropTypes.string.isRequired,
         ...propTypes
     }
 
     static reduxPropsConfig = (state, props) => ({
-
+        initialValues: {
+            Title: 'stuff'
+        }
     })
 
     static reduxDispatchConfig = (dispatch) => ({

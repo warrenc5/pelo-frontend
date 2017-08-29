@@ -50,6 +50,8 @@ var diff = require('gulp-diff-build')
 var source = require('vinyl-source-stream');
 var streamify = require('gulp-streamify');
 var browserify = require('browserify');
+var browserifyInc = require('browserify-incremental')
+var xtend = require('xtend')
 var buffer = require('vinyl-buffer');
 
 var sourcemaps = require('gulp-sourcemaps');
@@ -63,6 +65,7 @@ var cordovaPackageConfig = "cordova/package.json"
 var packageConfig = "package.json"
 var cordovaConfig = "cordova/config.xml"
 var cordovaCmds = "cordova.json"
+
 //paths
 var paths = new (function () {
     this.root = process.cwd()
@@ -227,11 +230,15 @@ gulp.task('compile-js', [], function (done1) {
 
     gulp.start('build-time')
 
-    var b = browserify({
+
+    var b = browserify(
+        xtend(browserifyInc.args,
+        {
         entries: [`${paths.jsSrc}/${paths.mainApplicationJS}`],
         debug: true,
         extensions: ['css', ' ', 'js', 'jsx']
-    })
+        })
+    )
 
         .transform(browserifyCss, { verbose: true,
             autoInject: true })
@@ -253,7 +260,10 @@ gulp.task('compile-js', [], function (done1) {
             comments: false,
         }))
         */
-        .bundle()
+
+    browserifyInc(b, {cacheFile: './browserify-cache.json'})
+
+    b = b.bundle()
     ////**
     // .pipe(plumber((e) => {
     // util.log(`*** ${e.message}\n${e.codeFrame}`)
@@ -278,6 +288,7 @@ gulp.task('compile-js', [], function (done1) {
         .pipe(source('bundle.js'))
         .pipe(buffer())
     //.pipe(diff()) //takes tooo long
+
 
     //
     //
