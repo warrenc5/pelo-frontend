@@ -37,9 +37,9 @@ export default class RideEditor extends MyComponent {
         this.props = props
     }
 
-    DatePickerExampleSimple = () => (
+    DatePickerExampleSimple = (props) => (
         <div>
-            <DatePicker mode="landscape"/>
+            <DatePicker mode="landscape" onBlur=""/>
         </div>
     );
 
@@ -68,9 +68,11 @@ export default class RideEditor extends MyComponent {
                             <Field name="Title" component={materialTextField} label="Title"/>
                         </tr>
                         <tr>
+                            {/**
                             <div style={style.root}>
                                 <Field name="Date" label="Date"/>
                             </div>
+                                **/}
                             <div>
                                 {this.DatePickerExampleSimple(this.props)}
                             </div>
@@ -142,7 +144,7 @@ export default class RideEditor extends MyComponent {
     static reduxPropsConfig = (state, props) => ({
         initialValues: {
             Title: 'stuff',
-            //Date: '2017-09-01'
+            Date: '2017-09-01'
         }
     })
 
