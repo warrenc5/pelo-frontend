@@ -21,6 +21,8 @@ import {debug2, debugJSON} from '../service/misc'
  * @returns {the new state map to be grafted onto the global state}
  */
 
+const INITIALIZE=`@redux-form/INITIALIZE`
+
 const form = formReducer.plugin({
     form: (state, action) => {
         //every form
@@ -185,7 +187,9 @@ const newRide = (state = {}, action) => {
 }
 const main = (state = {}, action) => {
     switch (action.type) {
-        default:
+        case INITIALIZE:
+            return {Title: 'Wozza'}
+         default:
             return state
     }
 }

@@ -65,11 +65,8 @@ export default class RideEditor extends MyComponent {
                     <table>
                         <tbody>
                         <tr>
-                            <div style={style.root}>
-                                <Field name="Title" component={materialTextField} label="Title"/>
-                            </div>
+                            <Field name="Title" component={materialTextField} label="Title"/>
                         </tr>
-                        {/**
                         <tr>
                             <div style={style.root}>
                                 <Field name="Date" label="Date"/>
@@ -78,6 +75,7 @@ export default class RideEditor extends MyComponent {
                                 {this.DatePickerExampleSimple(this.props)}
                             </div>
                         </tr>
+                        {/**
                         <tr>
                             <div style={style.root}>
                                 <Field name="Time" label="Time"/>
@@ -114,6 +112,7 @@ export default class RideEditor extends MyComponent {
                         <Field name="add"
                            label="Add"
                            type="submit"
+                           component={materialButton}
                            onClick={this.props.handleSubmit(this.validate)} />
                     </div>
                 </form>
@@ -136,12 +135,14 @@ export default class RideEditor extends MyComponent {
 
     static propTypes = {
         Title : PropTypes.string.isRequired,
+        Date : PropTypes.string.isRequired,
         ...propTypes
     }
 
     static reduxPropsConfig = (state, props) => ({
         initialValues: {
-            Title: 'stuff'
+            Title: 'stuff',
+            //Date: '2017-09-01'
         }
     })
 
