@@ -12,6 +12,7 @@ import {
     Toggle,
     DatePicker,
 } from 'redux-form-material-ui'
+
 import Upload from 'material-ui-upload';
 
 import style from '../layout/style'
@@ -52,16 +53,17 @@ export default class RideEditor extends MyComponent {
         </div>
     );
 
-    RegisterForm = (props) => {
+    EditRideForm = (props) => {
         const { handleSubmit, fbConnect, pristine, reset, submitting } = props
         return (
-            <div class="login" id="login">
+            <div>
                 <p id="error">
                     <b>Edit Ride</b>
                 </p>
 
                 <form onSubmit={handleSubmit()}>
-                    <table align="center">
+                    <table>
+                        <tbody>
                         <tr>
                             <div style={style.root}>
                                 <Field name="Title" component={materialTextField} label="Title"/>
@@ -101,11 +103,11 @@ export default class RideEditor extends MyComponent {
                             <div>
                                 <Upload title="Route"
                                         label="Add"
-                                        initialItems={this.state.route}
                                         onChange={this.onChange}
                                         onFileLoad={this.onFileLoad}/>
                             </div>
                         </tr>
+                        </tbody>
                     </table>
                     <div>
                         <button type="submit" component={materialButton}>Add</button>
@@ -117,7 +119,7 @@ export default class RideEditor extends MyComponent {
 
     render() {
         return (
-            <div>{this.RegisterForm(this.props)}</div>
+            <div>{this.EditRideForm(this.props)}</div>
         )
     }
 
@@ -147,6 +149,7 @@ export default class RideEditor extends MyComponent {
         key: `newRide`,
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
             console.log("OK HERE")
+            resolve(true)
             return {}
         }).then((result) =>result).catch((e)=> {
             console.log(e)
