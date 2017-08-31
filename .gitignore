@@ -14,3 +14,4 @@ npm-debug.log
 /cordova/www/*/
 /cordova/www/*
 /src/js/src/js/build.js
+/browserify-cache.json
