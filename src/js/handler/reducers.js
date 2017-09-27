@@ -181,6 +181,8 @@ const route = (state = {
 
 const newRide = (state = {}, action) => {
     switch (action.type) {
+        case INITIALIZE:
+            return {Title: "My new Ride", startDate: "today"}
         default:
             return state
     }

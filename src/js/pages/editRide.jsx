@@ -35,13 +35,21 @@ export default class RideEditor extends MyComponent {
     constructor(props) {
         super(props)
         this.props = props
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    DatePickerExampleSimple = (props) => (
-        <div>
-            <DatePicker mode="landscape" onBlur=""/>
-        </div>
-    );
+    DatePickerExampleSimple = (props) => {
+        const {startDate} = props
+        return(
+            <DatePicker selected={props.startDate} mode="landscape" onChange={this.handleChange}/>
+        )
+    }
+
+    handleChange(date) {
+        this.setState({
+            startDate: date
+        });
+    }
 
     SliderExampleStep = () => (
         <Slider step={0.10} value={0.5}/>
@@ -49,7 +57,6 @@ export default class RideEditor extends MyComponent {
 
     TimePickerExampleSimple = () => (
         <div>
-            <TimePicker />
         </div>
     );
 
@@ -73,9 +80,7 @@ export default class RideEditor extends MyComponent {
                                 <Field name="Date" label="Date"/>
                             </div>
                                 **/}
-                            <div>
                                 {this.DatePickerExampleSimple(this.props)}
-                            </div>
                         </tr>
                         {/**
                         <tr>
@@ -110,15 +115,13 @@ export default class RideEditor extends MyComponent {
                         **/}
                         </tbody>
                     </table>
-                    <div>
-                        <Field name="add"
-                           label="Add"
-                           type="submit"
-                           component={materialButton}
-                           onClick={this.props.handleSubmit(this.validate)} />
-                    </div>
-                </form>
-            </div>
+                    <Field name="add"
+                       label="Add"
+                       type="submit"
+                       component={materialButton}
+                       onClick={this.props.handleSubmit(this.validate)} />
+            </form>
+        </div>
         )
     }
 
@@ -137,22 +140,31 @@ export default class RideEditor extends MyComponent {
 
     static propTypes = {
         Title : PropTypes.string.isRequired,
-        Date : PropTypes.string.isRequired,
+        startDate : PropTypes.string.isRequired,
         ...propTypes
     }
 
     static reduxPropsConfig = (state, props) => ({
         initialValues: {
             Title: 'stuff',
-            Date: '2017-09-01'
-        }
+            startDate: '2017-09-01'
+        },
+        Title: state.Title,
+        startDate: state.startDate
     })
 
     static reduxDispatchConfig = (dispatch) => ({
         onSubmit: () => (...args) => dispatch({
             type: `EDITRIDE`,
             payload: args
-        })
+        }),
+        dateSelected: () => (event) => {
+            dispatch({
+                type: `SELECT`,
+                payload: {}
+            })
+        }
+
     })
 
     static reduxAsyncConfig = [{
@@ -160,7 +172,7 @@ export default class RideEditor extends MyComponent {
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
             console.log("OK HERE")
             resolve(true)
-            return {}
+            return {Title: "My new Ride", startDate: "yesterday"}
         }).then((result) =>result).catch((e)=> {
             console.log(e)
             throw e
