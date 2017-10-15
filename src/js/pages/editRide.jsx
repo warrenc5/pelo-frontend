@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { Field, reduxForm, propTypes } from 'redux-form'
 import Slider from 'material-ui/Slider';
-import TimePicker from 'material-ui/TimePicker';
 import {
     Checkbox,
     RadioButtonGroup,
@@ -26,8 +25,10 @@ import {
     materialTextField,
     materialCheckbox ,
     materialRadioGroup ,
-    materialSelectField
+    materialSelectField,
+    materialDatePicker
 } from './material.jsx'
+
 
 @myAsyncFormConnect()
 export default class RideEditor extends MyComponent {
@@ -38,26 +39,16 @@ export default class RideEditor extends MyComponent {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    DatePickerExampleSimple = (props) => {
-        const {startDate} = props
-        return(
-            <DatePicker selected={props.startDate} mode="landscape" onChange={this.handleChange}/>
-        )
-    }
-
     handleChange(date) {
+        /*
         this.setState({
             startDate: date
         });
+        */
     }
 
     SliderExampleStep = () => (
         <Slider step={0.10} value={0.5}/>
-    );
-
-    TimePickerExampleSimple = () => (
-        <div>
-        </div>
     );
 
     EditRideForm = (props) => {
@@ -80,7 +71,7 @@ export default class RideEditor extends MyComponent {
                                 <Field name="Date" label="Date"/>
                             </div>
                                 **/}
-                                {this.DatePickerExampleSimple(this.props)}
+                            <Field name="Ride Date" component={materialDatePicker} hintText="Ride Date" autoOk={true} />
                         </tr>
                         {/**
                         <tr>

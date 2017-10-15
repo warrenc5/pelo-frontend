@@ -233,15 +233,19 @@ gulp.task('compile-js', [], function (done1) {
 
     var b = browserify(
         xtend(browserifyInc.args,
-        {
-        entries: [`${paths.jsSrc}/${paths.mainApplicationJS}`],
-        debug: true,
-        extensions: ['css', ' ', 'js', 'jsx']
-        })
+            {
+                entries: [`${paths.jsSrc}/${paths.mainApplicationJS}`],
+                debug: true,
+                extensions: ['css', ' ', 'js', 'jsx'],
+            })
     )
-
-        .transform(browserifyCss, { verbose: true,
-            autoInject: true })
+        .transform(browserifyCss, {
+            global:true,
+            verbose: true,
+            autoInject: true,
+            poll:true,
+            minify: true,
+        })
         .transform(babelify.configure({
             env: {
                 production: {}, development: {}
@@ -250,45 +254,34 @@ gulp.task('compile-js', [], function (done1) {
             minified: env == 'prod',
             comments: false,
         }))
-        /*
-        .transform(babelify.configure({
-            env: {
-                production: {}, development: {}
-            },
-            minified: env == 'prod',
-            ignore: ['/node_modules/**'],
-            comments: false,
-        }))
-        */
 
-    browserifyInc(b, {cacheFile: './browserify-cache.json'})
-
+    browserifyInc(b, {cacheFile: './.gulp/browserify-cache.json'})
     b = b.bundle()
-    ////**
-    // .pipe(plumber((e) => {
-    // util.log(`*** ${e.message}\n${e.codeFrame}`)
-    // this.emit('end');
-    // }))
-    // *!/
-    ////.pipe(changed(d))*/ // Ignore unchanged files
+
     var c = b.on('end', () => {
-            util.log(`================================ ${buildTime} ====================${env}========================`)
+            util.log(`<=============================== ${buildTime} ====================${env}========================`)
         })
         .on('error', (e) => {
                 try {
-                    //util.log(e)
-                    util.log(`${e.message}\n${e.codeFrame}`)
+                    util.log(util.colors.red(">>"+e+"<<"))
+                //    util.log(`${e.message}\n${e.codeFrame}`)
                 } catch (e) {
                 }
-                b.emit('end')
+                //b.emit('end')
             }
         )
 
         //var combined = combiner.obj([b])
         .pipe(source('bundle.js'))
+       .pipe(changed(paths.jsDest))
         .pipe(buffer())
+
     //.pipe(diff()) //takes tooo long
 
+.pipe(plumber((e) => {
+            util.log(`*** ${e.message}\n${e.codeFrame}`)
+            //this.emit('end');
+        }))
 
     //
     //
@@ -301,10 +294,12 @@ gulp.task('compile-js', [], function (done1) {
                     /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
                 }
             )))
-            .pipe(gulp.dest(paths.jsDest))
+
+            //.pipe(gulp.dest(paths.jsDest))
 
         //.pipe(sourcemaps.write('./'))
     }
+
     return c.pipe(gulp.dest(paths.jsDest))
 })
 

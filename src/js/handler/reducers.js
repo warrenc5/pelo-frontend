@@ -2,8 +2,8 @@ import 'angular'
 import $ from 'jquery'
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
-import { reducer as reduxAsyncConnect } from 'redux-connect'
-import { routerReducer, push } from 'react-router-redux'
+//import { reducer as reduxAsyncConnect } from 'redux-connect'
+//import { routerReducer, push } from 'react-router-redux'
 
 import * as action from './actions'
 import {debug2, debugJSON} from '../service/misc'
@@ -226,6 +226,8 @@ const todaysRides = (state = {}, action) => {
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
 export default function MyReducer() {
     return combineReducers({
+        //router: routerReducer,
+        //reduxAsyncConnect,
         debug,
         globals: none,
         groups,
@@ -235,8 +237,6 @@ export default function MyReducer() {
         login,
         route,
         hello: none,
-        router: routerReducer,
-        reduxAsyncConnect,
         riderLocation,
         rideLocations,
         newRide,

@@ -20,6 +20,8 @@ export default class Route extends MyComponent {
         this.loadRoute(this.props.routeId)
     }
 
+    //https://www.npmjs.com/package/react-router-dispatcher
+
     render() {
         return (
             <div>

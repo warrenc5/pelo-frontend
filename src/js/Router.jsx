@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 import ReactDOM from 'react-dom'
-import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-router'
-import { ReduxAsyncConnect, asyncConnect, reducer as reduxAsyncConnect } from 'redux-connect'
-import { ConnectedRouter } from 'react-router-redux'
+import { Route, IndexRoute} from 'react-router'
+import { BrowserRouter} from 'react-router-dom'
+//import { ReduxAsyncConnect} from 'redux-connect'
 import { BrowserHistory } from 'react-history'
 
 import MainLayout from './layout/main.jsx'
@@ -22,6 +22,8 @@ import About from './pages/about.jsx'
 import Terms from './pages/terms.jsx'
 import MyRouteMap from './widget/routemap'
 import MyComponent from './widget/common'
+
+import { Provider } from 'react-redux';
 
 /**
  * This screen transition logical router handles html a links and anchor refs in the app
@@ -44,9 +46,7 @@ export default class RouterPath extends MyComponent {
 
     render() {
         return (
-            <Router
-                render={(props) => <ReduxAsyncConnect helpers={{ }} reloadOnPropsChange={super.reloadOnPropsChange} {...props}
-                /> }
+            <BrowserRouter
                 history={this.props.history}>
                 <Route visible="true" path="/" component={MainLayout}>
                     <Route component={ContentLayout}>
@@ -66,7 +66,7 @@ export default class RouterPath extends MyComponent {
                         <IndexRoute component={Index}/>
                     </Route>
                 </Route>
-            </Router>
+            </BrowserRouter>
         )
     }
 

@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import 'angular'
-import { asyncConnect as reduxAsyncConnect } from 'redux-connect'
+//import { asyncConnect as reduxAsyncConnect } from 'redux-connect'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 //FIXME:

@@ -9,6 +9,8 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
+import TimePicker from 'material-ui/TimePicker';
+import DatePicker from 'material-ui/DatePicker';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 //http://redux-form.com/6.1.0/examples/material-ui/
 
@@ -49,4 +51,11 @@ export const materialSelectField = ({ input, label, meta: { touched, error }, ch
         onChange={(event, index, value) => input.onChange(value)}
         children={children}
         {...custom}/>
+)
+export const materialDatePicker = ({ input, defaultValue, meta: { touched, error } }) => (
+    <DatePicker
+        errorText={touched && error}
+        {...input}
+        value={input.value !== ''? new Date(input.value) : null}
+        onChange={(event, value) => {console.log(value); input.onChange(value)}}/>
 )
