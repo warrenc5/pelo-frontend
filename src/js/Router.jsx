@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
+
 import ReactDOM from 'react-dom'
 import { Route, IndexRoute} from 'react-router'
-import { BrowserRouter} from 'react-router-dom'
+import BrowserRouter from 'react-router-dom'
 //import { ReduxAsyncConnect} from 'redux-connect'
-import { BrowserHistory } from 'react-history'
 
 import MainLayout from './layout/main.jsx'
 import ContentLayout from './layout/content.jsx'
@@ -41,13 +41,13 @@ export default class RouterPath extends MyComponent {
 
 //<Router history={hashHistory}>
 //<ConnectedRouter render={(props) => <ReduxAsyncConnect {...props} /> } history={this.props.history}>
+    //render={ (props) => <ReduxAsyncConnect reloadOnPropsChange={super.reloadOnPropsChange} {...props} /> }
 //<Router render={(props) => <ReduxAsyncConnect {...props} /> } history={browserHistory}>
     //render={applyRouterMiddleware()}
 
     render() {
         return (
-            <BrowserRouter
-                history={this.props.history}>
+            <Router history={this.props.history}>
                 <Route visible="true" path="/" component={MainLayout}>
                     <Route component={ContentLayout}>
                         <Route path={LOGIN} component={Login} pageTitle="Sign In"/>
@@ -66,7 +66,7 @@ export default class RouterPath extends MyComponent {
                         <IndexRoute component={Index}/>
                     </Route>
                 </Route>
-            </BrowserRouter>
+            </Router>
         )
     }
 

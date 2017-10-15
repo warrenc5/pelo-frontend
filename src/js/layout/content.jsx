@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
-import { createSelector } from 'reselect'
+import {createSelector} from 'reselect'
 import moment from 'moment'
-import {connect} from 'react-redux'
+import connect from 'react-redux'
 
 import Working from '../widget/working.jsx'
 //import {buildTime} from '../handler/selectors'

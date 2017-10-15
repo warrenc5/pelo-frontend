@@ -5,14 +5,14 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import $ from 'jquery'
 import { routerMiddleware } from 'react-router-redux'
 //import { syncHistoryWithStore } from 'react-router-redux';
-import { ConnectedRouter } from 'react-router-redux';
+//import { ConnectedRouter } from 'react-router-redux';
 import RouteDispatcher from 'react-router-dispatcher';
-import { hashHistory,browserHistory } from 'react-router'
-import { Provider } from 'react-redux'
+import { hashHistory } from 'react-router'
+import Provider from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import RouterPath from './Router.jsx'
-import {createTestData}  from './TestData'
+import {createTestData} from './TestData'
 import MyReducer from './handler/reducers'
 import {myTheme} from './layout/theme'
 import {debug, debug2, debugJSON} from './service/misc'
@@ -101,12 +101,7 @@ export default class App extends Component {
     render() {
         return <MuiThemeProvider muiTheme={myTheme}>
             <Provider store={this.store} key="provider">
-                <ConnectedRouter history={history}>
-                    <RouteDispatcher routes={routes} />
-                </ConnectedRouter>
-                {/**
                 <RouterPath middleware={this.middle} props={this.props} history={this.history}/>
-                    **/}
             </Provider>
         </MuiThemeProvider>
     }

@@ -121,6 +121,7 @@ gulp.task('start', [], function () {
                 .on('data', util.log)
                 .on('end', done)
                 .on('end', function (done1) {
+                    util.log(util.colors.green("change detected - recompiling"))
                     return gulp.start('compile-js')
                 })
         }))
@@ -132,7 +133,11 @@ gulp.task('start', [], function () {
 
     gulp.watch(paths.root + '/src_old/**/*', ['old'])
 
-    gulp.watch([paths.cssDest + '/**/*', paths.jsDest + '/**/*', paths.htmlDest + '/**/*', "!" + paths.jsDest + "/cordova/**/*", "!" + paths.jsDest + "/" + buildTimeFile],
+    gulp.watch([paths.cssDest + '/**/*',
+        paths.jsDest + '/**/*',
+        paths.htmlDest + '/**/*.html',
+        "!" + paths.jsDest + "/cordova/**/*",
+        "!" + paths.jsDest + "/" + buildTimeFile],
         {ignoreInitial: true}).on('change',
         batch({timeout: 1000}, function (events, cb) {
             events
@@ -228,6 +233,7 @@ gulp.task('compile-css', function () {
 
 gulp.task('compile-js', [], function (done1) {
 
+    util.log("compile trigger")
     gulp.start('build-time')
 
 
@@ -262,18 +268,18 @@ gulp.task('compile-js', [], function (done1) {
             util.log(`<=============================== ${buildTime} ====================${env}========================`)
         })
         .on('error', (e) => {
-                try {
-                    util.log(util.colors.red(">>"+e+"<<"))
+            try {
+                util.log(util.colors.red(">>"+e+"<<"))
                 //    util.log(`${e.message}\n${e.codeFrame}`)
-                } catch (e) {
-                }
-                //b.emit('end')
+            } catch (e) {
+            }
+            b.emit('end')
             }
         )
 
         //var combined = combiner.obj([b])
         .pipe(source('bundle.js'))
-       .pipe(changed(paths.jsDest))
+       //.pipe(changed(paths.jsDest))
         .pipe(buffer())
 
     //.pipe(diff()) //takes tooo long
