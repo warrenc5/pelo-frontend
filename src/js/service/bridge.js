@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import 'angular'
-//import { asyncConnect as reduxAsyncConnect } from 'redux-connect'
+import { asyncConnect as reduxAsyncConnect } from 'redux-connect'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 //FIXME:
@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 export function ngScope() {
     return angular.element($("#app")).scope()
 }
+
 
 export function reduxConnect() {
     return target => {

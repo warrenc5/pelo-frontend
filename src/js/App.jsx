@@ -1,14 +1,13 @@
-import React, {Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 //import injectTapEventPlugin from 'react-tap-event-plugin'
 import $ from 'jquery'
 import { routerMiddleware } from 'react-router-redux'
 //import { syncHistoryWithStore } from 'react-router-redux';
-//import { ConnectedRouter } from 'react-router-redux';
 import RouteDispatcher from 'react-router-dispatcher';
-import { hashHistory } from 'react-router'
-import Provider from 'react-redux'
+import { HashHistory, BrowserHistory } from 'react-history'
+import {Provider} from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import RouterPath from './Router.jsx'
@@ -17,6 +16,7 @@ import MyReducer from './handler/reducers'
 import {myTheme} from './layout/theme'
 import {debug, debug2, debugJSON} from './service/misc'
 import {ngScope,myAsyncFormConnect} from './service/bridge'
+import MyComponent,{Catch} from './widget/common.js'
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
  **/
@@ -34,7 +34,7 @@ import {ngScope,myAsyncFormConnect} from './service/bridge'
  }
  })
  */
-export default class App extends Component {
+export default class App extends MyComponent {
     constructor(props) {
         super(props)
         this.props = props
@@ -50,7 +50,8 @@ export default class App extends Component {
         //debug2(JSON.stringify(this.props.state))
 
         //this.history = browserHistory
-        this.history = hashHistory
+        this.history = HashHistory
+        console.log("history *** " + this.history)
         this.middle = [thunk, routerMiddleware(this.history)]
         //const middle = routerMiddleware(this.history)
         this.store = createStore(MyReducer(), this.props.state, applyMiddleware(... this.middle));
@@ -99,11 +100,18 @@ export default class App extends Component {
     }
 
     render() {
-        return <MuiThemeProvider muiTheme={myTheme}>
-            <Provider store={this.store} key="provider">
-                <RouterPath middleware={this.middle} props={this.props} history={this.history}/>
-            </Provider>
-        </MuiThemeProvider>
+        return (this.history == null || super.isError())?
+            (<h1>Fail</h1>)
+            :
+            (
+                <MuiThemeProvider muiTheme={myTheme}>
+                        <Provider store={this.store} key="provider">
+                            <Catch>
+                                <RouterPath middleware={this.middle} props={this.props} history={this.history}/>
+                            </Catch>
+                        </Provider>
+                </MuiThemeProvider>
+            )
     }
 
     static propTypes = {

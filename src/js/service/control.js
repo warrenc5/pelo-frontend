@@ -53,6 +53,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
     }
 
     $scope.initializeStorage = function () {
+        console.log("storage initialized")
         $.extend($scope.state, storage.initializeStorage())
     }
 

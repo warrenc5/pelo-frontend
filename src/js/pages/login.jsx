@@ -154,9 +154,7 @@ export default class Login extends MyComponent {
     }
 
     render() {
-        return (
-            <div>{this.LoginForm(this.props)}</div>
-        )
+            return super.isError() && <h1>No way</h1> || (<div>{this.LoginForm(this.props)}</div>)
     }
 
     @keydown('enter')

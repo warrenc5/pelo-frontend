@@ -1,12 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-
-
 import ReactDOM from 'react-dom'
-import { Route, IndexRoute} from 'react-router'
+import { Route, IndexRoute} from 'react-router-dom'
 import BrowserRouter from 'react-router-dom'
-//import { ReduxAsyncConnect} from 'redux-connect'
-
+import {ReduxAsyncConnect} from 'redux-connect'
+//import {ConnectedRouter} from 'react-router-redux';
 import MainLayout from './layout/main.jsx'
 import ContentLayout from './layout/content.jsx'
 import HomeContainer from './pages/home.jsx'
@@ -21,9 +19,8 @@ import RideEditor from './pages/editRide.jsx'
 import About from './pages/about.jsx'
 import Terms from './pages/terms.jsx'
 import MyRouteMap from './widget/routemap'
-import MyComponent from './widget/common'
-
-import { Provider } from 'react-redux';
+import MyComponent,{Catch} from './widget/common.js'
+import { Router } from 'react-router'
 
 /**
  * This screen transition logical router handles html a links and anchor refs in the app
@@ -46,8 +43,10 @@ export default class RouterPath extends MyComponent {
     //render={applyRouterMiddleware()}
 
     render() {
-        return (
-            <Router history={this.props.history}>
+        return super.isError()?(<h1>No Route</h1>):(
+            <Router render={(props) => <ReduxAsyncConnect helpers={{ }} reloadOnPropsChange={super.reloadOnPropsChange} {...props} /> }
+                history={this.props.history}>
+                <Catch>
                 <Route visible="true" path="/" component={MainLayout}>
                     <Route component={ContentLayout}>
                         <Route path={LOGIN} component={Login} pageTitle="Sign In"/>
@@ -66,6 +65,7 @@ export default class RouterPath extends MyComponent {
                         <IndexRoute component={Index}/>
                     </Route>
                 </Route>
+                </Catch>
             </Router>
         )
     }
@@ -76,6 +76,7 @@ export default class RouterPath extends MyComponent {
     }
 
     static propTypes = {
+        history: PropTypes.object.isRequired,
     }
 }
 

@@ -2,7 +2,7 @@ import 'angular'
 import $ from 'jquery'
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
-//import { reducer as reduxAsyncConnect } from 'redux-connect'
+import { reducer as reduxAsyncConnect } from 'redux-connect'
 //import { routerReducer, push } from 'react-router-redux'
 
 import * as action from './actions'
@@ -227,7 +227,7 @@ const todaysRides = (state = {}, action) => {
 export default function MyReducer() {
     return combineReducers({
         //router: routerReducer,
-        //reduxAsyncConnect,
+        reduxAsyncConnect,
         debug,
         globals: none,
         groups,
