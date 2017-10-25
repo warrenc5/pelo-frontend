@@ -6,7 +6,10 @@ import Subheader from 'material-ui/Subheader'
 import { RaisedButton, Divider } from 'material-ui'
 import HamburgerMenu from 'react-hamburger-menu'
 import {ngScope,reduxConnect,myAsyncFormConnect} from '../service/bridge'
-import MyComponent from '../widget/common'
+import MyComponent, {Catch} from '../widget/common'
+import { Switch,Route } from 'react-router-dom'
+import * as router from '../Router.jsx'
+import Login from '../pages/login.jsx'
 
 //@myAsyncFormConnect()
 @reduxConnect()
@@ -14,45 +17,44 @@ export default class MainLayout extends MyComponent {
     constructor(props) {
         super(props)
         this.props = props
-        this.state = props
+        this.state = {open: props.open}
     }
 
     render() {
         let currentRouteName = this.props.location.pathname
+        const {open}= this.state
         return (
             <div>
-                <Navigation ref={(obj) => { this.nav = obj; }} open={this.props.open}/>
-                <div id="main-wrapper" className="main-wrapper">
-                    <div>
-                        {this.props.authId > 0  &&
-                        <HamburgerMenu
-                            isOpen={this.props.open}
-                            menuClicked={this.handleClick.bind(this)}
-                            width={28}
-                            height={25}
-                            strokeWidth={5}
-                            rotate={0}
-                            color='red'
-                            borderRadius={0}
-                            animationDuration={1.5}
-                        />
-                            }
-                    </div>
-                    <div className="main-content-wrapper">
-                        {this.props.children}
-                    </div>
-                </div>
-            </div>
-        )
+                <Catch>
+                    <Navigation ref={(obj) => { this.nav = obj; }} open={open}/>
+                        <div>
+                            {/**this.props.authId > 0  &&
+                                **/ }
+                            <HamburgerMenu
+                                isOpen={open}
+                                menuClicked={this.handleClick.bind(this)}
+                                width={28}
+                                height={25}
+                                strokeWidth={5}
+                                rotate={0}
+                                color='red'
+                                borderRadius={0}
+                                animationDuration={1.5}
+                            />
+                            <span>{currentRouteName}</span>
+                        </div>
+                </Catch>
+            </div>)
     }
 
     handleClick(e) {
-        this.setState({open: !this.props.open})
+        this.setState({open: !this.state.open})
         this.nav.toggle()
     }
 
     static reduxPropsConfig = (state, props) => ({
-        authId: state.login.id
+        authId: state.login.id,
+        open: state.open
     })
 
     static propTypes = {

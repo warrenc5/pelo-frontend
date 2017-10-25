@@ -6,7 +6,6 @@ import $ from 'jquery'
 import { routerMiddleware } from 'react-router-redux'
 //import { syncHistoryWithStore } from 'react-router-redux';
 import RouteDispatcher from 'react-router-dispatcher';
-import { HashHistory, BrowserHistory } from 'react-history'
 import {Provider} from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
@@ -17,6 +16,8 @@ import {myTheme} from './layout/theme'
 import {debug, debug2, debugJSON} from './service/misc'
 import {ngScope,myAsyncFormConnect} from './service/bridge'
 import MyComponent,{Catch} from './widget/common.js'
+import createHashHistory from 'history/createHashHistory'
+//import {useRouterHistory} from 'react-router'
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
  **/
@@ -49,9 +50,10 @@ export default class App extends MyComponent {
         //$.extend(this.props.state, createTestData());
         //debug2(JSON.stringify(this.props.state))
 
-        //this.history = browserHistory
-        this.history = HashHistory
-        console.log("history *** " + this.history)
+        //this.history = useRouterHistory(createBrowserHistory());
+        this.history = createHashHistory();
+        //this.history = HashHistory
+        //console.log("history *** " + this.history)
         this.middle = [thunk, routerMiddleware(this.history)]
         //const middle = routerMiddleware(this.history)
         this.store = createStore(MyReducer(), this.props.state, applyMiddleware(... this.middle));
@@ -99,17 +101,16 @@ export default class App extends MyComponent {
         document.getElementById('bg').class='hidden'
     }
 
+    renderError() {
+        return (<span>Fail</span>)
+    }
     render() {
-        return (this.history == null || super.isError())?
-            (<h1>Fail</h1>)
-            :
+        return super.isError()?this.renderError():
             (
                 <MuiThemeProvider muiTheme={myTheme}>
-                        <Provider store={this.store} key="provider">
-                            <Catch>
-                                <RouterPath middleware={this.middle} props={this.props} history={this.history}/>
-                            </Catch>
-                        </Provider>
+                    <Provider store={this.store} key="provider">
+                        <RouterPath middleware={this.middle} props={this.props} history={this.history}/>
+                    </Provider>
                 </MuiThemeProvider>
             )
     }

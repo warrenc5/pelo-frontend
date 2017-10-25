@@ -1,12 +1,14 @@
-import React, {Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types';
 
 import { Drawer, MenuItem, RaisedButton, List, ListItem, Divider } from 'material-ui'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import * as router from '../Router.jsx'
 
+import MyComponent, {Catch} from '../widget/common'
+
 const MIN = 300
-export default class Navigation extends React.Component {
+export default class Navigation extends MyComponent {
     constructor(props) {
         super(props)
         this.state = {open: this.props.open}
@@ -45,6 +47,7 @@ export default class Navigation extends React.Component {
             <nav className="main-nav">
                 <Drawer ref={(obj) => { this.nav = obj; }} open={this.state.open} openSecondary={true}>
                     <div className="main-logo">
+                        <RaisedButton label="Hide" onClick={this.hide.bind(this)}/>
                         <Link to={router.HOME}><span className="type-italic">Home</span></Link>
                     </div>
                     <List>
@@ -70,7 +73,6 @@ export default class Navigation extends React.Component {
                                   containerElement={<Link activeClassName="active" to={router.ABOUT} />}/>
                     </List>
                     <Divider />
-                    <RaisedButton label="Hide" onClick={this.hide.bind(this)}/>
                     <RaisedButton label="Exit" onClick={this.exitApp.bind(this)}/>
 
                 </Drawer>

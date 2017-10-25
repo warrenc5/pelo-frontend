@@ -2,6 +2,20 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import {debug0} from '../service/misc'
 
+import {withDispatcher} from 'react-router-dispatcher'
+import RouteDispatcher from 'react-router-dispatcher'
+/**
+ @withDispatcher(({dispatch}, {params}) => {
+           return Promise.all([
+           dispatch({
+                type: `LOGIN`,
+                payload: params.urlValue
+            })
+  ])
+
+        })
+ **/
+//@withDispatcher(routeDispatcher: RouteDispatcher)
 export default class MyComponent extends React.Component {
     constructor(props) {
         super(props)
@@ -36,7 +50,7 @@ export default class MyComponent extends React.Component {
 
 export class Catch extends MyComponent {
     render() {
-        return super.isError()?(<h1>broken</h1>):(this.props.children)
+        return super.isError()?(<span>?</span>):(this.props.children)
     }
 }
 

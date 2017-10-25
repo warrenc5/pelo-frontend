@@ -12,7 +12,7 @@ import {
 } from 'redux-form-material-ui'
 import { isEmptyObject } from 'jquery'
 import { Form, SubmissionError } from 'redux-form'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { push } from 'react-router-redux'
 
 import style from '../layout/style'
@@ -33,7 +33,6 @@ import {
 import submit from "redux-form"
 import {debug0,debug2, debugJSON} from '../service/misc'
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
-import { hashHistory,browserHistory } from 'react-router'
 
 @myAsyncFormConnect()
 export default class Login extends MyComponent {
@@ -117,7 +116,6 @@ export default class Login extends MyComponent {
                     </table>
                 </Form>
                 <Divider />
-                <Divider />
                 <Link to="/terms">Read Terms & Conditions</Link>
             </div>
         )
@@ -126,9 +124,9 @@ export default class Login extends MyComponent {
     componentDidMount() {
         debug2('component did mount')
         //debug0(this.props.route)
-        var {router} = this.props
+        //var {router} = this.props
         //router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
-        debug0(router.getCurrentLocation())
+        //debug0(router.getCurrentLocation())
 
         /**TODO: auto login for testing
          * const {dispatch} = this.props
@@ -154,7 +152,7 @@ export default class Login extends MyComponent {
     }
 
     render() {
-            return super.isError() && <h1>No way</h1> || (<div>{this.LoginForm(this.props)}</div>)
+            return super.isError()?(<h1>No way</h1>):(<div>{this.LoginForm(this.props)}</div>)
     }
 
     @keydown('enter')
@@ -207,7 +205,12 @@ export default class Login extends MyComponent {
         ...propTypes
     }
 
-    static reduxAsyncConfig = [{
+    static reduxAsyncConfig =
+        [{
+            key: "hello",
+        promise: (params, helpers) => Promise.resolve(true)
+            }]
+       /** [{
         key: 'hello',
         //TODO: wait a little while and do this again
         promise: ({ params, helpers }) => new Promise((resolve, reject)=> {
@@ -221,7 +224,9 @@ export default class Login extends MyComponent {
             return false
         })
     }]
+        **/
     static reduxPropsConfig = (state, props) => ({
+        pageTitle: "Login",
         ok: state.ok,
         initialValues: {
             username: 'wozza', password: 'password1'
@@ -311,4 +316,6 @@ export default class Login extends MyComponent {
         }),
         asyncBlurFields: ['username', 'password']
     }
+
+    static NAME = "Login"
 }

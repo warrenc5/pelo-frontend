@@ -1,10 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom'
-import { Route, IndexRoute} from 'react-router-dom'
-import BrowserRouter from 'react-router-dom'
 import {ReduxAsyncConnect} from 'redux-connect'
-//import {ConnectedRouter} from 'react-router-redux';
+import {ConnectedRouter} from 'react-router-redux';
+import RouteDispatcher from 'react-router-dispatcher';
 import MainLayout from './layout/main.jsx'
 import ContentLayout from './layout/content.jsx'
 import HomeContainer from './pages/home.jsx'
@@ -20,7 +18,8 @@ import About from './pages/about.jsx'
 import Terms from './pages/terms.jsx'
 import MyRouteMap from './widget/routemap'
 import MyComponent,{Catch} from './widget/common.js'
-import { Router } from 'react-router'
+import { Switch,Route, Redirect} from 'react-router-dom'
+import { applyMiddleware } from 'redux'
 
 /**
  * This screen transition logical router handles html a links and anchor refs in the app
@@ -42,17 +41,33 @@ export default class RouterPath extends MyComponent {
 //<Router render={(props) => <ReduxAsyncConnect {...props} /> } history={browserHistory}>
     //render={applyRouterMiddleware()}
 
+//<Router render={(props) => <ReduxAsyncConnect {...props} /> } history={this.props.history}>
+    //
+//<ReduxAsyncConnect helpers={applyRouterMiddleware(this.props.middle)} reloadOnPropsChange={super.reloadOnPropsChange} {...props}  history={this.props.history}/> }
     render() {
-        return super.isError()?(<h1>No Route</h1>):(
-            <Router render={(props) => <ReduxAsyncConnect helpers={{ }} reloadOnPropsChange={super.reloadOnPropsChange} {...props} /> }
-                history={this.props.history}>
-                <Catch>
-                <Route visible="true" path="/" component={MainLayout}>
+        // Does the environment support HTML 5 history
+        const supportsHistory = typeof window !== 'undefined' && 'pushState' in window.history;
+
+        return (
+            <ConnectedRouter render={(props) =>
+                <ReduxAsyncConnect reloadOnPropsChange={super.reloadOnPropsChange} history={this.props.history} {...props} /> }
+                forceRefresh={!supportsHistory} history={this.props.history}>
+                <Switch>
+                    <Redirect exact from={ROOT} to={LOGIN}/>
+
+                    {/**
+                    <Route path={ROOT} component={MainLayout}/>
+                        **/}
+                    <Route exact path={LOGIN} component={Login} pageTitle="Sign In"/>
+                </Switch>
+            </ConnectedRouter>
+        )
+    }
+/**
+ <Route path={RIDES} component={Rides} pageTitle="Rides" onEnter={this.onEnter}/>
                     <Route component={ContentLayout}>
-                        <Route path={LOGIN} component={Login} pageTitle="Sign In"/>
                         <Route path={REGISTER} component={Register} pageTitle="Sign Up"/>
                         <Route path={EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
-                        <Route path={RIDES} component={Rides} pageTitle="Rides" onEnter={this.onEnter}/>
                         <Route path={GROUPS} component={Groups} pageTitle="Groups" onEnter={this.onEnter}/>
                         <Route path={MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
                         <Route path={SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
@@ -60,28 +75,19 @@ export default class RouterPath extends MyComponent {
                         <Route path={ROUTE} component={MyRouteMap} pageTitle="Route"/>
                         <Route path={LOGOUT} component={Logout} pageTitle="Sign Out"/>
                         <Route path={ABOUT} component={About}/>
+                        <IndexRoute component={Login}/>
                     </Route>
-                    <Route component={ContentLayout}>
-                        <IndexRoute component={Index}/>
-                    </Route>
-                </Route>
-                </Catch>
-            </Router>
-        )
-    }
+                        **/
 
     onEnter(location, replaceWith, callback) {
         console.log(`save:  ${location}`)
         callback()
     }
 
-    static propTypes = {
-        history: PropTypes.object.isRequired,
-    }
 }
 
 //export const Index = Rides
-export const Index = Login
+export const ROOT = '/'
 export const LOGIN = '/login'
 export const LOGOUT = '/logout'
 export const EDITRIDE = '/editRide'
@@ -91,7 +97,8 @@ export const SETTINGS = '/settings'
 export const TERMS = '/terms'
 export const ROUTE = '/routes'
 export const GROUPS = '/groups'
-export const RIDES = '/rides'
+export const RIDES = 'rides'
 export const ABOUT = '/about'
 export const HOME = EDITRIDE
+export const Index = Rides
 //export const HOME = GROUPS
