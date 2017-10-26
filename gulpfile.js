@@ -452,11 +452,16 @@ gulp.task('run', [], function () {
     })
 })
 
+gulp.task('clean2', function (done) {
+
+})
 gulp.task('clean', gulpsync.sync(['clean2']), function (done) {
 
     //`${paths.root}/cordova/platforms/**`,
     //`!${paths.root}/cordova/platforms`,
-    return del([`${paths.root}/.gulp/gulp-diff-build/hash.json`,
+    return del([
+            `${paths.root}/.gulp/gulp-diff-build/hash.json`,
+            `${paths.root}/.gulp/browserify-cache.json`,
             `${paths.root}/cordova/www/**`,
             `!${paths.root}/cordova/www`
         ],

@@ -53,12 +53,13 @@ export default class RouterPath extends MyComponent {
                 <ReduxAsyncConnect reloadOnPropsChange={super.reloadOnPropsChange} history={this.props.history} {...props} /> }
                 forceRefresh={!supportsHistory} history={this.props.history}>
                 <Switch>
-                    <Redirect exact from={ROOT} to={LOGIN}/>
-
-                    {/**
-                    <Route path={ROOT} component={MainLayout}/>
+                    {/**                    <Redirect exact from={LOGIN} to={HOME}/>
+                        <Route path={ROOT} component={MainLayout}/>
                         **/}
+
+
                     <Route exact path={LOGIN} component={Login} pageTitle="Sign In"/>
+                    <Route path={EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
                 </Switch>
             </ConnectedRouter>
         )
@@ -67,7 +68,6 @@ export default class RouterPath extends MyComponent {
  <Route path={RIDES} component={Rides} pageTitle="Rides" onEnter={this.onEnter}/>
                     <Route component={ContentLayout}>
                         <Route path={REGISTER} component={Register} pageTitle="Sign Up"/>
-                        <Route path={EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
                         <Route path={GROUPS} component={Groups} pageTitle="Groups" onEnter={this.onEnter}/>
                         <Route path={MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
                         <Route path={SETTINGS} component={SettingsContainer} pageTitle="Settings"/>

@@ -19,7 +19,7 @@ import style from '../layout/style'
 import * as Router from '../Router.jsx'
 import * as action from '../handler/actions'
 import keydown from 'react-keydown'
-import MyComponent from '../widget/common'
+import MyComponent, {Catch} from '../widget/common'
 import { RaisedButton, Divider } from 'material-ui'
 
 import {
@@ -34,6 +34,7 @@ import submit from "redux-form"
 import {debug0,debug2, debugJSON} from '../service/misc'
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 
+import {asyncConnect} from 'redux-connect'
 @myAsyncFormConnect()
 export default class Login extends MyComponent {
 
@@ -152,7 +153,7 @@ export default class Login extends MyComponent {
     }
 
     render() {
-            return super.isError()?(<h1>No way</h1>):(<div>{this.LoginForm(this.props)}</div>)
+            return super.isError()?(<h1>No way</h1>):(<Catch>{this.LoginForm(this.props)}</Catch>)
     }
 
     @keydown('enter')
@@ -207,24 +208,20 @@ export default class Login extends MyComponent {
 
     static reduxAsyncConfig =
         [{
-            key: "hello",
-        promise: (params, helpers) => Promise.resolve(true)
-            }]
-       /** [{
-        key: 'hello',
-        //TODO: wait a little while and do this again
-        promise: ({ params, helpers }) => new Promise((resolve, reject)=> {
+        hello: ({ params, helpers }) => new Promise((resolve, reject)=> {
+            alert('hello')
             ngScope().client.sayHello((name, data)=> {
                 resolve(true)
             }, (e)=> {
                 reject(e)
             })
         }).then((result) =>result).catch((e)=> {
+            //TODO: wait a little while and do this again on interval
             console.log(e)
             return false
         })
     }]
-        **/
+
     static reduxPropsConfig = (state, props) => ({
         pageTitle: "Login",
         ok: state.ok,

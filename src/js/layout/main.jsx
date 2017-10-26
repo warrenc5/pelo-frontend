@@ -28,8 +28,6 @@ export default class MainLayout extends MyComponent {
                 <Catch>
                     <Navigation ref={(obj) => { this.nav = obj; }} open={open}/>
                         <div>
-                            {/**this.props.authId > 0  &&
-                                **/ }
                             <HamburgerMenu
                                 isOpen={open}
                                 menuClicked={this.handleClick.bind(this)}

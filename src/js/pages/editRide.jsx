@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux'
-import { Field, reduxForm, propTypes } from 'redux-form'
-import Slider from 'material-ui/Slider';
+import {Form,SubmissionError, Field, reduxForm, propTypes } from 'redux-form'
+
 import {
     Checkbox,
     RadioButtonGroup,
@@ -12,13 +11,12 @@ import {
     DatePicker,
 } from 'redux-form-material-ui'
 
-import Upload from 'material-ui-upload';
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
 import {ngScope,myAsyncFormConnect} from '../service/bridge'
 
-import MyComponent from '../widget/common'
+import MyComponent,{Catch} from '../widget/common'
 
 import {
     materialButton,
@@ -26,10 +24,13 @@ import {
     materialCheckbox ,
     materialRadioGroup ,
     materialSelectField,
-    materialDatePicker
+    materialDatePicker,
+    materialUpload,
+    materialSlider
 } from './material.jsx'
 
 
+import Upload from 'material-ui-upload/Upload';
 @myAsyncFormConnect()
 export default class RideEditor extends MyComponent {
 
@@ -47,19 +48,11 @@ export default class RideEditor extends MyComponent {
         */
     }
 
-    SliderExampleStep = () => (
-        <Slider step={0.10} value={0.5}/>
-    );
 
     EditRideForm = (props) => {
-        const { handleSubmit, fbConnect, pristine, reset, submitting } = props
+        const { handleSubmit, pristine, reset, submitting } = props
         return (
-            <div>
-                <p id="error">
-                    <b>Edit Ride</b>
-                </p>
-
-                <form onSubmit={handleSubmit()}>
+                <Form onSubmit={handleSubmit(this.validate)}>
                     <table>
                         <tbody>
                         <tr>
@@ -87,7 +80,6 @@ export default class RideEditor extends MyComponent {
                                 <Field name="Ride Difficulty" label="Ride Difficulty"/>
                             </div>
                             <div>
-                                {this.SliderExampleStep(this.props)}
                             </div>
                         </tr>
                         <tr>
@@ -106,13 +98,23 @@ export default class RideEditor extends MyComponent {
                         **/}
                         </tbody>
                     </table>
+                    <Field name="Title" component={materialSlider} label="Title"/>
+                    <Catch>
+                        {/**
+                    <Field name="Route" component={materialUpload} label="Upload Route"/>
+                            **/}
+                         <Upload title="Route"
+                                        label="Add"
+                                        onChange={this.onChange}
+                                        onFileLoad={this.onFileLoad}/>
+                    </Catch>
+
                     <Field name="add"
                        label="Add"
                        type="submit"
                        component={materialButton}
                        onClick={this.props.handleSubmit(this.validate)} />
-            </form>
-        </div>
+            </Form>
         )
     }
 
@@ -128,6 +130,10 @@ export default class RideEditor extends MyComponent {
 
     onFileLoad = (e, file) => console.log(e.target.result, file.name);
     onChange = (route) => this.setState({route});
+
+    validate = (values, dispatch) => {
+        return  Promise.resolve(true)
+    }
 
     static propTypes = {
         Title : PropTypes.string.isRequired,

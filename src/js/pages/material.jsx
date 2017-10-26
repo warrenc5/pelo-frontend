@@ -13,6 +13,8 @@ import TimePicker from 'material-ui/TimePicker';
 import DatePicker from 'material-ui/DatePicker';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 //http://redux-form.com/6.1.0/examples/material-ui/
+import Slider from 'material-ui/Slider';
+import Upload from 'material-ui-upload/Upload';
 
 export const materialButton = ({ label , onClick }, ...custom) => (
     <FlatButton label={label} onClick={onClick}/>
@@ -58,4 +60,15 @@ export const materialDatePicker = ({ input, defaultValue, meta: { touched, error
         {...input}
         value={input.value !== ''? new Date(input.value) : null}
         onChange={(event, value) => {console.log(value); input.onChange(value)}}/>
+)
+
+export const materialSlider =() => (
+    <Slider step={0.10} value={0.5}/>
+    )
+
+export const materialUpload = (input)=> (
+    <Upload
+        {...input}
+            onChange={input.onChange}
+            onFileLoad={input.onFileLoad}/>
 )
