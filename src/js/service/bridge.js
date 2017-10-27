@@ -11,7 +11,6 @@ export function ngScope() {
     return angular.element($("#app")).scope()
 }
 
-
 export function reduxConnect() {
     return target => {
         return connect(target['reduxPropsConfig'], target['reduxDispatchConfig'])(target)

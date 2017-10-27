@@ -15,6 +15,7 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 //http://redux-form.com/6.1.0/examples/material-ui/
 import Slider from 'material-ui/Slider';
 import Upload from 'material-ui-upload/Upload';
+import UploadPreview from 'material-ui-upload/UploadPreview';
 
 export const materialButton = ({ label , onClick }, ...custom) => (
     <FlatButton label={label} onClick={onClick}/>
@@ -62,13 +63,20 @@ export const materialDatePicker = ({ input, defaultValue, meta: { touched, error
         onChange={(event, value) => {console.log(value); input.onChange(value)}}/>
 )
 
+export const materialTimePicker = ({ input, defaultValue, meta: { touched, error } }) => (
+    <TimePicker
+        errorText={touched && error}
+        {...input}
+        value={input.value !== ''? new Date(input.value) : null}
+        onChange={(event, value) => {console.log(value); input.onChange(value)}}/>
+)
+
 export const materialSlider =() => (
     <Slider step={0.10} value={0.5}/>
     )
 
 export const materialUpload = (input)=> (
-    <Upload
-        {...input}
+    <Upload {...input}
             onChange={input.onChange}
             onFileLoad={input.onFileLoad}/>
 )
