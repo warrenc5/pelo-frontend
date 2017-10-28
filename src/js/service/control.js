@@ -422,5 +422,9 @@ peloApp.service("routemap", function (storage) {
     }
 })
 peloApp.directive('peloApp', function (reactDirective) {
-    return reactDirective(App)
+    try {
+        return reactDirective(App)
+    }catch(e){
+        console.log(e)
+    }
 })

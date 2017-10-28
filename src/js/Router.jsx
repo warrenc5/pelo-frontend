@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
 import {ReduxAsyncConnect} from 'redux-connect'
-import {ConnectedRouter} from 'react-router-redux';
-import RouteDispatcher from 'react-router-dispatcher';
+import {ConnectedRouter} from 'react-router-redux'
+import RouteDispatcher from 'react-router-dispatcher'
 import MainLayout from './layout/main.jsx'
 import ContentLayout from './layout/content.jsx'
 import HomeContainer from './pages/home.jsx'
@@ -11,13 +12,13 @@ import MessagesContainer from './pages/messages.jsx'
 import Rides from './pages/rides.jsx'
 import SettingsContainer from './pages/settings.jsx'
 import Login from './pages/login.jsx'
-import Logout from './pages/login.jsx'
+import Logout from './pages/logout.jsx'
 import Register from './pages/register.jsx'
 import RideEditor from './pages/editRide.jsx'
 import About from './pages/about.jsx'
 import Terms from './pages/terms.jsx'
 import MyRouteMap from './widget/routemap'
-import MyComponent,{Catch} from './widget/common.js'
+import MyComponent,{myAsyncFormConnect,Catch} from './widget/common.js'
 import { Switch,Route, Redirect} from 'react-router-dom'
 import { applyMiddleware } from 'redux'
 
@@ -29,6 +30,7 @@ import { applyMiddleware } from 'redux'
  * Currently all the Links are in component/navigation.js
  **/
 
+@myAsyncFormConnect()
 export default class RouterPath extends MyComponent {
 
     constructor(props, context) {
@@ -51,40 +53,72 @@ export default class RouterPath extends MyComponent {
         return (
             <ConnectedRouter render={(props) =>
                 <ReduxAsyncConnect reloadOnPropsChange={super.reloadOnPropsChange} history={this.props.history} {...props} /> }
-                forceRefresh={!supportsHistory} history={this.props.history}>
-                <Switch>
-                    {/**                    <Redirect exact from={LOGIN} to={HOME}/>
-                        <Route path={ROOT} component={MainLayout}/>
-                        **/}
-
-
-                    <Route exact path={LOGIN} component={Login} pageTitle="Sign In"/>
-                    <Route path={EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
-                </Switch>
+                             forceRefresh={!supportsHistory} history={this.props.history}>
+                <Catch>
+                    <Route path={TERMS} component={Terms} pageTitle="T &amp; C"/>
+                    <Route path={ABOUT} component={About}/>
+                    <Redirect exact from={ROOT} to={HOME}/>
+                    <Route path={ROOT} component={MainLayout}/>
+                    <Switch>
+                        <Route path={LOGOUT} component={Logout} pageTitle="Logout"/>
+                        <Route exact path={LOGIN} component={Login} pageTitle="Sign In"/>
+                        <PrivateRoute signedIn={this.props.signedIn} path={EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
+                        <PrivateRoute signedIn={this.props.signedIn} path={RIDES} component={Rides} pageTitle="Rides" onEnter={this.onEnter}/>
+                    </Switch>
+                </Catch>
             </ConnectedRouter>
+
         )
     }
-/**
- <Route path={RIDES} component={Rides} pageTitle="Rides" onEnter={this.onEnter}/>
-                    <Route component={ContentLayout}>
-                        <Route path={REGISTER} component={Register} pageTitle="Sign Up"/>
-                        <Route path={GROUPS} component={Groups} pageTitle="Groups" onEnter={this.onEnter}/>
-                        <Route path={MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
-                        <Route path={SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
-                        <Route path={TERMS} component={Terms} pageTitle="T &amp; C"/>
-                        <Route path={ROUTE} component={MyRouteMap} pageTitle="Route"/>
-                        <Route path={LOGOUT} component={Logout} pageTitle="Sign Out"/>
-                        <Route path={ABOUT} component={About}/>
-                        <IndexRoute component={Login}/>
-                    </Route>
-                        **/
+
+    /**
+     <Route component={ContentLayout}>
+     <Route path={REGISTER} component={Register} pageTitle="Sign Up"/>
+     <Route path={GROUPS} component={Groups} pageTitle="Groups" onEnter={this.onEnter}/>
+     <Route path={MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
+     <Route path={SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
+     <Route path={ROUTE} component={MyRouteMap} pageTitle="Route"/>
+     <IndexRoute component={Login}/>
+     </Route>
+     **/
 
     onEnter(location, replaceWith, callback) {
         console.log(`save:  ${location}`)
         callback()
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps)
+    }
+
+    static propTypes = {
+        signedIn: PropTypes.bool.isRequired,
+    }
+
+    static reduxPropsConfig = (state, props) => ({
+      signedIn: (state.login !=null && state.login.id >0)
+    })
+
+    static reduxDispatchConfig = (dispatch) => ({
+    })
 }
+
+
+const PrivateRoute = ({ signedIn, component: Component, ...rest }) => (
+    <Route {...rest} render={props => (
+    signedIn?(
+    <div>
+    <span>{signedIn}</span>
+      <Component {...props}/>
+      </div>
+    ) : (
+      <Redirect to={{
+        pathname: LOGIN,
+        state: { from: props.location }
+      }}/>
+    )
+  )}/>
+)
 
 //export const Index = Rides
 export const ROOT = '/'

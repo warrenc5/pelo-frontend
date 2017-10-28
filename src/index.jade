@@ -20,8 +20,15 @@ html(ng-app="peloApp")
         pelo-app(state="state", client="client" watch-depth="reference")
         div
             img(id="bg" src="img/sprocket.gif" alt="")
-            a(href="/#login")
-                span login
+
+            a(href="#/login")
+                span login &nbsp;
+            a(href="#/")
+                span root &nbsp;
+            a(href="#/editRide")
+                span editRide &nbsp;
+            a(href="#/logout")
+                span logout &nbsp;
             a(href="/")
-                span root
+                span reload &nbsp;
         div#fb-root

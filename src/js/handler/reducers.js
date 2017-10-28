@@ -82,6 +82,18 @@ const login = (state = [{}], action) => {
             return action.payload
         case `LOAD_TEST_DATA`:
             return action.payload
+        case `LOGOUT`:
+            return state
+        case `LOGOUT_CONFIRM`:
+            return [{}]
+            /**
+            Object.keys(state)
+                .filter(key => key !== "login")
+                .reduce((result, current) => {
+                    result[current] = state[current];
+                    return result;
+                }, {});
+             **/
         default:
             return state
     }

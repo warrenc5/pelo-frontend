@@ -6,9 +6,9 @@ import { connect } from 'react-redux'
 import Divider from 'material-ui/Divider'
 import {Menu, MenuItem} from 'material-ui/Menu'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
-import {ngScope,myAsyncFormConnect} from '../service/bridge'
+import {ngScope} from '../service/bridge'
 import style from '../layout/style'
-import MyComponent from '../widget/common'
+import MyComponent,{myAsyncFormConnect} from '../widget/common'
 import {  RaisedButton} from 'material-ui'
 
 import {

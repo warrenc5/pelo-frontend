@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 import { Drawer, MenuItem, RaisedButton, List, ListItem, Divider } from 'material-ui'
-import { Link } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import * as router from '../Router.jsx'
 
 import MyComponent, {Catch} from '../widget/common'
@@ -48,29 +48,29 @@ export default class Navigation extends MyComponent {
                 <Drawer ref={(obj) => { this.nav = obj; }} open={this.state.open} openSecondary={true}>
                     <div className="main-logo">
                         <RaisedButton label="Hide" onClick={this.hide.bind(this)}/>
-                        <Link to={router.HOME}><span className="type-italic">Home</span></Link>
+                        <NavLink to={router.HOME}><span className="type-italic">Home</span></NavLink>
                     </div>
                     <List>
                         <ListItem primaryText="Add Ride"
-                                  containerElement={<Link activeClassName="active" to={router.EDITRIDE} />}/>
+                                  containerElement={<NavLink activeClassName="active" to={router.EDITRIDE} />}/>
                         <ListItem primaryText="Rides"
-                                  containerElement={<Link activeClassName="active" to={router.RIDES} />}/>
+                                  containerElement={<NavLink activeClassName="active" to={router.RIDES} />}/>
                         <ListItem primaryText="Groups"
-                                  containerElement={<Link activeClassName="active" to={router.GROUPS} />}/>
+                                  containerElement={<NavLink activeClassName="active" to={router.GROUPS} />}/>
                         <ListItem primaryText="Messages"
-                                  containerElement={<Link activeClassName="active" to={router.MESSAGES} />}/>
+                                  containerElement={<NavLink activeClassName="active" to={router.MESSAGES} />}/>
                         <ListItem primaryText="Settings"
-                                  containerElement={<Link activeClassName="active" to={router.SETTINGS} />}/>
+                                  containerElement={<NavLink activeClassName="active" to={router.SETTINGS} />}/>
                         <ListItem primaryText="Route"
-                                  containerElement={<Link activeClassName="active" to={router.ROUTE} />}/>
+                                  containerElement={<NavLink activeClassName="active" to={router.ROUTE} />}/>
                         <ListItem primaryText="Login"
-                                  containerElement={<Link activeClassName="active" to={router.LOGIN} />}/>
+                                  containerElement={<NavLink activeClassName="active" to={router.LOGIN} />}/>
                         <ListItem primaryText="Logout"
-                                  containerElement={<Link activeClassName="active" to={router.LOGOUT} />}/>
+                                  containerElement={<NavLink activeClassName="active" to={router.LOGOUT} />}/>
                         <ListItem primaryText="Terms"
-                                  containerElement={<Link activeClassName="active" to={router.TERMS} />}/>
+                                  containerElement={<NavLink activeClassName="active" to={router.TERMS} />}/>
                         <ListItem primaryText="About"
-                                  containerElement={<Link activeClassName="active" to={router.ABOUT} />}/>
+                                  containerElement={<NavLink activeClassName="active" to={router.ABOUT} />}/>
                     </List>
                     <Divider />
                     <RaisedButton label="Exit" onClick={this.exitApp.bind(this)}/>

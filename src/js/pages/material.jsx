@@ -29,7 +29,6 @@ export const materialTextField = ({dispatch, input, label, type, onKeyDown, meta
                    type={type}
                    onKeyDown={onKeyDown}
             {...input}
-            {...custom}
         />
     </div>
 )
@@ -75,7 +74,7 @@ export const materialSlider =() => (
     <Slider step={0.10} value={0.5}/>
     )
 
-export const materialUpload = (input)=> (
+export const materialUpload = (input, meta)=> (
     <Upload {...input}
             onChange={input.onChange}
             onFileLoad={input.onFileLoad}/>

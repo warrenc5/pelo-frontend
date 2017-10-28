@@ -7,9 +7,9 @@ import connect from 'react-redux'
 import Working from '../widget/working.jsx'
 //import {buildTime} from '../handler/selectors'
 import { RaisedButton, Divider } from 'material-ui'
-import {ngScope,reduxConnect} from '../service/bridge'
+import {ngScope} from '../service/bridge'
 import {debug0,debug2, debugJSON} from '../service/misc'
-
+import { reduxConnect} from '../widget/common'
 
 @reduxConnect()
 export default class ContentLayout extends Component {

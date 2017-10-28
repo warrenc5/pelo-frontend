@@ -12,14 +12,14 @@ import {
 } from 'redux-form-material-ui'
 import { isEmptyObject } from 'jquery'
 import { Form, SubmissionError } from 'redux-form'
-import { Link } from 'react-router-dom'
+import { Link, NavLink, Switch,Route, Redirect} from 'react-router-dom'
 import { push } from 'react-router-redux'
 
 import style from '../layout/style'
 import * as Router from '../Router.jsx'
 import * as action from '../handler/actions'
 import keydown from 'react-keydown'
-import MyComponent, {Catch} from '../widget/common'
+import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 import { RaisedButton, Divider } from 'material-ui'
 
 import {
@@ -32,11 +32,13 @@ import {
 
 import submit from "redux-form"
 import {debug0,debug2, debugJSON} from '../service/misc'
-import {ngScope,myAsyncFormConnect} from '../service/bridge'
+import {ngScope} from '../service/bridge'
 
-import {asyncConnect} from 'redux-connect'
+//import {asyncConnect} from 'redux-connect'
 @myAsyncFormConnect()
 export default class Login extends MyComponent {
+
+    static NAME = "Login"
 
     constructor(props) {
         super(props)
@@ -65,7 +67,7 @@ export default class Login extends MyComponent {
                 </p>
 
                 <Field name="loginFB" component={materialButton} onClick={fbConnect()} label="Login with facebook"/>
-                <span></span>
+                <span>.</span>
                 <p>Or login locally</p>
 
                 {submitting && <span>Logging you in now..</span>}
@@ -117,9 +119,17 @@ export default class Login extends MyComponent {
                     </table>
                 </Form>
                 <Divider />
-                <Link to="/terms">Read Terms & Conditions</Link>
+                <NavLink to="/terms">Read Terms & Conditions</NavLink>
             </div>
         )
+    }
+
+    render() {
+        const { from } = this.props.location.state || { from: { pathname: '/' } }
+            return super.isError()?(<h1>No way</h1>):(
+                <Catch>
+                    {this.state.login?<Redirect to={from}/>:this.LoginForm(this.props)}
+                </Catch>)
     }
 
     componentDidMount() {
@@ -152,10 +162,6 @@ export default class Login extends MyComponent {
         debug2('component will receive props')
     }
 
-    render() {
-            return super.isError()?(<h1>No way</h1>):(<Catch>{this.LoginForm(this.props)}</Catch>)
-    }
-
     @keydown('enter')
     doSubmit(event) {
         const {dispatch,submit} = this.props
@@ -179,6 +185,7 @@ export default class Login extends MyComponent {
         //TODO do this first and if it fails then fail.
         //return Login.reduxFormConfig.asyncValidate(values, dispatch).catch((e)=>())
         return new Promise((resolve, reject)=> {
+            this.setState({login: {id : 99}})
             ngScope().client.login(values.username, values.password, (name, data)=> {
                 resolve(data)
             }, (e)=> {
@@ -191,7 +198,7 @@ export default class Login extends MyComponent {
             })
             dispatch(push(Router.HOME)) //TODO go home
         }).catch((e)=> {
-            console.log(JSON.stringify(e))
+            console.log('>>'+e) //JSON.stringify(e))
             dispatch({
                 type: `LOGIN_ERROR`,
                 payload: {error: 'there was some error'}
@@ -205,22 +212,6 @@ export default class Login extends MyComponent {
         hello: PropTypes.bool.isRequired,
         ...propTypes
     }
-
-    static reduxAsyncConfig =
-        [{
-        hello: ({ params, helpers }) => new Promise((resolve, reject)=> {
-            alert('hello')
-            ngScope().client.sayHello((name, data)=> {
-                resolve(true)
-            }, (e)=> {
-                reject(e)
-            })
-        }).then((result) =>result).catch((e)=> {
-            //TODO: wait a little while and do this again on interval
-            console.log(e)
-            return false
-        })
-    }]
 
     static reduxPropsConfig = (state, props) => ({
         pageTitle: "Login",
@@ -285,6 +276,21 @@ export default class Login extends MyComponent {
             })
     })
 
+    static reduxAsyncConfig =
+        [{
+            hello: ({ params, helpers }) => new Promise((resolve, reject)=> {
+                ngScope().client.sayHello((name, data)=> {
+                    resolve(true)
+                }, (e)=> {
+                    reject(e)
+                })
+            }).then((result) =>result).catch((e)=> {
+                //TODO: wait a little while and do this again on interval
+                console.log(e)
+                return false
+            })
+        }]
+
     static reduxFormConfig = {
         form: `LoginForm`,
         asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
@@ -314,5 +320,5 @@ export default class Login extends MyComponent {
         asyncBlurFields: ['username', 'password']
     }
 
-    static NAME = "Login"
 }
+

@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-import MyComponent from './common'
-import {ngScope,myAsyncFormConnect} from '../service/bridge'
+import MyComponent,{myAsyncFormConnect} from './common'
+import {ngScope} from '../service/bridge'
 import {debug0,debug2, debugJSON} from '../service/misc'
 
 /**

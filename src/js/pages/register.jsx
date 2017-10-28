@@ -14,9 +14,9 @@ import {
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
-import MyComponent from '../widget/common'
+import MyComponent,{myAsyncFormConnect} from '../widget/common'
 
-import {ngScope,myAsyncFormConnect} from '../service/bridge'
+import {ngScope} from '../service/bridge'
 import {
     materialButton,
     materialTextField,

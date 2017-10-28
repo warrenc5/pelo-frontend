@@ -7,7 +7,7 @@ import Subheader from 'material-ui/Subheader';
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import {ngScope,myAsyncFormConnect} from '../service/bridge'
+import {ngScope} from '../service/bridge'
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
@@ -15,6 +15,7 @@ import * as select from '../handler/selectors'
 import {debug0,debug2, debugJSON} from '../service/misc'
 import 'scrollreveal'
 import * as router from '../Router.jsx'
+import {myAsyncFormConnect} from '../widget/common'
 
 /**
  * TODO: add scrolling

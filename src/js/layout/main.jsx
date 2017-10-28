@@ -5,43 +5,50 @@ import Search from '../widget/search'
 import Subheader from 'material-ui/Subheader'
 import { RaisedButton, Divider } from 'material-ui'
 import HamburgerMenu from 'react-hamburger-menu'
-import {ngScope,reduxConnect,myAsyncFormConnect} from '../service/bridge'
-import MyComponent, {Catch} from '../widget/common'
+import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 import { Switch,Route } from 'react-router-dom'
 import * as router from '../Router.jsx'
-import Login from '../pages/login.jsx'
 
-//@myAsyncFormConnect()
-@reduxConnect()
+@myAsyncFormConnect()
 export default class MainLayout extends MyComponent {
+    static NAME = "MainLayout"
+
     constructor(props) {
         super(props)
         this.props = props
-        this.state = {open: props.open}
+    }
+
+    componentWillReceiveProps(nextProps) {
+        super.componentWillReceiveProps(nextProps)
+        this.setState({open: nextProps.open})
     }
 
     render() {
         let currentRouteName = this.props.location.pathname
-        const {open}= this.state
+        const {open} = this.state
         return (
             <div>
+                -{this.props.signedIn}-
+                {this.props.signedIn && currentRouteName!='/Login'?(
                 <Catch>
                     <Navigation ref={(obj) => { this.nav = obj; }} open={open}/>
-                        <div>
-                            <HamburgerMenu
-                                isOpen={open}
-                                menuClicked={this.handleClick.bind(this)}
-                                width={28}
-                                height={25}
-                                strokeWidth={5}
-                                rotate={0}
-                                color='red'
-                                borderRadius={0}
-                                animationDuration={1.5}
-                            />
-                            <span>{currentRouteName}</span>
-                        </div>
+                    <div>
+                        <span>{currentRouteName}</span>
+                        <HamburgerMenu
+                            isOpen={open}
+                            menuClicked={this.handleClick.bind(this)}
+                            width={28}
+                            height={25}
+                            strokeWidth={5}
+                            rotate={0}
+                            color='red'
+                            borderRadius={0}
+                            animationDuration={1.5}
+                        />
+                    </div>
                 </Catch>
+                    ):(
+                <span>..</span>)}
             </div>)
     }
 
@@ -50,19 +57,19 @@ export default class MainLayout extends MyComponent {
         this.nav.toggle()
     }
 
-    static reduxPropsConfig = (state, props) => ({
-        authId: state.login.id,
-        open: state.open
-    })
 
     static propTypes = {
         open: PropTypes.bool.isRequired,
-        authId: PropTypes.number.isRequired
+        signedIn: PropTypes.bool.isRequired,
     }
     static defaultProps = {
         open: false,
-        authId: -1
     }
+
+    static reduxPropsConfig = (state, props) => ({
+        signedIn: state.login != null && state.login.id >0,
+        open: state.open
+    })
 
     static reduxAsyncConfig = [{
         key: `main`,
@@ -79,7 +86,6 @@ export default class MainLayout extends MyComponent {
             throw e
         })
     }]
-
 }
 
 

@@ -14,9 +14,8 @@ import {
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
-import {ngScope,myAsyncFormConnect} from '../service/bridge'
 
-import MyComponent,{Catch} from '../widget/common'
+import MyComponent,{Catch,myAsyncFormConnect} from '../widget/common'
 
 import {
     materialButton,
@@ -30,8 +29,6 @@ import {
     materialSlider
 } from './material.jsx'
 
-
-import Upload from 'material-ui-upload/Upload';
 @myAsyncFormConnect()
 export default class RideEditor extends MyComponent {
 
@@ -69,16 +66,16 @@ export default class RideEditor extends MyComponent {
                         <Field name="Difficulty" component={materialSlider} label="Difficulty"/>
                     </tr>
                     <tr>
-                        <div>
-                            <a href="http://placehold.it"><img src="http://placehold.it/200x200"></img></a>
-                        </div>
+                        <a href="http://placehold.it"><img src="http://placehold.it/200x200"></img></a>
                     </tr>
                     <tr>
-                        <div>
+                        {/**
+                            <Catch>
                             <Field name="Route" component={materialUpload} label="Upload Route"
                                    onChange={this.onChange}
                                    onFileLoad={this.onFileLoad}/>
-                        </div>
+                            </Catch>
+                            **/}
                     </tr>
                     </tbody>
                 </table>
