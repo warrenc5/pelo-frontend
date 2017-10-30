@@ -20,6 +20,7 @@ import {
 } from './material.jsx'
 
 import RideRoute from './route.jsx'
+import * as select from '../handler/selectors'
 
 @myAsyncFormConnect()
 export default class Rides extends MyComponent {

@@ -61,15 +61,15 @@ export default class RouterPath extends MyComponent {
                 <Catch>
                     <Route path={TERMS} component={Terms} pageTitle="T &amp; C"/>
                     <Route path={ABOUT} component={About}/>
-                    <Redirect exact from={ROOT} to={HOME}/>
                     <Route path={ROOT} component={MainLayout}/>
                     <Switch>
+                        <Redirect exact from={ROOT} to={HOME}/>
                         <Route path={LOGOUT} component={Logout} pageTitle="Logout"/>
                         <Route exact path={LOGIN} component={Login} pageTitle="Sign In"/>
                         <PrivateRoute signedIn={signedIn} path={EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
-                        <PrivateRoute signedIn={signedIn} path={RIDES} component={Rides} pageTitle="Rides" onEnter={this.onEnter}/>
+                        <PrivateRoute signedIn={signedIn} path={RIDES} component={Rides} pageTitle="Rides" />
                         <PrivateRoute signedIn={signedIn} path={REGISTER} component={Register} pageTitle="Sign Up"/>
-                        <PrivateRoute signedIn={signedIn} path={GROUPS} component={Groups} pageTitle="Groups" onEnter={this.onEnter}/>
+                        <PrivateRoute signedIn={signedIn} path={GROUPS} component={Groups} pageTitle="Groups" />
                         {/**
                         <PrivateRoute signedIn={signedIn} path={MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
                             **/}
@@ -148,7 +148,7 @@ export const SETTINGS = '/settings'
 export const TERMS = '/terms'
 export const ROUTE = '/routes'
 export const GROUPS = '/groups'
-export const RIDES = 'rides'
+export const RIDES = '/rides'
 export const ABOUT = '/about'
 export const HOME = RIDES
 export const Index = Rides

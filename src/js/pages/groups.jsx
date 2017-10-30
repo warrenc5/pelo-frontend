@@ -17,6 +17,7 @@ import 'scrollreveal'
 import * as router from '../Router.jsx'
 import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 
+
 /**
  * TODO: add scrolling
  * let onUpdate = () => {
