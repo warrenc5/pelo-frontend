@@ -18,10 +18,12 @@ import RideEditor from './pages/editRide.jsx'
 import About from './pages/about.jsx'
 import Terms from './pages/terms.jsx'
 import MyRouteMap from './widget/routemap'
+import {ngScope} from './service/bridge'
 import MyComponent,{myAsyncFormConnect,Catch} from './widget/common.js'
 import { Switch,Route, Redirect} from 'react-router-dom'
 import { applyMiddleware } from 'redux'
 
+import * as select from './handler/selectors'
 /**
  * This screen transition logical router handles html a links and anchor refs in the app
  *
@@ -49,8 +51,10 @@ export default class RouterPath extends MyComponent {
     render() {
         // Does the environment support HTML 5 history
         const supportsHistory = typeof window !== 'undefined' && 'pushState' in window.history;
-
+        const {signedIn}  = this.props
+        //const signedIn = true
         return (
+
             <ConnectedRouter render={(props) =>
                 <ReduxAsyncConnect reloadOnPropsChange={super.reloadOnPropsChange} history={this.props.history} {...props} /> }
                              forceRefresh={!supportsHistory} history={this.props.history}>
@@ -62,8 +66,22 @@ export default class RouterPath extends MyComponent {
                     <Switch>
                         <Route path={LOGOUT} component={Logout} pageTitle="Logout"/>
                         <Route exact path={LOGIN} component={Login} pageTitle="Sign In"/>
-                        <PrivateRoute signedIn={this.props.signedIn} path={EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
-                        <PrivateRoute signedIn={this.props.signedIn} path={RIDES} component={Rides} pageTitle="Rides" onEnter={this.onEnter}/>
+                        <PrivateRoute signedIn={signedIn} path={EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
+                        <PrivateRoute signedIn={signedIn} path={RIDES} component={Rides} pageTitle="Rides" onEnter={this.onEnter}/>
+                        <PrivateRoute signedIn={signedIn} path={REGISTER} component={Register} pageTitle="Sign Up"/>
+                        <PrivateRoute signedIn={signedIn} path={GROUPS} component={Groups} pageTitle="Groups" onEnter={this.onEnter}/>
+                        {/**
+                        <PrivateRoute signedIn={signedIn} path={MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
+                            **/}
+                        <PrivateRoute signedIn={signedIn} path={SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
+                        <PrivateRoute signedIn={signedIn} path={ROUTE} component={MyRouteMap} pageTitle="Route"/>
+                        <Route children={({ match, ...rest }) => (
+                        <div>
+                            <span>user id: {this.props.authId}</span><br/>
+                            <span>build time: {this.props.buildTime}</span><br/>
+                            <span>server: {this.props.baseUrl}</span>
+                        </div>
+)}/>
                     </Switch>
                 </Catch>
             </ConnectedRouter>
@@ -73,11 +91,7 @@ export default class RouterPath extends MyComponent {
 
     /**
      <Route component={ContentLayout}>
-     <Route path={REGISTER} component={Register} pageTitle="Sign Up"/>
-     <Route path={GROUPS} component={Groups} pageTitle="Groups" onEnter={this.onEnter}/>
-     <Route path={MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
-     <Route path={SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
-     <Route path={ROUTE} component={MyRouteMap} pageTitle="Route"/>
+
      <IndexRoute component={Login}/>
      </Route>
      **/
@@ -93,10 +107,16 @@ export default class RouterPath extends MyComponent {
 
     static propTypes = {
         signedIn: PropTypes.bool.isRequired,
+        buildTime: PropTypes.string.isRequired,
+        baseUrl: PropTypes.string.isRequired,
+        authId: PropTypes.number.isRequired,
     }
 
     static reduxPropsConfig = (state, props) => ({
-      signedIn: (state.login !=null && state.login.id >0)
+        signedIn: (select.authIdSelector(state) >0),
+        buildTime: select.buildTimeSelector(state),
+        baseUrl: ngScope().state.baseUrl,
+        authId: select.authIdSelector(state)
     })
 
     static reduxDispatchConfig = (dispatch) => ({
@@ -107,10 +127,7 @@ export default class RouterPath extends MyComponent {
 const PrivateRoute = ({ signedIn, component: Component, ...rest }) => (
     <Route {...rest} render={props => (
     signedIn?(
-    <div>
-    <span>{signedIn}</span>
       <Component {...props}/>
-      </div>
     ) : (
       <Redirect to={{
         pathname: LOGIN,
@@ -133,6 +150,6 @@ export const ROUTE = '/routes'
 export const GROUPS = '/groups'
 export const RIDES = 'rides'
 export const ABOUT = '/about'
-export const HOME = EDITRIDE
+export const HOME = RIDES
 export const Index = Rides
 //export const HOME = GROUPS

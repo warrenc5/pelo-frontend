@@ -63,14 +63,12 @@ export default class Navigation extends MyComponent {
                                   containerElement={<NavLink activeClassName="active" to={router.SETTINGS} />}/>
                         <ListItem primaryText="Route"
                                   containerElement={<NavLink activeClassName="active" to={router.ROUTE} />}/>
-                        <ListItem primaryText="Login"
-                                  containerElement={<NavLink activeClassName="active" to={router.LOGIN} />}/>
-                        <ListItem primaryText="Logout"
-                                  containerElement={<NavLink activeClassName="active" to={router.LOGOUT} />}/>
                         <ListItem primaryText="Terms"
                                   containerElement={<NavLink activeClassName="active" to={router.TERMS} />}/>
                         <ListItem primaryText="About"
                                   containerElement={<NavLink activeClassName="active" to={router.ABOUT} />}/>
+                        <ListItem primaryText="Logout"
+                                  containerElement={<NavLink activeClassName="active" to={router.LOGOUT} />}/>
                     </List>
                     <Divider />
                     <RaisedButton label="Exit" onClick={this.exitApp.bind(this)}/>

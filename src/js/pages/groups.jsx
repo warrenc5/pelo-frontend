@@ -15,7 +15,7 @@ import * as select from '../handler/selectors'
 import {debug0,debug2, debugJSON} from '../service/misc'
 import 'scrollreveal'
 import * as router from '../Router.jsx'
-import {myAsyncFormConnect} from '../widget/common'
+import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 
 /**
  * TODO: add scrolling
@@ -28,7 +28,7 @@ import {myAsyncFormConnect} from '../widget/common'
  *
  */
 @myAsyncFormConnect()
-export default class Groups extends React.Component {
+export default class Groups extends MyComponent {
     constructor(props) {
         super(props)
     }
@@ -61,18 +61,20 @@ export default class Groups extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <h2>Groups</h2>
-                <span>size:{this.props.groups.length}</span>
+        return this.props.groups==null?
+            (<span>no groups</span>):(
+            <Catch>
                 <div>
-                    <a href="http://placehold.it"><img src="http://placehold.it/250x150"></img></a>
+                    <h2>Groups</h2>
+                    <div>
+                        <a href="http://placehold.it"><img src="http://placehold.it/250x150"></img></a>
+                    </div>
+                    <span>size:{this.props.groups.length}</span>
+                    <div>
+                        {this.GridListExampleSimple(this.props)}
+                    </div>
                 </div>
-                <div>
-                    {this.GridListExampleSimple(this.props)}
-                </div>
-            </div>
-        )
+            </Catch>)
     }
 
     static propTypes = {
@@ -80,18 +82,24 @@ export default class Groups extends React.Component {
         groups: PropTypes.array.isRequired
     }
 
+    static reduxPropsConfig = (state, props) => ({
+        total: 3,//select.mySelector(state,props),
+        groups: select.groupSelector(state),
+        authId: select.authIdSelector(state)
+    })
+
+    static reduxDispatchConfig = (dispatch) => ({
+        joinGroup: () => (...args) => dispatch(action.joinGroup(args))
+    })
+
+    static reduxFormConfig = {
+        form: `GroupsForm`,
+    }
 
     static reduxAsyncConfig = [{
         key: `groups`,
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
-            const {login} = store.getState()
-
-            //TODO put this in base class
-            if (login.id == -1) {
-                router.push(router.LOGIN);
-                resolve({})
-                return
-            }
+            const authId = select.authIdSelector(store.getState())
 
             ngScope().client.groups(login.id, (name, data)=> {
                 resolve(data)
@@ -103,19 +111,5 @@ export default class Groups extends React.Component {
             throw e
         })
     }]
-
-    static reduxPropsConfig = (state, props) => ({
-        total: 3,//select.mySelector(state,props),
-        groups: state.groups,
-        userId: state.login.id
-    })
-
-    static reduxDispatchConfig = (dispatch) => ({
-        joinGroup: () => (...args) => dispatch(action.joinGroup(args))
-    })
-
-    static reduxFormConfig = {
-        form: `GroupsForm`,
-    }
 }
 

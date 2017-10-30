@@ -11,6 +11,7 @@ import {ngScope} from '../service/bridge'
 import {debug0,debug2, debugJSON} from '../service/misc'
 import { reduxConnect} from '../widget/common'
 
+/*** defunct **/
 @reduxConnect()
 export default class ContentLayout extends Component {
     constructor(props) {
@@ -41,9 +42,7 @@ export default class ContentLayout extends Component {
                     {this.props.children}
                 </div>
                 <hr/>
-                <span>user id: {this.props.authId}</span><br/>
-                <span>build time: {this.props.buildTime}</span><br/>
-                <span>server: {this.props.baseUrl}</span>
+
                 <hr/>
             </div>
         )

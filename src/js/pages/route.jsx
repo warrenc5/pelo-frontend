@@ -12,7 +12,7 @@ import MyRouteMap from '../widget/routemap'
 import { Divider } from 'material-ui'
 
 @myAsyncFormConnect()
-export default class Route extends MyComponent {
+export default class RideRoute extends MyComponent {
 
     constructor(props) {
         super(props)

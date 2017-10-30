@@ -7,8 +7,9 @@ import { createSelector } from 'reselect'
  * - which takes each selector as a parameter
  *
  */
-export const buildTime = "never";
-
+export const authIdSelector = createSelector(state => state.login === undefined ? -1: state.login.id, (result) => (result))
+export const buildTimeSelector = createSelector(state => state.globals.buildTime, (result) => (result))
+export const groupSelector = createSelector(state => state.groups == null?[{}]:state.groups, (result) => (result))
 /*
  export const mySelector = createSelector((state) => state.auth.id, (result) => result * 2)
 const shopItemsSelector = state => state.shop.items

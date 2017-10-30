@@ -19,7 +19,7 @@ import {
     materialSelectField
 } from './material.jsx'
 
-import Route from './route.jsx'
+import RideRoute from './route.jsx'
 
 @myAsyncFormConnect()
 export default class Rides extends MyComponent {
@@ -68,15 +68,16 @@ export default class Rides extends MyComponent {
         const rides = this.props.todaysRides
         const {selectedRides,showRide} = this.props
         //TODO don't do this here - do it up there
-        return (
+        return rides==null?
+            (<span>no rides</span>):(
             <div>
                 <h2>Rides</h2>
                 <span>size:{rides.length} rides today</span>
                 {rides.map((ride) => (
                 <div key={ride.id}>
                     <RaisedButton label={ride.id} onClick={showRide(ride.id)}/>
-                    {selectedRides[ride.id] == true && <Route rideId={ride.id} routeId={ride.id}/>}
-                    <span>id :{ride.id}</span><br/>
+                    {selectedRides[ride.id] == true && <RideRoute rideId={ride.id} routeId={ride.id}/>}
+                    <span>id : {ride.id}</span><br/>
                     <span>name :{ride.name}</span>
                     <div>
                         <a href="http://placehold.it"><img src="http://placehold.it/350x150"></img></a>
@@ -104,13 +105,7 @@ export default class Rides extends MyComponent {
     static reduxAsyncConfig = [{
         key: `todaysRides`,
         promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
-            const {login} = store.getState()
-            if (login.id == -1) {
-                router.push(Router.LOGIN)
-                resolve({})
-                return
-            }
-            ngScope().client.todaysRides(login.id, (name, data)=> {
+            ngScope().client.todaysRides(props.userId, (name, data)=> {
                 resolve(data.sort((a, b)=>a.id > b.id))
             }, (e)=> {
                 reject(e)
@@ -125,7 +120,7 @@ export default class Rides extends MyComponent {
         total: 3,//select.mySelector(state,props),
         selectedRides: state.selectedRides,
         todaysRides: state.todaysRides,
-        userId: state.login.id,
+        userId: select.authIdSelector(state)
     })
 
     static reduxDispatchConfig = (dispatch) => ({

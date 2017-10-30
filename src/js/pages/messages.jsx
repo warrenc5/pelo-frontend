@@ -5,8 +5,10 @@ import { connect } from 'react-redux'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 
-class Messages extends React.Component {
+@myAsyncFormConnect()
+export default class Messages extends MyComponent {
     constructor(props) {
         super(props)
         this.props = props
@@ -32,28 +34,24 @@ class Messages extends React.Component {
             <br/>
         </div>
     }
-}
 
-Messages.propTypes = {
-    onClick2: PropTypes.func.isRequired,
-    id: PropTypes.bool.isRequired
-
-}
-
-export const MessagesContainer = connect(
-    (state) => {
-        return {
-            id: state.todaysRides.id
-        }
-    },
-    (dispatch) => {
-        return {
-            onClick2: (id) => {
-                dispatch(toggleTracking(id))
-            }
-        }
+    static propTypes = {
+        onClick2: PropTypes.func.isRequired,
+        id: PropTypes.bool.isRequired
     }
-)(Messages)
 
 
-export default MessagesContainer
+    static reduxPropsConfig = (state, props) => ({
+        id: state.todaysRides.id
+    })
+
+    static reduxDispatchConfig = (dispatch) => ({
+        onClick2: (id) => {
+            dispatch(toggleTracking(id))
+        }
+    })
+
+}
+
+
+

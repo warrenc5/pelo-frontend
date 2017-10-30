@@ -11,13 +11,14 @@ import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 
+import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 const style = {
     display: 'inline-block',
     float: 'left',
     margin: '16px 32px 16px 0',
 };
 
-class Settings extends React.Component {
+class Settings extends MyComponent {
     constructor(props) {
         super(props)
         this.props = props

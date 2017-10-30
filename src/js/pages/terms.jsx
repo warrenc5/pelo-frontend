@@ -15,6 +15,8 @@ import {
 import style from '../layout/style'
 import * as action from '../handler/actions'
 
+import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
+
 import {
     materialButton,
     materialTextField,
@@ -23,7 +25,7 @@ import {
     materialSelectField
 } from './material.jsx'
 
-export default class Terms extends React.Component {
+export default class Terms extends MyComponent {
 
     constructor(props) {
         super(props)

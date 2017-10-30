@@ -34,7 +34,6 @@ import submit from "redux-form"
 import {debug0,debug2, debugJSON} from '../service/misc'
 import {ngScope} from '../service/bridge'
 
-//import {asyncConnect} from 'redux-connect'
 @myAsyncFormConnect()
 export default class Login extends MyComponent {
 
@@ -185,7 +184,6 @@ export default class Login extends MyComponent {
         //TODO do this first and if it fails then fail.
         //return Login.reduxFormConfig.asyncValidate(values, dispatch).catch((e)=>())
         return new Promise((resolve, reject)=> {
-            this.setState({login: {id : 99}})
             ngScope().client.login(values.username, values.password, (name, data)=> {
                 resolve(data)
             }, (e)=> {
@@ -198,10 +196,10 @@ export default class Login extends MyComponent {
             })
             dispatch(push(Router.HOME)) //TODO go home
         }).catch((e)=> {
-            console.log('>>'+e) //JSON.stringify(e))
+            //console.log('>>'+e  + " " + e.stack) //JSON.stringify(e))
             dispatch({
                 type: `LOGIN_ERROR`,
-                payload: {error: 'there was some error'}
+                payload: {error: 'there was some error ' + e}
             })
             throw new SubmissionError({_error: 'whoops' + JSON.stringify(e)})
         })
