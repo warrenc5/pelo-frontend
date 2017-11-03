@@ -236,7 +236,6 @@ const todaysRides = (state = {}, action) => {
      */
 }
 
-
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
 export default function MyReducer() {
     return combineReducers({

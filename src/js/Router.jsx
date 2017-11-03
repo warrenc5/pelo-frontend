@@ -20,7 +20,7 @@ import Terms from './pages/terms.jsx'
 import MyRouteMap from './widget/routemap'
 import {ngScope} from './service/bridge'
 import MyComponent,{myAsyncFormConnect,Catch} from './widget/common.js'
-import { Switch,Route, Redirect} from 'react-router-dom'
+import { Router,Switch,Route, Redirect} from 'react-router-dom'
 import { applyMiddleware } from 'redux'
 
 import * as select from './handler/selectors'
@@ -51,13 +51,11 @@ export default class RouterPath extends MyComponent {
     render() {
         // Does the environment support HTML 5 history
         const supportsHistory = typeof window !== 'undefined' && 'pushState' in window.history;
-        const {signedIn}  = this.props
-        //const signedIn = true
+        //const {signedIn}  = this.props
+        const signedIn = true
         return (
-
-            <ConnectedRouter render={(props) =>
-                <ReduxAsyncConnect reloadOnPropsChange={super.reloadOnPropsChange} history={this.props.history} {...props} /> }
-                             forceRefresh={!supportsHistory} history={this.props.history}>
+            <ConnectedRouter ref={(obj) => { this.router = obj; }} history={this.props.history}
+                             render={<ReduxAsyncConnect {... this.router!=null?this.router.props:null} history={this.props.history}/>}>
                 <Catch>
                     <Route path={TERMS} component={Terms} pageTitle="T &amp; C"/>
                     <Route path={ABOUT} component={About}/>
@@ -70,22 +68,21 @@ export default class RouterPath extends MyComponent {
                         <PrivateRoute signedIn={signedIn} path={RIDES} component={Rides} pageTitle="Rides" />
                         <PrivateRoute signedIn={signedIn} path={REGISTER} component={Register} pageTitle="Sign Up"/>
                         <PrivateRoute signedIn={signedIn} path={GROUPS} component={Groups} pageTitle="Groups" />
-                        {/**
                         <PrivateRoute signedIn={signedIn} path={MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
-                            **/}
                         <PrivateRoute signedIn={signedIn} path={SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
                         <PrivateRoute signedIn={signedIn} path={ROUTE} component={MyRouteMap} pageTitle="Route"/>
-                        <Route children={({ match, ...rest }) => (
-                        <div>
-                            <span>user id: {this.props.authId}</span><br/>
-                            <span>build time: {this.props.buildTime}</span><br/>
-                            <span>server: {this.props.baseUrl}</span>
-                        </div>
-)}/>
+                        <Route children={
+                        <Catch>
+                            <div>
+                                <span>user id: {this.props.authId}</span><br/>
+                                <span>build time: {this.props.buildTime}</span><br/>
+                                <span>server: {this.props.baseUrl}</span>
+                            </div>
+                        </Catch>
+                        } />
                     </Switch>
                 </Catch>
             </ConnectedRouter>
-
         )
     }
 

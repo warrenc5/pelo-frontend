@@ -51,11 +51,11 @@ export default class App extends MyComponent {
         //$.extend(this.props.state, createTestData());
         //debug2(JSON.stringify(this.props.state))
 
-        //this.history = useRouterHistory(createBrowserHistory());
+        //this.history = useRouterHistory(createHashHistory());
         this.history = createHashHistory();
         //this.history = HashHistory
         //console.log("history *** " + this.history)
-        this.middle = [thunk, routerMiddleware(this.history)]
+        this.middle = [routerMiddleware(this.history)]
         //const middle = routerMiddleware(this.history)
         this.store = createStore(MyReducer(), this.props.state, applyMiddleware(... this.middle));
 

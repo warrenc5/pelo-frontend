@@ -33,6 +33,7 @@ import {
 import submit from "redux-form"
 import {debug0,debug2, debugJSON} from '../service/misc'
 import {ngScope} from '../service/bridge'
+import {ReduxAsyncConnect} from 'redux-connect'
 
 @myAsyncFormConnect()
 export default class Login extends MyComponent {
@@ -127,6 +128,9 @@ export default class Login extends MyComponent {
         const { from } = this.props.location.state || { from: { pathname: '/' } }
             return super.isError()?(<h1>No way</h1>):(
                 <Catch>
+                    {/**
+                    <ReduxAsyncConnect {...this.props.cock!=null?this.props.cock.props:null} {...this.props} />
+                        **/}
                     {this.state.login?<Redirect to={from}/>:this.LoginForm(this.props)}
                 </Catch>)
     }
@@ -207,7 +211,7 @@ export default class Login extends MyComponent {
 
     static propTypes = {
         fbConnect: PropTypes.func.isRequired,
-        hello: PropTypes.bool.isRequired,
+        //hello: PropTypes.bool.isRequired,
         ...propTypes
     }
 
@@ -217,7 +221,7 @@ export default class Login extends MyComponent {
         initialValues: {
             username: 'wozza', password: 'password1'
         },
-        hello: false
+        //hello: false
         //initialValues: {username: 'wozza', password: 'password1'} //401
     })
 
@@ -276,7 +280,11 @@ export default class Login extends MyComponent {
 
     static reduxAsyncConfig =
         [{
-            hello: ({ params, helpers }) => new Promise((resolve, reject)=> {
+            key: 'hello',
+            promise: ({ params, helpers }) => {
+                alert('hello3')
+    return new Promise((resolve, reject)=> {
+                alert("hello")
                 ngScope().client.sayHello((name, data)=> {
                     resolve(true)
                 }, (e)=> {
@@ -286,8 +294,10 @@ export default class Login extends MyComponent {
                 //TODO: wait a little while and do this again on interval
                 console.log(e)
                 return false
-            })
+            })},
+            hello: ({params, helpers}) => {alert('broken2'); return null;}
         }]
+
 
     static reduxFormConfig = {
         form: `LoginForm`,
