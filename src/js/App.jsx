@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 //import injectTapEventPlugin from 'react-tap-event-plugin'
 import $ from 'jquery'
-import { routerMiddleware } from 'react-router-redux'
-//import { syncHistoryWithStore } from 'react-router-redux';
-import RouteDispatcher from 'react-router-dispatcher';
+import { syncHistoryWithStore } from 'react-router-redux';
+//import RouteDispatcher from 'react-router-dispatcher';
 import {Provider} from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
+import { compose, createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import RouterPath from './Router.jsx'
 import {createTestData} from './TestData'
@@ -17,6 +16,9 @@ import {debug, debug2, debugJSON} from './service/misc'
 import {ngScope} from './service/bridge'
 import MyComponent, {Catch,myAsyncFormConnect} from './widget/common'
 import createHashHistory from 'history/createHashHistory'
+import { routerMiddleware as reactRouterReduxMiddleware, push } from 'react-router-redux'
+//import { connectRouter, routerMiddleware as connectedRouterMiddleware} from 'connected-react-router'
+
 //import {useRouterHistory} from 'react-router'
 /**
  *  The main react entry point configures the theme and creates the basic React component called App
@@ -44,7 +46,7 @@ export default class App extends MyComponent {
         this.handleRequestClose = this.handleRequestClose.bind(this)
         this.handleTouchTap = this.handleTouchTap.bind(this)
 
-        ngScope().initializeStorage()
+        //ngScope().initializeStorage()
 
         //LOAD TEST DATA
 
@@ -52,13 +54,29 @@ export default class App extends MyComponent {
         //debug2(JSON.stringify(this.props.state))
 
         //this.history = useRouterHistory(createHashHistory());
-        this.history = createHashHistory();
         //this.history = HashHistory
         //console.log("history *** " + this.history)
-        this.middle = [routerMiddleware(this.history)]
+        //this.middle =
         //const middle = routerMiddleware(this.history)
-        this.store = createStore(MyReducer(), this.props.state, applyMiddleware(... this.middle));
 
+        this.history = createHashHistory();
+        /*history = syncHistoryWithStore(this.history, this.store);/*, {
+
+        //to move the name bound at
+            selectLocationState: ()=>{console.log('ok')}
+        });
+        */
+        this.middleware = applyMiddleware(... [thunk,reactRouterReduxMiddleware(this.history)])
+        this.store = createStore(
+            MyReducer(),
+            //window.__data,
+            this.props.state,
+            compose(
+                this.middleware
+            )
+        )
+
+        //alert(MyReducer().reduxAsyncConnect)
         /**
          * can't use this because of accessTokenCookie
          */
@@ -66,11 +84,7 @@ export default class App extends MyComponent {
             type: `LOAD_TEST_DATA`,
             payload: {id: -1} //TODO DEFAULT_USER_ID 17
         }))
-        /*
-         syncHistoryWithStore(browserHistory, this.store, {
-         //    selectLocationState: createSelectLocationState('routing'),
-         });
-         */
+
 
         /*
          this.store.subscribe((state = [], dispatch) => {
@@ -110,7 +124,7 @@ export default class App extends MyComponent {
             (
                 <MuiThemeProvider muiTheme={myTheme}>
                     <Provider store={this.store} key="provider">
-                        <RouterPath middleware={this.middle} props={this.props} history={this.history}/>
+                        <RouterPath middleware={this.middleware} {... this.props} history={this.history}/>
                     </Provider>
                 </MuiThemeProvider>
             )

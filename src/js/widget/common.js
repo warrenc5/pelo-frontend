@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import {debug0} from '../service/misc'
 
-import {withDispatcher} from 'react-router-dispatcher'
-import RouteDispatcher from 'react-router-dispatcher'
-import { asyncConnect as reduxAsyncConnect } from 'redux-connect'
+//import {withDispatcher} from 'react-router-dispatcher'
+//import RouteDispatcher from 'react-router-dispatcher'
+import { asyncConnect as reduxAsyncConnect2 } from 'redux-connect'
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 //FIXME:
@@ -43,8 +43,9 @@ export default class MyComponent extends React.Component {
     componentDidMount() {
     }
 
-
     componentWillReceiveProps(nextProps) {
+        console.log("will receieve props")
+        console.log(nextProps)
     }
 
     componentWillUnmount() {
@@ -84,7 +85,9 @@ export function myAsyncFormConnect(){
             result = connect(reduxPropsConfig, reduxDispatchConfig)(result)
         } else {
             console.log(NAME + " reduxAsyncConnect")
-            result = reduxAsyncConnect(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(result)
+            result = reduxAsyncConnect2(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(result)
+            //result = connect(reduxPropsConfig, reduxDispatchConfig)(result)
+            //console.log(result.reduxAsyncConnect)
         }
 
         return result
@@ -119,3 +122,14 @@ export function myAsyncFormConnect(){
         //return reduxConnectedPropTypes(reduxAsyncConnect(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(reduxForm(reduxFormConfig)(target)))
     }
 }
+
+export function injectProps(target, name, descriptor) {
+    const oldFunction = descriptor.value;
+
+    descriptor.value = function propsInjectorFunction() {
+        return oldFunction.bind(this)(this.props);
+    };
+
+    return descriptor;
+}
+

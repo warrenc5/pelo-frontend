@@ -9,7 +9,7 @@ import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 import { Switch,Route } from 'react-router-dom'
 import * as router from '../Router.jsx'
 
-@myAsyncFormConnect()
+//@myAsyncFormConnect()
 export default class MainLayout extends MyComponent {
     static NAME = "MainLayout"
 
@@ -64,6 +64,7 @@ export default class MainLayout extends MyComponent {
     }
     static defaultProps = {
         open: false,
+        signedIn: false
     }
 
     static reduxPropsConfig = (state, props) => ({

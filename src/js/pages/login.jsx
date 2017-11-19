@@ -22,6 +22,7 @@ import keydown from 'react-keydown'
 import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 import { RaisedButton, Divider } from 'material-ui'
 
+import { asyncConnect} from 'redux-connect'
 import {
     materialButton,
     materialTextField,
@@ -211,7 +212,7 @@ export default class Login extends MyComponent {
 
     static propTypes = {
         fbConnect: PropTypes.func.isRequired,
-        //hello: PropTypes.bool.isRequired,
+       // hello: PropTypes.bool.isRequired,
         ...propTypes
     }
 
@@ -279,8 +280,7 @@ export default class Login extends MyComponent {
     })
 
     static reduxAsyncConfig =
-        [{
-            key: 'hello',
+        [{key: 'hello',
             promise: ({ params, helpers }) => {
                 alert('hello3')
     return new Promise((resolve, reject)=> {
@@ -295,7 +295,6 @@ export default class Login extends MyComponent {
                 console.log(e)
                 return false
             })},
-            hello: ({params, helpers}) => {alert('broken2'); return null;}
         }]
 
 

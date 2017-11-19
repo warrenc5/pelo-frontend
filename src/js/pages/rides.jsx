@@ -136,4 +136,6 @@ export default class Rides extends MyComponent {
     static reduxFormConfig = {
         form: `RidesForm`,
     }
+
+    static NAME="Rides"
 }

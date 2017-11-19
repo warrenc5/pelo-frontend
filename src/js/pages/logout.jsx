@@ -53,7 +53,10 @@ export default class Logout extends MyComponent {
 
     static reduxPropsConfig = (state, props) => ({
         signedIn: state.login != null && state.login.id > 0,
-        login: state.login
+        login: state.login,
+        initialValues: {
+            login: {name:"user"},logout:false
+        }
     })
 
     static reduxDispatchConfig = (dispatch) => ({

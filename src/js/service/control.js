@@ -169,7 +169,7 @@ peloApp.service("storage", function () {
         var result = new Array()
 
         storage.forEach(function (name, value) {
-            debug2("scope " + name + " " + value.substring(0, 100))
+            console.log("scope " + name + " " + value.substring(0, 100))
             result[name] = value
         })
 
