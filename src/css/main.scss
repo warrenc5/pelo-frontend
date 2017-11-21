@@ -44,6 +44,7 @@ html {
 @media screen and (min-width: 480px) {
   body {
     font-size: 40px;
+    color: $white;
   }
 }
 
@@ -112,8 +113,7 @@ html {
 
 // typography
 .type-italic {
-  font-style: italic;
-  font-family: 'times new roman';
+  //font-family: 'times new roman';
 }
 
 

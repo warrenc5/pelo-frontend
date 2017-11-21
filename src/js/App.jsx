@@ -38,7 +38,8 @@ import { routerMiddleware as reactRouterReduxMiddleware, push } from 'react-rout
  })
  */
 export default class App extends MyComponent {
-    static NAME='Fail'
+    static NAME = 'Fail'
+
     constructor(props) {
         super(props)
         this.props = props
@@ -46,11 +47,11 @@ export default class App extends MyComponent {
         this.handleRequestClose = this.handleRequestClose.bind(this)
         this.handleTouchTap = this.handleTouchTap.bind(this)
 
-        //ngScope().initializeStorage()
+        ngScope().initializeStorage()
 
         //LOAD TEST DATA
 
-        //$.extend(this.props.state, createTestData());
+        $.extend(this.props.state, createTestData());
         //debug2(JSON.stringify(this.props.state))
 
         //this.history = useRouterHistory(createHashHistory());
@@ -62,21 +63,29 @@ export default class App extends MyComponent {
         this.history = createHashHistory();
         /*history = syncHistoryWithStore(this.history, this.store);/*, {
 
-        //to move the name bound at
-            selectLocationState: ()=>{console.log('ok')}
-        });
-        */
-        this.middleware = applyMiddleware(... [thunk,reactRouterReduxMiddleware(this.history)])
+         //to move the name bound at
+         selectLocationState: ()=>{console.log('ok')}
+         });
+         */
+        this.middleware = applyMiddleware(... [
+            ({ getState })=> {
+                return next => action => {
+                    console.log(action)
+                    let returnValue = next(action)
+                    console.log(getState())
+                    return returnValue
+                }
+            },
+            thunk, reactRouterReduxMiddleware(this.history)])
+
         this.store = createStore(
             MyReducer(),
             //window.__data,
             this.props.state,
             compose(
-                this.middleware
-            )
+                this.middleware)
         )
 
-        //alert(MyReducer().reduxAsyncConnect)
         /**
          * can't use this because of accessTokenCookie
          */
@@ -112,19 +121,21 @@ export default class App extends MyComponent {
             open: true,
         })
     }
+
     componentDidMount() {
-        document.getElementById('bg').class='hidden'
+        document.getElementById('bg').class = 'hidden'
     }
 
     renderError() {
         return (<span>{this.NAME} Fail</span>)
     }
+
     render() {
-        return super.isError()?this.renderError():
+        return super.isError() ? this.renderError() :
             (
                 <MuiThemeProvider muiTheme={myTheme}>
                     <Provider store={this.store} key="provider">
-                        <RouterPath middleware={this.middleware} {... this.props} history={this.history}/>
+                        <RouterPath middleware={this.middleware} history={this.history}/>
                     </Provider>
                 </MuiThemeProvider>
             )

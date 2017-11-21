@@ -72,7 +72,6 @@ export default class Rides extends MyComponent {
         return rides==null?
             (<span>no rides</span>):(
             <div>
-                <h2>Rides</h2>
                 <span>size:{rides.length} rides today</span>
                 {rides.map((ride) => (
                 <div key={ride.id}>
@@ -99,29 +98,35 @@ export default class Rides extends MyComponent {
         showRide: PropTypes.func.isRequired,
         //id: PropTypes.bool.isRequired,
         //joinGroup: PropTypes.func.isRequired,
-        todaysRides: PropTypes.array.isRequired,
-        selectedRides: PropTypes.object.isRequired
+        //todaysRides: PropTypes.array.isRequired,
+        selectedRides: PropTypes.object.isRequired,
+        authId: PropTypes.number.isRequired,
     }
 
     static reduxAsyncConfig = [{
         key: `todaysRides`,
-        promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
-            ngScope().client.todaysRides(props.userId, (name, data)=> {
+        promise: (props) => new Promise((resolve, reject)=> {
+            var authId = select.authIdSelector(props.store.getState())
+            ngScope().client.todaysRides(authId, (name, data)=> {
                 resolve(data.sort((a, b)=>a.id > b.id))
             }, (e)=> {
+                console.log(e)
                 reject(e)
             })
+        })
+            /**
         }).then((result) =>result).catch((e)=> {
             console.log(e)
             throw e
         })
+             **/
     }]
 
     static reduxPropsConfig = (state, props) => ({
         total: 3,//select.mySelector(state,props),
         selectedRides: state.selectedRides,
-        todaysRides: state.todaysRides,
-        userId: select.authIdSelector(state)
+        //todaysRides: state.todaysRides,
+        authId: select.authIdSelector(state)
     })
 
     static reduxDispatchConfig = (dispatch) => ({

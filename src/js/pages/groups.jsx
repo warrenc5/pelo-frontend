@@ -84,7 +84,7 @@ export default class Groups extends MyComponent {
     }
 
     static reduxPropsConfig = (state, props) => ({
-        total: 3,//select.mySelector(state,props),
+        total: select.groupSelector(state).length,
         groups: select.groupSelector(state),
         authId: select.authIdSelector(state)
     })

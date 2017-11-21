@@ -7,6 +7,7 @@ export const style =
     // tyleSheet.create({
     {
     root: {
+        color: 'white',
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-around',

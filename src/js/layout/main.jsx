@@ -7,9 +7,12 @@ import { RaisedButton, Divider } from 'material-ui'
 import HamburgerMenu from 'react-hamburger-menu'
 import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 import { Switch,Route } from 'react-router-dom'
-import * as router from '../Router.jsx'
 
-//@myAsyncFormConnect()
+import * as router from '../Router.jsx'
+import * as select from '../handler/selectors'
+
+
+@myAsyncFormConnect()
 export default class MainLayout extends MyComponent {
     static NAME = "MainLayout"
 
@@ -28,12 +31,9 @@ export default class MainLayout extends MyComponent {
         const {open} = this.state
         return (
             <div>
-                -{this.props.signedIn}-
                 {this.props.signedIn && currentRouteName!='/Login'?(
                 <Catch>
-                    <Navigation ref={(obj) => { this.nav = obj; }} open={open}/>
-                    <div>
-                        <span>{currentRouteName}</span>
+                        <h2>{currentRouteName}</h2>
                         <HamburgerMenu
                             isOpen={open}
                             menuClicked={this.handleClick.bind(this)}
@@ -45,10 +45,10 @@ export default class MainLayout extends MyComponent {
                             borderRadius={0}
                             animationDuration={1.5}
                         />
-                    </div>
+                        <Navigation ref={(obj) => { this.nav = obj; }} open={open}/>
                 </Catch>
                     ):(
-                <span>..</span>)}
+                <span></span>)}
             </div>)
     }
 
@@ -62,16 +62,18 @@ export default class MainLayout extends MyComponent {
         open: PropTypes.bool.isRequired,
         signedIn: PropTypes.bool.isRequired,
     }
+
     static defaultProps = {
         open: false,
         signedIn: false
     }
 
     static reduxPropsConfig = (state, props) => ({
-        signedIn: state.login != null && state.login.id >0,
+        signedIn: select.authIdSelector(state) > 0,
         open: state.open
     })
 
+    /**
     static reduxAsyncConfig = [{
         key: `main`,
         promise: ({ store,router}) => new Promise((resolve, reject)=> {
@@ -87,6 +89,7 @@ export default class MainLayout extends MyComponent {
             throw e
         })
     }]
+     **/
 }
 
 

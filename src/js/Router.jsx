@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import {ReduxAsyncConnect} from 'redux-connect'
 import {ConnectedRouter} from 'react-router-redux'
-//import RouteDispatcher from 'react-router-dispatcher'
 import MainLayout from './layout/main.jsx'
 import ContentLayout from './layout/content.jsx'
 import HomeContainer from './pages/home.jsx'
@@ -20,9 +19,9 @@ import Terms from './pages/terms.jsx'
 import MyRouteMap from './widget/routemap'
 import {ngScope} from './service/bridge'
 import MyComponent,{myAsyncFormConnect,Catch} from './widget/common.js'
-import { Router,Switch,Route, Redirect} from 'react-router-dom'
+import { Router } from 'react-router'
+import { Switch,Route, Redirect} from 'react-router-dom'
 import { applyMiddleware } from 'redux'
-//import { ConnectedRouter } from 'connected-react-router' <--old
 import * as select from './handler/selectors'
 /**
  * This screen transition logical router handles html a links and anchor refs in the app
@@ -32,10 +31,6 @@ import * as select from './handler/selectors'
  * Currently all the Links are in component/navigation.js
  **/
 
-const reloadOnPropsChange = (props, nextProps) => {
-    alert("totally cool")
-        return props.location.pathname !== nextProps.location.pathname;
-    };
 
 @myAsyncFormConnect()
 export default class RouterPath extends MyComponent {
@@ -44,28 +39,20 @@ export default class RouterPath extends MyComponent {
         super(props, context)
         this.props = props
     }
-// reload only when path/route has changed
-/*
- render={this.props.middleware}
-
- */
     render() {
         // Does the environment support HTML 5 history
         const supportsHistory = typeof window !== 'undefined' && 'pushState' in window.history;
-        //const {signedIn}  = this.props
-        const signedIn = true
-        Router.prototype.render =(props)=> <ReduxAsyncConnect {...this.props} reloadOnPropsChange={reloadOnPropsChange} />
+        const {signedIn}  = this.props
         return (
-            <Router {... this.props}>
-
+            <ConnectedRouter history={this.props.history} ref={(obj) => { this.router = obj; }} >
                 <Catch>
-                    <Route path={TERMS} component={Terms} pageTitle="T &amp; C"/>
                     <Route path={ABOUT} component={About}/>
                     <Route path={ROOT} component={MainLayout}/>
                     <Switch>
+                        <Route path={TERMS} component={Terms} pageTitle="T &amp; C"/>
                         <Redirect exact from={ROOT} to={HOME}/>
                         <Route path={LOGOUT} component={Logout} pageTitle="Logout"/>
-                        <Route exact path={LOGIN} component={Login} pageTitle="Sign In"/>
+                        <AsyncRoute exact router={this.router} path={LOGIN} component={Login} pageTitle="Sign In"/>
                         <PrivateRoute signedIn={signedIn} path={EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
                         <PrivateRoute signedIn={signedIn} path={RIDES} component={Rides} pageTitle="Rides"/>
                         <PrivateRoute signedIn={signedIn} path={REGISTER} component={Register} pageTitle="Sign Up"/>
@@ -75,28 +62,29 @@ export default class RouterPath extends MyComponent {
                         <PrivateRoute signedIn={signedIn} path={SETTINGS} component={SettingsContainer}
                                       pageTitle="Settings"/>
                         <PrivateRoute signedIn={signedIn} path={ROUTE} component={MyRouteMap} pageTitle="Route"/>
-                        <Route children={
-                        <Catch>
-                            <div>
-                                <span>user id: {this.props.authId}</span><br/>
-                                <span>build time: {this.props.buildTime}</span><br/>
-                                <span>server: {this.props.baseUrl}</span>
-                            </div>
-                        </Catch>
-                        }/>
+                        <PrivateRoute path={ABOUT} component={About}/>
+
                     </Switch>
+                    <Route children={
+                    <Catch>
+                        <hr/>
+                        <div>
+                            {this.props.signedIn?<span>user id: {this.props.authId}</span>:<span>nada</span>}
+                            <br/>
+
+                            <span>build time: {this.props.buildTime}</span><br/>
+                            <span>server: {this.props.baseUrl}</span>
+                        </div>
+                    </Catch>
+                    }/>
                 </Catch>
-            </Router>
+            </ConnectedRouter>
         )
     }
 
     onEnter(location, replaceWith, callback) {
         console.log(`save:  ${location}`)
         callback()
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps)
     }
 
     static propTypes = {
@@ -115,19 +103,40 @@ export default class RouterPath extends MyComponent {
 
     static reduxDispatchConfig = (dispatch) => ({})
 }
-const PrivateRoute = ({ signedIn, component: Component, ...rest }) => (
-    <Route {...rest} render={props => (
-    signedIn?(
-      <Component {...props}/>
-    ) : (
-      <Redirect to={{
+
+// reload only when path/route has changed
+const reloadOnPropsChange = (props, nextProps) => {
+    return props.location.pathname !== nextProps.location.pathname;
+}
+
+const Rac =(props)=>
+        <ReduxAsyncConnect {... props}
+            reloadOnPropsChange={reloadOnPropsChange}
+        />
+/**
+ *
+ render={props2=><Catch><Component2 {...props2} /></Catch>}
+ * @param component
+ * @param props
+ * @constructor
+ */
+
+const AsyncRoute = ({component, ...props}) => (
+    <Route {...props} render={props => <Rac component={component} {... props} />} />
+)
+
+//TODO: fix location redirect
+const PrivateRoute = ({signedIn, location,component, ...props}) => (
+    <Route {...props} render={props => (
+    signedIn?(<Rac component={component} {... props}/>) :
+    (<Redirect to={{
         pathname: LOGIN,
-        state: { from: props.location }
+        state: { from: location }
       }}/>
     )
   )}/>
 )
-//export const Index = Rides
+
 export const ROOT = '/'
 export const LOGIN = '/login'
 export const LOGOUT = '/logout'
@@ -140,79 +149,4 @@ export const ROUTE = '/routes'
 export const GROUPS = '/groups'
 export const RIDES = '/rides'
 export const ABOUT = '/about'
-export const HOME = RIDES
-export const Index = Rides
-//export const HOME = GROUPS
-//<Router history={hashHistory}>
-//<ConnectedRouter render={(props) => <ReduxAsyncConnect {...props} /> } history={this.props.history}>
-//render={ (props) => <ReduxAsyncConnect reloadOnPropsChange={super.reloadOnPropsChange} {...props} /> }
-//<Router render={(props) => <ReduxAsyncConnect {...props} /> } history={browserHistory}>
-//render={applyRouterMiddleware()}
-
-//<Router render={(props) => <ReduxAsyncConnect {...props} /> } history={this.props.history}>
-//
-//<ReduxAsyncConnect helpers={applyRouterMiddleware(this.props.middle)} reloadOnPropsChange={super.reloadOnPropsChange} {...props}  history={this.props.history}/> }
-/***
- * children={
-                        <ReduxAsyncConnect {... this.props} router={this.router} history={history} children={
-                    this.props.children
-                        }>
-                    </ReduxAsyncConnect>
- */
-/*
- render={props=>(
- <ReduxAsyncConnect {... context} router={this.router} history={history}
- />
- )
- context={context}
- children={
- <ReduxAsyncConnect props={this.props} router={this.router} history={history} children={
- this.props.children
- }>
- </ReduxAsyncConnect>
- }
-
- */
-class CustomRouter extends React.Component {
-
-    constructor(props) {
-        super(props)
-        this.props = props
-    }
-
-    render() {
-        const {middleware,history, children, component: Component} = this.props
-        const context={}
-        /*
-        return <ConnectedRouter context={context} history={history} children={
-            <ReduxAsyncConnect {...context} reloadOnPropsChange={super.reloadOnPropsChange} children={children}/>
-            }/>
-            */
-
-        return    <Router
-            history={history}
-            children={children}
-            />
-
-    }
-}
-            /*
-             return (
-             <ConnectedRouter ref={(obj) => { this.router = obj;  console.log(obj)}}
-             history={history}
-             render={
-             <ReduxAsyncConnect history={history}
-             children={children}
-             />
-             }
-             />
-             )
-             */
-/*
- const CustomRouter = ({history, ...rest }) => (
- <Router ref={(obj) => { router = obj; }} history={history}
- render={<ReduxAsyncConnect {... router!=null?router.props:null} history={history}/>} >
- <Component {...props}/>
- </Router>
- )
- */
+export const HOME = GROUPS

@@ -47,8 +47,10 @@ export default class Navigation extends MyComponent {
             <nav className="main-nav">
                 <Drawer ref={(obj) => { this.nav = obj; }} open={this.state.open} openSecondary={true}>
                     <div className="main-logo">
+                        {/**
                         <RaisedButton label="Hide" onClick={this.hide.bind(this)}/>
-                        <NavLink to={router.HOME}><span className="type-italic">Home</span></NavLink>
+                         **/}
+                        <NavLink to={router.HOME}><h2>Pelo</h2></NavLink>
                     </div>
                     <List>
                         <ListItem primaryText="Add Ride"
@@ -71,8 +73,12 @@ export default class Navigation extends MyComponent {
                                   containerElement={<NavLink activeClassName="active" to={router.LOGOUT} />}/>
                     </List>
                     <Divider />
+
+                    {/**
+
                     <RaisedButton label="Exit" onClick={this.exitApp.bind(this)}/>
 
+                     **/}
                 </Drawer>
             </nav>
         )

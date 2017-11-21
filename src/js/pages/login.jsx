@@ -282,19 +282,21 @@ export default class Login extends MyComponent {
     static reduxAsyncConfig =
         [{key: 'hello',
             promise: ({ params, helpers }) => {
-                alert('hello3')
-    return new Promise((resolve, reject)=> {
-                alert("hello")
-                ngScope().client.sayHello((name, data)=> {
-                    resolve(true)
-                }, (e)=> {
-                    reject(e)
+                return new Promise((resolve, reject)=> {
+                    ngScope().client.sayHello((name, data)=> {
+                        resolve(true)
+                    }, (e)=> {
+                        reject(e)
+                    })
                 })
-            }).then((result) =>result).catch((e)=> {
-                //TODO: wait a little while and do this again on interval
-                console.log(e)
-                return false
-            })},
+                    /***
+                    .then((result) =>result).catch((e)=> {
+                        //TODO: wait a little while and do this again on interval
+                        console.log(e)
+                        return false
+                    })
+                     **/
+            }
         }]
 
 

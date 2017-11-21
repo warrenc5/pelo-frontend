@@ -44,7 +44,6 @@ export default class MyComponent extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("will receieve props")
         console.log(nextProps)
     }
 
