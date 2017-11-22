@@ -69,9 +69,8 @@ export default class RouterPath extends MyComponent {
                     <Catch>
                         <hr/>
                         <div>
-                            {this.props.signedIn?<span>user id: {this.props.authId}</span>:<span>nada</span>}
+                            {this.props.signedIn?<span>user id: {this.props.authId}</span>:<span>No user</span>}
                             <br/>
-
                             <span>build time: {this.props.buildTime}</span><br/>
                             <span>server: {this.props.baseUrl}</span>
                         </div>

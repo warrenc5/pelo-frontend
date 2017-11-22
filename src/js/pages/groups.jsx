@@ -35,7 +35,7 @@ export default class Groups extends MyComponent {
     }
 
     GridListExampleSimple = (props) => {
-        const {groups} = props
+        const {sgroups} = props
         return (
             <div style={style.root}>
                 <GridList
@@ -43,7 +43,7 @@ export default class Groups extends MyComponent {
                     style={style.gridList}
                 >
                     <Subheader>{this.props.total}</Subheader>
-                    {groups.map((group) => (
+                    {sgroups.map((group) => (
                     <GridTile data-scroll-reveal
                               key={group.id}
                               title={group.name}
@@ -51,7 +51,7 @@ export default class Groups extends MyComponent {
                               actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
                               onTouchTap={e => {
                         e.preventDefault()
-                        this.props.joinGroup(this.props.userId,group.id)
+                        this.props.joinGroup(this.props.authId,group.id)
                     }}>
                         <img src={group.avatar}/>
                     </GridTile>
@@ -62,15 +62,14 @@ export default class Groups extends MyComponent {
     }
 
     render() {
-        return this.props.groups==null?
+        return this.props.sgroups==null?
             (<span>no groups</span>):(
             <Catch>
                 <div>
-                    <h2>Groups</h2>
                     <div>
                         <a href="http://placehold.it"><img src="http://placehold.it/250x150"></img></a>
                     </div>
-                    <span>size:{this.props.groups.length}</span>
+                    <span>size:{this.props.sgroups.length}</span>
                     <div>
                         {this.GridListExampleSimple(this.props)}
                     </div>
@@ -80,13 +79,14 @@ export default class Groups extends MyComponent {
 
     static propTypes = {
         joinGroup: PropTypes.func.isRequired,
-        groups: PropTypes.array.isRequired
+        sgroups: PropTypes.array.isRequired,
+        authId: PropTypes.number.isRequired,
     }
 
     static reduxPropsConfig = (state, props) => ({
         total: select.groupSelector(state).length,
-        groups: select.groupSelector(state),
-        authId: select.authIdSelector(state)
+        sgroups: select.groupSelector(state),
+        authId: select.authIdSelector(state),
     })
 
     static reduxDispatchConfig = (dispatch) => ({
@@ -99,17 +99,15 @@ export default class Groups extends MyComponent {
 
     static reduxAsyncConfig = [{
         key: `groups`,
-        promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
+        promise: ({ store }) => new Promise((resolve, reject)=> {
             const authId = select.authIdSelector(store.getState())
 
-            ngScope().client.groups(login.id, (name, data)=> {
+            ngScope().client.groups(authId, (name, data)=> {
                 resolve(data)
             }, (e)=> {
+                console.log(e)
                 reject(e)
             })
-        }).then((result) =>result).catch((e)=> {
-            console.log(e)
-            throw e
         })
     }]
 }

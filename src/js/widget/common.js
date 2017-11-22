@@ -79,34 +79,15 @@ export function myAsyncFormConnect(){
             result = reduxForm(reduxFormConfig)(target)
         }
 
-        if (reduxAsyncConfig == undefined) {
-            console.log(NAME + " connect " ) //+ reduxPropsConfig + " - "+ reduxDispatchConfig)
-            result = connect(reduxPropsConfig, reduxDispatchConfig)(result)
-        } else {
+        if (reduxAsyncConfig !== undefined) {
             console.log(NAME + " reduxAsyncConnect")
             result = reduxAsyncConnect2(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(result)
-            //result = connect(reduxPropsConfig, reduxDispatchConfig)(result)
-            //console.log(result.reduxAsyncConnect)
+        } else {
+            console.log(NAME + " connect " ) //+ reduxPropsConfig + " - "+ reduxDispatchConfig)
+            result = connect(reduxPropsConfig, reduxDispatchConfig)(result)
         }
 
         return result
-
-        /**
-        if (reduxAsyncConfig == null) {
-            if (reduxFormConfig == null) {
-                return connect(reduxPropsConfig, reduxDispatchConfig)(target)
-            } else {
-                return connect(reduxPropsConfig, reduxDispatchConfig)(reduxForm(reduxFormConfig)(target))
-            }
-
-        } else {
-            if (reduxFormConfig == null) {
-                return reduxAsyncConnect(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(target)
-            } else {
-                return reduxAsyncConnect(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(reduxForm(reduxFormConfig)(target))
-            }
-        }
-         **/
 
         /**
         withDispatcher(({dispatch}, {params}) => {

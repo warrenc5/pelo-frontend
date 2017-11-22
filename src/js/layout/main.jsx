@@ -33,7 +33,7 @@ export default class MainLayout extends MyComponent {
             <div>
                 {this.props.signedIn && currentRouteName!='/Login'?(
                 <Catch>
-                        <h2>{currentRouteName}</h2>
+                    <div class="left" >
                         <HamburgerMenu
                             isOpen={open}
                             menuClicked={this.handleClick.bind(this)}
@@ -45,6 +45,10 @@ export default class MainLayout extends MyComponent {
                             borderRadius={0}
                             animationDuration={1.5}
                         />
+                        </div>
+                            <div>
+                        <h2>{currentRouteName}</h2>
+                                </div>
                         <Navigation ref={(obj) => { this.nav = obj; }} open={open}/>
                 </Catch>
                     ):(

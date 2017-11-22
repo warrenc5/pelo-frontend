@@ -114,12 +114,6 @@ export default class Rides extends MyComponent {
                 reject(e)
             })
         })
-            /**
-        }).then((result) =>result).catch((e)=> {
-            console.log(e)
-            throw e
-        })
-             **/
     }]
 
     static reduxPropsConfig = (state, props) => ({
