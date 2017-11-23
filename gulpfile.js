@@ -148,7 +148,7 @@ gulp.task('start', [], function () {
         })
     )
 
-    gulp.watch(packageConfig, {verbose: true, ignoreInitial: false}, ['install'])
+    //FIXME:gulp.watch(packageConfig, {verbose: true, ignoreInitial: false}, ['install'])
     gulp.watch(cordovaConfig, {verbose: true, ignoreInitial: false}, ['setup'])
 })
 
@@ -657,7 +657,8 @@ gulp.task('install', [], function (done) {
      */
 })
 
-gulp.task('setup', ['install'], (done)=> {
+gulp.task('setup', [], (done)=> {
+//FIXME:gulp.task('setup', ['install'], (done)=> {
     return gulp.src(cordovaConfig)
         .pipe(plumber())
         .pipe(diff({hash: 'cordova'}))

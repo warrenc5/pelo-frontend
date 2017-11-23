@@ -5,7 +5,7 @@ import { Field, propTypes } from 'redux-form'
 import { NavLink, Link } from 'react-router-dom'
 import FlatButton from 'material-ui/FlatButton'
 
-import {HOME} from '../Router.jsx'
+import {routes} from '../Router.jsx'
 
 @myAsyncFormConnect()
 export default class Logout extends MyComponent {
@@ -24,9 +24,16 @@ export default class Logout extends MyComponent {
 
                 {this.props.signedIn?
                 <FlatButton label="Logout" onClick={this.props.logout()}/>
-                    :<NavLink activeClassName="active" to={HOME}>Jump back in.</NavLink>}
+
+
+                    :<NavLink activeClassName="active" to={routes.HOME}>Jump back in.</NavLink>}
             </div>
         )
+        {/**
+           dispatch(push(Router.RIDES))
+import { push } from 'react-router-redux'
+
+         **/}
     }
 
     componentWillReceiveProps(nextProps) {

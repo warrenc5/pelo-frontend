@@ -26,13 +26,13 @@ import { connect } from 'react-redux'
 export default class MyComponent extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { hasError: false };
+        this.state = {hasError: false};
     }
 
     componentDidCatch(error, info) {
-        this.setState({ hasError: true, error: error, info:info});
+        this.setState({hasError: true, error: error, info: info});
         // You can also log the error to an error reporting service
-        console.log('--->' + error + " === " + info.componentStack +"<---")
+        console.log('--->' + error + " === " + info.componentStack + "<---")
     }
 
     reloadOnPropsChange(props, nextProps) {
@@ -57,9 +57,11 @@ export default class MyComponent extends React.Component {
 
 export class Catch extends MyComponent {
     render() {
-        return (super.isError() ||
-        (this.props.children === null)
-        )?(<span>{this.state.error}</span>):(<div>{this.props.children}</div>)
+        return super.isError()
+            ? <span>{""+this.state.error}</span> :
+            this.props.children === null ?
+                <span>No children</span> :
+                <div>{this.props.children}</div>
     }
 }
 
@@ -68,14 +70,14 @@ export function reduxConnect() {
         return connect(target['reduxPropsConfig'], target['reduxDispatchConfig'])(target)
     }
 }
-export function myAsyncFormConnect(){
+export function myAsyncFormConnect() {
     return target => {
         var {NAME,dispatcher, reduxAsyncConfig , reduxPropsConfig ,reduxDispatchConfig , reduxFormConfig } = target
 
         var result = target;
 
         if (reduxFormConfig !== undefined) {
-            console.log(NAME + " reduxForm " + reduxFormConfig )
+            console.log(NAME + " reduxForm " + reduxFormConfig)
             result = reduxForm(reduxFormConfig)(target)
         }
 
@@ -83,14 +85,14 @@ export function myAsyncFormConnect(){
             console.log(NAME + " reduxAsyncConnect")
             result = reduxAsyncConnect2(reduxAsyncConfig, reduxPropsConfig, reduxDispatchConfig)(result)
         } else {
-            console.log(NAME + " connect " ) //+ reduxPropsConfig + " - "+ reduxDispatchConfig)
+            console.log(NAME + " connect ") //+ reduxPropsConfig + " - "+ reduxDispatchConfig)
             result = connect(reduxPropsConfig, reduxDispatchConfig)(result)
         }
 
         return result
 
         /**
-        withDispatcher(({dispatch}, {params}) => {
+         withDispatcher(({dispatch}, {params}) => {
 
             // dispatch a redux route action and return the response
             return dispatch(homePageRouteAction(params.urlValue));

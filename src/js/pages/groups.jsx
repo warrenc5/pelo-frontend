@@ -39,7 +39,6 @@ export default class Groups extends MyComponent {
         return (
             <div style={style.root}>
                 <GridList
-                    cellHeight={180}
                     style={style.gridList}
                 >
                     <Subheader>{this.props.total}</Subheader>

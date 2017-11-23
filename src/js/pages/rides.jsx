@@ -30,6 +30,17 @@ export default class Rides extends MyComponent {
         this.props = props
     }
 
+/**
+ * TODO: add scrolling
+ * let onUpdate = () => {
+ *   window.scrollTo(0, 0)
+ * }
+ *
+ * http://blog.vjeux.com/2013/javascript/scroll-position-with-react.html
+ *
+ *
+ */
+
     DividerExampleMenu = () => (
         <Menu desktop={true} style={style}>
             <MenuItem primaryText="Place - Akuna Bay via Church Point"/>
@@ -125,6 +136,7 @@ export default class Rides extends MyComponent {
 
     static reduxDispatchConfig = (dispatch) => ({
         showRide: (id) => (event) => {
+             window.scrollTo(0, 0)
             dispatch({
                 type: `SELECT`,
                 payload: {id: id}

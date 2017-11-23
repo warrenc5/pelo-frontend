@@ -39,31 +39,32 @@ export default class RouterPath extends MyComponent {
         super(props, context)
         this.props = props
     }
+
     render() {
         // Does the environment support HTML 5 history
         const supportsHistory = typeof window !== 'undefined' && 'pushState' in window.history;
         const {signedIn}  = this.props
+        //const {signedIn}  = true
         return (
-            <ConnectedRouter history={this.props.history} ref={(obj) => { this.router = obj; }} >
+            <ConnectedRouter history={this.props.history} ref={(obj) => { this.router = obj; }}>
                 <Catch>
-                    <Route path={ABOUT} component={About}/>
-                    <Route path={ROOT} component={MainLayout}/>
+                    <Route path={routes.ABOUT} component={About} pageTitle="About"/>
+                    <Route path={routes.ROOT} component={MainLayout}/>
                     <Switch>
-                        <Route path={TERMS} component={Terms} pageTitle="T &amp; C"/>
-                        <Redirect exact from={ROOT} to={HOME}/>
-                        <Route path={LOGOUT} component={Logout} pageTitle="Logout"/>
-                        <AsyncRoute exact router={this.router} path={LOGIN} component={Login} pageTitle="Sign In"/>
-                        <PrivateRoute signedIn={signedIn} path={EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
-                        <PrivateRoute signedIn={signedIn} path={RIDES} component={Rides} pageTitle="Rides"/>
-                        <PrivateRoute signedIn={signedIn} path={REGISTER} component={Register} pageTitle="Sign Up"/>
-                        <PrivateRoute signedIn={signedIn} path={GROUPS} component={Groups} pageTitle="Groups"/>
-                        <PrivateRoute signedIn={signedIn} path={MESSAGES} component={MessagesContainer}
-                                      pageTitle="Messages"/>
-                        <PrivateRoute signedIn={signedIn} path={SETTINGS} component={SettingsContainer}
-                                      pageTitle="Settings"/>
-                        <PrivateRoute signedIn={signedIn} path={ROUTE} component={MyRouteMap} pageTitle="Route"/>
-                        <PrivateRoute path={ABOUT} component={About}/>
-
+                        <Route path={routes.TERMS} component={Terms} pageTitle="T &amp; C"/>
+                        <Redirect exact from={routes.ROOT} to={routes.HOME}/>
+                        <Redirect exact from={routes.HOME} to={this.props.defaultPath}/>
+                        <Route path={routes.LOGOUT} component={Logout} pageTitle="Logout"/>
+                        <Route path={routes.ERROR} component={Logout} pageTitle="Error"/>
+                        <AsyncRoute exact path={routes.LOGIN} component={Login} pageTitle="Sign In"/>
+                        <PrivateRoute signedIn={signedIn} path={routes.EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
+                        <PrivateRoute signedIn={signedIn} path={routes.RIDES} component={Rides} pageTitle="Rides"/>
+                        <PrivateRoute signedIn={signedIn} path={routes.REGISTER} component={Register} pageTitle="Sign Up"/>
+                        <PrivateRoute signedIn={signedIn} path={routes.GROUPS} component={Groups} pageTitle="Groups"/>
+                        <PrivateRoute signedIn={signedIn} path={routes.MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
+                        <PrivateRoute signedIn={signedIn} path={routes.SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
+                        <PrivateRoute signedIn={signedIn} path={routes.ROUTE} component={MyRouteMap} pageTitle="Route"/>
+                        <PrivateRoute path={routes.ABOUT} component={About} pageTitle="About"/>
                     </Switch>
                     <Route children={
                     <Catch>
@@ -81,6 +82,12 @@ export default class RouterPath extends MyComponent {
         )
     }
 
+    getRouteComponent() {
+        switch (this.props.defaultPath) {
+
+        }
+    }
+
     onEnter(location, replaceWith, callback) {
         console.log(`save:  ${location}`)
         callback()
@@ -91,13 +98,15 @@ export default class RouterPath extends MyComponent {
         buildTime: PropTypes.string.isRequired,
         baseUrl: PropTypes.string.isRequired,
         authId: PropTypes.number.isRequired,
+        defaultPath: PropTypes.string.isRequired,
     }
 
     static reduxPropsConfig = (state, props) => ({
         signedIn: (select.authIdSelector(state) > 0),
         buildTime: select.buildTimeSelector(state),
         baseUrl: ngScope().state.baseUrl,
-        authId: select.authIdSelector(state)
+        authId: select.authIdSelector(state),
+        defaultPath: select.defaultPath(state)
     })
 
     static reduxDispatchConfig = (dispatch) => ({})
@@ -108,44 +117,54 @@ const reloadOnPropsChange = (props, nextProps) => {
     return props.location.pathname !== nextProps.location.pathname;
 }
 
-const Rac =(props)=>
-        <ReduxAsyncConnect {... props}
-            reloadOnPropsChange={reloadOnPropsChange}
-        />
-/**
- *
- render={props2=><Catch><Component2 {...props2} /></Catch>}
- * @param component
- * @param props
- * @constructor
- */
+export class RouteCatch extends MyComponent {
+    render() {
+        const {component:Component, ... rest} = this.props
+        const isError = super.isError()
+        return <Route {... rest} render={props => (
+            isError?
+               <Redirect to={{
+                    pathname: routes.ERROR,
+                  }}/>
+            : <Component {...props} />
+            )}/>
+    }
+}
+
+const Rac = ({component,...props})=>
+    <ReduxAsyncConnect {... props}
+        components={[component]} reloadOnPropsChange={reloadOnPropsChange}
+        render={props=>(<RouteCatch component={component}/>)}
+    />
 
 const AsyncRoute = ({component, ...props}) => (
-    <Route {...props} render={props => <Rac component={component} {... props} />} />
+    <Route {...props} render={props => <Rac component={component} {... props} />}/>
 )
 
-//TODO: fix location redirect
 const PrivateRoute = ({signedIn, location,component, ...props}) => (
     <Route {...props} render={props => (
     signedIn?(<Rac component={component} {... props}/>) :
     (<Redirect to={{
-        pathname: LOGIN,
+        pathname: routes.LOGIN,
         state: { from: location }
       }}/>
     )
   )}/>
 )
 
-export const ROOT = '/'
-export const LOGIN = '/login'
-export const LOGOUT = '/logout'
-export const EDITRIDE = '/editRide'
-export const REGISTER = '/register'
-export const MESSAGES = '/messages'
-export const SETTINGS = '/settings'
-export const TERMS = '/terms'
-export const ROUTE = '/routes'
-export const GROUPS = '/groups'
-export const RIDES = '/rides'
-export const ABOUT = '/about'
-export const HOME = GROUPS
+export class routes {
+static ROOT = '/'
+static LOGIN = '/login'
+static ERROR = '/error'
+static LOGOUT = '/logout'
+static EDITRIDE = '/editRide'
+static REGISTER = '/register'
+static MESSAGES = '/messages'
+static SETTINGS = '/settings'
+static TERMS = '/terms'
+static ROUTE = '/routes'
+static GROUPS = '/groups'
+static RIDES = '/rides'
+static ABOUT = '/about'
+static HOME = '/home'
+}

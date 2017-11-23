@@ -23,20 +23,19 @@ export default class MainLayout extends MyComponent {
 
     componentWillReceiveProps(nextProps) {
         super.componentWillReceiveProps(nextProps)
-        this.setState({open: nextProps.open})
     }
 
     render() {
         let currentRouteName = this.props.location.pathname
-        const {open} = this.state
+        const {open} = this.props
         return (
             <div>
-                {this.props.signedIn && currentRouteName!='/Login'?(
+                {this.props.signedIn && currentRouteName!='/Login'?
                 <Catch>
-                    <div class="left" >
+                    <h2>{currentRouteName}</h2>
                         <HamburgerMenu
                             isOpen={open}
-                            menuClicked={this.handleClick.bind(this)}
+                            menuClicked={this.props.toggle.bind(this)}
                             width={28}
                             height={25}
                             strokeWidth={5}
@@ -45,22 +44,13 @@ export default class MainLayout extends MyComponent {
                             borderRadius={0}
                             animationDuration={1.5}
                         />
-                        </div>
-                            <div>
-                        <h2>{currentRouteName}</h2>
-                                </div>
-                        <Navigation ref={(obj) => { this.nav = obj; }} open={open}/>
+                    <hr/>
+                    <Navigation ref={(obj) => { this.nav = obj; }} open={open}/>
                 </Catch>
-                    ):(
-                <span></span>)}
+                    :
+                <span></span>}
             </div>)
     }
-
-    handleClick(e) {
-        this.setState({open: !this.state.open})
-        this.nav.toggle()
-    }
-
 
     static propTypes = {
         open: PropTypes.bool.isRequired,
@@ -74,26 +64,16 @@ export default class MainLayout extends MyComponent {
 
     static reduxPropsConfig = (state, props) => ({
         signedIn: select.authIdSelector(state) > 0,
-        open: state.open
+        open: state.main.open
     })
 
-    /**
-    static reduxAsyncConfig = [{
-        key: `main`,
-        promise: ({ store,router}) => new Promise((resolve, reject)=> {
-            const {login} = store.getState()
-            if (login.id == -1) {
-                alert('login')
-                router.push(Router.LOGIN)
-            }
-            resolve({})
-            return {}
-        }).then((result) =>result).catch((e)=> {
-            console.log(e)
-            throw e
-        })
-    }]
-     **/
+    static reduxDispatchConfig = (dispatch,props) => ({
+        toggle: (event) => {
+            dispatch({
+                type: `HAMBURGER`,
+            })
+        }
+    })
 }
 
 

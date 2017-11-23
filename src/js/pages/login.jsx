@@ -16,7 +16,6 @@ import { Link, NavLink, Switch,Route, Redirect} from 'react-router-dom'
 import { push } from 'react-router-redux'
 
 import style from '../layout/style'
-import * as Router from '../Router.jsx'
 import * as action from '../handler/actions'
 import keydown from 'react-keydown'
 import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
@@ -35,6 +34,7 @@ import submit from "redux-form"
 import {debug0,debug2, debugJSON} from '../service/misc'
 import {ngScope} from '../service/bridge'
 import {ReduxAsyncConnect} from 'redux-connect'
+import {routes} from '../Router.jsx'
 
 @myAsyncFormConnect()
 export default class Login extends MyComponent {
@@ -126,14 +126,11 @@ export default class Login extends MyComponent {
     }
 
     render() {
-        const { from } = this.props.location.state || { from: { pathname: '/' } }
-            return super.isError()?(<h1>No way</h1>):(
+        const { from } = this.props.location.state || { from: { pathname: routes.ROOT } }
+            return super.isError()?<h1>No way</h1>:
                 <Catch>
-                    {/**
-                    <ReduxAsyncConnect {...this.props.cock!=null?this.props.cock.props:null} {...this.props} />
-                        **/}
-                    {this.state.login?<Redirect to={from}/>:this.LoginForm(this.props)}
-                </Catch>)
+                    {this.state.login!==undefined?<Redirect to={from}/>:this.LoginForm(this.props)}
+                </Catch>
     }
 
     componentDidMount() {
@@ -199,7 +196,7 @@ export default class Login extends MyComponent {
                 type: `LOGIN`,
                 payload: result
             })
-            dispatch(push(Router.HOME)) //TODO go home
+            dispatch(push(routes.HOME))
         }).catch((e)=> {
             //console.log('>>'+e  + " " + e.stack) //JSON.stringify(e))
             dispatch({
@@ -259,7 +256,7 @@ export default class Login extends MyComponent {
                         payload: result
                     })
 
-                    dispatch(push(Router.HOME)) //TODO go home
+                    dispatch(push(routes.HOME))
                 }).catch((e)=> {
                     console.log(JSON.stringify(e))
                     dispatch({
