@@ -1,6 +1,6 @@
 {
   "name": "pelo-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pelo Riders App",
   "main": "index.js",
   "scripts": {
@@ -40,6 +40,7 @@
     "react-hamburger-menu": "^1.0.0",
     "react-history": "^0.18.2",
     "react-keydown": "^1.9.6",
+    "react-material-image": "0.0.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.8",

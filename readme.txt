@@ -9,3 +9,7 @@ add last git commit to the console log
 split out bundle.js into multiple files. - later
 
 https://docs.gradle.org/current/userguide/userguide.html
+'
+npm ERR! tar.unpack untar error
+npm cache clean --force
+

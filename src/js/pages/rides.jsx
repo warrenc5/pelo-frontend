@@ -19,6 +19,7 @@ import {
     materialSelectField
 } from './material.jsx'
 
+import { ReactMaterialImage } from 'react-material-image'
 import RideRoute from './route.jsx'
 import * as select from '../handler/selectors'
 
@@ -91,7 +92,7 @@ export default class Rides extends MyComponent {
                     <span>id : {ride.id}</span><br/>
                     <span>name :{ride.name}</span>
                     <div>
-                        <a href="http://placehold.it"><img src="http://placehold.it/350x150"></img></a>
+                        <ReactMaterialImage src="http://placehold.it/350x150" onClick={showRide(ride.id)}/>
                     </div>
                     <div>
                         {this.DividerExampleMenu()}
@@ -136,7 +137,7 @@ export default class Rides extends MyComponent {
 
     static reduxDispatchConfig = (dispatch) => ({
         showRide: (id) => (event) => {
-             window.scrollTo(0, 0)
+            // window.scrollTo(0, 0)
             dispatch({
                 type: `SELECT`,
                 payload: {id: id}

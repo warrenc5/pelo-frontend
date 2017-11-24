@@ -64,6 +64,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
 
     $scope.client = new MyClient(new MyAjax(platform.configure()))
     $scope.state["baseUrl"] = platform.baseUrl
+    $scope.state["device"] = device
 
     $scope.cordovaOnly = platform.cordovaOnly
 })
@@ -99,7 +100,7 @@ peloApp.factory('platform', function ($rootScope) {
 
         //FIXME change the url here
         //this.baseUrl = globals.peloBaseUrlMockLocal
-        this.baseUrl = globals.peloBaseUrlLocal
+        //this.baseUrl = globals.peloBaseUrlLocal
         //this.baseUrl = globals.peloBaseUrlTryout
 
         return this.baseUrl
@@ -125,6 +126,7 @@ peloApp.factory('platform', function ($rootScope) {
 
         //FIXME
         var platforms = new Array("Android", "BlackBerry", "iOS", "webOS", "WinCE", "Tizen")
+        console.log(device)
 
         if (typeof(device) === 'undefined') {
             return 'Dev'
@@ -132,6 +134,7 @@ peloApp.factory('platform', function ($rootScope) {
             try {
                 var devicePlatform = device.platform
 
+                console.log(devicePlatform)
                 for (var i = 0; i < platforms.length; i++) {
                     if (devicePlatform.search(platforms[i]) >= 0) {
                         return platforms[i]

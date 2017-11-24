@@ -26,14 +26,13 @@ export default class Logout extends MyComponent {
                 <FlatButton label="Logout" onClick={this.props.logout()}/>
 
 
-                    :<NavLink activeClassName="active" to={routes.HOME}>Jump back in.</NavLink>}
+                    :<NavLink activeClassName="active" to={routes.RIDES}>Jump back in.</NavLink>}
             </div>
         )
         {/**
            dispatch(push(Router.RIDES))
 import { push } from 'react-router-redux'
-
-         **/}
+**/}
     }
 
     componentWillReceiveProps(nextProps) {

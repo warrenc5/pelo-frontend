@@ -52,19 +52,19 @@ export default class RouterPath extends MyComponent {
                     <Route path={routes.ROOT} component={MainLayout}/>
                     <Switch>
                         <Route path={routes.TERMS} component={Terms} pageTitle="T &amp; C"/>
-                        <Redirect exact from={routes.ROOT} to={routes.HOME}/>
+                        <Redirect exact from={routes.ROOT} to={this.props.defaultPath}/>
                         <Redirect exact from={routes.HOME} to={this.props.defaultPath}/>
                         <Route path={routes.LOGOUT} component={Logout} pageTitle="Logout"/>
                         <Route path={routes.ERROR} component={Logout} pageTitle="Error"/>
                         <AsyncRoute exact path={routes.LOGIN} component={Login} pageTitle="Sign In"/>
-                        <PrivateRoute signedIn={signedIn} path={routes.EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
-                        <PrivateRoute signedIn={signedIn} path={routes.RIDES} component={Rides} pageTitle="Rides"/>
-                        <PrivateRoute signedIn={signedIn} path={routes.REGISTER} component={Register} pageTitle="Sign Up"/>
-                        <PrivateRoute signedIn={signedIn} path={routes.GROUPS} component={Groups} pageTitle="Groups"/>
-                        <PrivateRoute signedIn={signedIn} path={routes.MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
-                        <PrivateRoute signedIn={signedIn} path={routes.SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
-                        <PrivateRoute signedIn={signedIn} path={routes.ROUTE} component={MyRouteMap} pageTitle="Route"/>
-                        <PrivateRoute path={routes.ABOUT} component={About} pageTitle="About"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.RIDES} component={Rides} pageTitle="Rides"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.REGISTER} component={Register} pageTitle="Sign Up"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.GROUPS} component={Groups} pageTitle="Groups"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.ROUTE} component={MyRouteMap} pageTitle="Route"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.ABOUT} component={About} pageTitle="About"/>
                     </Switch>
                     <Route children={
                     <Catch>
@@ -73,7 +73,9 @@ export default class RouterPath extends MyComponent {
                             {this.props.signedIn?<span>user id: {this.props.authId}</span>:<span>No user</span>}
                             <br/>
                             <span>build time: {this.props.buildTime}</span><br/>
-                            <span>server: {this.props.baseUrl}</span>
+                            <span>server: {this.props.baseUrl}</span><br/>
+                            <span>device: {`${this.props.device.platform} ${this.props.device.version} ${this.props.device.model}` }</span><br/>
+                            <span>default: {this.props.defaultPath} </span>
                         </div>
                     </Catch>
                     }/>
@@ -99,12 +101,14 @@ export default class RouterPath extends MyComponent {
         baseUrl: PropTypes.string.isRequired,
         authId: PropTypes.number.isRequired,
         defaultPath: PropTypes.string.isRequired,
+        device: PropTypes.object.isRequired,
     }
 
     static reduxPropsConfig = (state, props) => ({
         signedIn: (select.authIdSelector(state) > 0),
         buildTime: select.buildTimeSelector(state),
         baseUrl: ngScope().state.baseUrl,
+        device: ngScope().state.device,
         authId: select.authIdSelector(state),
         defaultPath: select.defaultPath(state)
     })

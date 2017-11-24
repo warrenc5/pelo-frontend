@@ -16,6 +16,7 @@ import {debug0,debug2, debugJSON} from '../service/misc'
 import 'scrollreveal'
 import * as router from '../Router.jsx'
 import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
+import { ReactMaterialImage } from 'react-material-image'
 
 
 /**
@@ -52,7 +53,7 @@ export default class Groups extends MyComponent {
                         e.preventDefault()
                         this.props.joinGroup(this.props.authId,group.id)
                     }}>
-                        <img src={group.avatar}/>
+                    <ReactMaterialImage src={group.avatar}/>
                     </GridTile>
                         ))}
                 </GridList>

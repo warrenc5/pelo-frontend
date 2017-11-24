@@ -35,6 +35,7 @@ import {debug0,debug2, debugJSON} from '../service/misc'
 import {ngScope} from '../service/bridge'
 import {ReduxAsyncConnect} from 'redux-connect'
 import {routes} from '../Router.jsx'
+import * as select from '../handler/selectors'
 
 @myAsyncFormConnect()
 export default class Login extends MyComponent {
@@ -126,7 +127,8 @@ export default class Login extends MyComponent {
     }
 
     render() {
-        const { from } = this.props.location.state || { from: { pathname: routes.ROOT } }
+        console.log(this.props)
+        const { from } = this.props.location.state || { from: { pathname: this.props.defaultPath} }
             return super.isError()?<h1>No way</h1>:
                 <Catch>
                     {this.state.login!==undefined?<Redirect to={from}/>:this.LoginForm(this.props)}
@@ -182,7 +184,7 @@ export default class Login extends MyComponent {
         dispatch: PropTypes.func
     }
 
-    validate = (values, dispatch) => {
+    validate = (values, dispatch,props) => {
         //TODO do this first and if it fails then fail.
         //return Login.reduxFormConfig.asyncValidate(values, dispatch).catch((e)=>())
         return new Promise((resolve, reject)=> {
@@ -196,7 +198,7 @@ export default class Login extends MyComponent {
                 type: `LOGIN`,
                 payload: result
             })
-            dispatch(push(routes.HOME))
+            dispatch(push(props.returnPath))
         }).catch((e)=> {
             //console.log('>>'+e  + " " + e.stack) //JSON.stringify(e))
             dispatch({
@@ -209,7 +211,9 @@ export default class Login extends MyComponent {
 
     static propTypes = {
         fbConnect: PropTypes.func.isRequired,
-       // hello: PropTypes.bool.isRequired,
+        hello: PropTypes.bool.isRequired,
+        defaultPath: PropTypes.string.isRequired,
+        returnPath: PropTypes.string.isRequired,
         ...propTypes
     }
 
@@ -217,13 +221,14 @@ export default class Login extends MyComponent {
         pageTitle: "Login",
         ok: state.ok,
         initialValues: {
-            username: 'wozza', password: 'password1'
+            username: 'wozza', password: 'password1', hello: false
         },
-        //hello: false
-        //initialValues: {username: 'wozza', password: 'password1'} //401
+        defaultPath: select.defaultPath(state),
+        returnPath: location.state !==undefined? location.state.pathname: select.defaultPath(state)
     })
 
-    static reduxDispatchConfig = (dispatch) => ({
+
+    static reduxDispatchConfig = (dispatch,props) => ({
         fbConnect: ()=> (event) =>
             new Promise((resolve, reject)=> {
                 //FIXME --event or event1?
@@ -256,7 +261,7 @@ export default class Login extends MyComponent {
                         payload: result
                     })
 
-                    dispatch(push(routes.HOME))
+                    dispatch(push(props.location.state.pathname))
                 }).catch((e)=> {
                     console.log(JSON.stringify(e))
                     dispatch({

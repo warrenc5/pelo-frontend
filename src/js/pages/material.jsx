@@ -16,6 +16,7 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import Slider from 'material-ui/Slider';
 import Upload from 'material-ui-upload/Upload';
 import UploadPreview from 'material-ui-upload/UploadPreview';
+import { ReactMaterialImage } from 'react-material-image'
 
 export const materialButton = ({ label , onClick }, ...custom) => (
     <FlatButton label={label} onClick={onClick}/>
@@ -79,3 +80,11 @@ export const materialUpload = (input, meta)=> (
             onChange={input.onChange}
             onFileLoad={input.onFileLoad}/>
 )
+export const materialImage = ({dispatch, input, label, type, onKeyDown, meta: { asyncValidating, touched, error } }, ...custom) => (
+    <div className={asyncValidating ? 'async-validating' : ''}>
+        <div>
+            <ReactMaterialImage {... custom} />
+        </div>
+    </div>
+)
+

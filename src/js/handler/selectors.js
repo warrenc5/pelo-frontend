@@ -12,7 +12,8 @@ const copy = (result) => (result)
 export const authIdSelector = createSelector(state => state.login === undefined ? -1 : state.login.id, copy)
 export const buildTimeSelector = createSelector(state => state.globals.buildTime, copy)
 export const groupSelector = createSelector(state => state.groups == null ? [{}] : state.groups, copy)
-export const defaultPath = createSelector(state => state.main !== undefined && state.main.defaultPath !== undefined ? state.main.defaultPath : routes.RIDES, copy)
+export const defaultPath = createSelector(state => state.main !== undefined && state.main.defaultPath !== undefined ? state.main.defaultPath
+    : routes.GROUPS, copy)
 /*
  export const mySelector = createSelector((state) => state.auth.id, (result) => result * 2)
  const shopItemsSelector = state => state.shop.items
