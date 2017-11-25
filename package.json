@@ -13,7 +13,7 @@
     "clean": "rm -rf .gulp node_modules && cd cordova && cordova clean",
     "clean3": "cd cordova && npm run clean",
     "preinstall2": "npm i -g npm-check-updates cordova gulp gradle babel ",
-    "postinstall": "npm-git install",
+    "postinstall2": "npm-git install",
     "sass": "npm rebuild node-sass --force",
     "postshrinkwrap": "npm-check-updates",
     "node-upgrade": "nvm install node"

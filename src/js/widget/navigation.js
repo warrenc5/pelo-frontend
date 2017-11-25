@@ -45,6 +45,7 @@ export default class Navigation extends MyComponent {
             <nav className="main-nav">
                 <Drawer ref={(obj) => { this.nav = obj; }} open={this.props.open} openSecondary={true}>
                     <div className="main-logo">
+                        <img class="round-image" src={`https://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/user/${this.props.login.id}/thumbnail/${this.props.login.avatar}?1444014447`} />
                         <ListItemNavLink primaryText="Pelo" to={routes.HOME} />
                     </div>
                     <hr/>
@@ -77,13 +78,16 @@ export default class Navigation extends MyComponent {
     }
 
     static propTypes = {
-        open: PropTypes.bool.isRequired
+        open: PropTypes.bool.isRequired,
+        login: PropTypes.object.isRequired
     }
     static defaultProps = {
         open: false,
     }
+
     static reduxPropsConfig = (state, props) => ({
-        open: state.main.open
+        open: state.main.open,
+        login: state.login
     })
     static reduxDispatchConfig = (dispatch,props) => ({
         toggle: (event) => {

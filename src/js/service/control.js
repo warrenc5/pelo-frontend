@@ -67,6 +67,18 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
     $scope.state["device"] = device
 
     $scope.cordovaOnly = platform.cordovaOnly
+    $scope.exit = function () {
+        confirmed = function (buttonIndex) {
+            if (buttonIndex == 1) {
+                console.log("navigator.app.exitApp");
+                navigator.app.exitApp();
+            }
+        }
+
+        onTouch = function () {
+            navigator.notification.confirm('', confirmed, 'Exit?');
+        }
+    }
 })
 
 peloApp.factory('platform', function ($rootScope) {
@@ -100,7 +112,7 @@ peloApp.factory('platform', function ($rootScope) {
 
         //FIXME change the url here
         //this.baseUrl = globals.peloBaseUrlMockLocal
-        //this.baseUrl = globals.peloBaseUrlLocal
+        this.baseUrl = globals.peloBaseUrlLocal
         //this.baseUrl = globals.peloBaseUrlTryout
 
         return this.baseUrl

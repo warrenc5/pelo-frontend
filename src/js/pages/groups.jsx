@@ -19,6 +19,7 @@ import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 import { ReactMaterialImage } from 'react-material-image'
 
 
+
 /**
  * TODO: add scrolling
  * let onUpdate = () => {
@@ -40,6 +41,7 @@ export default class Groups extends MyComponent {
         return (
             <div style={style.root}>
                 <GridList
+                    cols={1}
                     style={style.gridList}
                 >
                     <Subheader>{this.props.total}</Subheader>
@@ -53,7 +55,7 @@ export default class Groups extends MyComponent {
                         e.preventDefault()
                         this.props.joinGroup(this.props.authId,group.id)
                     }}>
-                    <ReactMaterialImage src={group.avatar}/>
+                    <ReactMaterialImage src={`http://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/group/${group.id}/small/${group.avatar}?1436673070`}/>
                     </GridTile>
                         ))}
                 </GridList>
@@ -67,7 +69,9 @@ export default class Groups extends MyComponent {
             <Catch>
                 <div>
                     <div>
+                        {/**
                         <a href="http://placehold.it"><img src="http://placehold.it/250x150"></img></a>
+                            **/}
                     </div>
                     <span>size:{this.props.sgroups.length}</span>
                     <div>

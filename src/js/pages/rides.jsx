@@ -10,6 +10,7 @@ import {ngScope} from '../service/bridge'
 import style from '../layout/style'
 import MyComponent,{myAsyncFormConnect} from '../widget/common'
 import {  RaisedButton} from 'material-ui'
+import { ReactMaterialImage } from 'react-material-image'
 
 import {
     materialButton,
@@ -19,9 +20,14 @@ import {
     materialSelectField
 } from './material.jsx'
 
-import { ReactMaterialImage } from 'react-material-image'
 import RideRoute from './route.jsx'
 import * as select from '../handler/selectors'
+import {GridList, GridTile} from 'material-ui/GridList';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import Subheader from 'material-ui/Subheader';
+import IconButton from 'material-ui/IconButton';
+import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+
 
 @myAsyncFormConnect()
 export default class Rides extends MyComponent {
@@ -31,16 +37,16 @@ export default class Rides extends MyComponent {
         this.props = props
     }
 
-/**
- * TODO: add scrolling
- * let onUpdate = () => {
+    /**
+     * TODO: add scrolling
+     * let onUpdate = () => {
  *   window.scrollTo(0, 0)
  * }
- *
- * http://blog.vjeux.com/2013/javascript/scroll-position-with-react.html
- *
- *
- */
+     *
+     * http://blog.vjeux.com/2013/javascript/scroll-position-with-react.html
+     *
+     *
+     */
 
     DividerExampleMenu = () => (
         <Menu desktop={true} style={style}>
@@ -81,29 +87,43 @@ export default class Rides extends MyComponent {
         const rides = this.props.todaysRides
         const {selectedRides,showRide} = this.props
         //TODO don't do this here - do it up there
-        return rides==null?
-            (<span>no rides</span>):(
+        return rides == null ?
+            <span>no rides</span> :
             <div>
                 <span>size:{rides.length} rides today</span>
-                {rides.map((ride) => (
-                <div key={ride.id}>
-                    <RaisedButton label={ride.id} onClick={showRide(ride.id)}/>
-                    {selectedRides[ride.id] == true && <RideRoute rideId={ride.id} routeId={ride.id}/>}
-                    <span>id : {ride.id}</span><br/>
-                    <span>name :{ride.name}</span>
-                    <div>
-                        <ReactMaterialImage src="http://placehold.it/350x150" onClick={showRide(ride.id)}/>
-                    </div>
-                    <div>
-                        {this.DividerExampleMenu()}
-                    </div>
-                    <div>
-                        {this.TableExampleSimple()}
-                    </div>
-                </div>
-                    ))}
+                <GridList
+                    cols={1}
+                    style={style.gridList}
+                >
+                    <Subheader>{this.props.total}</Subheader>
+                    {rides.map((ride) => (
+                    <GridTile data-scroll-reveal
+                              key={ride.id}
+                              title={ride.name}
+                              subtitle={<span>Creator: <b>{ride.id}</b></span>}
+                              actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
+                              onTouchTap={e => {
+                        e.preventDefault()
+                        showRide(ride.id)
+                    }}>
+                        {selectedRides[ride.id] == true && <RideRoute rideId={ride.id} routeId={ride.id}/>}
+                        <span>id : {ride.id}</span><br/>
+                        <span>name :{ride.name}</span>
+                        <div>
+                            <ReactMaterialImage
+                                src={`http://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/group/${ride.group.id}/small/${ride.group.avatar}?1436673070`}
+                                onClick={showRide(ride.id)}/>
+                        </div>
+                        <div>
+                            {this.DividerExampleMenu()}
+                        </div>
+                        <div>
+                            {this.TableExampleSimple()}
+                        </div>
+                    </GridTile>
+                        ))}
+                </GridList>
             </div>
-        )
     }
 
     static propTypes = {
@@ -149,5 +169,5 @@ export default class Rides extends MyComponent {
         form: `RidesForm`,
     }
 
-    static NAME="Rides"
+    static NAME = "Rides"
 }
