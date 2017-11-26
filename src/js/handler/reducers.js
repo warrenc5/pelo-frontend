@@ -82,7 +82,7 @@ const login = (state = [{}], action) => {
         case `LOGIN`:
             return action.payload
         case `LOAD_TEST_DATA`:
-            return action.payload
+            return {... state, ...action.payload.login}
         case `LOGOUT`:
             return state
         case `LOGOUT_CONFIRM`:
@@ -125,6 +125,8 @@ const debug = (state = {}, action) => {
 
 const groups = (state = [{id: 0}], action) => {
     switch (action.type) {
+        case `LOAD_TEST_DATA`:
+            return {... state, ...action.payload.groups}
         case action.JOIN_GROUP:
             alert('join the group')
 
@@ -215,6 +217,8 @@ const main = (state = {}, action) => {
 
 const todaysRides = (state = {}, action) => {
     switch (action.type) {
+        case `LOAD_TEST_DATA`:
+            return {... state, ...action.payload.todaysRides}
         case '@redux-conn/LOAD_FAIL':
             return state
         case 'LOAD':

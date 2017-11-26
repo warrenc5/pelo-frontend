@@ -32,10 +32,12 @@ export default class MyRouteMap extends MyComponent {
         const {route} = this.props
         return (
             <div>
+                <small>
                <span>RouteName {route.title}
-                   RouteId {route.id}: {route.route.length} geos..
-                   {JSON.stringify(route).substring(0, 100)}
+                   RouteId {route.id}: {route.route.length} {/**geos..
+                   {JSON.stringify(route).substring(0, 100)} **/}
                </span>
+                </small>
             </div>
         )
     }

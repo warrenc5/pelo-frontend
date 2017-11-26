@@ -45,6 +45,7 @@
         <hook src="scripts/idevicesyslog.sh" type="after_run" />
     </platform>
     <engine name="ios" spec="^4.5.4" />
+    <engine name="android" spec="^6.3.0" />
     <plugin name="cordova-plugin-compat" spec="^1.2.0" />
     <plugin name="cordova-plugin-crosswalk-webview" spec="^2.3.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
@@ -58,9 +59,10 @@
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="cordova-plugin-cookie-manager" spec="git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git" />
     <plugin name="de.appplant.cordova.plugin.local-notification" />
+    <plugin name="cordova.custom.plugins.exitapp" />
     <plugin name="cordova-plugin-mapbox" spec="git+https://github.com/Telerik-Verified-Plugins/Mapbox.git">
         <variable name="ACCESS_TOKEN" value="pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g" />
     </plugin>
-    <plugin name="kr.co.joycorp.cordova.exitapp" spec="~1.0.0" />
-    <engine name="android" spec="~6.3.0" />
+    <plugin name="cordova.plugins.exitapp" />
+    <plugin name="kr.co.joycorp.cordova.exitapp" spec="~1.0.2" />
 </widget>

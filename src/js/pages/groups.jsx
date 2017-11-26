@@ -19,7 +19,6 @@ import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 import { ReactMaterialImage } from 'react-material-image'
 
 
-
 /**
  * TODO: add scrolling
  * let onUpdate = () => {
@@ -37,7 +36,7 @@ export default class Groups extends MyComponent {
     }
 
     GridListExampleSimple = (props) => {
-        const {sgroups} = props
+        const {groups} = props
         return (
             <div style={style.root}>
                 <GridList
@@ -45,17 +44,24 @@ export default class Groups extends MyComponent {
                     style={style.gridList}
                 >
                     <Subheader>{this.props.total}</Subheader>
-                    {sgroups.map((group) => (
+                    {groups.map((group) => (
                     <GridTile data-scroll-reveal
                               key={group.id}
                               title={group.name}
-                              subtitle={<span>Creator: <b>{group.id}</b></span>}
+                              subtitle={
+                              <span>
+                              {group.members === undefined ?<span>no members</span>:
+                              group.members.map((member)=><span>{member.slug} &nbsp;</span>)
+                              }
+                              </span>
+                              }
                               actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
                               onTouchTap={e => {
                         e.preventDefault()
                         this.props.joinGroup(this.props.authId,group.id)
                     }}>
-                    <ReactMaterialImage src={`http://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/group/${group.id}/small/${group.avatar}?1436673070`}/>
+                        <ReactMaterialImage
+                            src={`http://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/group/${group.id}/small/${group.avatar}?1436673070`}/>
                     </GridTile>
                         ))}
                 </GridList>
@@ -64,32 +70,31 @@ export default class Groups extends MyComponent {
     }
 
     render() {
-        return this.props.sgroups==null?
-            (<span>no groups</span>):(
+        return this.props.groups === undefined ?
+            <span>no groups</span> :
             <Catch>
                 <div>
                     <div>
                         {/**
-                        <a href="http://placehold.it"><img src="http://placehold.it/250x150"></img></a>
+                            <a href="http://placehold.it"><img src="http://placehold.it/250x150"></img></a>
                             **/}
                     </div>
-                    <span>size:{this.props.sgroups.length}</span>
                     <div>
                         {this.GridListExampleSimple(this.props)}
                     </div>
                 </div>
-            </Catch>)
+            </Catch>
     }
 
     static propTypes = {
         joinGroup: PropTypes.func.isRequired,
-        sgroups: PropTypes.array.isRequired,
+        groups: PropTypes.array.isRequired,
         authId: PropTypes.number.isRequired,
     }
 
     static reduxPropsConfig = (state, props) => ({
         total: select.groupSelector(state).length,
-        sgroups: select.groupSelector(state),
+        groups: select.groupSelector(state),
         authId: select.authIdSelector(state),
     })
 

@@ -14,8 +14,7 @@ export const style =
     },
     gridList: {
         width: '100%',
-        height: '100%',
-        overflowY: 'auto',
+        // overflowY: 'auto',
     },
 
     container: {

@@ -98,12 +98,12 @@ peloApp.factory('platform', function ($rootScope) {
         }
 
         debug2(`platform detected ${p}`)
-        //TODO remove
 
         if (~['Dev', 'Unknown'].indexOf(p)) {
+            alert("ok")
             this.baseUrl = globals.peloBaseUrlLocal
         } else {
-            this.baseUrl = globals.peloBaseUrlMock
+            this.baseUrl = globals.peloBaseUrlLocal
         }
 
         cordovaOnly(() => {
@@ -112,7 +112,6 @@ peloApp.factory('platform', function ($rootScope) {
 
         //FIXME change the url here
         //this.baseUrl = globals.peloBaseUrlMockLocal
-        this.baseUrl = globals.peloBaseUrlLocal
         //this.baseUrl = globals.peloBaseUrlTryout
 
         return this.baseUrl
@@ -169,6 +168,7 @@ peloApp.factory('platform', function ($rootScope) {
 
 peloApp.service("storage", function () {
     function initializeStorage() {
+        console.log("initializing storage")
 
         if (checkStorageVersion()) {
             debug2("loading storage")
@@ -184,7 +184,7 @@ peloApp.service("storage", function () {
         var result = new Array()
 
         storage.forEach(function (name, value) {
-            console.log("scope " + name + " " + value.substring(0, 100))
+            console.log(name,value.substring(0,100))
             result[name] = value
         })
 

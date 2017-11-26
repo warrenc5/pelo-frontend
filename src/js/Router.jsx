@@ -44,7 +44,6 @@ export default class RouterPath extends MyComponent {
         // Does the environment support HTML 5 history
         const supportsHistory = typeof window !== 'undefined' && 'pushState' in window.history;
         const {signedIn}  = this.props
-        //const {signedIn}  = true
         return (
             <ConnectedRouter history={this.props.history} ref={(obj) => { this.router = obj; }}>
                 <Catch>

@@ -47,11 +47,10 @@ export default class App extends MyComponent {
         this.handleRequestClose = this.handleRequestClose.bind(this)
         this.handleTouchTap = this.handleTouchTap.bind(this)
 
-        ngScope().initializeStorage()
+        //ngScope().initializeStorage()
 
         //LOAD TEST DATA
 
-        $.extend(this.props.state, createTestData());
         //debug2(JSON.stringify(this.props.state))
 
         //this.history = useRouterHistory(createHashHistory());
@@ -87,12 +86,11 @@ export default class App extends MyComponent {
         )
 
         /**
-         * can't use this because of accessTokenCookie
-         */
         this.store.dispatch(({
             type: `LOAD_TEST_DATA`,
-            payload: {id: -1} //TODO DEFAULT_USER_ID 17
+            payload: createTestData()
         }))
+         **/
 
 
         /*
@@ -104,9 +102,6 @@ export default class App extends MyComponent {
         //FIXME HOWTO??
         //window.scrollReveal = new scrollReveal();
         //TODO what does this do?
-        this.state = {
-            open: false,
-        }
     }
 
     handleRequestClose() {

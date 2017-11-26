@@ -65,7 +65,7 @@ export default class Login extends MyComponent {
         return (
             <div id="loginSection">
                 <p id="error">
-                    <b>Welcome to the Riders App9.</b>
+                    <b>Welcome to the Riders App.</b>
                 </p>
 
                 <Field name="loginFB" component={materialButton} onClick={fbConnect()} label="Login with facebook"/>

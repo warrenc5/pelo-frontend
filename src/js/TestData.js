@@ -8,7 +8,6 @@ function ajax(url) {
         method: "get",
         async: false
     }).responseText
-    //console.log(`loaded ${data}`)
     return JSON.parse(data)
 }
 

@@ -90,36 +90,30 @@ export default class Rides extends MyComponent {
         return rides == null ?
             <span>no rides</span> :
             <div>
-                <span>size:{rides.length} rides today</span>
                 <GridList
                     cols={1}
                     style={style.gridList}
                 >
-                    <Subheader>{this.props.total}</Subheader>
+                    <Subheader>{this.props.total} rides today</Subheader>
                     {rides.map((ride) => (
                     <GridTile data-scroll-reveal
                               key={ride.id}
-                              title={ride.name}
-                              subtitle={<span>Creator: <b>{ride.id}</b></span>}
+                              title={<span>{ride.name} - <b>{ride.group.name}</b></span>}
+                              subtitle={<span><b>&nbsp;{ride.startDate}&nbsp;{ride.startTime}</b> {ride.description}</span>}
                               actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
+                              onClick={showRide(ride.id)}
                               onTouchTap={e => {
                         e.preventDefault()
                         showRide(ride.id)
                     }}>
-                        {selectedRides[ride.id] == true && <RideRoute rideId={ride.id} routeId={ride.id}/>}
-                        <span>id : {ride.id}</span><br/>
-                        <span>name :{ride.name}</span>
-                        <div>
-                            <ReactMaterialImage
-                                src={`http://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/group/${ride.group.id}/small/${ride.group.avatar}?1436673070`}
-                                onClick={showRide(ride.id)}/>
-                        </div>
-                        <div>
+                        <ReactMaterialImage class="round-image"
+                                            src={`http://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/group/${ride.group.id}/small/${ride.group.avatar}?1436673070`}
+                                            onClick={showRide(ride.id)}/>
+                        {selectedRides[ride.id] == true && (<RideRoute rideId={ride.id}
+                                                                       routeId={ride.id}/>)}
+                        {/**
                             {this.DividerExampleMenu()}
-                        </div>
-                        <div>
-                            {this.TableExampleSimple()}
-                        </div>
+                            **/}
                     </GridTile>
                         ))}
                 </GridList>
