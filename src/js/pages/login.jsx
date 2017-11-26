@@ -131,7 +131,7 @@ export default class Login extends MyComponent {
         const { from } = this.props.location.state || { from: { pathname: this.props.defaultPath} }
             return super.isError()?<h1>No way</h1>:
                 <Catch>
-                    {this.state.login!==undefined?<Redirect to={from}/>:this.LoginForm(this.props)}
+                    {this.props.signedIn?<Redirect to={from}/>:this.LoginForm(this.props)}
                 </Catch>
     }
 
@@ -198,7 +198,7 @@ export default class Login extends MyComponent {
                 type: `LOGIN`,
                 payload: result
             })
-            dispatch(push(props.returnPath))
+            //dispatch(push(props.returnPath))
         }).catch((e)=> {
             //console.log('>>'+e  + " " + e.stack) //JSON.stringify(e))
             dispatch({
@@ -214,6 +214,7 @@ export default class Login extends MyComponent {
         hello: PropTypes.bool.isRequired,
         defaultPath: PropTypes.string.isRequired,
         returnPath: PropTypes.string.isRequired,
+        signedIn: PropTypes.bool.isRequired,
         ...propTypes
     }
 
@@ -224,7 +225,8 @@ export default class Login extends MyComponent {
             username: 'wozza', password: 'password1', hello: false
         },
         defaultPath: select.defaultPath(state),
-        returnPath: location.state !==undefined? location.state.pathname: select.defaultPath(state)
+        returnPath: location.state !==undefined? location.state.pathname: select.defaultPath(state),
+        signedIn: (select.authIdSelector(state) > 0),
     })
 
 

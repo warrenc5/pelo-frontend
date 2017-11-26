@@ -57,25 +57,23 @@ export default class RideEditor extends MyComponent {
                         <Field name="Title" component={materialTextField} label="Title"/>
                     </tr>
                     <tr>
-                        <Field name="Ride Date" component={materialDatePicker} hintText="Ride Date" autoOk={true}/>
+                        <Field label="Ride Date" name="RideDate" component={materialDatePicker} hintText="Ride Date" autoOk={true}/>
                     </tr>
                     <tr>
-                        <Field name="Ride Time" component={materialTimePicker} hintText="Ride Time" autoOk={true}/>
+                        <Field label="Ride Time" name="RideTime" component={materialTimePicker} hintText="Ride Time" autoOk={true}/>
                     </tr>
                     <tr>
-                        <Field name="Difficulty" component={materialSlider} label="Difficulty"/>
+                        <Field label="Difficulty" name="Difficulty" component={materialSlider} label="Difficulty"/>
                     </tr>
                     <tr>
                         <a href="http://placehold.it"><img src="http://placehold.it/200x200"></img></a>
                     </tr>
                     <tr>
-                        {/**
                             <Catch>
                             <Field name="Route" component={materialUpload} label="Upload Route"
                                    onChange={this.onChange}
                                    onFileLoad={this.onFileLoad}/>
                             </Catch>
-                            **/}
                     </tr>
                     </tbody>
                 </table>

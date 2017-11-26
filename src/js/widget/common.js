@@ -58,7 +58,7 @@ export default class MyComponent extends React.Component {
 export class Catch extends MyComponent {
     render() {
         return super.isError()
-            ? <span>{""+this.state.error}</span> :
+            ? <span class="error">{""+this.state.error}</span> :
             this.props.children === null ?
                 <span>No children</span> :
                 <div>{this.props.children}</div>

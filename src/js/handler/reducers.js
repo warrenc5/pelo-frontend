@@ -204,7 +204,6 @@ const newRide = (state = {}, action) => {
     }
 }
 const main = (state = {}, action) => {
-    console.log(state)
     switch (action.type) {
         case INITIALIZE:
             return {Title: 'Wozza'}

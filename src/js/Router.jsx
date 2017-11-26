@@ -117,7 +117,8 @@ export default class RouterPath extends MyComponent {
 
 // reload only when path/route has changed
 const reloadOnPropsChange = (props, nextProps) => {
-    return props.location.pathname !== nextProps.location.pathname;
+    console.log(`reload on props ${props.location.pathname} ${nextProps.location.pathname}`)
+    return true //props.location.pathname !== nextProps.location.pathname;
 }
 
 export class RouteCatch extends MyComponent {
