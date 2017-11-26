@@ -263,7 +263,7 @@ export default class Login extends MyComponent {
                         payload: result
                     })
 
-                    dispatch(push(props.location.state.pathname))
+                    //dispatch(push(props.location.state.pathname))
                 }).catch((e)=> {
                     console.log(JSON.stringify(e))
                     dispatch({
