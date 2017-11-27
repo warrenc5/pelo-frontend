@@ -137,11 +137,11 @@ peloApp.factory('platform', function ($rootScope) {
 
         //FIXME
         var platforms = new Array("Android", "BlackBerry", "iOS", "webOS", "WinCE", "Tizen")
-        console.log(device)
 
         if (typeof(device) === 'undefined') {
             return 'Dev'
         } else {
+            console.log(device)
             try {
                 var devicePlatform = device.platform
 
