@@ -1,1 +1,2 @@
 ncu -a 
+npm ls react

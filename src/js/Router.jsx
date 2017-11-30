@@ -56,7 +56,7 @@ export default class RouterPath extends MyComponent {
                         <Route path={routes.LOGOUT} component={Logout} pageTitle="Logout"/>
                         <Route path={routes.ERROR} component={Logout} pageTitle="Error"/>
                         <AsyncRoute exact path={routes.LOGIN} component={Login} pageTitle="Sign In"/>
-                        <PrivateRoute exact signedIn={signedIn} path={routes.EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
+                        <Route exact signedIn={signedIn} path={routes.EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.RIDES} component={Rides} pageTitle="Rides"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.REGISTER} component={Register} pageTitle="Sign Up"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.GROUPS} component={Groups} pageTitle="Groups"/>
