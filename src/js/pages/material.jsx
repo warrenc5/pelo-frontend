@@ -72,7 +72,8 @@ export const materialTimePicker = ({ input, defaultValue, meta: { touched, error
 )
 
 export const materialSlider =() => (
-    <Slider step={0.10} value={0.5}/>
+    <Slider step={0.10} value={0.5}
+        onChange={(event, value) => {console.log(value) }}/>
     )
 
 export const materialUpload = (input, meta)=> (
