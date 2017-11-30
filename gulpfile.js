@@ -30,10 +30,15 @@ var bourbon = require('node-bourbon').includePaths
 var concat = require('gulp-concat')
 var gulp_plugins = require('gulp-load-plugins')()
 //html
-var gulpJade = require('gulp-jade')
-var jade = require('jade')
+var gulpPug = require('gulp-pug')
+var pug = require('pug')
 
 var uglify = require('gulp-uglify');
+var uglifyjs = require('uglify-es');
+var composer = require('gulp-uglify/composer');
+
+var minify = composer(uglifyjs, console);
+
 var combiner = require('stream-combiner2')
 var spawn = require('child_process').spawn;
 var open = require('gulp-open');
@@ -127,7 +132,7 @@ gulp.task('start', [], function () {
         }))
 
     //gulp.watch(paths.jsComponent + '/**/*', ['application-js'])
-    gulp.watch(paths.htmlSrc + '/**/*.jade', ['copy-html'])
+    gulp.watch(paths.htmlSrc + '/**/*.pug', ['copy-html'])
     gulp.watch(paths.htmlSrc + '/**/*.html', ['copy-html'])
     gulp.watch(paths.dataSrc + '/**/*', ['copy-data'])
 
@@ -284,7 +289,8 @@ gulp.task('compile-js', [], function (done1) {
 
     //.pipe(diff()) //takes tooo long
 
-.pipe(plumber((e) => {
+        .pipe(plumber((e) => {
+            console.log(e)
             util.log(`*** ${e.message}\n${e.codeFrame}`)
             //this.emit('end');
         }))
@@ -295,7 +301,7 @@ gulp.task('compile-js', [], function (done1) {
         util.log("production")
         //.pipe(src(paths.jsDestName))
         c = c.pipe(sourcemaps.init({loadMaps: true}))
-            .pipe(streamify(uglify({
+            .pipe(streamify(minify({
                     mangle: false
                     /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
                 }
@@ -373,10 +379,10 @@ gulp.task('copy-html', function () {
         .pipe(diff())
         .pipe(gulp.dest(paths.htmlDest))
 
-    gulp.src(paths.htmlSrc + '/**/*.jade')
+    gulp.src(paths.htmlSrc + '/**/*.pug')
         .pipe(diff())
-        .pipe(gulpJade({
-            jade: jade,
+        .pipe(gulpPug({
+            pug: pug,
             pretty: true
         }))
         .pipe(gulp.dest(paths.htmlDest))
