@@ -569,7 +569,7 @@ gulp.task('cordova_build', function (done) {
         return cordova.build({
             "verbose": true,
             "platforms": ["android"],
-            "options": ["--release",
+            "options": [env == 'prod'?"--release":"--debug",
                 "--browserify",
                 "--gradleArg=--stacktrace"]
         }, function (e) {
