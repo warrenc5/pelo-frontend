@@ -362,7 +362,8 @@ gulp.task('compile-js2', [], function (done1) {
         //.pipe(src(paths.jsDestName))
         c = c.pipe(sourcemaps.init({loadMaps: true}))
             .pipe(streamify(uglify({
-                    mangle: false
+                    mangle: false,
+                comments: false,
                     /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
                 }
             )))
@@ -416,7 +417,7 @@ gulp.task('touch', function (done) {
     gulp.src(paths.jsSrc + '/index.js')
         .pipe(touch());
 })
-gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
+gulp.task('compile', ['setup','copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
 gulp.task('.default', ['default'])
 gulp.task('default', ['auto', 'start', 'compile'])
@@ -663,7 +664,7 @@ gulp.task('install', [], function (done) {
      */
 })
 
-gulp.task('setup', [], (done)=> {
+gulp.task('setup', ['install'], (done)=> {
 //FIXME:gulp.task('setup', ['install'], (done)=> {
     return gulp.src(cordovaConfig)
         .pipe(plumber())
