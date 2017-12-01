@@ -71,6 +71,8 @@ var packageConfig = "package.json"
 var cordovaConfig = "cordova/config.xml"
 var cordovaCmds = "cordova.json"
 
+var isBrowserSync = false
+
 //paths
 var paths = new (function () {
     this.root = process.cwd()
@@ -115,6 +117,7 @@ gulp.task('start', [], function () {
         }
     })
 
+    isBrowserSync = true
     // Watch main files and reload browser.
 
     // Watch changes
@@ -223,7 +226,7 @@ gulp.task('auto', function () {
 });
 
 gulp.task('compile-css', function () {
-    gulp.src(paths.cssSrc + "/*.scss")
+    var b = gulp.src(paths.cssSrc + "/*.scss")
         .pipe(plumber())
         .pipe(diff())
         .pipe(sass({
@@ -232,7 +235,10 @@ gulp.task('compile-css', function () {
         }))
         .pipe(concat(paths.cssDestName))
         .pipe(gulp.dest(paths.cssDest))
-        .pipe(browserSync.stream())
+
+        if(isBrowserSync) {
+            b.pipe(browserSync.stream())
+        }
     return true
 })
 
@@ -424,6 +430,7 @@ gulp.task('default', ['auto', 'start', 'compile'])
 
 
 gulp.task('stop', function (done) {
+    isBrowserSync = false
     browserSync.exit()
 })
 
