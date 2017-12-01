@@ -306,6 +306,7 @@ peloApp.service("routemap", function (storage) {
         //style: 'streets', // light|dark|emerald|satellite|streets , default 'streets'
         Mapbox.show({
 
+                div: 'map_canvas',
                 style: 'mapbox://styles/mapbox/streets-v8',
 
                 margins: {
