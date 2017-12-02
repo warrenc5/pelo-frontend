@@ -89,13 +89,18 @@ export default class RideRoute extends MyComponent {
     }
 
     updateMyLocation() {
-        var {rideId ,userId,dispatch} = this.props
+        var {rideId ,userId,dispatch, myLocation} = this.props
         //var rideId = this.props.route.id
         //var userId =
 
         try {
             console.log(`get location for ${rideId} ${userId}`)
             ngScope().routemap.getLocation((m) => {
+                if (JSON.stringify(myLocation.location) === JSON.stringify(m)) {
+                    console.log(`no change`)
+                    return;
+                }
+
                 console.log(`update location  : ${rideId} ${userId} ${JSON.stringify(m)}`)
                 if (rideId == 0 || userId == 0)
                     return
