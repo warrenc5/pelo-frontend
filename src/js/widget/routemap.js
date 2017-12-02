@@ -34,10 +34,12 @@ export default class MyRouteMap extends MyComponent {
             <div>
                 <small>
                <span>RouteName {route.title}
-                   RouteId {route.id}: {route.route.length} {/**geos..
-                    {JSON.stringify(route).substring(0, 100)} **/}
+                   RouteId {route.id}: {route.route.length} {
+                   /**geos..
+                    {JSON.stringify(route).substring(0, 100)} **/
+                   }
                    <div id="map-canvas"/>
-                   
+
                </span>
                 </small>
             </div>
