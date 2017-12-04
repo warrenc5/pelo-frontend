@@ -156,7 +156,8 @@ gulp.task('start', [], function () {
         })
     )
 
-    //FIXME:gulp.watch(packageConfig, {verbose: true, ignoreInitial: false}, ['install'])
+    //FIXME:
+    gulp.watch(packageConfig, {verbose: true, ignoreInitial: false}, ['install'])
     gulp.watch(cordovaConfig, {verbose: true, ignoreInitial: false}, ['setup'])
 })
 
