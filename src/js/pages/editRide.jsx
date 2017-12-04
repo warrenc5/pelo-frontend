@@ -50,7 +50,7 @@ export default class RideEditor extends MyComponent {
     EditRideForm = (props) => {
         const { handleSubmit, pristine, reset, submitting } = props
         return (
-            <Form onSubmit={handleSubmit(this.validate)}>
+            <Form onSubmit={handleSubmit(this.validate)} type="multipart/form-data">
                 <table>
                     <tbody>
                     <tr>
@@ -102,23 +102,56 @@ export default class RideEditor extends MyComponent {
     onFileLoad = (e, file) => console.log(e.target.result, file.name);
     onChange = (route) => this.setState({route});
 
-    validate = (values, dispatch) => {
-        return Promise.resolve(true)
+    validate = (values, dispatch,props) => {
+        //TODO do this first and if it fails then fail.
+        //return Login.reduxFormConfig.asyncValidate(values, dispatch).catch((e)=>())
+        return new Promise((resolve, reject)=> {
+            console.log(values)
+            resolve(true)
+            /**
+            ngScope().client.login(values.username, values.password, (name, data)=> {
+                resolve(data)
+            }, (e)=> {
+                reject(e)
+            })**/
+        }).then((result)=> {
+            dispatch({
+                type: `RIDEADD`,
+                payload: result
+            })
+            //dispatch(push(props.returnPath))
+        }).catch((e)=> {
+            //console.log('>>'+e  + " " + e.stack) //JSON.stringify(e))
+            dispatch({
+                type: `RIDEADD_ERROR`,
+                payload: {error: 'there was some error ' + e}
+            })
+            throw new SubmissionError({_error: 'whoops' + JSON.stringify(e)})
+        })
     }
 
     static propTypes = {
         Title: PropTypes.string.isRequired,
-        startDate: PropTypes.string.isRequired,
+        RideDate: PropTypes.object.isRequired,
+        RideTime: PropTypes.object.isRequired,
+        Route: PropTypes.object.isRequired,
+        Difficulty: PropTypes.number.isRequired,
         ...propTypes
     }
 
     static reduxPropsConfig = (state, props) => ({
         initialValues: {
             Title: 'stuff',
-            startDate: '2017-09-01'
+            RideDate: '2017-09-01',
+            RideTime: '',
+            Difficulty:0.0,
+            Route:null
         },
         Title: state.Title,
-        startDate: state.startDate
+        RideDate: state.RideDate,
+        RideTime: state.RideTime,
+        Difficulty: state.Difficulty,
+        Route: state.Route,
     })
 
     static reduxDispatchConfig = (dispatch) => ({

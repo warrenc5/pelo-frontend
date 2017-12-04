@@ -31,7 +31,7 @@ import {
 } from './material.jsx'
 
 import submit from "redux-form"
-import {debug0,debug2, debugJSON} from '../service/misc'
+
 import {ngScope} from '../service/bridge'
 import {ReduxAsyncConnect} from 'redux-connect'
 import {routes} from '../Router.jsx'
@@ -136,11 +136,11 @@ export default class Login extends MyComponent {
     }
 
     componentDidMount() {
-        debug2('component did mount')
-        //debug0(this.props.route)
+        console.log('component did mount')
+        //console.log(debug0(this.props.route)
         //var {router} = this.props
         //router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
-        //debug0(router.getCurrentLocation())
+        //console.log(debug0(router.getCurrentLocation())
 
         /**TODO: auto login for testing
          * const {dispatch} = this.props
@@ -162,7 +162,7 @@ export default class Login extends MyComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        debug2('component will receive props')
+        console.log('component will receive props')
     }
 
     @keydown('enter')
@@ -308,7 +308,7 @@ export default class Login extends MyComponent {
         form: `LoginForm`,
         asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
             const {username, password} = values
-            debug2("values : " + JSON.stringify(values))
+            console.log("values : " + JSON.stringify(values))
             var error = {}
 
             if (username == null || username.length == 0)
@@ -321,7 +321,7 @@ export default class Login extends MyComponent {
             if (isEmptyObject(error))
                 resolve(true)
             else {
-                debug2("errors : " + JSON.stringify(error))
+                console.log("errors : " + JSON.stringify(error))
                 reject(error)
             }
 

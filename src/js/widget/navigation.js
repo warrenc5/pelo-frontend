@@ -39,14 +39,15 @@ export default class Navigation extends MyComponent {
                       onClick={this.props.toggle.bind(this)}
                       containerElement={
                       <NavLink activeClassName={props.activeClassName} to={props.to}
-                      />} />
+                      />}/>
 
         return (
             <nav className="main-nav">
                 <Drawer ref={(obj) => { this.nav = obj; }} open={this.props.open} openSecondary={true}>
                     <div className="main-logo">
-                        <img class="round-image" src={`https://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/user/${this.props.login.id}/thumbnail/${this.props.login.avatar}?1444014447`} />
-                        <ListItemNavLink primaryText="Pelo" to={routes.HOME} />
+                        <img class="round-image"
+                             src={`https://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/user/${this.props.login.id}/thumbnail/${this.props.login.avatar}?1444014447`}/>
+                        <ListItemNavLink primaryText="Pelo" to={routes.HOME}/>
                     </div>
                     <hr/>
                     <List>
@@ -89,11 +90,11 @@ export default class Navigation extends MyComponent {
         open: state.main.open,
         login: state.login
     })
-    static reduxDispatchConfig = (dispatch,props) => ({
+    static reduxDispatchConfig = (dispatch, props) => ({
         toggle: (event) => {
-           dispatch({
-               type: `HAMBURGER`,
-           })
+            dispatch({
+                type: `HAMBURGER`,
+            })
         }
     })
 

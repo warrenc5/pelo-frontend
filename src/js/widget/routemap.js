@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import MyComponent,{myAsyncFormConnect} from './common'
 import {ngScope} from '../service/bridge'
-import {debug0,debug2, debugJSON} from '../service/misc'
+
 
 /**
  * The route is already loaded just interact with the map
@@ -12,41 +12,41 @@ import {debug0,debug2, debugJSON} from '../service/misc'
 export default class MyRouteMap extends MyComponent {
     constructor(props) {
         super(props)
+        this.props = props
     }
 
     componentWillReceiveProps(nextProps) {
-        debug2('myroutemap component will receive props')
-        this.showMap2(nextProps)
+        console.log('myroutemap component will receive props')
     }
 
     componentDidMount() {
-        debug2('myroutemap component did mount')
+        console.log('myroutemap component did mount')
+        this.showMap2(this.props)
     }
 
     componentWillUnmount() {
-        debug2('myroutemap component will unmount')
+        console.log('myroutemap component will unmount')
+        try {
+            ngScope().routemap.hideMap()
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     render() {
         //TODO add header or footer
         const {route} = this.props
         return (
-            <div>
-                <small>
-               <span>RouteName {route.title}
-                   RouteId {route.id}: {route.route.length} {/**geos..
-                   {JSON.stringify(route).substring(0, 100)} **/}
-               </span>
-                </small>
-            </div>
+            <div id="map-canvas"/>
         )
     }
-
 
     showMap2(nextProps) {
         console.log('showing map2')
 
         var {route} = nextProps
+        if(route === undefined || route.route === undefined)
+            return
         //console.log(JSON.stringify(this.props.route))
         console.log('route ' + route.id + " " + route.route.length)
         console.log('route center ' + JSON.stringify(route.center))
@@ -69,6 +69,7 @@ export default class MyRouteMap extends MyComponent {
     })
 
     static reduxDispatchConfig = (dispatch) => ({
+
         /**
          updateLocation: (id) => {
             dispatch({})

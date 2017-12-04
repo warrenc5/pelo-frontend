@@ -22,18 +22,18 @@ var route;
 
 function plotFitRoute(data) {
     if (!Array.isArray(data.route)) {
-        debug2("error data is not an array")
+        console.log("error data is not an array")
         return;
     }
 
     var route = new Array()
 
-    debug2("route length " + data.route.length)
+    console.log("route length " + data.route.length)
 
     var startpos = data.start
     var endpos = data.end
 
-    debug2("route " + JSON.stringify(data.route[1]))
+    console.log("route " + JSON.stringify(data.route[1]))
 
     for (i = 0; i < data.route.length; i++) {
         var lat
@@ -45,12 +45,12 @@ function plotFitRoute(data) {
         }
 
         if (pos != null) {
-            //debug2(pos)
+            //console.log(pos)
             route[route.length] = pos
         }
     }
 
-    debug2("route length " + route.length)
+    console.log("route length " + route.length)
 
     if (startpos == null) {
         startpos = route[0]
@@ -79,7 +79,7 @@ function plotRiderLocations() {
     for (var k = 0; k < data.length; k++) {
         var user = getUser(data[k].userId)
         if (user == null) {
-            debug2("no user " + data[k].userId)
+            console.log("no user " + data[k].userId)
             continue
         }
 
@@ -87,7 +87,7 @@ function plotRiderLocations() {
             continue;
 
         //if (!isCurrentUserId(data[k].userId)){
-        debug2(JSON.stringify(data[k]))
+        console.log(JSON.stringify(data[k]))
         var userImage = user.avatarFileName
 
         addMarker((user.role == "captain" ? 1 : 3),
@@ -154,7 +154,7 @@ function updatePolys(encoded, pos) {
     for (i = 0; i < pos.length; i++) {
         updatePoly(pos[i])
     }
-    //debug2(JSON.stringify(poly.getLatLngs()))
+    //console.log(JSON.stringify(poly.getLatLngs()))
     //encodePoly(encoded)
 }
 
@@ -184,7 +184,7 @@ function encodePoly(encoded) {
             document.getElementById(encoded).value = encodeString
         }
     } catch (e) {
-        debug2('encode poly' + e + '<br/>')
+        console.log('encode poly' + e + '<br/>')
     }
 }
 
@@ -302,7 +302,7 @@ function initMap(rideId, pos) {
         return;
     }
 
-    debug2("init map " + rideId)
+    console.log("init map " + rideId)
     L.mapbox.accessToken = 'pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g'
 
     map = L.mapbox.map('mapc' + rideId, 'mapbox.streets')
@@ -372,7 +372,7 @@ function distanceBetween(pos1, pos2) {
         var pos2LatLng = new L.LatLng(pos2.lat, pos2.lng)
         return pos1LatLng.distanceTo(pos2LatLng)
     } catch (e) {
-        debug2("L not yet available")
+        console.log("L not yet available")
         return 0
     }
 }

@@ -30,10 +30,15 @@ var bourbon = require('node-bourbon').includePaths
 var concat = require('gulp-concat')
 var gulp_plugins = require('gulp-load-plugins')()
 //html
-var gulpJade = require('gulp-jade')
-var jade = require('jade')
+var gulpPug = require('gulp-pug')
+var pug = require('pug')
 
 var uglify = require('gulp-uglify');
+var uglifyjs = require('uglify-es');
+var composer = require('gulp-uglify/composer');
+
+var minify = composer(uglifyjs, console);
+
 var combiner = require('stream-combiner2')
 var spawn = require('child_process').spawn;
 var open = require('gulp-open');
@@ -65,6 +70,8 @@ var cordovaPackageConfig = "cordova/package.json"
 var packageConfig = "package.json"
 var cordovaConfig = "cordova/config.xml"
 var cordovaCmds = "cordova.json"
+
+var isBrowserSync = false
 
 //paths
 var paths = new (function () {
@@ -110,6 +117,7 @@ gulp.task('start', [], function () {
         }
     })
 
+    isBrowserSync = true
     // Watch main files and reload browser.
 
     // Watch changes
@@ -127,7 +135,7 @@ gulp.task('start', [], function () {
         }))
 
     //gulp.watch(paths.jsComponent + '/**/*', ['application-js'])
-    gulp.watch(paths.htmlSrc + '/**/*.jade', ['copy-html'])
+    gulp.watch(paths.htmlSrc + '/**/*.pug', ['copy-html'])
     gulp.watch(paths.htmlSrc + '/**/*.html', ['copy-html'])
     gulp.watch(paths.dataSrc + '/**/*', ['copy-data'])
 
@@ -193,6 +201,17 @@ var args = process.argv
 gulp.task('auto', function () {
     var p;
 
+    (function() {
+        var childProcess = require("child_process");
+        var oldSpawn = childProcess.spawn;
+        function mySpawn() {
+            //console.log('spawn', JSON.stringify(process.env,arguments));
+            var result = oldSpawn.apply(this, arguments);
+            return result;
+        }
+        childProcess.spawn = mySpawn;
+    })();
+
     function spawnChildren(e) {
         util.log('gulp changed, reloading ' + JSON.stringify(args))
 
@@ -218,7 +237,7 @@ gulp.task('auto', function () {
 });
 
 gulp.task('compile-css', function () {
-    gulp.src(paths.cssSrc + "/*.scss")
+    var b = gulp.src(paths.cssSrc + "/*.scss")
         .pipe(plumber())
         .pipe(diff())
         .pipe(sass({
@@ -227,7 +246,10 @@ gulp.task('compile-css', function () {
         }))
         .pipe(concat(paths.cssDestName))
         .pipe(gulp.dest(paths.cssDest))
-        .pipe(browserSync.stream())
+
+        if(isBrowserSync) {
+            b.pipe(browserSync.stream())
+        }
     return true
 })
 
@@ -284,7 +306,8 @@ gulp.task('compile-js', [], function (done1) {
 
     //.pipe(diff()) //takes tooo long
 
-.pipe(plumber((e) => {
+        .pipe(plumber((e) => {
+            console.log(e)
             util.log(`*** ${e.message}\n${e.codeFrame}`)
             //this.emit('end');
         }))
@@ -295,7 +318,7 @@ gulp.task('compile-js', [], function (done1) {
         util.log("production")
         //.pipe(src(paths.jsDestName))
         c = c.pipe(sourcemaps.init({loadMaps: true}))
-            .pipe(streamify(uglify({
+            .pipe(streamify(minify({
                     mangle: false
                     /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
                 }
@@ -356,7 +379,8 @@ gulp.task('compile-js2', [], function (done1) {
         //.pipe(src(paths.jsDestName))
         c = c.pipe(sourcemaps.init({loadMaps: true}))
             .pipe(streamify(uglify({
-                    mangle: false
+                    mangle: false,
+                comments: false,
                     /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
                 }
             )))
@@ -373,10 +397,10 @@ gulp.task('copy-html', function () {
         .pipe(diff())
         .pipe(gulp.dest(paths.htmlDest))
 
-    gulp.src(paths.htmlSrc + '/**/*.jade')
+    gulp.src(paths.htmlSrc + '/**/*.pug')
         .pipe(diff())
-        .pipe(gulpJade({
-            jade: jade,
+        .pipe(gulpPug({
+            pug: pug,
             pretty: true
         }))
         .pipe(gulp.dest(paths.htmlDest))
@@ -396,7 +420,7 @@ gulp.task('copy-images', [], function () {
         .pipe(gulp.dest(paths.imgDest))
 })
 
-gulp.task('release', gulpsync.sync(['setup', 'compile', 'cordova_build', 'shrinkwrap']), function () {
+gulp.task('release', gulpsync.sync(['compile', 'cordova_build', 'shrinkwrap']), function () {
     util.log('released')
     //TODO if !exists
     //cordova/platforms/android/build/outputs/apk/android-x86-debug.apk
@@ -410,13 +434,14 @@ gulp.task('touch', function (done) {
     gulp.src(paths.jsSrc + '/index.js')
         .pipe(touch());
 })
-gulp.task('compile', ['copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
+gulp.task('compile', ['setup','copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
 gulp.task('.default', ['default'])
 gulp.task('default', ['auto', 'start', 'compile'])
 
 
 gulp.task('stop', function (done) {
+    isBrowserSync = false
     browserSync.exit()
 })
 
@@ -485,7 +510,7 @@ gulp.task('ios', ['watch-dist'], function (done) {
 })
 gulp.task('android', ['watch-dist'], function (done) {
 })
-gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'default', 'cordova_serve']), function (done) {
+gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'cordova_serve']), function (done) {
         return gulp.watch([paths.dest + '/**/*', "!" + paths.jsDest + "/cordova/**", "!" + paths.jsDest + "/" + buildTimeFile], {
                 ignoreInitial: true,
                 readDelay: 5000
@@ -562,7 +587,7 @@ gulp.task('cordova_build', function (done) {
         return cordova.build({
             "verbose": true,
             "platforms": ["android"],
-            "options": ["--release",
+            "options": [env == 'prod'?"--release":"--debug",
                 "--browserify",
                 "--gradleArg=--stacktrace"]
         }, function (e) {
@@ -657,7 +682,7 @@ gulp.task('install', [], function (done) {
      */
 })
 
-gulp.task('setup', [], (done)=> {
+gulp.task('setup', ['install'], (done)=> {
 //FIXME:gulp.task('setup', ['install'], (done)=> {
     return gulp.src(cordovaConfig)
         .pipe(plumber())

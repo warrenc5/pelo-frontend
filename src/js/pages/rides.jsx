@@ -27,6 +27,8 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import Subheader from 'material-ui/Subheader';
 import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+import {routes} from '../Router.jsx'
+import {push} from 'react-router-redux'
 
 
 @myAsyncFormConnect()
@@ -109,9 +111,10 @@ export default class Rides extends MyComponent {
                         <ReactMaterialImage class="round-image"
                                             src={`http://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/group/${ride.group.id}/small/${ride.group.avatar}?1436673070`}
                                             onClick={showRide(ride.id)}/>
-                        {selectedRides[ride.id] == true && (<RideRoute rideId={ride.id}
-                                                                       routeId={ride.id}/>)}
                         {/**
+
+                            {selectedRides[ride.id] == true && (<RideRoute rideId={ride.id}
+                                                                       routeId={ride.route}/>)}
                             {this.DividerExampleMenu()}
                             **/}
                     </GridTile>
@@ -124,7 +127,7 @@ export default class Rides extends MyComponent {
         showRide: PropTypes.func.isRequired,
         //id: PropTypes.bool.isRequired,
         //joinGroup: PropTypes.func.isRequired,
-        //todaysRides: PropTypes.array.isRequired,
+        //toaysRides: PropTypes.array.isRequired,
         selectedRides: PropTypes.object.isRequired,
         authId: PropTypes.number.isRequired,
     }
@@ -134,7 +137,7 @@ export default class Rides extends MyComponent {
         promise: (props) => new Promise((resolve, reject)=> {
             var authId = select.authIdSelector(props.store.getState())
             ngScope().client.todaysRides(authId, (name, data)=> {
-                resolve(data.sort((a, b)=>a.id > b.id))
+                resolve(data)
             }, (e)=> {
                 console.log(e)
                 reject(e)
@@ -156,6 +159,9 @@ export default class Rides extends MyComponent {
                 type: `SELECT`,
                 payload: {id: id}
             })
+
+
+            dispatch(push(routes.ROUTE))
         }
     })
 

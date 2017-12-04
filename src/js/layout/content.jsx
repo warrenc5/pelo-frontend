@@ -8,7 +8,7 @@ import Working from '../widget/working.jsx'
 //import {buildTime} from '../handler/selectors'
 import { RaisedButton, Divider } from 'material-ui'
 import {ngScope} from '../service/bridge'
-import {debug0,debug2, debugJSON} from '../service/misc'
+
 import { reduxConnect} from '../widget/common'
 
 /*** defunct **/
@@ -49,12 +49,12 @@ export default class ContentLayout extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        debug2('content will receive props')
+        console.log('content will receive props')
     }
 
 
     componentDidMount() {
-        debug2('content did mount')
+        console.log('content did mount')
         /**TODO: auto login for testing
          * const {dispatch} = this.props
         dispatch(submit(LoginForm))

@@ -6,7 +6,7 @@ import 'angular'
 import $ from 'jquery'
 import 'ngreact/ngReact'
 import moment from 'moment'
-import {debug, debug2, debugJSON} from './service/misc'
+
 import {globals} from './service/globals'
 import './service/control'
 
@@ -31,7 +31,7 @@ export default class Local {
 
         var that = this
         angular.element(document).ready(function () {
-            debug2('angular ready')
+            console.log('angular ready')
             if (typeof cordova == 'undefined') {
             }
             try {
@@ -42,17 +42,17 @@ export default class Local {
         })
     }
     onDeviceReady() { //cordova only
-        debug2('device ready')
+        console.log('device ready')
     }
     onPluginsReady() {
-        debug2('plugins ready')
+        console.log('plugins ready')
     }
     onBodyLoad() {
-        debug2('bodyload')
+        console.log('bodyload')
     }
     banner() {
         var now = moment().format('MMMM Do YYYY, h:mm:ss a')
-        debug2("PELO APP " + JSON.stringify({
+        console.log("PELO APP " + JSON.stringify({
                 build: globals.buildTime,
                 run: now,
                 APP: globals.APP_VERSION,
@@ -60,8 +60,8 @@ export default class Local {
             }))
     }
     resume() {
-        debug2('resume')
-        debug2(cordova.backgroundapp.resumeType)
+        console.log('resume')
+        console.log(cordova.backgroundapp.resumeType)
 
         if (cordova.backgroundapp.resumeType == 'normal-launch') {
             cordova.backgroundapp.show()
@@ -74,14 +74,14 @@ export default class Local {
     }
     setup() {
         try {
-            debug2(cordova.backgroundapp.resumeType)
+            console.log(cordova.backgroundapp.resumeType)
             if (cordova.backgroundapp.resumeType == 'launch') {
                 onDeviceReady()
             } else {
-                debug2('ready4?')
+                console.log('ready4?')
             }
         } catch (e) {
-            debug2(e)
+            console.log(e)
         }
     }
     showSplash() {
@@ -95,7 +95,7 @@ export default class Local {
              }, splashDuration - fadeDuration)
              */
         } catch (e) {
-            debug2(e)
+            console.log(e)
         }
 
         //document.addEventListener("menubutton", exitApp, false)

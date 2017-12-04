@@ -12,7 +12,7 @@ import RouterPath from './Router.jsx'
 import {createTestData} from './TestData'
 import MyReducer from './handler/reducers'
 import {myTheme} from './layout/theme'
-import {debug, debug2, debugJSON} from './service/misc'
+
 import {ngScope} from './service/bridge'
 import MyComponent, {Catch,myAsyncFormConnect} from './widget/common'
 import createHashHistory from 'history/createHashHistory'
@@ -51,7 +51,7 @@ export default class App extends MyComponent {
 
         //LOAD TEST DATA
 
-        //debug2(JSON.stringify(this.props.state))
+        //console.log(JSON.stringify(this.props.state))
 
         //this.history = useRouterHistory(createHashHistory());
         //this.history = HashHistory
@@ -69,9 +69,9 @@ export default class App extends MyComponent {
         this.middleware = applyMiddleware(... [
             ({ getState })=> {
                 return next => action => {
-                    console.log(action)
+                    console.log(action.type,action.payload === undefined? null:action.payload)
                     let returnValue = next(action)
-                    console.log(getState())
+                    console.log("state",getState())
                     return returnValue
                 }
             },
@@ -95,7 +95,7 @@ export default class App extends MyComponent {
 
         /*
          this.store.subscribe((state = [], dispatch) => {
-         debug2("sub " + JSON.stringify(state))
+         console.log("sub " + JSON.stringify(state))
          })
          */
 

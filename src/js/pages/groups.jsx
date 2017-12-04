@@ -12,7 +12,7 @@ import {ngScope} from '../service/bridge'
 import style from '../layout/style'
 import * as action from '../handler/actions'
 import * as select from '../handler/selectors'
-import {debug0,debug2, debugJSON} from '../service/misc'
+
 import 'scrollreveal'
 import * as router from '../Router.jsx'
 import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'

@@ -6,10 +6,12 @@ import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import {ngScope} from '../service/bridge'
-import {debug2} from '../service/misc'
-import MyComponent,{myAsyncFormConnect} from '../widget/common'
+
+import MyComponent,{myAsyncFormConnect,Catch} from '../widget/common'
 import MyRouteMap from '../widget/routemap'
 import { Divider } from 'material-ui'
+import * as select from '../handler/selectors'
+
 
 @myAsyncFormConnect()
 export default class RideRoute extends MyComponent {
@@ -17,51 +19,65 @@ export default class RideRoute extends MyComponent {
     constructor(props) {
         super(props)
         this.props = props
-        this.loadRoute(this.props.routeId)
     }
 
-    //https://www.npmjs.com/package/react-router-dispatcher
 
     render() {
+        const {selectedRide,rideId,routeId,route,difficulty} = this.props
         return (
-            <div>
-                <Divider />
-                <MyRouteMap />
-                <Divider />
-            </div>
+            route === undefined ? <div/> :
+                <div>
+                    <Catch>
+                        <span>{route.title}</span><br/>
+                        <small><span>{difficulty} {route.distance}km.</span></small><br/>
+                        <small>
+                            {selectedRide.participants.map(p=><span>{p.slug}&nbsp;</span>)}
+                        </small>
+                        {/**
+                        <img class="round-image"
+                             src={`https://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/user/${p.id}/thumbnail/${this.props.login.avatar}?1444014447`}/>
+                        **/}
+                        <hr/>
+                        <MyRouteMap rideId={rideId} routeId={routeId} route={route}/>
+                    </Catch>
+                </div>
         )
-        //routeId={this.props.routeId} route={this.props.route.route}/> -- not loaded yet
     }
 
     componentWillReceiveProps(nextProps) {
-        debug2('component will receive props')
+        console.log('component will receive props')
     }
 
     componentDidMount() {
-        debug2('route component did mount for route ' + this.props.routeId)
-        //debug0(this.props.route)
+        console.log('route component did mount for route ' + this.props.routeId)
+        //console.log(debug0(this.props.route)
         var {router} = this.props
         //router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
 
-
-        this.timerID = setInterval(
-            () => this.updateMyLocation(),
-            5000
-        )
-
-        this.timerID = setInterval(
-            () => this.updateOthersLocations(),
-            20000
-        )
         /*
-         this.updateMyLocation()
-         this.updateOthersLocations()
+         this.timerID = setInterval(
+         () => this.updateMyLocation(),
+         5000
+         )
+
+         this.otherTimerID = setInterval(
+         () => this.updateOthersLocations(),
+         20000
+         )
          */
+
+
+        this.updateMyLocation()
+        this.updateOthersLocations()
     }
 
     updateOthersLocations() {
         try {
             var {userId,rideId,myLocation,dispatch} = this.props
+
+            if (rideId < 0)
+                return
+
             ngScope().client.checkRidersLocations(rideId, (name, data) => {
                     dispatch({
                         type: `RIDER_LOCATIONS`,
@@ -89,13 +105,20 @@ export default class RideRoute extends MyComponent {
     }
 
     updateMyLocation() {
-        var {rideId ,userId,dispatch} = this.props
+        var {rideId ,userId,dispatch, myLocation} = this.props
         //var rideId = this.props.route.id
         //var userId =
 
         try {
             console.log(`get location for ${rideId} ${userId}`)
+            if (rideId < 0)
+                return
             ngScope().routemap.getLocation((m) => {
+                if (JSON.stringify(myLocation.location) === JSON.stringify(m)) {
+                    console.log(`no change`)
+                    return;
+                }
+
                 console.log(`update location  : ${rideId} ${userId} ${JSON.stringify(m)}`)
                 if (rideId == 0 || userId == 0)
                     return
@@ -120,57 +143,44 @@ export default class RideRoute extends MyComponent {
         }
     }
 
-    loadRoute(id) {
-        //const {ride} = store.getState()
-        //TODO get the selected ride
-        ngScope().client.rideRoute(id, (name, data)=> {
-            this.props.dispatch({
-                type: `DOWNLOAD_ROUTE`,
-                payload: data
-            })
-        }, (e)=> {
-            console.log(e)
-            throw e
-        })
-    }
-
     componentWillUnmount() {
-        debug2('myroutemap component will unmount')
+        console.log('myroutemap component will unmount')
         clearInterval(this.timerID)
-        try {
-            ngScope().routemap.hideMap()
-        } catch (e) {
-            console.log(e)
-        }
+        clearInterval(this.otherTimerID)
+
     }
 
     static propTypes = {
         rideId: PropTypes.number.isRequired,
+        routeId: PropTypes.number.isRequired,
         userId: PropTypes.number.isRequired,
         route: PropTypes.object.isRequired,
         myLocation: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
+        difficulty: PropTypes.string.isRequired,
+        selectedRide: PropTypes.object.isRequired,
     }
 
     static defaultProps = {
         rideId: 0,
+        routeId: 0,
         userId: 0,
         myLocation: {},
-        route: {}
-
+        route: {},
+        difficulty: 'unknown'
     }
 
     static reduxAsyncConfig = [{
         key: `route`,
-        promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
-            ngScope().client.rideRoute(id, (name, data)=> {
+        promise: (props) => new Promise((resolve, reject)=> {
+            const {rideId} = RideRoute.reduxPropsConfig(props.store.getState())
+
+            if (rideId === undefined || rideId === -1)
+                return reject("rideId is " + rideId)
+
+            ngScope().client.rideRoute(rideId, (name, data)=> {
                 resolve(data)
             }, e=>reject(e))
-        }).then((result) => {
-            this.props.dispatch({
-                type: `DOWNLOAD_ROUTE`,
-                payload: data
-            })
         }).catch((e)=> {
             console.log(e)
             throw e
@@ -180,7 +190,11 @@ export default class RideRoute extends MyComponent {
     static reduxPropsConfig = (state, props) => ({
         route: state.route,
         userId: state.login.id,
-        myLocation: state.riderLocation
+        myLocation: state.riderLocation,
+        rideId: select.currentRideId(state),
+        routeId: select.currentRouteId(state),
+        difficulty: select.difficultyLevel(state.route),
+        selectedRide: select.selectedRide(state)
     })
 
     static reduxDispatchConfig = (dispatch) => ({

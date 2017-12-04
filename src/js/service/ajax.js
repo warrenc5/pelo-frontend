@@ -1,11 +1,11 @@
-import {debug2} from './misc'
+
 import storage from './storage'
 import Cookie from 'tough-cookie'
 
 export default class MyAjax {
 
     constructor(baseUrl) {
-        debug2(`ajax using ${baseUrl}`)
+        console.log(`ajax using ${baseUrl}`)
         this.baseUrl = baseUrl
     }
 
@@ -17,7 +17,7 @@ export default class MyAjax {
         } catch (e) {
         }
 
-        debug2(">>" + name + "@" + this.baseUrl + url)
+        console.log(">>" + name + "@" + this.baseUrl + url)
 
         url = this.baseUrl + url
 
@@ -26,10 +26,10 @@ export default class MyAjax {
         xhttp.onreadystatechange = function () {
             switch (xhttp.readyState) {
                 case 0:
-                    debug2("initialized")
+                    console.log("initialized")
                     break
                 case 1:
-                    debug2("connected " + method)
+                    console.log("connected " + method)
                     xhttp.withCredentials = true
 
                     //xhttp.setRequestHeader("Cookie", "myccookie")
@@ -44,23 +44,23 @@ export default class MyAjax {
                     }
                     break
                 case 2:
-                    debug2("receiving")
+                    console.log("receiving")
                     break
                 case 3:
-                    debug2("processing " + method + " " + xhttp.status)
+                    console.log("processing " + method + " " + xhttp.status)
                     break
                 case 4:
-                    debug2("finished " + xhttp.status + " len:" + xhttp.responseText.length)
+                    console.log("finished " + xhttp.status + " len:" + xhttp.responseText.length)
                     //gEBI("working").className = "hidden"
                     switch (xhttp.status) {
                         case 200:
                         case 202:
                         case 204:
                             var data = storage.storeJSON(name, xhttp.responseText)
-//                            debug2('cookie:' + xhttp.getResponseHeader('Set-Cookie'))
+//                            console.log('cookie:' + xhttp.getResponseHeader('Set-Cookie'))
 
                             if (data === undefined) {
-                                debug2("error:" + xhttp.responseText)
+                                console.log("error:" + xhttp.responseText)
                             }
                             success(name, data)
                             //cookies = xhttp.getResponseHeader['set-cookie'].map(Cookie.parse);

@@ -32,7 +32,7 @@ export default class MyClient {
     updateUserLocation(rideId, userId, pos, success, failure) {
 
         if (pos == null || pos == undefined) {
-            debug2("no position ")
+            console.log("no position ")
             return
         }
         var data = "{\"when\": " + new Date().getTime() + ", \"location\" :{ \"lat\" : " + pos.lat + ", \"lng\" : " + pos.lng + "}}"
@@ -60,28 +60,28 @@ export default class MyClient {
     }
 
     checkUserLocation(userId, rideId) {
-        debug2('check user location')
+        console.log('check user location')
         var satId = "satId" + rideId
 
         getLocation(
             function (pos) {
-                debug2('located ' + JSON.stringify(pos))
+                console.log('located ' + JSON.stringify(pos))
                 updateUserLocation(userId, rideId, pos)
             },
             function (x) {
                 gEBI(satId).src = "img/sat4.png"
-                debug2(x.code + " " + x.message)
+                console.log(x.code + " " + x.message)
             },
             function (e) {
                 gEBI(satId).src = "img/sat3.png"
-                debug2("location not supported " + e)
+                console.log("location not supported " + e)
             })
     }
 
     toggleTracking(userId, rideId) {
         var satId = "satId" + rideId
         var name = "ride" + rideId + "currentuser" + currentUserId
-        debug2('toggle tracking ' + name)
+        console.log('toggle tracking ' + name)
 
         var tracking = workers.has(name)
 
