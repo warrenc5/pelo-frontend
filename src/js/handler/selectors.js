@@ -14,6 +14,55 @@ export const buildTimeSelector = createSelector(state => state.globals.buildTime
 export const groupSelector = createSelector(state => state.groups == null ? [{}] : state.groups, copy)
 export const defaultPath = createSelector(state => state.main !== undefined && state.main.defaultPath !== undefined ? state.main.defaultPath
     : routes.RIDES, copy)
+
+export const currentRideId = createSelector(state => {
+    var selectedRide = -1
+
+    if (state.selectedRides !== undefined) {
+        for (var rideId in state.selectedRides) {
+            selectedRide = rideId
+            break;
+        }
+
+    }
+
+    return parseInt(selectedRide)
+}, copy)
+
+export const currentRouteId = createSelector(state => {
+    var selectedRide = currentRideId(state)
+    var selectedRoute = -1
+    if (state.todaysRides !== undefined && state.todaysRides.length > 0) {
+        state.todaysRides.forEach(ride=> {
+            if (ride.id === selectedRide) {
+                selectedRoute = parseInt(ride.route)
+            }
+        })
+    }
+    return selectedRoute
+}, copy)
+export const selectedRide = createSelector(state => {
+    var selectedRide = currentRideId(state)
+    return state.todaysRides === undefined ? null : state.todaysRides.find(r=>r.id===selectedRide)
+}, copy)
+
+export const difficultyLevel = createSelector(state => {
+    if (state !== undefined)
+        switch (state.difficulty) {
+            case 1:
+                return 'Easy'
+            case 2:
+                return 'Intermediate'
+            case 3:
+                return 'Difficult'
+            case 4:
+                return 'Expert'
+            default:
+                return 'Unknown'
+        }
+    return 'Unknown'
+}, copy)
+
 /*
  export const mySelector = createSelector((state) => state.auth.id, (result) => result * 2)
  const shopItemsSelector = state => state.shop.items

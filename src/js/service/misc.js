@@ -1,22 +1,5 @@
 import {globals} from './globals'
 
-export function debug(name, xhttp) {
-    debug2(name + " " + xhttp.status + "  " + xhttp.responseText)
-}
-
-export function debug2(message) {
-    if (!globals.debugFlag)
-        return
-
-    //gEBI("demo").innerHTML = message + "<br/>"+gEBI("demo").innerHTML
-    console.log(message)
-}
-
-
-export function debugJSON(message) {
-    debug2(JSON.stringify(message))
-}
-
 export function formatKm(n) {
 
     if (n > 999) {
@@ -29,7 +12,7 @@ export function formatKm(n) {
 export function createSomeTestData(userId, rideId) {
     var pos = posify(-33.91344174742699 + Math.random(), 151.15843034349382 + Math.random())
 
-    //debug2(JSON.stringify(pos))
+    //console.log(JSON.stringify(pos))
     storage.put("lastKnownLocation", JSON.stringify(pos))
 
     //updateUserLocation(userId,rideId,pos)
@@ -51,17 +34,17 @@ export function bind(name, value) {
 export class MyWorkers {
 
     stopAllWorkers() {
-        debug2("workers before " + workers.size)
+        console.log("workers before " + workers.size)
         this.workers.forEach(function (w, n, workers) {
-            debug2("stopped " + n)
+            console.log("stopped " + n)
             try {
                 workers.delete(n)
                 w.terminate()
             } catch (e) {
-                debug2(e)
+                console.log(e)
             }
         })
-        debug2("workers after " + workers.size)
+        console.log("workers after " + workers.size)
     }
 
     stopWorker(name) {
@@ -93,12 +76,12 @@ export function debug0(o) {
 function oo(o) {
     for (var p in o) {
         if (seen[p] == true) {
-            //debug2(`seen ${p}`)
+            //console.log(`seen ${p}`)
             continue
         } else {
             seen[p] = true
             try {
-                debug2("payload p: " + p + " " + JSON.stringify(o[p]))
+                return o[p]
             } catch (e) {
                 oo(o[p])
             }

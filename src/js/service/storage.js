@@ -1,4 +1,4 @@
-import {debug, debug2, debugJSON} from './misc'
+
 export class MyStorage {
 
     constructor() {
@@ -81,7 +81,7 @@ export class MyStorage {
         try {
             data = JSON.parse(data)
         } catch (e) {
-            debug2(data + " invalid")
+            console.log(data + " invalid")
             return null
         }
         return data
@@ -89,7 +89,7 @@ export class MyStorage {
 
     storeJSON(name, data) {
         if(data === undefined) {
-            debug2("no data")
+            console.log("no data")
             return
         }
 
@@ -99,7 +99,7 @@ export class MyStorage {
             var data = JSON.parse(data)
             return data
         } catch (e) {
-            debug2("no valid json " + name + " " + e  + " length: " + data.length + " data:" + data)
+            console.log("no valid json " + name + " " + e  + " length: " + data.length + " data:" + data)
             return null
         }
     }

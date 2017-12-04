@@ -201,6 +201,17 @@ var args = process.argv
 gulp.task('auto', function () {
     var p;
 
+    (function() {
+        var childProcess = require("child_process");
+        var oldSpawn = childProcess.spawn;
+        function mySpawn() {
+            //console.log('spawn', JSON.stringify(process.env,arguments));
+            var result = oldSpawn.apply(this, arguments);
+            return result;
+        }
+        childProcess.spawn = mySpawn;
+    })();
+
     function spawnChildren(e) {
         util.log('gulp changed, reloading ' + JSON.stringify(args))
 
@@ -499,7 +510,7 @@ gulp.task('ios', ['watch-dist'], function (done) {
 })
 gulp.task('android', ['watch-dist'], function (done) {
 })
-gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'default', 'cordova_serve']), function (done) {
+gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'cordova_serve']), function (done) {
         return gulp.watch([paths.dest + '/**/*', "!" + paths.jsDest + "/cordova/**", "!" + paths.jsDest + "/" + buildTimeFile], {
                 ignoreInitial: true,
                 readDelay: 5000

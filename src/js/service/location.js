@@ -1,12 +1,12 @@
-import {debug, debug2, debugJSON} from './misc'
+
 
 export function getLocation(success, error, fatal) {
     if (navigator.geolocation) {
-        debug2('geolocate ' + JSON.stringify(navigator.geolocation))
+        console.log('geolocate ' + JSON.stringify(navigator.geolocation))
         navigator.geolocation.getCurrentPosition(
             //var watchID = navigator.geolocation.watchPosition(
             function (position) {
-                debug2('geolocated ' + position.coords.latitude + " " + position.coords.longitude)
+                console.log('geolocated ' + position.coords.latitude + " " + position.coords.longitude)
 
                 success({'lat': position.coords.latitude, 'lng': position.coords.longitude})
                 try {
@@ -16,7 +16,7 @@ export function getLocation(success, error, fatal) {
                 }
             },
             function (x) {
-                debug2('geolocate error ' + x.code + " " + x.message)
+                console.log('geolocate error ' + x.code + " " + x.message)
                 try {
                     if (watchID)
                         navigator.geolocation.clearWatch(watchID)
@@ -34,11 +34,11 @@ export function getLocation(success, error, fatal) {
 export function updateDistanceToRiders(currentUser,currentUserPos, riderLocations) {
 
     if (currentUserPos == null) {
-        debug2("unknown user location")
+        console.log("unknown user location")
         return {}
     }
 
-    debug2("calculating distance " + riderLocations.length)
+    console.log("calculating distance " + riderLocations.length)
     var distances = {}
 
     for (var k = 0; k < riderLocations.length; k++) {
@@ -49,7 +49,7 @@ export function updateDistanceToRiders(currentUser,currentUserPos, riderLocation
         if (currentUser!=riderLocations[k].userId) {
             var distance = distanceBetween(currentUserPos, riderLocations[k].location)
 
-            debug2("distance to " + riderLocations[k].userId + " " + distance)
+            console.log("distance to " + riderLocations[k].userId + " " + distance)
             distances[riderLocations[k].userId] = formatKm(distance)
         }
     }

@@ -16,7 +16,7 @@ import Register from './pages/register.jsx'
 import RideEditor from './pages/editRide.jsx'
 import About from './pages/about.jsx'
 import Terms from './pages/terms.jsx'
-import MyRouteMap from './widget/routemap'
+import RideRoute from './pages/route.jsx'
 import {ngScope} from './service/bridge'
 import MyComponent,{myAsyncFormConnect,Catch} from './widget/common.js'
 import { Router } from 'react-router'
@@ -62,7 +62,7 @@ export default class RouterPath extends MyComponent {
                         <PrivateRoute exact signedIn={signedIn} path={routes.GROUPS} component={Groups} pageTitle="Groups"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
-                        <PrivateRoute exact signedIn={signedIn} path={routes.ROUTE} component={MyRouteMap} pageTitle="Route"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.ROUTE} component={RideRoute} pageTitle="Route"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.ABOUT} component={About} pageTitle="About"/>
                     </Switch>
                     <Route children={

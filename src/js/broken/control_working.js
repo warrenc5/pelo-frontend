@@ -7,7 +7,7 @@ import 'ngreact/ngReact'
 import ngRedux from 'ng-redux'
 import { createStore } from 'redux'
 
-import {debug, debug2, debugJSON} from './misc'
+
 import MyAjax from './ajax'
 import {globals} from './globals'
 import _client from './client'
@@ -25,7 +25,7 @@ var app = {
     onDeviceReady: function () {
         //cordova only
         cordovaOnly(function () {
-            debug2('device ready')
+            console.log('device ready')
         })
     },
     onBodyLoad: function () {
@@ -40,13 +40,13 @@ function scope() {
 
 //TODO: REMOVE unused
 angular.element(function () {
-    debug2('early init')
+    console.log('early init')
     //scope().init()
 })
 
 //TODO: REMOVE unused
 function init2() {
-    debug2('init2')
+    console.log('init2')
 
     getLocation(function (position) {
         alert("success " + JSON.stringify(position))
@@ -61,7 +61,7 @@ var peloApp = angular.module('peloApp', ['ng', 'ngCookies', 'react', 'ngRedux'])
 
 peloApp.config(($ngReduxProvider) => {
     $ngReduxProvider.createStoreWith((state, action)=> {
-        debug2("$$$$$$$$ " + action.type)
+        console.log("$$$$$$$$ " + action.type)
 
     })
 })
@@ -116,7 +116,7 @@ peloApp.factory('platform', function ($rootScope) {
                     }
                 }
             } catch (e) {
-                debug2(e)
+                console.log(e)
             }
         }
 
@@ -135,10 +135,10 @@ peloApp.factory('ajax', function () {
     return {
         //call: _ajax.remote,
         fail: function () {
-            debug2("failed")
+            console.log("failed")
         },
         working: function () {
-            debug2("working")
+            console.log("working")
         }
     }
 })
@@ -147,11 +147,11 @@ peloApp.factory('app', function (storage, $cookies) {
 
     function resumeLoginSuccess(name, data) {
         if (data === undefined) {
-            debug2("user login failed : none")
+            console.log("user login failed : none")
             return
         }
-        debug2(JSON.stringify($cookies.getAll()))
-        debugJSON(data)
+        console.log(JSON.stringify($cookies.getAll()))
+        console.log(JSON.stringify(data)
     }
 
     function resumeLoginFailure(name) {
@@ -168,7 +168,7 @@ peloApp.factory('app', function (storage, $cookies) {
 peloApp.service('security', function (app, ajax, $rootScope) {
 
     function login(username, password) {
-        debug2('login ' + username + " " + password)
+        console.log('login ' + username + " " + password)
 
         app.login(ajax, username, password, app.resumeLoginSuccess, app.resumeLoginFailure)
     }
@@ -183,7 +183,7 @@ peloApp.service('security', function (app, ajax, $rootScope) {
          try {
          $scope.logoutFB()
          } catch (e) {
-         debug2('logout fb error')
+         console.log('logout fb error')
          }
          */
         _security.logout()
@@ -213,28 +213,28 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
     $rootScope.peloBaseUrl = 'wwww'
 
     $scope.$watch("peloBaseUrl", function (n, o, scope) {
-        debug2("peloBaseUrl " + n)
+        console.log("peloBaseUrl " + n)
         ajax.baseUrl = n
     })
 
     $scope.$watch("auth", functin (n, o, scope) {
-        debug2("watch auth " + o + "  " + n + " ")
+        console.log("watch auth " + o + "  " + n + " ")
     })
 
     $scope.$watch("initit", function (n, o, scope) {
-        debug2("inited")
+        console.log("inited")
     })
 
     function scopeApply(name, value) {
         scope().$apply(
             function () {
-                debug2("apply " + name + " " + value)
+                console.log("apply " + name + " " + value)
                 scope()[name] = value
             })
     }
 
     let unsubscribe = $ngRedux.connect(function (state = {}) {
-        debug2("ngRedux" + JSON.stringify(state))
+        console.log("ngRedux" + JSON.stringify(state))
         return {something: "something"}
     }, function (dispatch) {
         return {
@@ -248,7 +248,7 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
 
     $ngRedux.subscribe(() => {
         let state = $ngRedux.getState()
-        debug2("$$$" + state)
+        console.log("$$$" + state)
     })
 
     const DOIT = "DOIT"
@@ -258,11 +258,11 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
 
     function loadStorageIntoScope() {
         storage.forEach(function (name, value) {
-            debug2("scope " + name + " " + value)
+            console.log("scope " + name + " " + value)
             $scope.props[name] = value
         })
 
-        debug2("storage loaded")
+        console.log("storage loaded")
     }
 
     function checkStorageVersion() {
@@ -282,10 +282,10 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
             return
 
         if (checkStorageVersion()) {
-            debug2("loading storage")
+            console.log("loading storage")
             loadStorageIntoScope()
         } else {
-            debug2("storage db incompatible with DB_VERSION. clearing storage")
+            console.log("storage db incompatible with DB_VERSION. clearing storage")
             storage.clear()
             storage.put("DB_VERSION", DB_VERSION)
         }
@@ -307,13 +307,13 @@ peloApp.controller("main", function ($rootScope, $scope, $http, $timeout, $inter
     }
 
     $scope.exitApp = function () {
-        debug2('exit service')
+        console.log('exit service')
         stopAllWorkers()
         try {
             window.open("logout.html", "_self")
             navigator.app.exitApp()
         } catch (e) {
-            debug2(e)
+            console.log(e)
         }
     }
 })
@@ -332,32 +332,32 @@ peloApp.factory("fb", function () {
         try {
             facebookConnectPlugin.browserInit(appId, version)
         } catch (e) {
-            debug2(e)
+            console.log(e)
         }
 
         facebookConnectPlugin.login(['email', 'public_profile'], function (userData) {
                 facebookConnectPlugin.api('/me?fields=email', null,
                     function (response) {
 
-                        debug2("me: " + JSON.stringify(response))
+                        console.log("me: " + JSON.stringify(response))
                         login2(response.email, userData.accessToken)
-                        debug2("success" + JSON.stringify(userData))
+                        console.log("success" + JSON.stringify(userData))
                         //response.name
                         $scope.showPage('groups')
                     })
             },
             function (error) {
-                debug2('fb api error')
+                console.log('fb api error')
             })
     }
 
     $scope.logoutFB = function () {
         facebookConnectPlugin.browserInit(appId, version)
         facebookConnectPlugin.logout(function () {
-                debug2('fb logout')
+                console.log('fb logout')
             },
             function (fail) {
-                debug2('fb logout fail')
+                console.log('fb logout fail')
             })
     }
 
@@ -417,7 +417,7 @@ peloApp.directive("avatar2", function () {
                     image = "img/" + image
                 }
 
-                debug2(image)
+                console.log(image)
                 attrs.$set("src", image)
             }
         }

@@ -1,4 +1,4 @@
-import {debug, debug2, debugJSON} from '../service/misc'
+
 /**
  * These Actions are like our own custom events descriptors.
  *
@@ -28,7 +28,7 @@ export const searchFilter = (filter) => {
 }
 
 export function toggleTracking(newId) {
-    debug2(`tt ${newId}`)
+    console.log(`tt ${newId}`)
     return {
         type: 'TOGGLE_TRACK',
         payload: {id: newId}

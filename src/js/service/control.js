@@ -2,7 +2,7 @@ import 'angular'
 import $ from 'jquery'
 import 'ngreact/ngReact'
 import moment from 'moment'
-import {debug, debug2, debugJSON} from './misc'
+
 import * as buildTime from '../build'
 import {globals} from './globals'
 import storage from './storage'
@@ -42,7 +42,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
             try {
                 showMap()
             } catch (e) {
-                debug2(e)
+                console.log(e)
             }
         })
 
@@ -91,13 +91,13 @@ peloApp.factory('platform', function ($rootScope) {
         try {
             //TODO only do this sometimes
             window.cookieManager.clear(function () {
-                debug2('Cookies cleared!');
+                console.log('Cookies cleared!');
             })
         } catch (e) {
-            debug2(JSON.stringify(e))
+            console.log(JSON.stringify(e))
         }
 
-        debug2(`platform detected ${p}`)
+        console.log(`platform detected ${p}`)
 
         if (~['Dev', 'Unknown'].indexOf(p)) {
             alert("ok")
@@ -152,7 +152,7 @@ peloApp.factory('platform', function ($rootScope) {
                     }
                 }
             } catch (e) {
-                debug2(e)
+                console.log(e)
             }
         }
 
@@ -171,10 +171,10 @@ peloApp.service("storage", function () {
         console.log("initializing storage")
 
         if (checkStorageVersion()) {
-            debug2("loading storage")
+            console.log("loading storage")
             return loadStorage()
         } else {
-            debug2("storage db incompatible with DB_VERSION. clearing storage")
+            console.log("storage db incompatible with DB_VERSION. clearing storage")
             storage.clear()
             return {}
         }
@@ -188,7 +188,7 @@ peloApp.service("storage", function () {
             result[name] = value
         })
 
-        debug2("storage loaded")
+        console.log("storage loaded")
         return result
     }
 
@@ -244,16 +244,16 @@ peloApp.service("fb", function () {
             facebookConnectPlugin.login(['email', 'public_profile'], function (loginResponse) {
                     facebookConnectPlugin.api('/me?fields=email', null,
                         function (emailResponse) {
-                            debug2("me: " + JSON.stringify(emailResponse))
+                            console.log("me: " + JSON.stringify(emailResponse))
                             //login2(response.email, userData.accessToken)
-                            debug2("success" + JSON.stringify(loginResponse))
+                            console.log("success" + JSON.stringify(loginResponse))
                             //response.name
                             success({fb: {userData: emailResponse, auth: {... loginResponse.authResponse}}})
                             //logoutFB()
                         })
                 },
                 function (error) {
-                    debug2('fb api error')
+                    console.log('fb api error')
                     failure("fb API error " + e)
                 })
         } catch (e) {
@@ -267,21 +267,21 @@ peloApp.service("fb", function () {
     }
 
     function logoutFB() {
-        debug2('logout of facebook')
+        console.log('logout of facebook')
         try {
             facebookConnectPlugin.browserInit(appId, version)
         } catch (e) {
-            debug2(e)
+            console.log(e)
         }
         try {
             facebookConnectPlugin.logout(function () {
-                    debug2('fb logout')
+                    console.log('fb logout')
                 },
                 function (e) {
-                    debug2('fb logout fail' + e)
+                    console.log('fb logout fail' + e)
                 })
         } catch (e) {
-            debug2(e)
+            console.log(e)
         }
     }
 
@@ -301,8 +301,8 @@ peloApp.service("routemap", function (storage) {
     }
 
     function showMap(center, points) {
-        var fifth = Math.ceil(window.innerHeight / 5)
-        debug2("showMap " + JSON.stringify(center) + " " + fifth)
+        var fifth = 3*Math.ceil(window.innerHeight / 8)
+        console.log("showMap " + JSON.stringify(center) + " " + fifth)
         //style: 'streets', // light|dark|emerald|satellite|streets , default 'streets'
         Mapbox.show({
 
@@ -313,7 +313,7 @@ peloApp.service("routemap", function (storage) {
                     left: 0, // default 0
                     right: 0, // default 0
                     top: fifth, // default 0
-                    bottom: fifth  // default 0
+                    bottom: 0  // default 0
                 },
                 center: { // optional, without a default
                     lat: center.lat,
@@ -342,12 +342,12 @@ peloApp.service("routemap", function (storage) {
 
             // optional success callback
             function (msg) {
-                debug2("Success :) " + JSON.stringify(msg))
+                console.log("Success :) " + JSON.stringify(msg))
             },
 
             // optional error callback
             function (msg) {
-                debug2("Error " + JSON.stringify(msg))
+                console.log("Error " + JSON.stringify(msg))
             }
         )
 
@@ -377,7 +377,7 @@ peloApp.service("routemap", function (storage) {
 
                 Mapbox.addMarkerCallback(function (selectedMarker) {
                     var title = marker.title
-                    debug2("Marker selected: " + JSON.stringify(selectedMarker) + " " + title)
+                    console.log("Marker selected: " + JSON.stringify(selectedMarker) + " " + title)
                     if (selectedMarker.title == title) {
                         cb()
                     }

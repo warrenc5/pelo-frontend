@@ -8,7 +8,7 @@ import { routerReducer, push } from 'react-router-redux'
 //import { reducer as routing } from 'react-router-dispatcher';
 
 import * as action from './actions'
-import {debug2, debugJSON} from '../service/misc'
+
 
 /**
  *
@@ -23,7 +23,8 @@ import {debug2, debugJSON} from '../service/misc'
  * @returns {the new state map to be grafted onto the global state}
  */
 
-const INITIALIZE=`@redux-form/INITIALIZE`
+const INITIALIZE = `@redux-form/INITIALIZE`
+const LOAD_SUCCESS = `@redux-conn/LOAD_SUCCESS`
 
 const form = formReducer.plugin({
     form: (state, action) => {
@@ -87,14 +88,14 @@ const login = (state = [{}], action) => {
             return state
         case `LOGOUT_CONFIRM`:
             return [{}]
-            /**
-            Object.keys(state)
-                .filter(key => key !== "login")
-                .reduce((result, current) => {
+    /**
+     Object.keys(state)
+     .filter(key => key !== "login")
+     .reduce((result, current) => {
                     result[current] = state[current];
                     return result;
                 }, {});
-             **/
+     **/
         default:
             return state
     }
@@ -106,17 +107,18 @@ const none = (state = {}, action) => {
 
 const debug = (state = {}, action) => {
     try {
-        debug2("action: " + String(action.type))
+        console.log(String(action.type))
     } catch (e) {
-        debug2(e.message)
+        console.log(e.message)
     }
     try {
         var p = JSON.stringify(action.payload)
         if (p == null)
             p = ""
-        debug2("payload: " + p.substring(p, Math.min(p.length, 100)))
+        console.log(action.payload)
+        //console.log(p.substring(p, Math.min(p.length, 100)))
     } catch (e) {
-        debug2(e.message)
+        console.log(e.message)
         //oo(action.payload)
     }
 
@@ -127,15 +129,13 @@ const groups = (state = [{id: 0}], action) => {
     switch (action.type) {
         case `LOAD_TEST_DATA`:
             return {... state, ...action.payload.groups}
+        case LOAD_SUCCESS:
+            if (action.key !== `groups`)
+                return state
+            return action.payload.data.sort((a, b)=>a.id > b.id)
         case action.JOIN_GROUP:
-            alert('join the group')
-
+            console.log('join the group3')
             break
-        //case '@redux-conn/LOAD_SUCCESS':
-        //alert(JSON.stringify(state))
-        //return {...state, groups: action.payload.data}
-        //return state
-        //break
         default:
             return state
     }
@@ -153,7 +153,9 @@ const selectedRides = (state = {}, action) => {
             } else {
                 m[id] = !state[id]
             }
-            return {... state, ... m}
+            return {... m}
+            //return {... state, ... m}
+
         default:
             return state
     }
@@ -177,9 +179,7 @@ const riderLocation = (state = {}, action) => {
     }
 }
 
-const route = (state = {
-    title: "not yet", route: []
-}, action) => {
+const route = (state = {}, action) => {
     switch (action.type) {
         case `DOWNLOAD_ROUTE`:
             var id = action.payload.id
@@ -190,9 +190,15 @@ const route = (state = {
             }
             //return {... state, ... m}
             return action.payload
+        case LOAD_SUCCESS:
+            if (action.payload.key !== `route`)
+                return state
+
+            return action.payload.data
         default:
             return state
     }
+    return state
 }
 
 const newRide = (state = {}, action) => {
@@ -208,8 +214,8 @@ const main = (state = {}, action) => {
         case INITIALIZE:
             return {Title: 'Wozza'}
         case `HAMBURGER`:
-            return { open: !state.open}
-         default:
+            return {open: !state.open}
+        default:
             return state
     }
 }
@@ -220,10 +226,13 @@ const todaysRides = (state = {}, action) => {
             return {... state, ...action.payload.todaysRides}
         case '@redux-conn/LOAD_FAIL':
             return state
-        case 'LOAD':
-            return action.payload
+        case LOAD_SUCCESS:
+            if (action.payload.key !== `todaysRides`)
+                return state
+
+            return action.payload.data.sort((a, b)=>a.id > b.id)
         case 'TOGGLE_TRACK':
-            debug2("handling action" + action.type + "  " + action.payload.id)
+            console.log("handling action" + action.type + "  " + action.payload.id)
             if (action.payload.id)
                 return {id: false}
             else
@@ -236,6 +245,7 @@ const todaysRides = (state = {}, action) => {
             return state
     }
 
+    return state
     /*return getAddedIds(state.cart).map(id => ({
      ...getProduct(state.products, id),
      quantity: getQuantity(state.cart, id)
@@ -256,7 +266,7 @@ export default function MyReducer() {
         auth,
         login,
         route,
-        hello:none ,
+        hello: none,
         riderLocation,
         rideLocations,
         newRide,
@@ -264,3 +274,4 @@ export default function MyReducer() {
         form,
     })
 }
+
