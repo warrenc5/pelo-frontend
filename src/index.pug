@@ -1,6 +1,6 @@
 //https://pugjs.org/api/getting-started.html
 doctype html
-html(ng-app="peloApp")
+html()
     head
         title Pelo Riders App
         //
@@ -9,13 +9,13 @@ html(ng-app="peloApp")
 
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         meta(charset="utf-8")
-        link(rel='stylesheet', href='/css/bundle.css')
-        script(src="js/bundle.js", type="text/javascript",defer="true",aysnc="false")
         script(type="text/javascript", charset="utf-8", src="cordova.js")
         script(type="text/javascript", charset="utf-8", src="cordova_plugins.js")
+
+        link(rel='stylesheet', href='css/bundle.css')
+        script(src="js/bundle.js", type="text/javascript",defer="true",aysnc="false")
         //script(type="text/javascript", charset="utf-8", src="plugins/cordova-plugin-facebook4/www/facebook-native.js")
 
-        link(rel='stylesheet', href='/css/bundle.css')
     body(id="app",ng-controller="main")
         pelo-app(state="state", client="client" watch-depth="reference")
         div
