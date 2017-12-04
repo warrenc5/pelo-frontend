@@ -4,52 +4,67 @@
 
 import 'angular'
 import $ from 'jquery'
-import 'ngreact/ngReact'
 import moment from 'moment'
 
 import {globals} from './service/globals'
 import './service/control'
 
 export default class Local {
+    constructor() {
+        this.banner()
+    }
 
     scope() {
         return angular.element($("#app")).scope()
     }
     init() {
-        local.banner()
         try {
             this.scope().init()
         }catch(e) {
             alert ('angular failed' + e)
         }
     }
+
     bindEvents() {
         document.addEventListener('deviceready', this.onDeviceReady, true)
-        document.addEventListener('onpluginsready', this.onPluginsReady, true)
-        document.addEventListener('onload', this.onBodyLoad, false)
-        document.addEventListener("resume", this.resume, false)
+        document.addEventListener('pluginsready', this.onPluginsReady, true)
+        document.addEventListener('load', this.onBodyLoad, true)
+        document.addEventListener("resume", this.resume, true)
 
-        var that = this
         angular.element(document).ready(function () {
+            local.angularReady = true
             console.log('angular ready')
-            if (typeof cordova == 'undefined') {
-            }
-            try {
-                that.init()
-            }catch(e){
-                alert(e)
-            }
+            local.go()
         })
     }
-    onDeviceReady() { //cordova only
+    onDeviceReady(e) { //cordova only
+        local.cordovaReady = true
         console.log('device ready')
+        local.go()
     }
+
     onPluginsReady() {
         console.log('plugins ready')
     }
+
     onBodyLoad() {
+        local.documentReady = true
         console.log('bodyload')
+        local.go();
     }
+
+    go() {
+        if(!local.angularReady || local.gone)
+            return
+        else if ((window.cordova && local.cordovaReady && local.documentReady) || local.documentReady) {
+            console.log('going')
+            local.gone =true
+            angular.bootstrap(document.getElementById('app'), ['peloApp']);
+            scope().init()
+
+        }
+    }
+
     banner() {
         var now = moment().format('MMMM Do YYYY, h:mm:ss a')
         console.log("PELO APP " + JSON.stringify({
@@ -59,6 +74,7 @@ export default class Local {
                 DB: globals.DB_VERSION
             }))
     }
+
     resume() {
         console.log('resume')
         console.log(cordova.backgroundapp.resumeType)
@@ -72,6 +88,7 @@ export default class Local {
             debug5('ready3?')
         }
     }
+
     setup() {
         try {
             console.log(cordova.backgroundapp.resumeType)
@@ -99,8 +116,9 @@ export default class Local {
         }
 
         //document.addEventListener("menubutton", exitApp, false)
-
     }
+
+
 
 }
 

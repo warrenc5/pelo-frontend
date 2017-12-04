@@ -6,7 +6,7 @@ export function ngScope() {
         return angular.element($("#app")).scope()
     }catch (e) {
         console.log(e)
-        alert(e)
+        alert("*"+e)
     }
 }
 

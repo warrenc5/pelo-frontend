@@ -34,16 +34,18 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
     $scope.init = function () {
         if ($scope.inited)
             return
+        console.log("initializing angular scope")
 
         $scope.inited = true
 
+        /**
         platform.cordovaOnly(function () {
             try {
                 showMap()
             } catch (e) {
                 console.log(e)
             }
-        })
+        }**/
     }
 
     $scope.authId = function () {
@@ -97,7 +99,6 @@ peloApp.factory('platform', function ($rootScope) {
 
         console.log(`platform detected ${p}`)
 
-    	alert("ok " + p)
         if (~['Dev', 'Unknown'].indexOf(p)) {
             this.baseUrl = globals.peloBaseUrlLocal
         } else {
@@ -443,16 +444,4 @@ peloApp.directive('peloApp', function (reactDirective) {
     }
 })
 
-angular.element(document).ready(function () {
-	if (window.cordova) {
-		console.log("Running in Cordova, will bootstrap AngularJS once 'deviceready' event fires.");
-		document.addEventListener('deviceready', function () {
-			console.log("Deviceready event has fired, bootstrapping AngularJS.");
-			angular.bootstrap(document.body, ['peloApp']);
-		}, false);
-	} else {
-		console.log("Running in browser, bootstrapping AngularJS now.");
-		angular.bootstrap(document.body, ['peloApp']);
-	}
-});
 
