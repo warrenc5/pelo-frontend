@@ -47,7 +47,8 @@ export default class Local {
         console.log('plugins ready')
     }
 
-    onBodyLoad() {
+    onBodyLoad(e) {
+        console.log(e)
         local.documentReady = true
         console.log('bodyload')
         local.go();
