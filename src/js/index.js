@@ -27,9 +27,9 @@ export default class Local {
 
     bindEvents() {
         document.addEventListener('deviceready', this.onDeviceReady, true)
-        document.addEventListener('pluginsready', this.onPluginsReady, true)
-        document.addEventListener('load', this.onBodyLoad, true)
-        document.addEventListener("resume", this.resume, true)
+        //document.addEventListener('pluginsready', this.onPluginsReady, true)
+        window.onload = this.onBodyLoad
+        //document.addEventListener("resume", this.resume, true)
 
         angular.element(document).ready(function () {
             local.angularReady = true
@@ -37,8 +37,9 @@ export default class Local {
             local.go()
         })
     }
-    onDeviceReady(e) { //cordova only
-        local.cordovaReady = true
+
+    onDeviceReady() {
+        this.deviceReady
         console.log('device ready')
         local.go()
     }
@@ -48,16 +49,21 @@ export default class Local {
     }
 
     onBodyLoad(e) {
-        console.log(e)
         local.documentReady = true
-        console.log('bodyload')
-        local.go();
+        console.log('local document ready')
     }
 
     go() {
+        try {
+            local.hasCordova = cordova === undefined
+        } catch (e){
+            local.hasCordova = false
+        }
+
         if(!local.angularReady || local.gone)
             return
-        else if ((window.cordova && local.cordovaReady && local.documentReady) || local.documentReady) {
+
+        else if (local.documentReady) {
             console.log('going')
             local.gone =true
             angular.bootstrap(document.getElementById('app'), ['peloApp']);
@@ -129,3 +135,4 @@ try {
 }catch (e) {
     alert (e)
 }
+
