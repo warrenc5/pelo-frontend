@@ -464,7 +464,7 @@ gulp.task('run', [], function () {
     util.log('building ' + process.cwd())
     cordova.run({
         "verbose": true,
-        "platforms": ["android"],
+        "platforms": [runOpts],
         "options": {
             argv: ["--debug"] //"--gradleArg=--no-daemon"]
         }
@@ -506,13 +506,15 @@ gulp.task('ios-run', ['auto', 'setup', 'compile'], function (done) {
 })
 
 gulp.task('android-run', ['setup', 'compile'], function (done) {
-    runOpts  = 'ios'
+    runOpts  = 'android'
     return gulp.start('cordova_run')
 })
 
 gulp.task('ios', ['watch-dist'], function (done) {
+    runOpts  = 'ios'
 })
 gulp.task('android', ['watch-dist'], function (done) {
+    runOpts  = 'android'
 })
 gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'cordova_serve']), function (done) {
         return gulp.watch([paths.dest + '/**/*', "!" + paths.jsDest + "/cordova/**", "!" + paths.jsDest + "/" + buildTimeFile], {
@@ -590,7 +592,7 @@ gulp.task('cordova_build', function (done) {
     try {
         return cordova.build({
             "verbose": true,
-            "platforms": ["android"],
+            "platforms": [runOpts],
             "options": [env == 'prod'?"--release":"--debug",
                 "--browserify",
                 "--gradleArg=--stacktrace"]
