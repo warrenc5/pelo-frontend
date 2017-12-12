@@ -32,7 +32,7 @@
     }
   },
   "dependencies": {
-    "cordova-android": "^6.3.0",
+    "cordova-android": "^7.0.0",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-cookie-manager": "git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git",
     "cordova-plugin-crosswalk-webview": "^2.3.0",

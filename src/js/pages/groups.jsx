@@ -7,7 +7,6 @@ import Subheader from 'material-ui/Subheader';
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import {ngScope} from '../service/bridge'
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
@@ -17,7 +16,7 @@ import 'scrollreveal'
 import * as router from '../Router.jsx'
 import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
 import { ReactMaterialImage } from 'react-material-image'
-
+import {ngScope} from '../service/bridge'
 
 /**
  * TODO: add scrolling
@@ -49,19 +48,25 @@ export default class Groups extends MyComponent {
                               key={group.id}
                               title={group.name}
                               subtitle={
-                              <span>
+                              <div>
                               {group.members === undefined ?<span>no members</span>:
-                              group.members.map((member)=><span>{member.slug} &nbsp;</span>)
-                              }
-                              </span>
+                              group.members.map((member)=>
+
+                              <span>{member.slug} &nbsp;</span>
+                              ) }
+                              {/**
+                                <ReactMaterialImage class="round-image"
+                                    src={ngScope().state.baseUrl + `userimage/${member.id}`}/>
+                              **/}
+                              </div>
                               }
                               actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
                               onTouchTap={e => {
                         e.preventDefault()
                         this.props.joinGroup(this.props.authId,group.id)
                     }}>
-                        <ReactMaterialImage
-                            src={`http://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/group/${group.id}/small/${group.avatar}?1436673070`}/>
+                        <ReactMaterialImage class="round-image"
+                                            src={ngScope().state.baseUrl + `groupimage/${group.id}`}/>
                     </GridTile>
                         ))}
                 </GridList>
@@ -110,7 +115,6 @@ export default class Groups extends MyComponent {
         key: `groups`,
         promise: ({ store }) => new Promise((resolve, reject)=> {
             const authId = select.authIdSelector(store.getState())
-
             ngScope().client.groups(authId, (name, data)=> {
                 resolve(data)
             }, (e)=> {

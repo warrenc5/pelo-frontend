@@ -6,7 +6,7 @@ import { NavLink, Link } from 'react-router-dom'
 import {routes} from '../Router.jsx'
 
 import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
-
+import {ngScope} from '../service/bridge'
 const MIN = 300
 
 @myAsyncFormConnect()
@@ -46,7 +46,7 @@ export default class Navigation extends MyComponent {
                 <Drawer ref={(obj) => { this.nav = obj; }} open={this.props.open} openSecondary={true}>
                     <div className="main-logo">
                         <img class="round-image"
-                             src={`https://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/user/${this.props.login.id}/thumbnail/${this.props.login.avatar}?1444014447`}/>
+                             src={ngScope().state.baseUrl + `userimage/${this.props.login.id}`}/>
                         <ListItemNavLink primaryText="Pelo" to={routes.HOME}/>
                     </div>
                     <hr/>

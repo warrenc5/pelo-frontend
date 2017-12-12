@@ -30,7 +30,6 @@ import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import {routes} from '../Router.jsx'
 import {push} from 'react-router-redux'
 
-
 @myAsyncFormConnect()
 export default class Rides extends MyComponent {
 
@@ -109,7 +108,7 @@ export default class Rides extends MyComponent {
                         showRide(ride.id)
                     }}>
                         <ReactMaterialImage class="round-image"
-                                            src={`http://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/group/${ride.group.id}/small/${ride.group.avatar}?1436673070`}
+                                            src={ngScope().state.baseUrl + `groupimage/${ride.group.id}`}/>
                                             onClick={showRide(ride.id)}/>
                         {/**
 
