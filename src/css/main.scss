@@ -2,10 +2,14 @@
 @import "_flexboxgrid.scss";
 
 body {
+  font-family: 'graphik', 'Helvetica Neue', 'Roboto', Arial, sans-serif;
+}
+
+span {
   color: $white;
   font-family: 'graphik', 'Helvetica Neue', 'Roboto', Arial, sans-serif;
-
 }
+
 .error {
   color: #FF0000;
 }

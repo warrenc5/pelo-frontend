@@ -108,6 +108,7 @@ var paths = new (function () {
 
 var npmShrinkwrap = require("npm-shrinkwrap")
 
+gulp.task('default', ['auto', 'start', 'compile'])
 gulp.task('start', [], function () {
     // Fire up a web server.
     browserSync.init({
@@ -437,8 +438,6 @@ gulp.task('touch', function (done) {
 })
 gulp.task('compile', ['setup','copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
-gulp.task('.default', ['default'])
-gulp.task('default', ['auto', 'start', 'compile'])
 
 
 gulp.task('stop', function (done) {
@@ -620,7 +619,7 @@ gulp.task('cordova_run', function (done) {
     try {
         process.chdir(paths.root + "/cordova")
         cwd = process.cwd()
-        util.log('running cordova' + cwd)
+        util.log('running cordova ' + cwd)
 
         return cordova.run({
             "verbose": true,
