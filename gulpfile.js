@@ -207,7 +207,7 @@ gulp.task('auto', function () {
         var childProcess = require("child_process");
         var oldSpawn = childProcess.spawn;
         function mySpawn() {
-            //console.log('spawn', JSON.stringify(process.env,arguments));
+            console.log('spawn', process.argv, JSON.stringify(process.env,arguments));
             var result = oldSpawn.apply(this, arguments);
             return result;
         }
@@ -499,10 +499,14 @@ gulp.task('clean', gulpsync.sync(['clean2']), function (done) {
      */
 })
 
-gulp.task('ios-run', ['setup', 'compile'], function (done) {
+var runOpts=''
+gulp.task('ios-run', ['auto', 'setup', 'compile'], function (done) {
+    runOpts  = 'ios'
     return gulp.start('cordova_run')
 })
+
 gulp.task('android-run', ['setup', 'compile'], function (done) {
+    runOpts  = 'ios'
     return gulp.start('cordova_run')
 })
 
@@ -623,7 +627,8 @@ gulp.task('cordova_run', function (done) {
 
         return cordova.run({
             "verbose": true,
-            "options": ["--debug"] //"--gradleArg=--no-daemon"]
+	    "platforms": [runOpts],
+            "options": ["--debug",] //"--gradleArg=--no-daemon"]
         }, function (e) {
             if (e) {
                 util.log('cordova run result:' + e)
