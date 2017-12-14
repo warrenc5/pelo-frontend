@@ -131,5 +131,13 @@
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "com.filfatstudios.spinnerdialog": {
+    "source": {
+      "type": "registry",
+      "id": "https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }

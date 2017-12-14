@@ -109,6 +109,7 @@ var paths = new (function () {
 var npmShrinkwrap = require("npm-shrinkwrap")
 
 gulp.task('default', ['auto', 'start', 'compile'])
+
 gulp.task('start', [], function () {
     // Fire up a web server.
     browserSync.init({
@@ -510,11 +511,13 @@ gulp.task('android-run', ['setup', 'compile'], function (done) {
     return gulp.start('cordova_run')
 })
 
-gulp.task('ios', ['watch-dist'], function (done) {
+gulp.task('ios', [], function (done) {
     runOpts  = 'ios'
+    gulp.start('watch-dist')
 })
-gulp.task('android', ['watch-dist'], function (done) {
+gulp.task('android', [], function (done) {
     runOpts  = 'android'
+    gulp.start('watch-dist')
 })
 gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'cordova_serve']), function (done) {
         return gulp.watch([paths.dest + '/**/*', "!" + paths.jsDest + "/cordova/**", "!" + paths.jsDest + "/" + buildTimeFile], {
@@ -619,17 +622,16 @@ gulp.task('cordova_clean', function (done) {
     done()
 })
 
-
 gulp.task('cordova_run', function (done) {
 
     try {
         process.chdir(paths.root + "/cordova")
         cwd = process.cwd()
-        util.log('running cordova ' + cwd)
+        util.log('running cordova ' + cwd + " withOpts " + runOpts)
 
         return cordova.run({
             "verbose": true,
-	    "platforms": [runOpts],
+            "platforms": [runOpts],
             "options": ["--debug",] //"--gradleArg=--no-daemon"]
         }, function (e) {
             if (e) {

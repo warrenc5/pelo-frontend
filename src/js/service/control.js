@@ -8,8 +8,9 @@ import {globals} from './globals'
 import storage from './storage'
 import MyClient from './client'
 import MyAjax from './ajax'
-import {updateDistanceToRiders,getLocation} from './location.js'
-import {createTestData}  from '../TestData'
+import MyPlatform from './platform'
+import {updateDistanceToRiders, getLocation} from './location.js'
+import {createTestData} from '../TestData'
 import App from '../App.jsx'
 
 export var peloApp = angular.module('peloApp', ['ng', 'react'])
@@ -38,14 +39,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
 
         $scope.inited = true
 
-        /**
-        platform.cordovaOnly(function () {
-            try {
-                showMap()
-            } catch (e) {
-                console.log(e)
-            }
-        }**/
+        platform.cordovaOnly(()=>console.log("cordova detected"))
     }
 
     $scope.authId = function () {
@@ -62,108 +56,17 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
         storage.put('currentPage', page)
     }
 
-    $scope.client = new MyClient(new MyAjax(platform.configure()))
+    $scope.client = new MyClient(new MyAjax(platform))
     $scope.state["baseUrl"] = platform.baseUrl
-    $scope.state["device"] = device
-
     $scope.cordovaOnly = platform.cordovaOnly
-    $scope.exit = function () {
-        confirmed = function (buttonIndex) {
-            if (buttonIndex == 1) {
-                console.log("navigator.app.exitApp");
-                navigator.app.exitApp();
-            }
-        }
+    $scope.state["device"] = device
+    $scope.platform = platform
 
-        onTouch = function () {
-            navigator.notification.confirm('', confirmed, 'Exit?');
-        }
-    }
+    $scope.init()
 })
 
 peloApp.factory('platform', function ($rootScope) {
-
-    var p = null
-
-    function configurePlatform() {
-        p = platform()
-
-        try {
-            //TODO only do this sometimes
-            window.cookieManager.clear(function () {
-                console.log('Cookies cleared!');
-            })
-        } catch (e) {
-            console.log(JSON.stringify(e))
-        }
-
-        console.log(`platform detected ${p}`)
-
-        if (~['Dev', 'Unknown'].indexOf(p)) {
-            this.baseUrl = globals.peloBaseUrlLocal
-        } else {
-            this.baseUrl = globals.peloBaseUrlTryout
-        }
-        this.baseUrl = globals.peloBaseUrlLocal
-
-        cordovaOnly(() => {
-            this.baseUrl = globals.peloBaseUrlTryout
-        })
-
-        //FIXME change the url here
-        //this.baseUrl = globals.peloBaseUrlMockLocal
-        //this.baseUrl = globals.peloBaseUrlTryout
-
-        return this.baseUrl
-    }
-
-    function cordovaOnly(func) {
-        if (typeof cordova != 'undefined') {
-            func()
-        }
-    }
-
-    function iosOnly(func) {
-        if (p == 'iOS')
-            func()
-    }
-
-    function androidOnly(func) {
-        if (p == 'Android')
-            func()
-    }
-
-    function platform() {
-
-        //FIXME
-        var platforms = new Array("Android", "BlackBerry", "iOS", "webOS", "WinCE", "Tizen")
-
-        if (typeof(device) === 'undefined') {
-            return 'Dev'
-        } else {
-            console.log(device)
-            try {
-                var devicePlatform = device.platform
-
-                console.log(devicePlatform)
-                for (var i = 0; i < platforms.length; i++) {
-                    if (devicePlatform.search(platforms[i]) >= 0) {
-                        return platforms[i]
-                    }
-                }
-            } catch (e) {
-                console.log(e)
-            }
-        }
-
-        return 'Unknown'
-    }
-
-    return {
-        cordovaOnly: cordovaOnly,
-        configure: configurePlatform,
-    }
-
+        return new MyPlatform($rootScope)
 })
 
 peloApp.service("storage", function () {
@@ -184,7 +87,7 @@ peloApp.service("storage", function () {
         var result = new Array()
 
         storage.forEach(function (name, value) {
-            console.log(name,value.substring(0,100))
+            console.log(name, value.substring(0, 100))
             result[name] = value
         })
 
@@ -248,7 +151,7 @@ peloApp.service("fb", function () {
                             //login2(response.email, userData.accessToken)
                             console.log("success" + JSON.stringify(loginResponse))
                             //response.name
-                            success({fb: {userData: emailResponse, auth: {... loginResponse.authResponse}}})
+                            success({fb: {userData: emailResponse, auth: {...loginResponse.authResponse}}})
                             //logoutFB()
                         })
                 },
@@ -301,7 +204,7 @@ peloApp.service("routemap", function (storage) {
     }
 
     function showMap(center, points) {
-        var fifth = 3*Math.ceil(window.innerHeight / 8)
+        var fifth = 3 * Math.ceil(window.innerHeight / 8)
         console.log("showMap " + JSON.stringify(center) + " " + fifth)
         //style: 'streets', // light|dark|emerald|satellite|streets , default 'streets'
         Mapbox.show({
@@ -358,7 +261,7 @@ peloApp.service("routemap", function (storage) {
         }
 
         try {
-            Mapbox.addPolygon(poly, function () {
+            Mapbox.addPolyline(poly, function () {
                 console.log("done")
             }, function (e) {
                 console.log("rrrr " + JSON.stringify(e))
@@ -370,7 +273,7 @@ peloApp.service("routemap", function (storage) {
 
 
     function addMarker(marker, cb) {
-        marker = {title: 'MEMO', ... marker}
+        marker = {title: 'MEMO', ...marker}
         console.log("add marker " + JSON.stringify(marker));
         if (Mapbox.getCenter() != undefined)
             try {
@@ -440,7 +343,7 @@ peloApp.service("routemap", function (storage) {
 peloApp.directive('peloApp', function (reactDirective) {
     try {
         return reactDirective(App)
-    }catch(e){
+    } catch (e) {
         console.log(e)
     }
 })

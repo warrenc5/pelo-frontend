@@ -44,7 +44,7 @@
         <allow-intent href="itms-apps:*" />
         <hook src="scripts/idevicesyslog.sh" type="after_run" />
     </platform>
-    <engine name="android" spec="^7.0.0" />
+    <engine name="android" spec="^6.3.0" />
     <plugin name="cordova-plugin-compat" spec="^1.2.0" />
     <plugin name="cordova-plugin-crosswalk-webview" spec="^2.3.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
@@ -64,4 +64,5 @@
     </plugin>
     <plugin name="cordova.plugins.exitapp" />
     <plugin name="kr.co.joycorp.cordova.exitapp" spec="~1.0.2" />
+    <plugin name="com.filfatstudios.spinnerdialog" spec="https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog" />
 </widget>

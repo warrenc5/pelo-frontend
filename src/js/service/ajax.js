@@ -1,27 +1,32 @@
-
 import storage from './storage'
 import Cookie from 'tough-cookie'
 
 export default class MyAjax {
 
-    constructor(baseUrl) {
-        console.log(`ajax using ${baseUrl}`)
-        this.baseUrl = baseUrl
+    constructor(platform) {
+        this.platform = platform
+        console.log(`ajax using ${platform.getBaseUrl()}`)
+        this.baseUrl = platform.getBaseUrl()
     }
 
     call(name, url, success, failure, method, data1) {
-        var storageApply = this.storageApply
 
-        try {
-            this.working()
-        } catch (e) {
+        if(!this.platform.isOnline())  {
+           console('not online at the moment retrieve from storage')
         }
+
+        this.platform.cordovaOnly(() => SpinnerDialog.show(name, url, () => alert('aborted ' + name)))
+
+
+        var storageApply = this.storageApply
 
         console.log(">>" + name + "@" + this.baseUrl + url)
 
         url = this.baseUrl + url
 
         var xhttp = new XMLHttpRequest()
+
+        var platform = this.platform
 
         xhttp.onreadystatechange = function () {
             switch (xhttp.readyState) {
@@ -51,7 +56,8 @@ export default class MyAjax {
                     break
                 case 4:
                     console.log("finished " + xhttp.status + " len:" + xhttp.responseText.length)
-                    //gEBI("working").className = "hidden"
+
+                    platform.cordovaOnly(() => SpinnerDialog.hide(name))
                     switch (xhttp.status) {
                         case 200:
                         case 202:
@@ -78,9 +84,6 @@ export default class MyAjax {
         }
 
         xhttp.open(method, url, true)
-        //gEBI("working").className = "shown"
-
-
     }
 
 }

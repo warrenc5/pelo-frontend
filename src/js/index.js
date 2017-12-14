@@ -67,8 +67,6 @@ export default class Local {
             console.log('going')
             local.gone =true
             angular.bootstrap(document.getElementById('app'), ['peloApp']);
-            scope().init()
-
         }
     }
 

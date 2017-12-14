@@ -28,11 +28,12 @@
         "ACCESS_TOKEN": "pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g"
       },
       "cordova.plugins.exitapp": {},
-      "kr.co.joycorp.cordova.exitapp": {}
+      "kr.co.joycorp.cordova.exitapp": {},
+      "com.filfatstudios.spinnerdialog": {}
     }
   },
   "dependencies": {
-    "cordova-android": "^7.0.0",
+    "cordova-android": "^6.3.0",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-cookie-manager": "git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git",
     "cordova-plugin-crosswalk-webview": "^2.3.0",
@@ -44,9 +45,11 @@
     "cordova-plugin-local-notifications": "^1.0.0",
     "cordova-plugin-mapbox": "git+https://github.com/Telerik-Verified-Plugins/Mapbox.git",
     "cordova-plugin-network-information": "^1.3.4",
+    "cordova-plugin-progress-indicator": "git+https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog.git",
     "cordova-plugin-splashscreen": "^4.1.0",
     "cordova-plugin-whitelist": "1",
-    "kr.co.joycorp.cordova.exitapp": "~1.0.2"
+    "kr.co.joycorp.cordova.exitapp": "~1.0.2",
+    "com.filfatstudios.spinnerdialog": "https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog"
   },
   "devDependencies": {
     "cordova-icon": "^0.11.0",

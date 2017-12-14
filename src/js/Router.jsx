@@ -69,6 +69,7 @@ export default class RouterPath extends MyComponent {
                     <Catch>
                         <hr/>
                         <div>
+                            <span>online: {this.props.isOnline?'yes':'no'}</span><br/>
                             {this.props.signedIn?<span>user id: {this.props.authId}</span>:<span>No user</span>}
                             <br/>
                             <span>build time: {this.props.buildTime}</span><br/>
@@ -96,6 +97,7 @@ export default class RouterPath extends MyComponent {
 
     static propTypes = {
         signedIn: PropTypes.bool.isRequired,
+        offline: PropTypes.bool.isRequired,
         buildTime: PropTypes.string.isRequired,
         baseUrl: PropTypes.string.isRequired,
         authId: PropTypes.number.isRequired,
@@ -108,6 +110,7 @@ export default class RouterPath extends MyComponent {
         buildTime: select.buildTimeSelector(state),
         baseUrl: ngScope().state.baseUrl,
         device: ngScope().state.device,
+        offline: ngScope().platform.isOnline(),
         authId: select.authIdSelector(state),
         defaultPath: select.defaultPath(state)
     })
