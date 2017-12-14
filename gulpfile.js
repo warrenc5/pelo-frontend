@@ -524,7 +524,7 @@ gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'cordova_serve']), funct
                 ignoreInitial: true,
                 readDelay: 5000
             },
-            batch({timeout: 2000}, function (events, doneBatch) {
+            batch({timeout: 5000}, function (events, doneBatch) {
                 events
                     .on('data', util.log)
                     .on('end', gulp.start('cordova_run'))

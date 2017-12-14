@@ -93,7 +93,7 @@
   "de.appplant.cordova.plugin.local-notification": {
     "source": {
       "type": "registry",
-      "id": "de.appplant.cordova.plugin.local-notification"
+      "id": "cordova-plugin-local-notifications@^1.0.0"
     },
     "is_top_level": true,
     "variables": {}
@@ -136,6 +136,14 @@
     "source": {
       "type": "registry",
       "id": "https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-dialogs": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-dialogs"
     },
     "is_top_level": true,
     "variables": {}

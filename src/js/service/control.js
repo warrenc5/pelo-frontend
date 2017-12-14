@@ -40,6 +40,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
         $scope.inited = true
 
         platform.cordovaOnly(()=>console.log("cordova detected"))
+        platform.notification()
     }
 
     $scope.authId = function () {

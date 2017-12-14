@@ -23,22 +23,22 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-cookie-manager": {},
       "de.appplant.cordova.plugin.local-notification": {},
-      "cordova.custom.plugins.exitapp": {},
       "cordova-plugin-mapbox": {
         "ACCESS_TOKEN": "pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g"
       },
-      "cordova.plugins.exitapp": {},
-      "kr.co.joycorp.cordova.exitapp": {},
-      "com.filfatstudios.spinnerdialog": {}
+      "com.filfatstudios.spinnerdialog": {},
+      "cordova-plugin-dialogs": {},
+      "kr.co.joycorp.cordova.exitapp": {}
     }
   },
   "dependencies": {
+    "com.filfatstudios.spinnerdialog": "https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog",
     "cordova-android": "^6.3.0",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-cookie-manager": "git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git",
     "cordova-plugin-crosswalk-webview": "^2.3.0",
     "cordova-plugin-device": "^1.1.7",
-    "cordova-plugin-exitapp": "^1.0.0",
+    "cordova-plugin-dialogs": "^1.3.4",
     "cordova-plugin-exitapp2": "^1.0.4",
     "cordova-plugin-facebook4": "~1.9.1",
     "cordova-plugin-geolocation": "^3.0.0",
@@ -48,8 +48,8 @@
     "cordova-plugin-progress-indicator": "git+https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog.git",
     "cordova-plugin-splashscreen": "^4.1.0",
     "cordova-plugin-whitelist": "1",
-    "kr.co.joycorp.cordova.exitapp": "~1.0.2",
-    "com.filfatstudios.spinnerdialog": "https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog"
+    "de.appplant.cordova.plugin.local-notification": "~0.8.2dev",
+    "kr.co.joycorp.cordova.exitapp": "~1.0.0"
   },
   "devDependencies": {
     "cordova-icon": "^0.11.0",

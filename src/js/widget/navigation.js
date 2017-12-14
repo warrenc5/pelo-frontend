@@ -62,20 +62,17 @@ export default class Navigation extends MyComponent {
                         <ListItemNavLink primaryText="Logout" to={routes.LOGOUT}/>
                     </List>
                     <Divider />
-
-                    {/**
-
-                     <RaisedButton label="Exit" onClick={this.exitApp.bind(this)}/>
-
-                     **/}
+                    <RaisedButton label="Exit" onClick={this.exitApp.bind(this)}/>
                 </Drawer>
             </nav>
         )
     }
 
     exitApp(e) {
-        navigator.notification.confirm('', confirmed, 'Exit?')
-        navigator.app.exitApp()
+
+        //TODO:user reducer as event handler
+
+        ngScope().platform.exitApp()
     }
 
     static propTypes = {

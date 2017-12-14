@@ -19,10 +19,10 @@ export default class MyPlatform {
 
     isOnline() {
 
-        if(typeof navigator.connection === 'undefined')
+        if (typeof navigator.connection === 'undefined')
             return true
 
-        return this.cordovaOnly(()=>this.checkConnection() !== Connection.NONE)
+        return this.cordovaOnly(() => this.checkConnection() !== Connection.NONE)
     }
 
     checkConnection() {
@@ -37,7 +37,7 @@ export default class MyPlatform {
         states[Connection.CELL_4G] = 'Cell 4G connection';
         states[Connection.CELL] = 'Cell generic connection';
         states[Connection.NONE] = 'No network connection';
-        console.log(networkState,states[networkState])
+        console.log(networkState, states[networkState])
         return networkState
     }
 
@@ -117,19 +117,34 @@ export default class MyPlatform {
         return 'Unknown'
     }
 
-    exit() {
-        confirmed = function (buttonIndex) {
-            if (buttonIndex == 1) {
-                console.log("navigator.app.exitApp");
-                navigator.app.exitApp();
-            }
-        }
+    exitApp() {
 
-        onTouch = function () {
+
+        /**
+         onTouch = function () {
             navigator.notification.confirm('', confirmed, 'Exit?');
         }
+         **/
+
+        this.cordovaOnly(() => {
+            navigator.notification.confirm('Really', function (buttonIndex) {
+                if (buttonIndex == 1) {
+                    console.log("navigator.app.exitApp");
+                    navigator.app.exitApp();
+                }
+            }, 'Exit?')
+        })
     }
 
+    //README: https://github.com/katzer/cordova-plugin-local-notifications
+    notification() {
+        this.cordovaOnly(() =>
+            cordova.plugins.notification.local.schedule({
+                title: 'My first notification',
+                text: 'Thats pretty easy...',
+                foreground: true
+            }))
+    }
 }
 //const storage = new MyStorage()
 //export default storage
