@@ -114,16 +114,6 @@
     "is_top_level": false,
     "variables": {}
   },
-  "cordova-plugin-mapbox": {
-    "source": {
-      "type": "registry",
-      "id": "https://github.com/Telerik-Verified-Plugins/Mapbox"
-    },
-    "is_top_level": true,
-    "variables": {
-      "ACCESS_TOKEN": "pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g"
-    }
-  },
   "kr.co.joycorp.cordova.exitapp": {
     "source": {
       "type": "registry",
@@ -147,5 +137,15 @@
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "cordova-plugin-mapbox": {
+    "source": {
+      "type": "registry",
+      "id": "https://github.com/warrenc5/Mapbox"
+    },
+    "is_top_level": true,
+    "variables": {
+      "ACCESS_TOKEN": "pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g"
+    }
   }
 }
