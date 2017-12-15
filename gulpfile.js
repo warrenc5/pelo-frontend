@@ -61,6 +61,8 @@ var buffer = require('vinyl-buffer');
 
 var sourcemaps = require('gulp-sourcemaps');
 
+var beep = require('beepbeep')
+
 const env = require('get-env')({
     staging: 'staging',
     test: ['test', 'testing']
@@ -208,7 +210,7 @@ gulp.task('auto', function () {
         var childProcess = require("child_process");
         var oldSpawn = childProcess.spawn;
         function mySpawn() {
-            console.log('spawn', process.argv, JSON.stringify(process.env,arguments));
+            //console.log('spawn', process.argv, JSON.stringify(process.env,arguments));
             var result = oldSpawn.apply(this, arguments);
             return result;
         }
@@ -293,6 +295,7 @@ gulp.task('compile-js', [], function (done1) {
             util.log(`<=============================== ${buildTime} ====================${env}========================`)
         })
         .on('error', (e) => {
+            beep(2)
             try {
                 util.log(util.colors.red(">>"+e+"<<"))
                 //    util.log(`${e.message}\n${e.codeFrame}`)
@@ -311,6 +314,7 @@ gulp.task('compile-js', [], function (done1) {
 
         .pipe(plumber((e) => {
             console.log(e)
+            beep(2)
             util.log(`*** ${e.message}\n${e.codeFrame}`)
             //this.emit('end');
         }))
@@ -362,6 +366,7 @@ gulp.task('compile-js2', [], function (done1) {
         })
         .on('error', (e) => {
                 try {
+                    beep(2)
                     util.log(e)
                     util.log(`${e.message}\n${e.codeFrame}`)
                 } catch (e) {

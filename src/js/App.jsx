@@ -3,20 +3,20 @@ import PropTypes from 'prop-types';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 //import injectTapEventPlugin from 'react-tap-event-plugin'
 import $ from 'jquery'
-import { syncHistoryWithStore } from 'react-router-redux';
+import {syncHistoryWithStore} from 'react-router-redux';
 //import RouteDispatcher from 'react-router-dispatcher';
 import {Provider} from 'react-redux'
-import { compose, createStore, applyMiddleware } from 'redux'
+import {compose, createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import RouterPath from './Router.jsx'
 import {createTestData} from './TestData'
 import MyReducer from './handler/reducers'
 import {myTheme} from './layout/theme'
 
-import {ngScope} from './service/bridge'
-import MyComponent, {Catch,myAsyncFormConnect} from './widget/common'
+import {NgScope2} from './service/bridge'
+import MyComponent, {Catch, myAsyncFormConnect} from './widget/common'
 import createHashHistory from 'history/createHashHistory'
-import { routerMiddleware as reactRouterReduxMiddleware, push } from 'react-router-redux'
+import {routerMiddleware as reactRouterReduxMiddleware, push} from 'react-router-redux'
 //import { connectRouter, routerMiddleware as connectedRouterMiddleware} from 'connected-react-router'
 
 //import {useRouterHistory} from 'react-router'
@@ -47,7 +47,6 @@ export default class App extends MyComponent {
         this.handleRequestClose = this.handleRequestClose.bind(this)
         this.handleTouchTap = this.handleTouchTap.bind(this)
 
-        //ngScope().initializeStorage()
 
         //LOAD TEST DATA
 
@@ -67,11 +66,11 @@ export default class App extends MyComponent {
          });
          */
         this.middleware = applyMiddleware(... [
-            ({ getState })=> {
+            ({getState}) => {
                 return next => action => {
-                    console.log(action.type,action.payload === undefined? null:action.payload)
+                    console.log(action.type, action.payload === undefined ? null : action.payload)
                     let returnValue = next(action)
-                    console.log("state",getState())
+                    console.log("state", getState())
                     return returnValue
                 }
             },
@@ -86,7 +85,7 @@ export default class App extends MyComponent {
         )
 
         /**
-        this.store.dispatch(({
+         this.store.dispatch(({
             type: `LOAD_TEST_DATA`,
             payload: createTestData()
         }))
@@ -103,6 +102,7 @@ export default class App extends MyComponent {
         //window.scrollReveal = new scrollReveal();
         //TODO what does this do?
     }
+
 
     handleRequestClose() {
         this.setState({
@@ -122,27 +122,23 @@ export default class App extends MyComponent {
     }
 
     renderError() {
-        return (<span>{this.NAME} Fail</span>)
+        return <span>{this.NAME} Fail</span>
     }
 
     render() {
         return super.isError() ? this.renderError() :
-            (
-                <MuiThemeProvider muiTheme={myTheme}>
-                    <Provider store={this.store} key="provider">
+            <MuiThemeProvider muiTheme={myTheme}>
+                <Provider store={this.store} key="provider">
+                    <NgScope2>
                         <RouterPath middleware={this.middleware} history={this.history}/>
-                    </Provider>
-                </MuiThemeProvider>
-            )
+                    </NgScope2>
+                </Provider>
+            </MuiThemeProvider>
     }
 
     static propTypes = {
         //Props is linked the angular $scope.state through the pelo-app directive in index.jade
         state: PropTypes.object.isRequired,
     }
-
-    static reduxPropsConfig = (state, props) => ({})
-
-    static reduxDispatchConfig = (dispatch) => ({})
 }
 

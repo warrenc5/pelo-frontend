@@ -18,11 +18,12 @@ import About from './pages/about.jsx'
 import Terms from './pages/terms.jsx'
 import RideRoute from './pages/route.jsx'
 import {ngScope} from './service/bridge'
-import MyComponent,{myAsyncFormConnect,Catch} from './widget/common.js'
-import { Router } from 'react-router'
-import { Switch,Route, Redirect} from 'react-router-dom'
-import { applyMiddleware } from 'redux'
+import MyComponent, {myAsyncFormConnect, Catch} from './widget/common.js'
+import {Router} from 'react-router'
+import {Switch, Route, Redirect} from 'react-router-dom'
+import {applyMiddleware} from 'redux'
 import * as select from './handler/selectors'
+
 /**
  * This screen transition logical router handles html a links and anchor refs in the app
  *
@@ -43,9 +44,11 @@ export default class RouterPath extends MyComponent {
     render() {
         // Does the environment support HTML 5 history
         const supportsHistory = typeof window !== 'undefined' && 'pushState' in window.history;
-        const {signedIn}  = this.props
+        const {signedIn} = this.props
         return (
-            <ConnectedRouter history={this.props.history} ref={(obj) => { this.router = obj; }}>
+            <ConnectedRouter history={this.props.history} ref={(obj) => {
+                this.router = obj;
+            }}>
                 <Catch>
                     <Route path={routes.ABOUT} component={About} pageTitle="About"/>
                     <Route path={routes.ROOT} component={MainLayout}/>
@@ -56,28 +59,36 @@ export default class RouterPath extends MyComponent {
                         <Route path={routes.LOGOUT} component={Logout} pageTitle="Logout"/>
                         <Route path={routes.ERROR} component={Logout} pageTitle="Error"/>
                         <AsyncRoute exact path={routes.LOGIN} component={Login} pageTitle="Sign In"/>
-                        <Route exact signedIn={signedIn} path={routes.EDITRIDE} component={RideEditor} pageTitle="Edit Ride"/>
-                        <PrivateRoute exact signedIn={signedIn} path={routes.RIDES} component={Rides} pageTitle="Rides"/>
-                        <PrivateRoute exact signedIn={signedIn} path={routes.REGISTER} component={Register} pageTitle="Sign Up"/>
-                        <PrivateRoute exact signedIn={signedIn} path={routes.GROUPS} component={Groups} pageTitle="Groups"/>
-                        <PrivateRoute exact signedIn={signedIn} path={routes.MESSAGES} component={MessagesContainer} pageTitle="Messages"/>
-                        <PrivateRoute exact signedIn={signedIn} path={routes.SETTINGS} component={SettingsContainer} pageTitle="Settings"/>
-                        <PrivateRoute exact signedIn={signedIn} path={routes.ROUTE} component={RideRoute} pageTitle="Route"/>
-                        <PrivateRoute exact signedIn={signedIn} path={routes.ABOUT} component={About} pageTitle="About"/>
+                        <Route exact signedIn={signedIn} path={routes.EDITRIDE} component={RideEditor}
+                               pageTitle="Edit Ride"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.RIDES} component={Rides}
+                                      pageTitle="Rides"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.REGISTER} component={Register}
+                                      pageTitle="Sign Up"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.GROUPS} component={Groups}
+                                      pageTitle="Groups"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.MESSAGES} component={MessagesContainer}
+                                      pageTitle="Messages"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.SETTINGS} component={SettingsContainer}
+                                      pageTitle="Settings"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.ROUTE} component={RideRoute}
+                                      pageTitle="Route"/>
+                        <PrivateRoute exact signedIn={signedIn} path={routes.ABOUT} component={About}
+                                      pageTitle="About"/>
                     </Switch>
                     <Route children={
-                    <Catch>
-                        <hr/>
-                        <div>
-                            <span>online: {this.props.isOnline?'yes':'no'}</span><br/>
-                            {this.props.signedIn?<span>user id: {this.props.authId}</span>:<span>No user</span>}
-                            <br/>
-                            <span>build time: {this.props.buildTime}</span><br/>
-                            <span>server: {this.props.baseUrl}</span><br/>
-                            <span>device: {`${this.props.device.platform} ${this.props.device.version} ${this.props.device.model}` }</span><br/>
-                            <span>default: {this.props.defaultPath} </span>
-                        </div>
-                    </Catch>
+                        <Catch>
+                            <hr/>
+                            <div>
+                                <span>online: {this.props.online ? 'yes' : 'no'}</span><br/>
+                                {this.props.signedIn ? <span>user id: {this.props.authId}</span> : <span>No user</span>}
+                                <br/>
+                                <span>build time: {this.props.buildTime}</span><br/>
+                                <span>server: {this.props.baseUrl}</span><br/>
+                                <span>device: {`${this.props.device.platform} ${this.props.device.version} ${this.props.device.model}`}</span><br/>
+                                <span>default: {this.props.defaultPath} </span>
+                            </div>
+                        </Catch>
                     }/>
                 </Catch>
             </ConnectedRouter>
@@ -97,7 +108,7 @@ export default class RouterPath extends MyComponent {
 
     static propTypes = {
         signedIn: PropTypes.bool.isRequired,
-        offline: PropTypes.bool.isRequired,
+        online: PropTypes.bool.isRequired,
         buildTime: PropTypes.string.isRequired,
         baseUrl: PropTypes.string.isRequired,
         authId: PropTypes.number.isRequired,
@@ -110,12 +121,12 @@ export default class RouterPath extends MyComponent {
         buildTime: select.buildTimeSelector(state),
         baseUrl: ngScope().state.baseUrl,
         device: ngScope().state.device,
-        offline: ngScope().platform.isOnline(),
+        online: ngScope().platform.isOnline(),
         authId: select.authIdSelector(state),
         defaultPath: select.defaultPath(state)
     })
 
-    static reduxDispatchConfig = (dispatch) => ({})
+    static reduxDispatchConfig = (dispatch, props) => ({})
 }
 
 // reload only when path/route has changed
@@ -126,52 +137,52 @@ const reloadOnPropsChange = (props, nextProps) => {
 
 export class RouteCatch extends MyComponent {
     render() {
-        const {component:Component, ... rest} = this.props
+        const {component: Component, ...rest} = this.props
         const isError = super.isError()
-        return <Route {... rest} render={props => (
-            isError?
-               <Redirect to={{
+        return <Route {...rest} render={props => (
+            isError ?
+                <Redirect to={{
                     pathname: routes.ERROR,
-                  }}/>
-            : <Component {...props} />
-            )}/>
+                }}/>
+                : <Component {...props} />
+        )}/>
     }
 }
 
-const Rac = ({component,...props})=>
-    <ReduxAsyncConnect {... props}
-        components={[component]} reloadOnPropsChange={reloadOnPropsChange}
-        render={props=>(<RouteCatch component={component}/>)}
+const Rac = ({component, ...props}) =>
+    <ReduxAsyncConnect {...props}
+                       components={[component]} reloadOnPropsChange={reloadOnPropsChange}
+                       render={props => (<RouteCatch component={component}/>)}
     />
 
 const AsyncRoute = ({component, ...props}) => (
-    <Route {...props} render={props => <Rac component={component} {... props} />}/>
+    <Route {...props} render={props => <Rac component={component} {...props} />}/>
 )
 
-const PrivateRoute = ({signedIn, location,component, ...props}) => (
+const PrivateRoute = ({signedIn, location, component, ...props}) => (
     <Route {...props} render={props => (
-    signedIn?(<Rac component={component} {... props}/>) :
-    (<Redirect to={{
-        pathname: routes.LOGIN,
-        state: { from: location }
-      }}/>
-    )
-  )}/>
+        signedIn ? (<Rac component={component} {...props}/>) :
+            (<Redirect to={{
+                    pathname: routes.LOGIN,
+                    state: {from: location}
+                }}/>
+            )
+    )}/>
 )
 
 export class routes {
-static ROOT = '/'
-static LOGIN = '/login'
-static ERROR = '/error'
-static LOGOUT = '/logout'
-static EDITRIDE = '/editRide'
-static REGISTER = '/register'
-static MESSAGES = '/messages'
-static SETTINGS = '/settings'
-static TERMS = '/terms'
-static ROUTE = '/routes'
-static GROUPS = '/groups'
-static RIDES = '/rides'
-static ABOUT = '/about'
-static HOME = '/home'
+    static ROOT = '/'
+    static LOGIN = '/login'
+    static ERROR = '/error'
+    static LOGOUT = '/logout'
+    static EDITRIDE = '/editRide'
+    static REGISTER = '/register'
+    static MESSAGES = '/messages'
+    static SETTINGS = '/settings'
+    static TERMS = '/terms'
+    static ROUTE = '/routes'
+    static GROUPS = '/groups'
+    static RIDES = '/rides'
+    static ABOUT = '/about'
+    static HOME = '/home'
 }

@@ -4,21 +4,9 @@ export default class MyPlatform {
 
     constructor(scope) {
         this.configurePlatform()
-        this.cordovaOnly(function () {
-            document.addEventListener("offline", function () {
-                alert('offline')
-                console.log('offline')
-            }, false)
-
-            document.addEventListener("online", function () {
-                alert('online')
-                console.log('online')
-            }, false)
-        })
     }
 
     isOnline() {
-
         if (typeof navigator.connection === 'undefined')
             return true
 
@@ -140,8 +128,8 @@ export default class MyPlatform {
     notification() {
         this.cordovaOnly(() =>
             cordova.plugins.notification.local.schedule({
-                title: 'My first notification',
-                text: 'Thats pretty easy...',
+                title: 'Running Pelo',
+                text: globals.buildTime,
                 foreground: true
             }))
     }

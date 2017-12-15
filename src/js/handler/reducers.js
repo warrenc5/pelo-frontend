@@ -209,12 +209,22 @@ const newRide = (state = {}, action) => {
             return state
     }
 }
+
 const main = (state = {}, action) => {
     switch (action.type) {
         case INITIALIZE:
             return {Title: 'Wozza'}
         case `HAMBURGER`:
             return {open: !state.open}
+        default:
+            return state
+    }
+}
+
+const connection = (state = {}, action) => {
+    switch (action.type) {
+        case 'RECONNECT':
+            return action.payload
         default:
             return state
     }
@@ -272,6 +282,7 @@ export default function MyReducer() {
         newRide,
         main,
         form,
+        connection,
     })
 }
 

@@ -22,6 +22,9 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
     $scope.state = {globals: globals, ok: false, baseUrl: "unknown"}
     $scope.fb = fb
     $scope.routemap = routemap
+    $scope.initReactBridge = function (o) {
+        console.log('react brige init')
+    }
 
     $scope.hideSplash = function () {
         platform.cordovaOnly(function () {
@@ -257,7 +260,7 @@ peloApp.service("routemap", function (storage) {
 
         const poly = {
             fillcolor: 0x00666666,
-            alpha: 0.5,
+            alpha: 0.3,
             points: points
         }
 

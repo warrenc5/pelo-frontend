@@ -1,15 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import {ngScope} from '../service/bridge'
 
-import MyComponent,{myAsyncFormConnect,Catch} from '../widget/common'
+import MyComponent, {myAsyncFormConnect, Catch} from '../widget/common'
 import MyRouteMap from '../widget/routemap'
-import { Divider } from 'material-ui'
+import {Divider} from 'material-ui'
 import * as select from '../handler/selectors'
 
 
@@ -23,20 +23,26 @@ export default class RideRoute extends MyComponent {
 
 
     render() {
-        const {selectedRide,rideId,routeId,route,difficulty} = this.props
+        const {selectedRide, rideId, routeId, route, difficulty} = this.props
         return (
             route === undefined ? <div/> :
                 <div>
                     <Catch>
                         <span>{route.title}</span><br/>
-                        <small><span>{difficulty} {route.distance}km.</span></small><br/>
-                        <small>
-                            {selectedRide.participants.map(p=><span>{p.slug}&nbsp;</span>)}
-                        </small>
+                        <small><span>{difficulty} {route.distance}km.</span></small>
+                        <br/>
+                        <p>
+                            {selectedRide.participants.map(p =>
+                                <span>
+                                    <img class="round-image" src={ngScope().state.baseUrl + `userimage/${p.id}`}/>
+                                    {p.slug}&nbsp;
+                                </span>
+                            )}
+                        </p>
                         {/**
-                        <img class="round-image"
-                             src={`https://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/user/${p.id}/thumbnail/${this.props.login.avatar}?1444014447`}/>
-                        **/}
+                         <img class="round-image"
+                         src={`https://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/user/${p.id}/thumbnail/${this.props.login.avatar}?1444014447`}/>
+                         **/}
                         <hr/>
                         <MyRouteMap rideId={rideId} routeId={routeId} route={route}/>
                     </Catch>
@@ -73,7 +79,7 @@ export default class RideRoute extends MyComponent {
 
     updateOthersLocations() {
         try {
-            var {userId,rideId,myLocation,dispatch} = this.props
+            var {userId, rideId, myLocation, dispatch} = this.props
 
             if (rideId < 0)
                 return
@@ -84,9 +90,9 @@ export default class RideRoute extends MyComponent {
                         payload: data
                     })
 
-                    data.map((o)=> {
-                        var m = {title: o.userId, ... o.location}
-                        ngScope().routemap.addMarker(m, ()=> {
+                    data.map((o) => {
+                        var m = {title: o.userId, ...o.location}
+                        ngScope().routemap.addMarker(m, () => {
                             alert(o.userId)
                         })
                     })
@@ -105,7 +111,7 @@ export default class RideRoute extends MyComponent {
     }
 
     updateMyLocation() {
-        var {rideId ,userId,dispatch, myLocation} = this.props
+        var {rideId, userId, dispatch, myLocation} = this.props
         //var rideId = this.props.route.id
         //var userId =
 
@@ -127,15 +133,15 @@ export default class RideRoute extends MyComponent {
                         type: `LOCATION`,
                         payload: {rideId: rideId, userId: userId, location: m}
                     })
-                    ngScope().routemap.addMarker(m, ()=> {
+                    ngScope().routemap.addMarker(m, () => {
                         alert('ME')
                     })
                 }, () => {
                     console.log('post location error')
                 })
-            }, ()=> {
+            }, () => {
                 console.log('location error')
-            }, ()=> {
+            }, () => {
                 console.log('location fatal')
             })
         } catch (e) {
@@ -172,16 +178,16 @@ export default class RideRoute extends MyComponent {
 
     static reduxAsyncConfig = [{
         key: `route`,
-        promise: (props) => new Promise((resolve, reject)=> {
+        promise: (props) => new Promise((resolve, reject) => {
             const {rideId} = RideRoute.reduxPropsConfig(props.store.getState())
 
             if (rideId === undefined || rideId === -1)
                 return reject("rideId is " + rideId)
 
-            ngScope().client.rideRoute(rideId, (name, data)=> {
+            ngScope().client.rideRoute(rideId, (name, data) => {
                 resolve(data)
-            }, e=>reject(e))
-        }).catch((e)=> {
+            }, e => reject(e))
+        }).catch((e) => {
             console.log(e)
             throw e
         })

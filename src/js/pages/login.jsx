@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux'
-import { Field, propTypes } from 'redux-form'
+import {connect} from 'react-redux'
+import {Field, propTypes} from 'redux-form'
 import {
     Checkbox,
     RadioButtonGroup,
@@ -10,23 +10,23 @@ import {
     Toggle,
     DatePicker,
 } from 'redux-form-material-ui'
-import { isEmptyObject } from 'jquery'
-import { Form, SubmissionError } from 'redux-form'
-import { Link, NavLink, Switch,Route, Redirect} from 'react-router-dom'
-import { push } from 'react-router-redux'
+import {isEmptyObject} from 'jquery'
+import {Form, SubmissionError} from 'redux-form'
+import {Link, NavLink, Switch, Route, Redirect} from 'react-router-dom'
+import {push} from 'react-router-redux'
 
 import style from '../layout/style'
 import * as action from '../handler/actions'
 import keydown from 'react-keydown'
-import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
-import { RaisedButton, Divider } from 'material-ui'
+import MyComponent, {Catch, myAsyncFormConnect} from '../widget/common'
+import {RaisedButton, Divider} from 'material-ui'
 
-import { asyncConnect} from 'redux-connect'
+import {asyncConnect} from 'redux-connect'
 import {
     materialButton,
     materialTextField,
-    materialCheckbox ,
-    materialRadioGroup ,
+    materialCheckbox,
+    materialRadioGroup,
     materialSelectField
 } from './material.jsx'
 
@@ -61,7 +61,7 @@ export default class Login extends MyComponent {
             asyncValidating,
             submit,
             hello,
-            } = props
+        } = props
         return (
             <div id="loginSection">
                 <p id="error">
@@ -86,7 +86,7 @@ export default class Login extends MyComponent {
                                            component={materialTextField}
                                            label="Username or Email"
                                            asyncValidating={asyncValidating}
-                                           onKeyDown={(e) => e.keyCode==13 && e.target.blur()}
+                                           onKeyDown={(e) => e.keyCode == 13 && e.target.blur()}
                                     />
                                 </div>
                             </td>
@@ -99,7 +99,7 @@ export default class Login extends MyComponent {
                                            component={materialTextField}
                                            asyncValidating={asyncValidating}
                                            label="Pasword"
-                                           onKeyDown={(e) => e.keyCode==13 && dispatch(submit(this)) && e.target.blur() }
+                                           onKeyDown={(e) => e.keyCode == 13 && dispatch(submit(this)) && e.target.blur()}
                                     />
                                 </div>
                             </td>
@@ -120,7 +120,7 @@ export default class Login extends MyComponent {
                         </tbody>
                     </table>
                 </Form>
-                <Divider />
+                <Divider/>
                 <NavLink to="/terms">Read Terms & Conditions</NavLink>
             </div>
         )
@@ -128,11 +128,11 @@ export default class Login extends MyComponent {
 
     render() {
         console.log(this.props)
-        const { from } = this.props.location.state || { from: { pathname: this.props.defaultPath} }
-            return super.isError()?<h1>No way</h1>:
-                <Catch>
-                    {this.props.signedIn?<Redirect to={from}/>:this.LoginForm(this.props)}
-                </Catch>
+        const {from} = this.props.location.state || {from: {pathname: this.props.defaultPath}}
+        return super.isError() ? <h1>No way</h1> :
+            <Catch>
+                {this.props.signedIn ? <Redirect to={from}/> : this.LoginForm(this.props)}
+            </Catch>
     }
 
     componentDidMount() {
@@ -144,8 +144,8 @@ export default class Login extends MyComponent {
 
         /**TODO: auto login for testing
          * const {dispatch} = this.props
-        dispatch(submit(LoginForm))
-        */
+         dispatch(submit(LoginForm))
+         */
     }
 
     routerWillLeave(nextLocation) {
@@ -163,11 +163,18 @@ export default class Login extends MyComponent {
 
     componentWillReceiveProps(nextProps) {
         console.log('component will receive props')
+        if (!nextProps.hello) {
+            alert('rehello')
+            this.props.dispatch({
+                type: `REASYNC`,
+                payload: Login.helloPromise()
+            })
+        }
     }
 
     @keydown('enter')
     doSubmit(event) {
-        const {dispatch,submit} = this.props
+        const {dispatch, submit} = this.props
         //FIXME ?? use a variable to trigger submit??
         dispatch(submit('LoginForm'))
     }
@@ -184,22 +191,22 @@ export default class Login extends MyComponent {
         dispatch: PropTypes.func
     }
 
-    validate = (values, dispatch,props) => {
+    validate = (values, dispatch, props) => {
         //TODO do this first and if it fails then fail.
         //return Login.reduxFormConfig.asyncValidate(values, dispatch).catch((e)=>())
-        return new Promise((resolve, reject)=> {
-            ngScope().client.login(values.username, values.password, (name, data)=> {
+        return new Promise((resolve, reject) => {
+            ngScope().client.login(values.username, values.password, (name, data) => {
                 resolve(data)
-            }, (e)=> {
+            }, (e) => {
                 reject(e)
             })
-        }).then((result)=> {
+        }).then((result) => {
             dispatch({
                 type: `LOGIN`,
                 payload: result
             })
             //dispatch(push(props.returnPath))
-        }).catch((e)=> {
+        }).catch((e) => {
             //console.log('>>'+e  + " " + e.stack) //JSON.stringify(e))
             dispatch({
                 type: `LOGIN_ERROR`,
@@ -225,46 +232,45 @@ export default class Login extends MyComponent {
             username: 'wozza', password: 'password1', hello: false
         },
         defaultPath: select.defaultPath(state),
-        returnPath: location.state !==undefined? location.state.pathname: select.defaultPath(state),
+        returnPath: location.state !== undefined ? location.state.pathname : select.defaultPath(state),
         signedIn: (select.authIdSelector(state) > 0),
     })
 
 
-    static reduxDispatchConfig = (dispatch,props) => ({
-        fbConnect: ()=> (event) =>
-            new Promise((resolve, reject)=> {
+    static reduxDispatchConfig = (dispatch, props) => ({
+        fbConnect: () => (event) =>
+            new Promise((resolve, reject) => {
                 //FIXME --event or event1?
                 //event.preventDefault
 
                 //TODO how to preset users email? from cookie??
                 var email = 'wozza.xing@gmail.com'
 
-                ngScope().fb.loginFB(email, (response)=> {
+                ngScope().fb.loginFB(email, (response) => {
                         resolve(response)
                     }
-                    , (e)=> {
+                    , (e) => {
                         reject(e)
                     })
-            }).
-            then((response)=> {
+            }).then((response) => {
                 dispatch({
                     type: `FBLOGIN`,
                     payload: response
                 })
-                return new Promise((resolve, reject)=> {
-                    ngScope().client.login2(response.fb.userData.id,response.fb.userData.email,response.fb.auth.accessToken, (name, data)=> {
+                return new Promise((resolve, reject) => {
+                    ngScope().client.login2(response.fb.userData.id, response.fb.userData.email, response.fb.auth.accessToken, (name, data) => {
                         resolve(data)
-                    }, (e)=> {
+                    }, (e) => {
                         reject(e)
                     })
-                }).then((result)=> {
+                }).then((result) => {
                     dispatch({
                         type: `LOGIN`,
                         payload: result
                     })
 
                     //dispatch(push(props.location.state.pathname))
-                }).catch((e)=> {
+                }).catch((e) => {
                     console.log(JSON.stringify(e))
                     dispatch({
                         type: `LOGIN_ERROR`,
@@ -275,7 +281,7 @@ export default class Login extends MyComponent {
 
                     //throw new SubmissionError({_error: 'whoops' + JSON.stringify(e)})
                 })
-            }).catch((e)=> {
+            }).catch((e) => {
                 dispatch({
                     type: `FBLOGIN_ERROR`,
                     payload: {error: 'fb ' + e}
@@ -283,30 +289,24 @@ export default class Login extends MyComponent {
             })
     })
 
+    static helloPromise = ()=>new Promise((resolve, reject) => {
+        ngScope().client.sayHello((name, data) => {
+            resolve(true)
+        }, (e) => {
+            reject(e)
+        })
+    })
+
     static reduxAsyncConfig =
-        [{key: 'hello',
-            promise: ({ params, helpers }) => {
-                return new Promise((resolve, reject)=> {
-                    ngScope().client.sayHello((name, data)=> {
-                        resolve(true)
-                    }, (e)=> {
-                        reject(e)
-                    })
-                })
-                    /***
-                    .then((result) =>result).catch((e)=> {
-                        //TODO: wait a little while and do this again on interval
-                        console.log(e)
-                        return false
-                    })
-                     **/
-            }
+        [{
+            key: 'hello',
+            promise: ({params, helpers}) => Login.helloPromise()
         }]
 
 
     static reduxFormConfig = {
         form: `LoginForm`,
-        asyncValidate: (values, dispatch) => new Promise((resolve, reject)=> {
+        asyncValidate: (values, dispatch) => new Promise((resolve, reject) => {
             const {username, password} = values
             console.log("values : " + JSON.stringify(values))
             var error = {}
@@ -325,9 +325,9 @@ export default class Login extends MyComponent {
                 reject(error)
             }
 
-        }).then((b)=> {
+        }).then((b) => {
             //all is well
-        }).catch((e)=> {
+        }).catch((e) => {
             throw e
         }),
         asyncBlurFields: ['username', 'password']
