@@ -42,7 +42,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
 
         $scope.inited = true
 
-        platform.cordovaOnly(()=>console.log("cordova detected"))
+        platform.cordovaOnly(() => console.log("cordova detected"))
         platform.notification()
     }
 
@@ -63,14 +63,18 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
     $scope.client = new MyClient(new MyAjax(platform))
     $scope.state["baseUrl"] = platform.baseUrl
     $scope.cordovaOnly = platform.cordovaOnly
-    $scope.state["device"] = device
+    $scope.state["device"] = typeof device !== `undefined` ? device : {
+        platform: 'DEV',
+        version: '0.0',
+        model: 'Unknown'
+    }
     $scope.platform = platform
 
     $scope.init()
 })
 
 peloApp.factory('platform', function ($rootScope) {
-        return new MyPlatform($rootScope)
+    return new MyPlatform($rootScope)
 })
 
 peloApp.service("storage", function () {
@@ -259,7 +263,7 @@ peloApp.service("routemap", function (storage) {
         )
 
         const poly = {
-            fillcolor: 0x00666666,
+            fillcolor: 0x66666666,
             alpha: 0.3,
             points: points
         }

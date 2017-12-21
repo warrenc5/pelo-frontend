@@ -20,6 +20,7 @@ import * as action from '../handler/actions'
 import keydown from 'react-keydown'
 import MyComponent, {Catch, myAsyncFormConnect} from '../widget/common'
 import {RaisedButton, Divider} from 'material-ui'
+import SubmitButton from 'redux-form-react-submitbutton'
 
 import {asyncConnect} from 'redux-connect'
 import {
@@ -107,13 +108,15 @@ export default class Login extends MyComponent {
                         <tr>
                             <td>
                                 <div>
+                                    <br/>
                                     <Field name="loginButton"
-                                           label="LOGIN"
                                            type="submit"
+                                           label="Login"
                                            onClick={this.props.handleSubmit(this.validate)}
                                            component={materialButton}
-                                           disabled={pristine || submitting}
+                                           disabled={!hello || pristine || submitting}
                                     />
+                                    <br/>
                                 </div>
                             </td>
                         </tr>
@@ -136,16 +139,27 @@ export default class Login extends MyComponent {
     }
 
     componentDidMount() {
-        console.log('component did mount')
-        //console.log(debug0(this.props.route)
-        //var {router} = this.props
-        //router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
-        //console.log(debug0(router.getCurrentLocation())
+        super.componentDidMount()
+        this.timerID = setInterval(
+            () => this.checkHello(),
+            2000
+        )
+    }
 
-        /**TODO: auto login for testing
-         * const {dispatch} = this.props
-         dispatch(submit(LoginForm))
-         */
+    componentWillUnmount() {
+        super.componentWillUnmount()
+        clearInterval(this.timerID)
+    }
+
+    checkHello() {
+        if (!this.props.hello) {
+            this.props.dispatch({
+                type: `REASYNC`,
+                payload: Login.helloPromise()
+            })
+        } else {
+            clearInterval(this.timerID)
+        }
     }
 
     routerWillLeave(nextLocation) {
@@ -163,13 +177,6 @@ export default class Login extends MyComponent {
 
     componentWillReceiveProps(nextProps) {
         console.log('component will receive props')
-        if (!nextProps.hello) {
-            alert('rehello')
-            this.props.dispatch({
-                type: `REASYNC`,
-                payload: Login.helloPromise()
-            })
-        }
     }
 
     @keydown('enter')
@@ -237,6 +244,10 @@ export default class Login extends MyComponent {
     })
 
 
+    static defaultProps = {
+        hello: false
+    }
+
     static reduxDispatchConfig = (dispatch, props) => ({
         fbConnect: () => (event) =>
             new Promise((resolve, reject) => {
@@ -289,7 +300,7 @@ export default class Login extends MyComponent {
             })
     })
 
-    static helloPromise = ()=>new Promise((resolve, reject) => {
+    static helloPromise = () => new Promise((resolve, reject) => {
         ngScope().client.sayHello((name, data) => {
             resolve(true)
         }, (e) => {
@@ -301,6 +312,7 @@ export default class Login extends MyComponent {
         [{
             key: 'hello',
             promise: ({params, helpers}) => Login.helloPromise()
+
         }]
 
 

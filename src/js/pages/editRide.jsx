@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import {Form,SubmissionError, Field, reduxForm, propTypes } from 'redux-form'
+import {Form, SubmissionError, Field, reduxForm, propTypes} from 'redux-form'
+import SubmitButton from 'redux-form-react-submitbutton'
+import {ngScope} from '../service/bridge'
 
 import {
     Checkbox,
@@ -15,17 +17,18 @@ import {
 import style from '../layout/style'
 import * as action from '../handler/actions'
 
-import MyComponent,{Catch,myAsyncFormConnect} from '../widget/common'
+import MyComponent, {Catch, myAsyncFormConnect} from '../widget/common'
 
 import {
     materialButton,
     materialTextField,
-    materialCheckbox ,
-    materialRadioGroup ,
+    materialCheckbox,
+    materialRadioGroup,
     materialSelectField,
     materialDatePicker,
     materialTimePicker,
     materialUpload,
+    materialUploadPreview,
     materialSlider
 } from './material.jsx'
 
@@ -48,7 +51,7 @@ export default class RideEditor extends MyComponent {
 
 
     EditRideForm = (props) => {
-        const { handleSubmit, pristine, reset, submitting } = props
+        const {handleSubmit, pristine, reset, submitting} = props
         return (
             <Form onSubmit={handleSubmit(this.validate)} type="multipart/form-data">
                 <table>
@@ -57,10 +60,12 @@ export default class RideEditor extends MyComponent {
                         <Field name="Title" component={materialTextField} label="Title"/>
                     </tr>
                     <tr>
-                        <Field label="Ride Date" name="RideDate" component={materialDatePicker} hintText="Ride Date" autoOk={true}/>
+                        <Field label="Ride Date" name="RideDate" component={materialDatePicker} hintText="Ride Date"
+                               autoOk={true}/>
                     </tr>
                     <tr>
-                        <Field label="Ride Time" name="RideTime" component={materialTimePicker} hintText="Ride Time" autoOk={true}/>
+                        <Field label="Ride Time" name="RideTime" component={materialTimePicker} hintText="Ride Time"
+                               autoOk={true}/>
                     </tr>
                     <tr>
                         <Field label="Difficulty" name="Difficulty" component={materialSlider} label="Difficulty"/>
@@ -69,20 +74,22 @@ export default class RideEditor extends MyComponent {
                         <a href="http://placehold.it"><img src="http://placehold.it/200x200"></img></a>
                     </tr>
                     <tr>
-                            <Catch>
+                        <Catch>
                             <Field name="Route" component={materialUpload} label="Upload Route"
                                    onChange={this.onChange}
-                                   onFileLoad={this.onFileLoad}/>
-                            </Catch>
+                                   onFileLoad={this.onFileLoad}
+                            />
+                        </Catch>
                     </tr>
                     </tbody>
                 </table>
 
-                <Field name="add"
-                       label="Add"
-                       type="submit"
-                       component={materialButton}
-                       onClick={this.props.handleSubmit(this.validate)}/>
+                <SubmitButton
+                    name="add"
+                    label="Add"
+                    component={materialButton}
+                    onClick={this.props.handleSubmit(this.validate)}/>
+                {this.props.Route}
             </Form>
         )
     }
@@ -99,28 +106,26 @@ export default class RideEditor extends MyComponent {
         alert('submit validation')
     }
 
-    onFileLoad = (e, file) => console.log(e.target.result, file.name);
-    onChange = (route) => this.setState({route});
+    //onFileLoad = (e, file) => console.log(e.target.result, file.name);
+    onFileLoad = (e, file) => this.props.loadRoute(e.target.result)
+    onChange = (v) => this.props.loadRoute2(v)
 
-    validate = (values, dispatch,props) => {
+    validate = (values, dispatch, props) => {
         //TODO do this first and if it fails then fail.
         //return Login.reduxFormConfig.asyncValidate(values, dispatch).catch((e)=>())
-        return new Promise((resolve, reject)=> {
-            console.log(values)
-            resolve(true)
-            /**
-            ngScope().client.login(values.username, values.password, (name, data)=> {
+        return new Promise((resolve, reject) => {
+            ngScope().client.newRide({... values, Route: props.Route}, (name, data) => {
                 resolve(data)
-            }, (e)=> {
+            }, (e) => {
                 reject(e)
-            })**/
-        }).then((result)=> {
+            })
+        }).then((result) => {
             dispatch({
                 type: `RIDEADD`,
                 payload: result
             })
             //dispatch(push(props.returnPath))
-        }).catch((e)=> {
+        }).catch((e) => {
             //console.log('>>'+e  + " " + e.stack) //JSON.stringify(e))
             dispatch({
                 type: `RIDEADD_ERROR`,
@@ -144,14 +149,14 @@ export default class RideEditor extends MyComponent {
             Title: 'stuff',
             RideDate: '2017-09-01',
             RideTime: '',
-            Difficulty:0.0,
-            Route:null
+            Difficulty: 0.0,
+            Route: null
         },
-        Title: state.Title,
-        RideDate: state.RideDate,
-        RideTime: state.RideTime,
-        Difficulty: state.Difficulty,
-        Route: state.Route,
+        Title: state.newRide.Title,
+        RideDate: state.newRide.RideDate,
+        RideTime: state.newRide.RideTime,
+        Difficulty: state.newRide.Difficulty,
+        Route: state.newRide.Route,
     })
 
     static reduxDispatchConfig = (dispatch) => ({
@@ -159,22 +164,29 @@ export default class RideEditor extends MyComponent {
             type: `EDITRIDE`,
             payload: args
         }),
-        dateSelected: () => (event) => {
+        dateSelected: (event) => {
             dispatch({
                 type: `SELECT`,
                 payload: {}
             })
-        }
-
+        },
+        loadRoute: (route) => dispatch({
+            type: `ROUTELOAD`,
+            payload: route
+        }),
+        loadRoute2: (v) => dispatch({
+            type: `ROUTECHANGE`,
+            payload: v
+        })
     })
 
     static reduxAsyncConfig = [{
         key: `newRide`,
-        promise: ({ store,params,helpers,matchContext,router,history,location,routes}) => new Promise((resolve, reject)=> {
+        promise: ({store, params, helpers, matchContext, router, history, location, routes}) => new Promise((resolve, reject) => {
             console.log("OK HERE")
             resolve(true)
             return {Title: "My new Ride", startDate: "yesterday"}
-        }).then((result) =>result).catch((e)=> {
+        }).then((result) => result).catch((e) => {
             console.log(e)
             throw e
         })

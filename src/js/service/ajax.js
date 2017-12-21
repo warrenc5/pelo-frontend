@@ -11,11 +11,16 @@ export default class MyAjax {
 
     call(name, url, success, failure, method, data1) {
 
-        if(!this.platform.isOnline())  {
-           console.log('not online at the moment retrieve from storage')
+        if (!this.platform.isOnline()) {
+            console.log('not online at the moment retrieve from storage')
+            failure({message: "not online"})
+            return
         }
 
-        this.platform.cordovaOnly(() => SpinnerDialog.show(name, url, () => alert('aborted ' + name)))
+        this.platform.cordovaOnly(() => SpinnerDialog.show(name, url, () => {
+            console.log('aborted ' + name)
+            return true
+        }))
 
         var storageApply = this.storageApply
 

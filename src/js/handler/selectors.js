@@ -13,7 +13,7 @@ export const authIdSelector = createSelector(state => state.login === undefined 
 export const buildTimeSelector = createSelector(state => state.globals.buildTime, copy)
 export const groupSelector = createSelector(state => state.groups == null ? [{}] : state.groups, copy)
 export const defaultPath = createSelector(state => state.main !== undefined && state.main.defaultPath !== undefined ? state.main.defaultPath
-    : routes.RIDES, copy)
+    : routes.DEFAULT, copy)
 
 export const currentRideId = createSelector(state => {
     var selectedRide = -1

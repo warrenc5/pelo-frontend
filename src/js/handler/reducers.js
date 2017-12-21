@@ -205,6 +205,8 @@ const newRide = (state = {}, action) => {
     switch (action.type) {
         case INITIALIZE:
             return {Title: "My new Ride", startDate: "today"}
+        case 'ROUTELOAD':
+            return {Route: action.payload}
         default:
             return state
     }

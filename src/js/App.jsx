@@ -47,7 +47,6 @@ export default class App extends MyComponent {
         this.handleRequestClose = this.handleRequestClose.bind(this)
         this.handleTouchTap = this.handleTouchTap.bind(this)
 
-
         //LOAD TEST DATA
 
         //console.log(JSON.stringify(this.props.state))

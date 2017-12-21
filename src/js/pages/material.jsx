@@ -81,6 +81,12 @@ export const materialUpload = (input, meta)=> (
             onChange={input.onChange}
             onFileLoad={input.onFileLoad}/>
 )
+
+export const materialUploadPreview = (input, meta)=> (
+    <UploadPreview {...input}
+            onChange={input.onChange}
+            onFileLoad={input.onFileLoad}/>
+)
 export const materialImage = ({dispatch, input, label, type, onKeyDown, meta: { asyncValidating, touched, error } }, ...custom) => (
     <div className={asyncValidating ? 'async-validating' : ''}>
         <div>

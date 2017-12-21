@@ -59,6 +59,11 @@ export default class MyClient {
         this.ajax.call("todays_rides", "todays-rides/by-user/" + userId, success, failure, "GET")
     }
 
+    newRide(values, success, failure) {
+        console.log(JSON.stringify(values))
+        this.ajax.call("", "rides/add/" , success, failure, "POST",JSON.stringify(values))
+    }
+
     checkUserLocation(userId, rideId) {
         console.log('check user location')
         var satId = "satId" + rideId

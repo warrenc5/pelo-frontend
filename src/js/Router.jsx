@@ -24,6 +24,8 @@ import {Switch, Route, Redirect} from 'react-router-dom'
 import {applyMiddleware} from 'redux'
 import * as select from './handler/selectors'
 
+//http://jamesknelson.com/join-the-dark-side-of-the-flux-responding-to-actions-with-actors/
+
 /**
  * This screen transition logical router handles html a links and anchor refs in the app
  *
@@ -170,6 +172,7 @@ const PrivateRoute = ({signedIn, location, component, ...props}) => (
     )}/>
 )
 
+//default route is in selector
 export class routes {
     static ROOT = '/'
     static LOGIN = '/login'
@@ -185,4 +188,5 @@ export class routes {
     static RIDES = '/rides'
     static ABOUT = '/about'
     static HOME = '/home'
+    static DEFAULT = '/editRide'
 }
