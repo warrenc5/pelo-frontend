@@ -5,9 +5,12 @@ body {
   font-family: 'graphik', 'Helvetica Neue', 'Roboto', Arial, sans-serif;
 }
 
+p {
+  color: white;
+}
+
 span {
-  color: $white;
-  font-family: 'graphik', 'Helvetica Neue', 'Roboto', Arial, sans-serif;
+  color: white;
 }
 
 .error {

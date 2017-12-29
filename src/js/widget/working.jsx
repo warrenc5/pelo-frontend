@@ -1,9 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types';
-
-
-import FlatButton from 'material-ui/FlatButton'
-import RaisedButton from 'material-ui/RaisedButton'
 
 export class Working extends React.Component {
     constructor(props) {

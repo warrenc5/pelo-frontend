@@ -4,16 +4,6 @@ import {Form, SubmissionError, Field, reduxForm, propTypes} from 'redux-form'
 import SubmitButton from 'redux-form-react-submitbutton'
 import {ngScope} from '../service/bridge'
 
-import {
-    Checkbox,
-    RadioButtonGroup,
-    SelectField,
-    TextField,
-    Toggle,
-    DatePicker,
-} from 'redux-form-material-ui'
-
-
 import style from '../layout/style'
 import * as action from '../handler/actions'
 
@@ -61,11 +51,11 @@ export default class RideEditor extends MyComponent {
                     </tr>
                     <tr>
                         <Field label="Ride Date" name="RideDate" component={materialDatePicker} hintText="Ride Date"
-                               autoOk={true}/>
+                               autoOk={false}/>
                     </tr>
                     <tr>
                         <Field label="Ride Time" name="RideTime" component={materialTimePicker} hintText="Ride Time"
-                               autoOk={true}/>
+                               autoOk={false} invalidLabel="Unknown" />
                     </tr>
                     <tr>
                         <Field label="Difficulty" name="Difficulty" component={materialSlider} label="Difficulty"/>
@@ -83,8 +73,8 @@ export default class RideEditor extends MyComponent {
                     </tr>
                     </tbody>
                 </table>
-
-                <SubmitButton
+                <Field
+                    type="submit"
                     name="add"
                     label="Add"
                     component={materialButton}
@@ -114,7 +104,7 @@ export default class RideEditor extends MyComponent {
         //TODO do this first and if it fails then fail.
         //return Login.reduxFormConfig.asyncValidate(values, dispatch).catch((e)=>())
         return new Promise((resolve, reject) => {
-            ngScope().client.newRide({... values, Route: props.Route}, (name, data) => {
+            ngScope().client.newRide({...values, Route: props.Route}, (name, data) => {
                 resolve(data)
             }, (e) => {
                 reject(e)
@@ -148,8 +138,8 @@ export default class RideEditor extends MyComponent {
         initialValues: {
             Title: 'stuff',
             RideDate: '2017-09-01',
-            RideTime: '',
-            Difficulty: 0.0,
+            RideTime: '07:30',
+            Difficulty: 0.2,
             Route: null
         },
         Title: state.newRide.Title,

@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
+import moment from 'moment'
 import TextField from 'material-ui/TextField'
 import submit from "redux-form"
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
 import Checkbox from 'material-ui/Checkbox'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
@@ -16,81 +17,100 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import Slider from 'material-ui/Slider';
 import Upload from 'material-ui-upload/Upload';
 import UploadPreview from 'material-ui-upload/UploadPreview';
-import { ReactMaterialImage } from 'react-material-image'
+import {ReactMaterialImage} from 'react-material-image'
 
-export const materialButton = ({ label , onClick }, ...custom) => (
+export const materialButton = ({label, onClick}, ...custom) => (
     <FlatButton label={label} onClick={onClick}/>
 )
 
-export const materialTextField = ({dispatch, input, label, type, onKeyDown, meta: { asyncValidating, touched, error } }, ...custom) => (
+export const materialTextField = ({dispatch, input, label, type, onKeyDown, meta: {asyncValidating, touched, error}}, ...custom) => (
     <div className={asyncValidating ? 'async-validating' : ''}>
         <TextField hintText={label}
                    floatingLabelText={label}
                    errorText={touched && error}
                    type={type}
                    onKeyDown={onKeyDown}
-            {...input}
+                   {...input}
+                   {...custom}
         />
     </div>
 )
 
-export const materialCheckbox = ({ input, label }) => (
+export const materialCheckbox = ({input, label}) => (
     <Checkbox label={label}
               checked={input.value ? true : false}
               onCheck={input.onChange}/>
 )
 
-export const materialRadioGroup = ({ input, ...rest }) => (
+export const materialRadioGroup = ({input, ...rest}) => (
     <RadioButtonGroup {...input} {...rest}
-        valueSelected={input.value}
-        onChange={(event, value) => input.onChange(value)}/>
+                      valueSelected={input.value}
+                      onChange={(event, value) => input.onChange(value)}/>
 )
 
-export const materialSelectField = ({ input, label, meta: { touched, error }, children, ...custom }) => (
+export const materialSelectField = ({input, label, meta: {touched, error}, children, ...custom}) => (
     <SelectField
         floatingLabelText={label}
         errorText={touched && error}
         {...input}
-        onChange={(event, index, value) => input.onChange(value)}
+        onChange={(event, index, value) => input.onChange(event, value)}
         children={children}
         {...custom}/>
 )
-export const materialDatePicker = ({ input, defaultValue, meta: { touched, error } }) => (
+export const materialDatePicker = ({input, defaultValue, meta: {touched, error}}, ...custom) => (
     <DatePicker
         errorText={touched && error}
         {...input}
-        value={input.value !== ''? new Date(input.value) : null}
-        onChange={(event, value) => {console.log(value); input.onChange(value)}}/>
+        value={input.value !== '' ? new Date(input.value) : null}
+        format="YYYY-MM-DD"
+        onChange={(event, value) => {
+            console.log(value);
+            input.onChange(moment(value).format('YYYY-MM-DD'))
+        }}
+        {...custom}
+    />
 )
+//TODO: add combo datetime https://www.npmjs.com/package/material-ui-datetimepicker
 
-export const materialTimePicker = ({ input, defaultValue, meta: { touched, error } }) => (
+export const materialTimePicker = ({input, defaultValue, meta: {touched, error}}, ...custom) => (
     <TimePicker
         errorText={touched && error}
         {...input}
-        value={input.value !== ''? new Date(input.value) : null}
-        onChange={(event, value) => {console.log(value); input.onChange(value)}}/>
+        format="HH:mm"
+        value={input.value !== '' ? input.value : null}
+        onChange={(event, value) => {
+            console.log(value);
+            input.onChange(moment(value).format('HH:mm'))
+        }}
+        {...custom}
+    />
 )
 
-export const materialSlider =() => (
-    <Slider step={0.10} value={0.5}
-        onChange={(event, value) => {console.log(value) }}/>
-    )
+export const materialSlider = ({input, defaultValue}) => (
+    <Slider step={0.10}
+            value={input.value !== '' ? input.value : 0}
+            {...input}
+            onChange={(event, value) => {
+                console.log(value)
+                input.onChange(value)
+            }}/>
+)
 
-export const materialUpload = (input, meta)=> (
+export const materialUpload = (input, meta) => (
     <Upload {...input}
             onChange={input.onChange}
             onFileLoad={input.onFileLoad}/>
 )
 
-export const materialUploadPreview = (input, meta)=> (
+export const materialUploadPreview = (input, meta) => (
     <UploadPreview {...input}
-            onChange={input.onChange}
-            onFileLoad={input.onFileLoad}/>
+                   onChange={input.onChange}
+                   onFileLoad={input.onFileLoad}/>
 )
-export const materialImage = ({dispatch, input, label, type, onKeyDown, meta: { asyncValidating, touched, error } }, ...custom) => (
+export const materialImage = ({dispatch, input, label, type, onKeyDown, meta: {asyncValidating, touched, error}}, ...custom) => (
     <div className={asyncValidating ? 'async-validating' : ''}>
         <div>
-            <ReactMaterialImage {... custom} />
+            <ReactMaterialImage {...custom} />
         </div>
     </div>
 )

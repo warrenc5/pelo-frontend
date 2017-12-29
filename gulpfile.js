@@ -146,10 +146,10 @@ gulp.task('start', [], function () {
     gulp.watch(paths.root + '/src_old/**/*', ['old'])
 
     gulp.watch([paths.cssDest + '/**/*',
-        paths.jsDest + '/**/*',
-        paths.htmlDest + '/**/*.html',
-        "!" + paths.jsDest + "/cordova/**/*",
-        "!" + paths.jsDest + "/" + buildTimeFile],
+            paths.jsDest + '/**/*',
+            paths.htmlDest + '/**/*.html',
+            "!" + paths.jsDest + "/cordova/**/*",
+            "!" + paths.jsDest + "/" + buildTimeFile],
         {ignoreInitial: true}).on('change',
         batch({timeout: 1000}, function (events, cb) {
             events
@@ -206,14 +206,16 @@ var args = process.argv
 gulp.task('auto', function () {
     var p;
 
-    (function() {
+    (function () {
         var childProcess = require("child_process");
         var oldSpawn = childProcess.spawn;
+
         function mySpawn() {
             //console.log('spawn', process.argv, JSON.stringify(process.env,arguments));
             var result = oldSpawn.apply(this, arguments);
             return result;
         }
+
         childProcess.spawn = mySpawn;
     })();
 
@@ -252,9 +254,9 @@ gulp.task('compile-css', function () {
         .pipe(concat(paths.cssDestName))
         .pipe(gulp.dest(paths.cssDest))
 
-        if(isBrowserSync) {
-            b.pipe(browserSync.stream())
-        }
+    if (isBrowserSync) {
+        b.pipe(browserSync.stream())
+    }
     return true
 })
 
@@ -273,10 +275,10 @@ gulp.task('compile-js', [], function (done1) {
             })
     )
         .transform(browserifyCss, {
-            global:true,
+            global: true,
             verbose: true,
             autoInject: true,
-            poll:true,
+            poll: true,
             minify: true,
         })
         .transform(babelify.configure({
@@ -292,25 +294,25 @@ gulp.task('compile-js', [], function (done1) {
     b = b.bundle()
 
     var c = b.on('end', () => {
-            util.log(`<=============================== ${buildTime} ====================${env}========================`)
-        })
+        util.log(`<=============================== ${buildTime} ====================${env}========================`)
+    })
         .on('error', (e) => {
-            beep(2)
-            try {
-                util.log(util.colors.red(">>"+e+"<<"))
-                //    util.log(`${e.message}\n${e.codeFrame}`)
-            } catch (e) {
-            }
-            b.emit('end')
+                beep(2)
+                try {
+                    util.log(util.colors.red(">>" + e + "<<"))
+                } catch (e) {
+                    util.log(`${e.message}\n${e.codeFrame}`)
+                }
+                b.emit('end')
             }
         )
 
         //var combined = combiner.obj([b])
         .pipe(source('bundle.js'))
-       //.pipe(changed(paths.jsDest))
+        //.pipe(changed(paths.jsDest))
         .pipe(buffer())
 
-    //.pipe(diff()) //takes tooo long
+        //.pipe(diff()) //takes tooo long
 
         .pipe(plumber((e) => {
             console.log(e)
@@ -331,7 +333,7 @@ gulp.task('compile-js', [], function (done1) {
                 }
             )))
 
-            //.pipe(gulp.dest(paths.jsDest))
+        //.pipe(gulp.dest(paths.jsDest))
 
         //.pipe(sourcemaps.write('./'))
     }
@@ -362,8 +364,8 @@ gulp.task('compile-js2', [], function (done1) {
     // *!/
     ////.pipe(changed(d))*/ // Ignore unchanged files
     var c = b.on('end', () => {
-            util.log(`================================ ${buildTime} ====================${env}========================`)
-        })
+        util.log(`================================ ${buildTime} ====================${env}========================`)
+    })
         .on('error', (e) => {
                 try {
                     beep(2)
@@ -388,7 +390,7 @@ gulp.task('compile-js2', [], function (done1) {
         c = c.pipe(sourcemaps.init({loadMaps: true}))
             .pipe(streamify(uglify({
                     mangle: false,
-                comments: false,
+                    comments: false,
                     /*{ except: ['$anchorSmoothScroll', '$classroom', '$grade', '$lesson', '$filter', ] } */
                 }
             )))
@@ -442,8 +444,7 @@ gulp.task('touch', function (done) {
     gulp.src(paths.jsSrc + '/index.js')
         .pipe(touch());
 })
-gulp.task('compile', ['setup','copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
-
+gulp.task('compile', ['setup', 'copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
 
 gulp.task('stop', function (done) {
@@ -505,23 +506,23 @@ gulp.task('clean', gulpsync.sync(['clean2']), function (done) {
      */
 })
 
-var runOpts=''
+var runOpts = ''
 gulp.task('ios-run', ['auto', 'setup', 'compile'], function (done) {
-    runOpts  = 'ios'
+    runOpts = 'ios'
     return gulp.start('cordova_run')
 })
 
 gulp.task('android-run', ['setup', 'compile'], function (done) {
-    runOpts  = 'android'
+    runOpts = 'android'
     return gulp.start('cordova_run')
 })
 
 gulp.task('ios', [], function (done) {
-    runOpts  = 'ios'
+    runOpts = 'ios'
     gulp.start('watch-dist')
 })
 gulp.task('android', [], function (done) {
-    runOpts  = 'android'
+    runOpts = 'android'
     gulp.start('watch-dist')
 })
 gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'cordova_serve']), function (done) {
@@ -601,7 +602,7 @@ gulp.task('cordova_build', function (done) {
         return cordova.build({
             "verbose": true,
             "platforms": [runOpts],
-            "options": [env == 'prod'?"--release":"--debug",
+            "options": [env == 'prod' ? "--release" : "--debug",
                 "--browserify",
                 "--gradleArg=--stacktrace"]
         }, function (e) {
@@ -696,7 +697,7 @@ gulp.task('install', [], function (done) {
      */
 })
 
-gulp.task('setup', ['install'], (done)=> {
+gulp.task('setup', ['install'], (done) => {
 //FIXME:gulp.task('setup', ['install'], (done)=> {
     return gulp.src(cordovaConfig)
         .pipe(plumber())
