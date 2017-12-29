@@ -61,7 +61,7 @@ export default class RouterPath extends MyComponent {
                         <Route path={routes.LOGOUT} component={Logout} pageTitle="Logout"/>
                         <Route path={routes.ERROR} component={Logout} pageTitle="Error"/>
                         <AsyncRoute exact path={routes.LOGIN} component={Login} pageTitle="Sign In"/>
-                        <Route exact signedIn={signedIn} path={routes.EDITRIDE} component={RideEditor}
+                        <PrivateRoute exact signedIn={signedIn} path={routes.EDITRIDE} component={RideEditor}
                                pageTitle="Edit Ride"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.RIDES} component={Rides}
                                       pageTitle="Rides"/>
@@ -188,5 +188,5 @@ export class routes {
     static RIDES = '/rides'
     static ABOUT = '/about'
     static HOME = '/home'
-    static DEFAULT = '/editRide'
+    static DEFAULT = '/rides'
 }
