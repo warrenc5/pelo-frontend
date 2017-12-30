@@ -189,6 +189,7 @@ gulp.task('build-time', function () {
     createBuildTime()
 })
 
+var runOpts = 'android'
 function createBuildTime() {
     buildTime = moment().format('MMMM Do YYYY, h:mm:ss a')
     console.log(`stamping build ${buildTime}`)
@@ -431,6 +432,8 @@ gulp.task('copy-images', [], function () {
 })
 
 gulp.task('release', gulpsync.sync(['setup', 'compile', 'cordova_build', 'shrinkwrap']), function () {
+
+
     util.log('released')
     //TODO if !exists
     //cordova/platforms/android/build/outputs/apk/android-x86-debug.apk
