@@ -509,7 +509,6 @@ gulp.task('clean', gulpsync.sync(['clean2']), function (done) {
      */
 })
 
-var runOpts = ''
 gulp.task('ios-run', ['auto', 'setup', 'compile'], function (done) {
     runOpts = 'ios'
     return gulp.start('cordova_run')
