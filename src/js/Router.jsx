@@ -5,11 +5,10 @@ import {ReduxAsyncConnect} from 'redux-connect'
 import {ConnectedRouter} from 'react-router-redux'
 import MainLayout from './layout/main.jsx'
 import ContentLayout from './layout/content.jsx'
-import HomeContainer from './pages/home.jsx'
 import Groups from './pages/groups.jsx'
-import MessagesContainer from './pages/messages.jsx'
+import Messages from './pages/messages.jsx'
 import Rides from './pages/rides.jsx'
-import SettingsContainer from './pages/settings.jsx'
+import Settings from './pages/settings.jsx'
 import Login from './pages/login.jsx'
 import Logout from './pages/logout.jsx'
 import Register from './pages/register.jsx'
@@ -62,16 +61,16 @@ export default class RouterPath extends MyComponent {
                         <Route path={routes.ERROR} component={Logout} pageTitle="Error"/>
                         <AsyncRoute exact path={routes.LOGIN} component={Login} pageTitle="Sign In"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.EDITRIDE} component={RideEditor}
-                               pageTitle="Edit Ride"/>
+                                      pageTitle="Edit Ride"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.RIDES} component={Rides}
                                       pageTitle="Rides"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.REGISTER} component={Register}
                                       pageTitle="Sign Up"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.GROUPS} component={Groups}
                                       pageTitle="Groups"/>
-                        <PrivateRoute exact signedIn={signedIn} path={routes.MESSAGES} component={MessagesContainer}
+                        <PrivateRoute exact signedIn={signedIn} path={routes.MESSAGES} component={Messages}
                                       pageTitle="Messages"/>
-                        <PrivateRoute exact signedIn={signedIn} path={routes.SETTINGS} component={SettingsContainer}
+                        <PrivateRoute exact signedIn={signedIn} path={routes.SETTINGS} component={Settings}
                                       pageTitle="Settings"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.ROUTE} component={RideRoute}
                                       pageTitle="Route"/>

@@ -127,4 +127,11 @@ TableExampleSimple = () => (
             </TableRow>
         </TableBody>
     </Table>
+componentDidMount() {
+    let tableBodyNode = ReactDOM.findDOMNode(this.refs["table-body"]).parentNode.parentNode;
+
+    tableBodyNode.addEventListener('scroll', (e) => {
+        console.log(e);
+    });
+}
 )

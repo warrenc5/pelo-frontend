@@ -2,8 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 import {connect} from 'react-redux'
+import style from '../layout/style'
+
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
+import {GridList, GridTile} from 'material-ui/GridList';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import {ngScope} from '../service/bridge'
 
@@ -21,7 +24,6 @@ export default class RideRoute extends MyComponent {
         this.props = props
     }
 
-
     render() {
         const {selectedRide, rideId, routeId, route, difficulty} = this.props
         return (
@@ -29,25 +31,27 @@ export default class RideRoute extends MyComponent {
                 <div>
                     <Catch>
                         <Card className="card">
-                            <CardHeader title={route.title} subtitle={route.description} />
-                            <CardMedia overlay={<CardTitle title={route.title} subtitle={route.slug}/>}>
-                                {selectedRide.participants.map(p =>
-                                    <Card>
-                                        <CardMedia overlay={<CardTitle title={p.slug}/>}>
-                                            <ReactMaterialImage class="round-image"
+                            <CardHeader title={route.title}
+                                        subtitle={`${difficulty} ${route.distance}km. ${route.description}`}/>
+                            <CardMedia>
+                                <GridList
+                                    cols={3}
+                                    style={style.gridList}>
+                                    {selectedRide.participants.map(p =>
+                                        <GridTile data-scroll-reveal
+                                                  title={p.slug}>
+                                            <ReactMaterialImage width="100%" height="100%" class="round-image"
                                                                 src={ngScope().state.baseUrl + `userimage/${p.id}`}/>
-                                        </CardMedia>
-                                    </Card>
-                                )}
+                                        </GridTile>
+                                    )}
+                                </GridList>
                             </CardMedia>
-                            <CardText>
-                                {difficulty} {route.distance}km.
-                            </CardText>
                             <CardActions>
-                                <FlatButton label="Go"/>
+                                <FlatButton label="Join Ride"/>
+                                <FlatButton label="Hide Map"/>
+                                <FlatButton label="Show Map"/>
                             </CardActions>
                         </Card>
-                        <hr/>
                         <MyRouteMap rideId={rideId} routeId={routeId} route={route}/>
                     </Catch>
                 </div>
