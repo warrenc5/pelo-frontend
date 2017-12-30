@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import {ngScope} from '../service/bridge'
 
+import {ReactMaterialImage} from 'react-material-image'
 import MyComponent, {myAsyncFormConnect, Catch} from '../widget/common'
 import MyRouteMap from '../widget/routemap'
 import {Divider} from 'material-ui'
@@ -31,10 +32,12 @@ export default class RideRoute extends MyComponent {
                             <CardHeader title={route.title} subtitle={route.description} />
                             <CardMedia overlay={<CardTitle title={route.title} subtitle={route.slug}/>}>
                                 {selectedRide.participants.map(p =>
-                                        <span>
-                                    <img class="round-image" src={ngScope().state.baseUrl + `userimage/${p.id}`}/>
-                                            {p.slug}&nbsp;
-                                </span>
+                                    <Card>
+                                        <CardMedia overlay={<CardTitle title={p.slug}/>}>
+                                            <ReactMaterialImage class="round-image"
+                                                                src={ngScope().state.baseUrl + `userimage/${p.id}`}/>
+                                        </CardMedia>
+                                    </Card>
                                 )}
                             </CardMedia>
                             <CardText>

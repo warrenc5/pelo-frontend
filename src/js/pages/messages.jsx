@@ -40,7 +40,6 @@ export default class Messages extends MyComponent {
                         <ReactMaterialImage class="round-image"
                                             src={ngScope().state.baseUrl + `userimage/${message.from}`}/>
                     </CardHeader>
-
                     <CardText>
                         {message.message}
                     </CardText>

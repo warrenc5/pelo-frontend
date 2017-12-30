@@ -430,7 +430,7 @@ gulp.task('copy-images', [], function () {
         .pipe(gulp.dest(paths.imgDest))
 })
 
-gulp.task('release', gulpsync.sync(['compile', 'cordova_build', 'shrinkwrap']), function () {
+gulp.task('release', gulpsync.sync(['setup', 'compile', 'cordova_build', 'shrinkwrap']), function () {
     util.log('released')
     //TODO if !exists
     //cordova/platforms/android/build/outputs/apk/android-x86-debug.apk
