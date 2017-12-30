@@ -9,6 +9,7 @@ import {deepOrange500} from 'material-ui/styles/colors'
 import FlatButton from 'material-ui/FlatButton'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import style from "../layout/style";
 
 const styles = {
   container: {
@@ -82,3 +83,48 @@ class Comp extends Component {
 }
 
 export default Comp
+/**
+ * TODO: add scrolling
+ * let onUpdate = () => {
+ *   window.scrollTo(0, 0)
+ * }
+ *
+ * http://blog.vjeux.com/2013/javascript/scroll-position-with-react.html
+ *
+ *
+ */
+
+DividerExampleMenu = () => (
+    <Menu desktop={true} style={style}>
+        <MenuItem primaryText="Place - Akuna Bay via Church Point"/>
+        <MenuItem primaryText="Time - 6:30am - 10:30am"/>
+        <MenuItem primaryText="Created by: John Smith"/>
+        <MenuItem primaryText="Coffee Stop: ABC Cafe"/>
+        <MenuItem primaryText="{ride.name}"/>
+        <Divider />
+        <MenuItem primaryText="Distance - 87km"/>
+        <MenuItem primaryText="Elevation - 1400m"/>
+        <MenuItem primaryText="Expected Avg pace - This will be a C Group pace 26km/h+"/>
+    </Menu>
+)
+
+TableExampleSimple = () => (
+    <Table>
+        <TableHeader>
+            <TableRow>
+                <TableHeaderColumn>Yes</TableHeaderColumn>
+                <TableHeaderColumn>Maybe</TableHeaderColumn>
+                <TableHeaderColumn>No</TableHeaderColumn>
+                <TableHeaderColumn>Pending</TableHeaderColumn>
+            </TableRow>
+        </TableHeader>
+        <TableBody>
+            <TableRow>
+                <TableRowColumn>4</TableRowColumn>
+                <TableRowColumn>0</TableRowColumn>
+                <TableRowColumn>0</TableRowColumn>
+                <TableRowColumn>14</TableRowColumn>
+            </TableRow>
+        </TableBody>
+    </Table>
+)

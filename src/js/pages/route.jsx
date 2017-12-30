@@ -12,7 +12,6 @@ import MyRouteMap from '../widget/routemap'
 import {Divider} from 'material-ui'
 import * as select from '../handler/selectors'
 
-
 @myAsyncFormConnect()
 export default class RideRoute extends MyComponent {
 
@@ -28,21 +27,23 @@ export default class RideRoute extends MyComponent {
             route === undefined ? <div/> :
                 <div>
                     <Catch>
-                        <span>{route.title}</span><br/>
-                        <small><span>{difficulty} {route.distance}km.</span></small>
-                        <br/>
-                        <p>
-                            {selectedRide.participants.map(p =>
-                                <span>
+                        <Card className="card">
+                            <CardHeader title={route.title} subtitle={route.description} />
+                            <CardMedia overlay={<CardTitle title={route.title} subtitle={route.slug}/>}>
+                                {selectedRide.participants.map(p =>
+                                        <span>
                                     <img class="round-image" src={ngScope().state.baseUrl + `userimage/${p.id}`}/>
-                                    {p.slug}&nbsp;
+                                            {p.slug}&nbsp;
                                 </span>
-                            )}
-                        </p>
-                        {/**
-                         <img class="round-image"
-                         src={`https://s3-ap-southeast-2.amazonaws.com/media.pelo.cc/storage/production/user/${p.id}/thumbnail/${this.props.login.avatar}?1444014447`}/>
-                         **/}
+                                )}
+                            </CardMedia>
+                            <CardText>
+                                {difficulty} {route.distance}km.
+                            </CardText>
+                            <CardActions>
+                                <FlatButton label="Go"/>
+                            </CardActions>
+                        </Card>
                         <hr/>
                         <MyRouteMap rideId={rideId} routeId={routeId} route={route}/>
                     </Catch>

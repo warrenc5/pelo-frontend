@@ -76,7 +76,7 @@ export const materialTimePicker = ({input, defaultValue, meta: {touched, error}}
     <TimePicker
         errorText={touched && error}
         {...input}
-        format="HH:mm"
+        format="24hr"
         value={input.value !== '' ? input.value : null}
         onChange={(event, value) => {
             console.log(value);

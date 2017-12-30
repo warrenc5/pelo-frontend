@@ -232,6 +232,19 @@ const connection = (state = {}, action) => {
     }
 }
 
+const messages = (state = {}, action) => {
+    switch (action.type) {
+        case LOAD_SUCCESS:
+            if (action.payload.key !== `messages`)
+                return state
+
+            return action.payload.data.sort((a, b) => a.id < b.id)
+
+        default:
+            return state
+    }
+    return state
+}
 const todaysRides = (state = {}, action) => {
     switch (action.type) {
         case `LOAD_TEST_DATA`:
@@ -285,6 +298,7 @@ export default function MyReducer() {
         main,
         form,
         connection,
+        messages,
     })
 }
 
