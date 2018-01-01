@@ -65,18 +65,30 @@ export default class MyPlatform {
 
     cordovaOnly(func) {
         if (typeof cordova !== 'undefined') {
-            return func()
+            try {
+                return func()
+            } catch (e) {
+                console.log("eee" + e)
+            }
         }
     }
 
     iosOnly(func) {
         if (this.actualPlatform == 'iOS')
-            return func()
+            try {
+                return func()
+            } catch (e) {
+                console.log(e)
+            }
     }
 
     androidOnly(func) {
         if (this.actualPlatform == 'Android')
-            return func()
+            try {
+                return func()
+            } catch (e) {
+                console.log(e)
+            }
     }
 
     platform() {

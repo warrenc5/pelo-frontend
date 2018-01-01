@@ -1,2 +1,5 @@
 ncu -a 
 npm ls react
+nvm ls-remote
+nvm install --latest-npm
+npm install npm@latest -g

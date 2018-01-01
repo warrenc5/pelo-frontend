@@ -110,7 +110,7 @@ var paths = new (function () {
 
 var npmShrinkwrap = require("npm-shrinkwrap")
 
-gulp.task('default', ['auto', 'start', 'compile'])
+gulp.task('default', ['install', 'start', 'compile'])
 
 gulp.task('start', [], function () {
     // Fire up a web server.
@@ -447,7 +447,7 @@ gulp.task('touch', function (done) {
     gulp.src(paths.jsSrc + '/index.js')
         .pipe(touch());
 })
-gulp.task('compile', ['setup', 'copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
+gulp.task('compile', ['install', 'copy-images', 'copy-html', 'copy-data', 'compile-css', 'compile-js'])
 
 
 gulp.task('stop', function (done) {
@@ -509,7 +509,7 @@ gulp.task('clean', gulpsync.sync(['clean2']), function (done) {
      */
 })
 
-gulp.task('ios-run', ['auto', 'setup', 'compile'], function (done) {
+gulp.task('ios-run', ['setup', 'compile'], function (done) {
     runOpts = 'ios'
     return gulp.start('cordova_run')
 })
@@ -527,7 +527,7 @@ gulp.task('android', [], function (done) {
     runOpts = 'android'
     gulp.start('watch-dist')
 })
-gulp.task('watch-dist', gulpsync.sync(['setup', 'auto', 'cordova_serve']), function (done) {
+gulp.task('watch-dist', gulpsync.sync(['install','auto', 'cordova_serve']), function (done) {
         return gulp.watch([paths.dest + '/**/*', "!" + paths.jsDest + "/cordova/**", "!" + paths.jsDest + "/" + buildTimeFile], {
                 ignoreInitial: true,
                 readDelay: 5000
@@ -558,7 +558,7 @@ gulp.task('record', ['auto'], function (done) {
     });
 })
 //https://github.com/apache/cordova-lib/blob/master/cordova-lib/src/cordova/util.js#L294
-gulp.task('cordova_serve', ['auto'], function (done) {
+gulp.task('cordova_serve', ['auto','setup'], function (done) {
 
     var cordovaDir = `${paths.root}/cordova/www/`
     process.chdir(cordovaDir)
@@ -700,7 +700,6 @@ gulp.task('install', [], function (done) {
 })
 
 gulp.task('setup', ['install'], (done) => {
-//FIXME:gulp.task('setup', ['install'], (done)=> {
     return gulp.src(cordovaConfig)
         .pipe(plumber())
         .pipe(diff({hash: 'cordova'}))
