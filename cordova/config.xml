@@ -44,7 +44,6 @@
         <allow-intent href="itms-apps:*" />
         <hook src="scripts/idevicesyslog.sh" type="after_run" />
     </platform>
-    <engine name="android" spec="^7.0.0" />
     <plugin name="com.filfatstudios.spinnerdialog" spec="https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog" />
     <plugin name="cordova-plugin-compat" spec="^1.2.0" />
     <plugin name="cordova-plugin-cookie-manager" spec="git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git" />
@@ -66,4 +65,5 @@
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="de.appplant.cordova.plugin.local-notification" spec="~0.8.5" />
     <plugin name="kr.co.joycorp.cordova.exitapp" spec="~1.0.2" />
+    <engine name="android" spec="^7.0.0" />
 </widget>

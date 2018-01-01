@@ -1,0 +1,46 @@
+//https://pugjs.org/api/getting-started.html
+doctype html
+html()
+    head
+        title Pelo Riders App
+        //
+            link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+            link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
+
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(charset="utf-8")
+        script(type="text/javascript", charset="utf-8", src="cordova.js")
+            var i=0
+        script(type="text/javascript", charset="utf-8", src="cordova_plugins.js")
+            var j=0
+
+        script(type="text/javascript").
+
+        link(rel='stylesheet', href='css/bundle.css')
+        script(type="text/javascript", src="js/bundle.js" async=true)
+        //script(type="text/javascript", charset="utf-8", src="plugins/cordova-plugin-facebook4/www/facebook-native.js")
+
+    body(id="app",ng-controller="main")
+        pelo-app(state="state", client="client" watch-depth="reference")
+        div
+            img(id="bg" src="img/sprocket.gif" alt="")
+
+            <hr/>
+            span test links &nbsp;
+            a(href="#/login2")
+                span login &nbsp;
+            a(href="#/")
+                span root &nbsp;
+            a(href="#/home")
+                span home &nbsp;
+            a(href="#/editRide")
+                span editRide &nbsp;
+            a(href="#/rides")
+                span rides &nbsp;
+            a(href="#/groups")
+                span groups &nbsp;
+            a(href="#/logout")
+                span logout &nbsp;
+            a(href="/")
+                span reload &nbsp;
+        div#fb-root

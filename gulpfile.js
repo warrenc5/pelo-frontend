@@ -408,13 +408,16 @@ gulp.task('copy-html', function () {
         .pipe(diff())
         .pipe(gulp.dest(paths.htmlDest))
 
-    gulp.src(paths.htmlSrc + '/**/*.pug')
+    gulp.src(paths.htmlSrc + `/**/index-${env}.pug`)
         .pipe(diff())
+        .pipe(rename("index.pug"))
         .pipe(gulpPug({
             pug: pug,
             pretty: true
         }))
         .pipe(gulp.dest(paths.htmlDest))
+
+
     return true
 })
 
