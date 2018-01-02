@@ -6,6 +6,6 @@ git checkout -- .
 git pull --no-commit 
 . ~/.nvm/nvm.sh 
 npm i 
-NODE_ENV=$3 /bin/bash -i -c "gulp release"
+NODE_ENV=$3 /bin/bash -i -c "gulp release $4"
 chmod o+r /var/www/html/*
 
