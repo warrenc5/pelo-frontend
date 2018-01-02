@@ -166,16 +166,19 @@ gulp.task('start', [], function () {
 })
 
 gulp.task('shrinkwrap', [], function () {
+    if(env != 'dev')
+        return
+
     npmShrinkwrap({
         dirname: process.cwd()
     }, function (err, optionalWarnings) {
         if (optionalWarnings != undefined)
             optionalWarnings.forEach(function (err) {
-                util.warn(err.message)
+                util.log(err.message)
             })
 
         if (err) {
-            util.log("error! " + err)
+            util.log(err.name,err.message)
             throw err
         }
         util.log("wrote npm-shrinkwrap.json")
