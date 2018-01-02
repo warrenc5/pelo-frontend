@@ -37,6 +37,7 @@
     <hook src="scripts/cordova-splash.js" type="after_platform_add" />
     <platform name="android">
         <hook src="scripts/adb-reverse.js" type="before_run" />
+        <hook src="scripts/fix.sh" type="after_platform_add" />
         <allow-intent href="market:*" />
     </platform>
     <platform name="ios">
