@@ -6,11 +6,11 @@ body {
 }
 
 p {
-  color: white;
+  //color: $black;
 }
 
 span {
-  color: white;
+  //color: $black;
 }
 
 .error {
@@ -44,7 +44,7 @@ span {
 */
 
 html {
-  background: url(../img/splash.png) no-repeat center center fixed;
+  //background: url(../img/splash.png) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -54,7 +54,7 @@ html {
 @media screen and (min-width: 480px) {
   body {
     font-size: 40px;
-    color: $white;
+    //color: $black;
   }
 }
 
@@ -65,13 +65,13 @@ html {
 
 .main-logo {
   background: $darkgray;
-  color: $white;
+  //color: $black;
   padding: 10px;
   font-size: 40px;
   letter-spacing: -1px;
 
   a {
-    color: inherit;
+    //color: inherit;
   }
 
   a:hover,
@@ -81,7 +81,7 @@ html {
   }
 
   & > a > span {
-    color: $pastelBlue;
+    //color: $pastelBlue;
   }
 
 }

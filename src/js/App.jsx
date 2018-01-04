@@ -117,7 +117,6 @@ export default class App extends MyComponent {
     }
 
     componentDidMount() {
-        document.getElementById('bg').class = 'hidden'
     }
 
     renderError() {
