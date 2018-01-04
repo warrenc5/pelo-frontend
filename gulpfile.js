@@ -327,7 +327,7 @@ gulp.task('compile-js', [], function (done1) {
 
     //
     //
-    if (env == 'prod') {
+    if (env == 'prod************************************************') {
         util.log("production")
         //.pipe(src(paths.jsDestName))
         c = c.pipe(sourcemaps.init({loadMaps: true}))

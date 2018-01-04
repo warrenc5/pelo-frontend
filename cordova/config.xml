@@ -45,26 +45,26 @@
         <allow-intent href="itms-apps:*" />
         <hook src="scripts/idevicesyslog.sh" type="after_run" />
     </platform>
-    <plugin name="com.filfatstudios.spinnerdialog" spec="https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog" />
     <plugin name="cordova-plugin-compat" spec="^1.2.0" />
-    <plugin name="cordova-plugin-cookie-manager" spec="git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git" />
-    <plugin name="cordova-plugin-crosswalk-webview" spec="git+https://github.com/kaidokert/cordova-plugin-crosswalk-webview.git">
-        <variable name="XWALK_MODE" value="lite" />
-    </plugin>
     <plugin name="cordova-plugin-device" spec="^2.0.1" />
-    <plugin name="cordova-plugin-dialogs" spec="^2.0.1" />
     <plugin name="cordova-plugin-facebook4" spec="~1.9.1">
         <variable name="APP_ID" value="300437200400045" />
         <variable name="APP_NAME" value="PELO" />
     </plugin>
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
-    <plugin name="cordova-plugin-mapbox" spec="git+https://github.com/warrenc5/Mapbox.git">
-        <variable name="ACCESS_TOKEN" value="pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g" />
-    </plugin>
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.1" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
-    <plugin name="de.appplant.cordova.plugin.local-notification" spec="~0.8.5" />
+    <plugin name="cordova-plugin-cookie-manager" spec="git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git" />
+    <plugin name="com.filfatstudios.spinnerdialog" spec="https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog" />
+    <plugin name="cordova-plugin-dialogs" spec="^2.0.1" />
     <plugin name="kr.co.joycorp.cordova.exitapp" spec="~1.0.2" />
+    <plugin name="cordova-plugin-mapbox" spec="git+https://github.com/warrenc5/Mapbox.git">
+        <variable name="ACCESS_TOKEN" value="pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g" />
+    </plugin>
+    <plugin name="cordova-plugin-crosswalk-webview" spec="git+https://github.com/kaidokert/cordova-plugin-crosswalk-webview.git">
+        <variable name="XWALK_MODE" value="lite" />
+    </plugin>
+    <plugin name="de.appplant.cordova.plugin.local-notification" spec="~0.8.5" />
     <engine name="android" spec="^7.0.0" />
 </widget>

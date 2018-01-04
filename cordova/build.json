@@ -5,7 +5,7 @@
 			"release": {
 				"keystore": "pelo.jks",
 				"storePassword": "123456",
-				"password" : "123456",
+				"password": "123456",
 				"alias": "pelo",
 				"keystoreType": "jks"
 			}

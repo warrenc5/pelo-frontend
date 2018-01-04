@@ -50,7 +50,8 @@
         "cordova-plugin-splashscreen": "^5.0.1",
         "cordova-plugin-whitelist": "1",
         "kr.co.joycorp.cordova.exitapp": "~1.0.2",
-        "npm-check-updates": "^2.14.0"
+        "npm-check-updates": "^2.14.0",
+        "de.appplant.cordova.plugin.local-notification": "~0.8.5"
     },
     "devDependencies": {
         "cordova-icon": "^0.11.0",

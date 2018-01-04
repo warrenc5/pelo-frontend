@@ -31,6 +31,7 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
             try {
                 navigator.splashscreen.hide()
             } catch (e) {
+                console.log("can't hide splash " + e)
             }
         })
     }
