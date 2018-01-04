@@ -13,14 +13,13 @@
 	"ios": {
 		"debug": {
 			"codeSignIdentity": "iPhone Developer",
-			"developmentTeam": "37SB5LA747",
-			"provisioningProfile": "4c117cab-b944-421a-8217-9abeadc24bd6"
+			"developmentTeam": "37SB5LA747"
 		},
-			"release": {
-			"developmentTeam": "Warren Crossing",
-			"codeSignIdentity": "Pelo-Dev",
-				"provisioningProfile": "8cca45f7-80b5-461b-b15b-57d0424a5ae4",
-				"packageType": "app-store"
-			}
+
+		"release": {
+			"codeSignIdentity": "iPhone Developer",
+			"developmentTeam": "37SB5LA747",
+			"packageType": "app-store"
+		}
 	}
 }

@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "name": "cc.pelo.app",
     "version": "1.0.2",
     "displayName": "Pelo",
@@ -56,5 +57,64 @@
     "devDependencies": {
         "cordova-icon": "^0.11.0",
         "cordova-splash": "^0.10.0"
+=======
+  "name": "cc.pelo.app",
+  "version": "1.0.2",
+  "displayName": "Pelo",
+  "scripts": {
+    "clean": "cordova clean"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-compat": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-facebook4": {
+        "APP_ID": "300437200400045",
+        "APP_NAME": "PELO"
+      },
+      "cordova-plugin-geolocation": {},
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-cookie-manager": {},
+      "com.filfatstudios.spinnerdialog": {},
+      "cordova-plugin-dialogs": {},
+      "kr.co.joycorp.cordova.exitapp": {},
+      "cordova-plugin-mapbox": {
+        "ACCESS_TOKEN": "pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g"
+      },
+      "cordova-plugin-crosswalk-webview": {
+        "XWALK_MODE": "lite"
+      },
+      "de.appplant.cordova.plugin.local-notification": {}
+>>>>>>> 3af9f58364f28094548c9df7d4138c03b4df8a71
     }
+  },
+  "dependencies": {
+    "com.filfatstudios.spinnerdialog": "https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog",
+    "cordova-android": "^7.0.0",
+    "cordova-plugin-compat": "^1.2.0",
+    "cordova-plugin-cookie-manager": "git+https://github.com/teunsteenbekkers/cordova-plugin-cookie-manager.git",
+    "cordova-plugin-crosswalk-webview": "git+https://github.com/kaidokert/cordova-plugin-crosswalk-webview.git",
+    "cordova-plugin-device": "^2.0.1",
+    "cordova-plugin-dialogs": "^2.0.1",
+    "cordova-plugin-exitapp2": "^1.0.4",
+    "cordova-plugin-facebook4": "~1.9.1",
+    "cordova-plugin-geolocation": "^4.0.1",
+    "cordova-plugin-mapbox": "git+https://github.com/warrenc5/Mapbox.git",
+    "cordova-plugin-network-information": "^2.0.1",
+    "cordova-plugin-progress-indicator": "git+https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog.git",
+    "cordova-plugin-splashscreen": "^5.0.1",
+    "cordova-plugin-whitelist": "1",
+    "kr.co.joycorp.cordova.exitapp": "~1.0.2",
+    "npm-check-updates": "^2.14.0",
+    "de.appplant.cordova.plugin.local-notification": "~0.8.5"
+  },
+  "devDependencies": {
+    "cordova-icon": "^0.11.0",
+    "cordova-splash": "^0.10.0"
+  }
 }
