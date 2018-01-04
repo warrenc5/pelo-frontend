@@ -110,6 +110,9 @@ var paths = new (function () {
 
 var npmShrinkwrap = require("npm-shrinkwrap")
 
+
+gulp.task('.default', ['default'])
+
 gulp.task('default', ['install', 'start', 'compile'])
 
 gulp.task('start', [], function () {
