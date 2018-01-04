@@ -1,6 +1,6 @@
 {
   "name": "pelo-app",
-  "version": "1.0.1",
+  "version": "1.0.10",
   "description": "Pelo Riders App",
   "main": "index.js",
   "scripts": {
@@ -94,7 +94,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-cordova": "^6.0.1",
     "gulp-diff-build": "^1.0.1",
-    "gulp-file": "^0.3.0",
+    "gulp-file": "^0.4.0",
     "gulp-image-resize": "^0.13.0",
     "gulp-install": "^1.1.0",
     "gulp-load-plugins": "^1.5.0",
