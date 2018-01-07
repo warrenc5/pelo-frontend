@@ -1,4 +1,4 @@
-cd /home/pelo/$1
+cd ~/$1
 git checkout $2
 git fetch 
 test `git rev-parse HEAD` != `git rev-parse @{u}` 

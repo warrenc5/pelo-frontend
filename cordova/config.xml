@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="1" id="cc.pelo.App" ios-CFBundleVersion="1.0.10" version="1.0.10" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="1" id="cc.pelo.App" ios-CFBundleVersion="1.0.11" version="1.0.11" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Pelo</name>
     <description>
         The Pelo Rider Application
@@ -46,6 +46,7 @@
         <hook src="scripts/idevicesyslog.sh" type="after_run" />
         <hook src="scripts/ios-alpha-off.sh" type="after_prepare" />
         <hook src="scripts/ios-unlock.sh" type="before_build" />
+        <hook src="scripts/ios-appload.sh" type="after_build" />
     </platform>
     <plugin name="cordova-plugin-compat" spec="^1.2.0" />
     <plugin name="cordova-plugin-device" spec="^2.0.1" />
@@ -69,4 +70,5 @@
     </plugin>
     <plugin name="de.appplant.cordova.plugin.local-notification" spec="~0.8.5" />
     <engine name="android" spec="^7.0.0" />
+    <engine name="ios" spec="^4.5.4" />
 </widget>
