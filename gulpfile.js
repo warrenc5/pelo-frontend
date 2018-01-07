@@ -60,7 +60,7 @@ var xtend = require('xtend')
 var buffer = require('vinyl-buffer');
 
 var sourcemaps = require('gulp-sourcemaps');
-
+var argv = require('yargs').argv;
 var beep = require('beepbeep')
 
 const env = require('get-env')({
@@ -108,6 +108,7 @@ var paths = new (function () {
 })
 
 
+var runOpts = argv.platform
 var npmShrinkwrap = require("npm-shrinkwrap")
 
 
@@ -195,7 +196,6 @@ gulp.task('build-time', function () {
     createBuildTime()
 })
 
-var runOpts = 'android'
 function createBuildTime() {
     buildTime = moment().format('MMMM Do YYYY, h:mm:ss a')
     console.log(`stamping build ${buildTime}`)
