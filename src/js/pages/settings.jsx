@@ -30,18 +30,11 @@ export default class Settings extends MyComponent {
         <div>
             <Paper style={style}>
                 <Menu desktop={true} width={256}>
-                    <MenuItem primaryText="General"/>
-                    <MenuItem primaryText="Privacy"/>
-                    <MenuItem primaryText="Notifications"/>
-                    <MenuItem primaryText="Control Centre"/>
-                    <MenuItem primaryText="Sounds"/>
-                    <MenuItem primaryText="Battery"/>
-                    <Divider/>
-                    <MenuItem primaryText="Display" rightIcon={<ArrowDropRight/>}/>
-                    <MenuItem primaryText="Brightness" rightIcon={<ArrowDropRight/>}/>
-                    <MenuItem primaryText="Contrast" rightIcon={<ArrowDropRight/>}/>
-                    <MenuItem primaryText="Alignment" rightIcon={<ArrowDropRight/>}/>
-                    <MenuItem primaryText="List options" rightIcon={<ArrowDropRight/>}/>
+                    <MenuItem primaryText="Private Account"  rightIcon={styles.toggle}/>
+                    <MenuItem primaryText="Vibrate for Notifivations" rightIcon={styles.toggle}/>
+                    <MenuItem primaryText="Allow Sharing" rightIcon={styles.toggle}/>
+                    <MenuItem primaryText="Save Messages" rightIcon={styles.toggle}/>
+                    <MenuItem primaryText="List options" rightIcon={styles.toggle}/>
                     <Divider/>
                 </Menu>
             </Paper>
