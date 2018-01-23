@@ -49,13 +49,15 @@ export default class RideRoute extends MyComponent {
                                 </GridList>
                             </CardMedia>
                             <CardActions>
-                                <Toggle label="Join Ride"/>
-                                <Toggle label="Show Map" onToggle={(e) => this.setState({showRoute: e.value})}/>
+                                <Toggle label="Join Ride" onToggle={(e,v)=>alert(v)}/>
+                                <br/>
+                                <Toggle label="Show Map" onToggle={(e,v) => this.setState({showRoute: v})}/>
+                                <br/>
                                 <Toggle label="Toggle Tracking"
-                                        onToggle={(e) => this.setState({trackMe: e.value})}/>
+                                        onToggle={(e,v) => this.setState({trackMe: v})}/>
                             </CardActions>
                         </Card>
-                        {this.props.showRoute && <MyRouteMap rideId={rideId} routeId={routeId} route={route}/>}
+                        {this.state.showRoute && <MyRouteMap rideId={rideId} routeId={routeId} route={route}/>}
                     </Catch>
                 </div>
         )
@@ -73,7 +75,7 @@ export default class RideRoute extends MyComponent {
 
         this.timerID = setInterval(
             () => this.updateMyLocation(),
-            5000
+            5001
         )
 
         this.otherTimerID = setInterval(
@@ -119,7 +121,13 @@ export default class RideRoute extends MyComponent {
     }
 
     updateMyLocation() {
-        var {rideId, userId, dispatch, myLocation} = this.props
+
+        var {trackMe,rideId, userId, dispatch, myLocation} = this.props
+
+        if (!this.state.trackMe) {
+            console.log(`tracking disabled ${rideId} ${userId}`)
+            return
+        }
         //var rideId = this.props.route.id
         //var userId =
 
@@ -212,7 +220,10 @@ export default class RideRoute extends MyComponent {
         rideId: select.currentRideId(state),
         routeId: select.currentRouteId(state),
         difficulty: select.difficultyLevel(state.route),
-        selectedRide: select.selectedRide(state)
+        selectedRide: select.selectedRide(state),
+
+        //showRoute: this.state.showRoute,
+        //trackMe: this.state.trackMe,
     })
 
     static reduxDispatchConfig = (dispatch) => ({

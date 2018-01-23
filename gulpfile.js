@@ -537,7 +537,7 @@ gulp.task('android', [], function (done) {
     gulp.start('watch-dist')
 })
 gulp.task('watch-dist', gulpsync.sync(['install','auto', 'cordova_serve']), function (done) {
-        return gulp.watch([paths.dest + '/**/*', "!" + paths.jsDest + "/cordova/**", "!" + paths.jsDest + "/" + buildTimeFile], {
+        return gulp.watch([paths.dest + '/**/*', paths.cordova+"/config.xml", "!" + paths.jsDest + "/cordova/**", "!" + paths.jsDest + "/" + buildTimeFile], {
                 ignoreInitial: true,
                 readDelay: 5000
             },

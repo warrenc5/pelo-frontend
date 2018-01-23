@@ -1,2 +1,12 @@
-cordova plugin add https://github.com/warrenc5/Mapbox --variable ACCESS_TOKEN=pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g
-#cordova plugin add https://github.com/Telerik-Verified-Plugins/Mapbox --variable ACCESS_TOKEN=pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g
+cordova -d platform add android
+cordova -d platform add ios
+#cordova plugin add https://github.com/warrenc5/Mapbox --variable ACCESS_TOKEN=pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g
+cordova plugin add https://github.com/Telerik-Verified-Plugins/Mapbox --variable ACCESS_TOKEN=pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g
+cordova plugin add cordova-plugin-crosswalk-webview
+#cordova plugin add https://github.com/kaidokert/cordova-plugin-crosswalk-webview.git --variable XWALK_MODE="lite"
+cordova plugin add cordova-plugin-facebook4 --variable APP_ID="300437200400045" --variable APP_NAME="PELO"
+
+
+        # cordova plugin add kr.co.joycorp.cordova.exitapp
+
+ 

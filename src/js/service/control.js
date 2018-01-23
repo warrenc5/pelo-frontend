@@ -44,6 +44,13 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
         $scope.inited = true
 
         platform.cordovaOnly(() => console.log("cordova detected"))
+        /**
+        platform.cordovaOnly(() => routemap.showMap({
+            lat: -33.908936,
+            lng: 151.1559316
+        },[]))
+         **/
+
         platform.notification()
     }
 
