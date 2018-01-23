@@ -10,14 +10,12 @@ import {connect} from 'react-redux'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import {Form, SubmissionError} from 'redux-form'
+import {Field, propTypes as reduxFormPropTypes} from 'redux-form'
 
 import MyComponent, {Catch, myAsyncFormConnect} from '../widget/common'
-
-const style = {
-    display: 'inline-block',
-    float: 'left',
-    margin: '16px 32px 16px 0',
-};
+import style from '../layout/style'
+import {materialSwitch} from "../layout/material.jsx";
 
 @myAsyncFormConnect()
 export default class Settings extends MyComponent {
@@ -28,32 +26,82 @@ export default class Settings extends MyComponent {
 
     MenuExampleSecondary = () => (
         <div>
-            <Paper style={style}>
-                <Menu desktop={true} width={256}>
-                    <MenuItem primaryText="Private Account"  rightIcon={styles.toggle}/>
-                    <MenuItem primaryText="Vibrate for Notifivations" rightIcon={styles.toggle}/>
-                    <MenuItem primaryText="Allow Sharing" rightIcon={styles.toggle}/>
-                    <MenuItem primaryText="Save Messages" rightIcon={styles.toggle}/>
-                    <MenuItem primaryText="List options" rightIcon={styles.toggle}/>
-                    <Divider/>
-                </Menu>
+            <Paper style={style.block1}>
+                <Form onSubmit={this.props.handleSubmit(this.validate)}>
+                    <Menu>
+                        <Divider/>
+                        <MenuItem primaryText="Private Account">
+                            <Field name="privateProfile"
+                                   component={materialSwitch}
+                                   label="Private Profile"
+                            />
+                        </MenuItem>
+
+                        <MenuItem primaryText="Allow Sharing">
+
+                            <Field name="allowSharing"
+                                   component={materialSwitch}
+                                   label="Allow Location Sharing"
+                            />
+                        </MenuItem>
+
+                        <Divider/>
+                        <MenuItem primaryText="Vibrate for Notifications">
+                            <Field name="vibrate"
+                                   component={materialSwitch}
+                                   label="Vibrate For Notifications"
+                            />
+                        </MenuItem>
+                        <MenuItem primaryText="Save Messages">
+
+                            <Field name="saveMessages"
+                                   component={materialSwitch}
+                                   label="Save Messages"
+                            />
+                        </MenuItem>
+                        <MenuItem primaryText="List options">
+                            <Field name="listOptions"
+                                   component={materialSwitch}
+                                   label="List Options"
+                            />
+                        </MenuItem>
+                    </Menu>
+                </Form>
             </Paper>
+
         </div>
     );
 
     render() {
         return <div>
-            <h2>Test2</h2>
-            <div>
-                {this.MenuExampleSecondary()}
-            </div>
+            {this.MenuExampleSecondary()}
         </div>
     }
-}
 
-Settings.propTypes = {
-    onClick2: PropTypes.func.isRequired,
-    id: PropTypes.bool.isRequired
 
+    validate = (values, dispatch, props) => {
+        return true
+    }
+
+    static propTypes = {
+        privateProfile: PropTypes.bool.isRequired,
+        vibrate: PropTypes.bool.isRequired,
+        allowSharing: PropTypes.bool.isRequired,
+        saveMessages: PropTypes.bool.isRequired,
+        listOptions: PropTypes.bool.isRequired,
+        ...reduxFormPropTypes,
+    }
+
+    static reduxPropsConfig = (state, props) => ({
+        privateProfile: state.settings.privateProfile,
+        vibrate: state.settings.vibrate,
+        allowSharing: state.settings.allowSharing,
+        saveMessages: state.settings.saveMessages,
+        listOptions: state.settings.listOptions,
+    })
+
+    static reduxFormConfig = {
+        form: `SettingsForm`,
+    }
 }
 

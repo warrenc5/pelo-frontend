@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
-import {Field, propTypes} from 'redux-form'
+import {Field, propTypes as reduxFormPropTypes} from 'redux-form'
 import {
     Checkbox,
     RadioButtonGroup,
@@ -29,7 +29,7 @@ import {
     materialCheckbox,
     materialRadioGroup,
     materialSelectField
-} from './material.jsx'
+} from '../layout/material.jsx'
 
 import submit from "redux-form"
 
@@ -229,12 +229,11 @@ export default class Login extends MyComponent {
         defaultPath: PropTypes.string.isRequired,
         returnPath: PropTypes.string.isRequired,
         signedIn: PropTypes.bool.isRequired,
-        ...propTypes
+        ... reduxFormPropTypes
     }
 
     static reduxPropsConfig = (state, props) => ({
         pageTitle: "Login",
-        ok: state.ok,
         initialValues: {
             username: 'wozza', password: 'password1', hello: false
         },

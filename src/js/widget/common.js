@@ -53,6 +53,10 @@ export default class MyComponent extends React.Component {
     isError() {
         return this.state.hasError
     }
+
+    getError() {
+        return this.state
+    }
 }
 
 export class Catch extends MyComponent {

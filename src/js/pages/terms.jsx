@@ -23,7 +23,7 @@ import {
     materialCheckbox ,
     materialRadioGroup ,
     materialSelectField
-} from './material.jsx'
+} from '../layout/material.jsx'
 
 export default class Terms extends MyComponent {
 

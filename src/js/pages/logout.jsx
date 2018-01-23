@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import MyComponent, {Catch,myAsyncFormConnect} from '../widget/common'
-import { Field, propTypes } from 'redux-form'
-import { NavLink, Link } from 'react-router-dom'
+import MyComponent, {Catch, myAsyncFormConnect} from '../widget/common'
+import {Field, propTypes} from 'redux-form'
+import {NavLink, Link} from 'react-router-dom'
 import FlatButton from 'material-ui/FlatButton'
 
+import * as select from '../handler/selectors'
 import {routes} from '../Router.jsx'
 
 @myAsyncFormConnect()
@@ -17,22 +18,36 @@ export default class Logout extends MyComponent {
         this.props = props
     }
 
-    render() {
-        return super.isError() ? (<h1>No way</h1>) : (
+    ErrorRender() {
+        return (
             <div>
-                <span>OK Logout thanks {this.props.login.name} {this.props.signedIn?"NO":"YES"}'</span>
+                <p>Error</p>
+                <span color="red">{JSON.stringify(this.props.error.error.toString())}</span>
+                {this.props.error.info.componentStack.split('\n').map((c) => (<small>
+                    <small><span> {c} <br/></span></small>
+                </small>))}
+            </div>
+        )
+    }
 
-                {this.props.signedIn?
-                <FlatButton label="Logout" onClick={this.props.logout()}/>
+    render() {
+        return super.isError() ? (<h1>No way, fail failed :(</h1>) : (
+            <div>
+                {this.props.signedIn ? <div><p>Sorry {this.props.login.name}</p>
+                    <FlatButton label="Logout" onClick={this.props.logout()}/></div> : <p>You were logged out</p>
+                }
 
+                <NavLink activeClassName="active"
+                         to={this.props.defaultPath}><span>Return to {this.props.defaultPath}</span></NavLink>
 
-                    :<NavLink activeClassName="active" to={routes.RIDES}>Jump back in.</NavLink>}
+                {this.props.error && this.ErrorRender()}
             </div>
         )
         {/**
-           dispatch(push(Router.RIDES))
-import { push } from 'react-router-redux'
-**/}
+         dispatch(push(Router.RIDES))
+         import { push } from 'react-router-redux'
+         **/
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -54,15 +69,19 @@ import { push } from 'react-router-redux'
     static propTypes = {
         signedIn: PropTypes.bool.isRequired,
         login: PropTypes.object.isRequired,
-        logout: PropTypes.func.isRequired
+        logout: PropTypes.func.isRequired,
+        defaultPath: PropTypes.string.isRequired,
+        error: PropTypes.object.isRequired,
     }
 
     static reduxPropsConfig = (state, props) => ({
         signedIn: state.login != null && state.login.id > 0,
         login: state.login,
         initialValues: {
-            login: {name:"user"},logout:false
-        }
+            login: {name: "user"}, logout: false
+        },
+        defaultPath: select.defaultPath(state),
+        error: state.error === undefined ? {} : state.error, //TODO move to selector
     })
 
     static reduxDispatchConfig = (dispatch) => ({

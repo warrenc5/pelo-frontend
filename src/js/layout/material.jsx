@@ -14,10 +14,16 @@ import TimePicker from 'material-ui/TimePicker';
 import DatePicker from 'material-ui/DatePicker';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 //http://redux-form.com/6.1.0/examples/material-ui/
+import Switch from 'material-ui/Toggle';
 import Slider from 'material-ui/Slider';
 import Upload from 'material-ui-upload/Upload';
 import UploadPreview from 'material-ui-upload/UploadPreview';
 import {ReactMaterialImage} from 'react-material-image'
+
+/**
+ * TODO
+ * https://material-ui-next.com/
+ */
 
 export const materialButton = ({label, onClick}, ...custom) => (
     <FlatButton label={label} onClick={onClick}/>
@@ -113,5 +119,9 @@ export const materialImage = ({dispatch, input, label, type, onKeyDown, meta: {a
             <ReactMaterialImage {...custom} />
         </div>
     </div>
+)
+
+export const materialSwitch = ({dispatch, input, label, type, onKeyDown, meta: {asyncValidating, touched, error}}, ...custom) => (
+    <Switch label={label} {...custom} />
 )
 

@@ -5,6 +5,8 @@ import {connect} from 'react-redux'
 import style from '../layout/style'
 
 import FlatButton from 'material-ui/FlatButton'
+import Toggle from 'material-ui/Toggle'
+import Switch from '../layout/material.jsx'
 import RaisedButton from 'material-ui/RaisedButton'
 import {GridList, GridTile} from 'material-ui/GridList';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
@@ -47,12 +49,13 @@ export default class RideRoute extends MyComponent {
                                 </GridList>
                             </CardMedia>
                             <CardActions>
-                                <FlatButton label="Join Ride"/>
-                                <FlatButton label="Hide Map"/>
-                                <FlatButton label="Show Map"/>
+                                <Toggle label="Join Ride"/>
+                                <Toggle label="Show Map" onToggle={(e) => this.setState({showRoute: e.value})}/>
+                                <Toggle label="Toggle Tracking"
+                                        onToggle={(e) => this.setState({trackMe: e.value})}/>
                             </CardActions>
                         </Card>
-                        <MyRouteMap rideId={rideId} routeId={routeId} route={route}/>
+                        {this.props.showRoute && <MyRouteMap rideId={rideId} routeId={routeId} route={route}/>}
                     </Catch>
                 </div>
         )
@@ -170,6 +173,8 @@ export default class RideRoute extends MyComponent {
         dispatch: PropTypes.func.isRequired,
         difficulty: PropTypes.string.isRequired,
         selectedRide: PropTypes.object.isRequired,
+        showRoute: PropTypes.bool.isRequired,
+        trackMe: PropTypes.bool.isRequired,
     }
 
     static defaultProps = {
@@ -178,7 +183,9 @@ export default class RideRoute extends MyComponent {
         userId: 0,
         myLocation: {},
         route: {},
-        difficulty: 'unknown'
+        difficulty: 'unknown',
+        showRoute: false,
+        trackMe: false,
     }
 
     static reduxAsyncConfig = [{

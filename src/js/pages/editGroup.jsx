@@ -23,10 +23,14 @@ import {
     materialUpload,
     materialUploadPreview,
     materialSlider
-} from './material.jsx'
+} from '../layout/material.jsx'
+
+import {GridList, GridTile} from 'material-ui/GridList';
+
+import {ReactMaterialImage} from 'react-material-image'
 
 @myAsyncFormConnect()
-export default class RideEditor extends MyComponent {
+export default class GroupEditor extends MyComponent {
 
     constructor(props) {
         super(props)
@@ -35,13 +39,10 @@ export default class RideEditor extends MyComponent {
     }
 
     handleChange(date) {
-        /*
-         this.setState({
-         startDate: date
-         });
-         */
+        this.setState({
+            startDate: date
+        })
     }
-
 
     EditRideForm = (props) => {
         const {handleSubmit, pristine, reset, submitting} = props
@@ -50,7 +51,8 @@ export default class RideEditor extends MyComponent {
                 <table>
                     <tbody>
                     <tr>
-                        <Field label="Group Established " name="GroupEstablished" openToYearSelection={true} hintText="Group Establihed"/>
+                        <Field label="Group Established " name="GroupEstablished" openToYearSelection={true}
+                               hintText="Group Establihed"/>
                     </tr>
                     <tr>
                         <Field name="Group Name" component={materialTextField} label="Group Name"/>
@@ -58,19 +60,19 @@ export default class RideEditor extends MyComponent {
                     <tr>
                         <Field name="Meeting Point" component={materialTextField} label="Meeting Point"/>
                     </tr>
-                   <tr>
-                       <GridList
-                           cols={3}
-                           style={style.gridList}>
-                           {selectedRide.participants.map(p =>
-                               <GridTile data-scroll-reveal
-                                         title={p.slug}>
-                                   <ReactMaterialImage width="100%" height="100%" class="round-image"
-                                                       src={ngScope().state.baseUrl + `userimage/${p.id}`}/>
-                               </GridTile>
-                           )}
-                       </GridList>
-                   </tr>
+                    <tr>
+                        <GridList
+                            cols={3}
+                            style={style.gridList}>
+                            {selectedRide.participants.map(p =>
+                                <GridTile data-scroll-reveal
+                                          title={p.slug}>
+                                    <ReactMaterialImage width="100%" height="100%" class="round-image"
+                                                        src={ngScope().state.baseUrl + `userimage/${p.id}`}/>
+                                </GridTile>
+                            )}
+                        </GridList>
+                    </tr>
                     </tbody>
                 </table>
             </Form>

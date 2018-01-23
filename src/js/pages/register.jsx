@@ -23,7 +23,7 @@ import {
     materialCheckbox ,
     materialRadioGroup ,
     materialSelectField
-} from './material.jsx'
+} from '../layout/material.jsx'
 
 @myAsyncFormConnect()
 export default class Register extends MyComponent {

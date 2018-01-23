@@ -20,7 +20,7 @@ import {
     materialUpload,
     materialUploadPreview,
     materialSlider
-} from './material.jsx'
+} from '../layout/material.jsx'
 
 @myAsyncFormConnect()
 export default class RideEditor extends MyComponent {

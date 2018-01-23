@@ -17,7 +17,7 @@ import {
     materialCheckbox,
     materialRadioGroup,
     materialSelectField
-} from './material.jsx'
+} from '../layout/material.jsx'
 
 import RideRoute from './route.jsx'
 import * as select from '../handler/selectors'
@@ -42,7 +42,7 @@ export default class Rides extends MyComponent {
     render() {
         const rides = this.props.todaysRides
         const {selectedRides, showRide} = this.props
-        //TODO don't do this here - do it up there
+        //TODO  refactor render method -- don't do this here - do it up there
         return rides == null ?
             <span>no rides</span> :
             <div>

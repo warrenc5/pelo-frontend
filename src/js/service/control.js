@@ -351,9 +351,10 @@ peloApp.service("routemap", function (storage) {
 })
 peloApp.directive('peloApp', function (reactDirective) {
     try {
+        console.log('initializing react')
         return reactDirective(App)
     } catch (e) {
-        console.log(e)
+        console.log('failed react directive', e)
     }
 })
 

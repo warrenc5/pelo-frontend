@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import {ReduxAsyncConnect} from 'redux-connect'
 import {ConnectedRouter} from 'react-router-redux'
 import MainLayout from './layout/main.jsx'
-import ContentLayout from './layout/content.jsx'
 import Groups from './pages/groups.jsx'
 import Messages from './pages/messages.jsx'
 import Rides from './pages/rides.jsx'
@@ -13,6 +12,7 @@ import Login from './pages/login.jsx'
 import Logout from './pages/logout.jsx'
 import Register from './pages/register.jsx'
 import RideEditor from './pages/editRide.jsx'
+import GroupEditor from './pages/editGroup.jsx'
 import About from './pages/about.jsx'
 import Terms from './pages/terms.jsx'
 import RideRoute from './pages/route.jsx'
@@ -62,6 +62,10 @@ export default class RouterPath extends MyComponent {
                         <AsyncRoute exact path={routes.LOGIN} component={Login} pageTitle="Sign In"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.EDITRIDE} component={RideEditor}
                                       pageTitle="Edit Ride"/>
+                        {/**
+                        <PrivateRoute exact signedIn={signedIn} path={routes.EDITGROUP} component={GroupEditor}
+                                      pageTitle="Edit Group"/>
+                         **/}
                         <PrivateRoute exact signedIn={signedIn} path={routes.RIDES} component={Rides}
                                       pageTitle="Rides"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.REGISTER} component={Register}
@@ -71,7 +75,7 @@ export default class RouterPath extends MyComponent {
                         <PrivateRoute exact signedIn={signedIn} path={routes.MESSAGES} component={Messages}
                                       pageTitle="Messages"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.SETTINGS} component={Settings}
-                                      pageTitle="Settings"/>
+                               pageTitle="Settings"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.ROUTE} component={RideRoute}
                                       pageTitle="Route"/>
                         <PrivateRoute exact signedIn={signedIn} path={routes.ABOUT} component={About}
@@ -136,10 +140,16 @@ const reloadOnPropsChange = (props, nextProps) => {
     return true //props.location.pathname !== nextProps.location.pathname;
 }
 
+@myAsyncFormConnect()
 export class RouteCatch extends MyComponent {
+    static NAME = 'RouteCatch'
+
     render() {
         const {component: Component, ...rest} = this.props
         const isError = super.isError()
+        if (isError) {
+            this.props.error(super.getError())
+        }
         return <Route {...rest} render={props => (
             isError ?
                 <Redirect to={{
@@ -148,6 +158,21 @@ export class RouteCatch extends MyComponent {
                 : <Component {...props} />
         )}/>
     }
+
+    static propTypes = {
+        error: PropTypes.func.isRequired,
+    }
+
+    static reduxPropsConfig = (state, props) => ({})
+
+    static reduxDispatchConfig = (dispatch, props) => ({
+        error: (e) => {
+            dispatch({
+                type: `ROUTE_ERROR`,
+                payload: {error: e.error , info: e.info}
+            })
+        }
+    })
 }
 
 const Rac = ({component, ...props}) =>

@@ -1,9 +1,9 @@
 import 'angular'
 import $ from 'jquery'
-import { combineReducers } from 'redux'
-import { reducer as formReducer } from 'redux-form'
-import { reducer as reduxAsyncConnect } from 'redux-connect'
-import { routerReducer, push } from 'react-router-redux'
+import {combineReducers} from 'redux'
+import {reducer as formReducer} from 'redux-form'
+import {reducer as reduxAsyncConnect} from 'redux-connect'
+import {routerReducer, push} from 'react-router-redux'
 
 //import { reducer as routing } from 'react-router-dispatcher';
 
@@ -36,7 +36,7 @@ const form = formReducer.plugin({
                 return state
             case `FBLOGIN_ERROR`:
                 return {
-                    ... state,
+                    ...state,
                     error: action.payload.error
                 }
             case `LOGIN`:
@@ -55,7 +55,7 @@ const form = formReducer.plugin({
                 }
             case `LOGIN_ERROR`:
                 return {
-                    ... state,
+                    ...state,
                     error: action.payload.error,
                     values: {
                         ...state.values,
@@ -83,19 +83,19 @@ const login = (state = [{}], action) => {
         case `LOGIN`:
             return action.payload
         case `LOAD_TEST_DATA`:
-            return {... state, ...action.payload.login}
+            return {...state, ...action.payload.login}
         case `LOGOUT`:
             return state
         case `LOGOUT_CONFIRM`:
             return [{}]
-    /**
-     Object.keys(state)
-     .filter(key => key !== "login")
-     .reduce((result, current) => {
+        /**
+         Object.keys(state)
+         .filter(key => key !== "login")
+         .reduce((result, current) => {
                     result[current] = state[current];
                     return result;
                 }, {});
-     **/
+         **/
         default:
             return state
     }
@@ -128,11 +128,11 @@ const debug = (state = {}, action) => {
 const groups = (state = [{id: 0}], action) => {
     switch (action.type) {
         case `LOAD_TEST_DATA`:
-            return {... state, ...action.payload.groups}
+            return {...state, ...action.payload.groups}
         case LOAD_SUCCESS:
             if (action.key !== `groups`)
                 return state
-            return action.payload.data.sort((a, b)=>a.id > b.id)
+            return action.payload.data.sort((a, b) => a.id > b.id)
         case action.JOIN_GROUP:
             console.log('join the group3')
             break
@@ -153,8 +153,8 @@ const selectedRides = (state = {}, action) => {
             } else {
                 m[id] = !state[id]
             }
-            return {... m}
-            //return {... state, ... m}
+            return {...m}
+        //return {... state, ... m}
 
         default:
             return state
@@ -248,14 +248,14 @@ const messages = (state = {}, action) => {
 const todaysRides = (state = {}, action) => {
     switch (action.type) {
         case `LOAD_TEST_DATA`:
-            return {... state, ...action.payload.todaysRides}
+            return {...state, ...action.payload.todaysRides}
         case '@redux-conn/LOAD_FAIL':
             return state
         case LOAD_SUCCESS:
             if (action.payload.key !== `todaysRides`)
                 return state
 
-            return action.payload.data.sort((a, b)=>a.id > b.id)
+            return action.payload.data.sort((a, b) => a.id > b.id)
         case 'TOGGLE_TRACK':
             console.log("handling action" + action.type + "  " + action.payload.id)
             if (action.payload.id)
@@ -276,6 +276,33 @@ const todaysRides = (state = {}, action) => {
      quantity: getQuantity(state.cart, id)
      }))
      */
+}
+
+const settings = (state = {
+    privateProfile: false,
+    vibrate: true,
+    allowSharing: true,
+    saveMessages: true,
+    listOptions: true
+}, action) => {
+    switch (action.type) {
+        case LOAD_SUCCESS:
+            if (action.payload.key !== `settings`)
+                return state
+            return action.payload.data.sort((a, b) => a.id < b.id)
+        default:
+            return state
+    }
+}
+
+
+const error = (state = {}, action) => {
+    switch (action.type) {
+        case `ROUTE_ERROR`:
+            return {...action.payload}
+        default:
+            return state
+    }
 }
 
 //export const MyReducer = combineReducers({auth: auth, todaysRides})
@@ -299,6 +326,8 @@ export default function MyReducer() {
         form,
         connection,
         messages,
+        settings,
+        error,
     })
 }
 
