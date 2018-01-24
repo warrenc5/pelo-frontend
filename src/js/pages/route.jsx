@@ -36,6 +36,7 @@ export default class RideRoute extends MyComponent {
                             <CardHeader title={route.title}
                                         subtitle={`${difficulty} ${route.distance}km. ${route.description}`}/>
                             <CardMedia>
+                                {!this.state.showRoute &&
                                 <GridList
                                     cols={3}
                                     style={style.gridList}>
@@ -46,15 +47,15 @@ export default class RideRoute extends MyComponent {
                                                                 src={ngScope().state.baseUrl + `userimage/${p.id}`}/>
                                         </GridTile>
                                     )}
-                                </GridList>
+                                </GridList>}
                             </CardMedia>
                             <CardActions>
-                                <Toggle label="Join Ride" onToggle={(e,v)=>alert(v)}/>
+                                <Toggle label="Join Ride" onToggle={(e, v) => alert(v)}/>
                                 <br/>
-                                <Toggle label="Show Map" onToggle={(e,v) => this.setState({showRoute: v})}/>
+                                <Toggle label="Show Map" onToggle={(e, v) => this.setState({showRoute: v})}/>
                                 <br/>
                                 <Toggle label="Toggle Tracking"
-                                        onToggle={(e,v) => this.setState({trackMe: v})}/>
+                                        onToggle={(e, v) => this.setState({trackMe: v})}/>
                             </CardActions>
                         </Card>
                         {this.state.showRoute && <MyRouteMap rideId={rideId} routeId={routeId} route={route}/>}
@@ -122,7 +123,7 @@ export default class RideRoute extends MyComponent {
 
     updateMyLocation() {
 
-        var {trackMe,rideId, userId, dispatch, myLocation} = this.props
+        var {trackMe, rideId, userId, dispatch, myLocation} = this.props
 
         if (!this.state.trackMe) {
             console.log(`tracking disabled ${rideId} ${userId}`)
@@ -192,8 +193,8 @@ export default class RideRoute extends MyComponent {
         myLocation: {},
         route: {},
         difficulty: 'unknown',
-        showRoute: false,
-        trackMe: false,
+        showRoute: true,
+        trackMe: true,
     }
 
     static reduxAsyncConfig = [{

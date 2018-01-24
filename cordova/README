@@ -1,3 +1,5 @@
 brew install libimobiledevice
 idevicesyslog
 cordova plugin add https://github.com/kaidokert/cordova-plugin-crosswalk-webview.git --variable XWALK_MODE="lite" 
+cordova pass -s to adb install  fix armv7/64 issue
+mapbox get callback on initialized

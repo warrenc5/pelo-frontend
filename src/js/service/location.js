@@ -2,7 +2,9 @@
 
 export function getLocation(success, error, fatal) {
     if (navigator.geolocation) {
-        console.log('geolocate ' + JSON.stringify(navigator.geolocation))
+        console.log('geolocating')
+        //TODO: can use some of these options in settings
+        var options = { maximumAge: 20000, timeout: 2000, enableHighAccuracy: false }
         navigator.geolocation.getCurrentPosition(
             //var watchID = navigator.geolocation.watchPosition(
             function (position) {

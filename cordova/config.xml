@@ -59,6 +59,9 @@
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.1" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
     <plugin name="cordova-plugin-dialogs" spec="^2.0.1" />
+    <plugin name="cordova-plugin-mapbox" spec="git://github.com/Telerik-Verified-Plugins/Mapbox.git">
+        <variable name="ACCESS_TOKEN" value="pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g" />
+    </plugin>
     <plugin name="de.appplant.cordova.plugin.local-notification" spec="^0.8.5" />
     <plugin name="cordova-plugin-crosswalk-webview" spec="^2.3.0">
         <variable name="XWALK_VERSION" value="23+" />
@@ -68,9 +71,6 @@
         <variable name="XWALK_MULTIPLEAPK" value="true" />
     </plugin>
     <plugin name="com.filfatstudios.spinnerdialog" spec="git+https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog" />
-    <plugin name="cordova-plugin-mapbox" spec="https://github.com/warrenc5/Mapbox">
-        <variable name="ACCESS_TOKEN" value="pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g" />
-    </plugin>
     <engine name="ios" spec="^4.5.4" />
     <engine name="android" spec="^7.0.0" />
 </widget>

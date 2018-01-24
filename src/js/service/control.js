@@ -45,10 +45,19 @@ peloApp.controller("main", function ($scope, $rootScope, platform, fb, storage, 
 
         platform.cordovaOnly(() => console.log("cordova detected"))
         /**
-        platform.cordovaOnly(() => routemap.showMap({
-            lat: -33.908936,
-            lng: 151.1559316
-        },[]))
+         platform.cordovaOnly(() => {
+                routemap.showMap({
+                    lat: -33.908936,
+                    lng: 151.1559316
+                }, [])
+
+
+                routemap.addMarker({
+                    lat: -33.908936,
+                    lng: 151.1559316
+                }, () => alert('ok'))
+            }
+         )
          **/
 
         platform.notification()
@@ -215,23 +224,25 @@ peloApp.service("fb", function () {
 })
 peloApp.service("routemap", function (storage) {
 //http://plugins.telerik.com/cordova/plugin/mapbox
+    var ready = false;
+
     function getMapbox() {
         return Mapbox
     }
 
     function showMap(center, points) {
-        var fifth = 3 * Math.ceil(window.innerHeight / 8)
-        console.log("showMap " + JSON.stringify(center) + " " + fifth)
+        var top = 1 * Math.ceil(window.innerHeight / 3)
+        console.log("showMap " + JSON.stringify(center) + " " + top)
         //style: 'streets', // light|dark|emerald|satellite|streets , default 'streets'
         Mapbox.show({
 
-                div: 'map_canvas',
+                div: 'map-canvas',
                 style: 'mapbox://styles/mapbox/streets-v8',
 
                 margins: {
                     left: 0, // default 0
                     right: 0, // default 0
-                    top: fifth, // default 0
+                    top: top, // default 0
                     bottom: 0  // default 0
                 },
                 center: { // optional, without a default
@@ -247,21 +258,24 @@ peloApp.service("routemap", function (storage) {
                 disableScroll: false, // default false
                 disableZoom: false, // default false
                 disablePitch: false, // disable the two-finger perspective gesture, default false
-                /*
-                 markers: [
-                 {
-                 lat: 52.3732160,
-                 lng: 4.8941680,
-                 title: 'Nice location',
-                 subtitle: 'Really really nice location'
-                 }
-                 ]
-                 */
+                markers: [
+                    {
+                        ... points[1],
+                        title: 'Start',
+                        subtitle: 'Here'
+                    }, {
+                        ... points[points.length - 1],
+                        title: 'End',
+                        subtitle: 'Here'
+                    },
+
+                ]
             },
 
             // optional success callback
             function (msg) {
                 console.log("Success :) " + JSON.stringify(msg))
+                ready = true;
             },
 
             // optional error callback
@@ -276,36 +290,48 @@ peloApp.service("routemap", function (storage) {
             points: points
         }
 
-        try {
-            Mapbox.addPolyline(poly, function () {
-                console.log("done")
-            }, function (e) {
-                console.log("rrrr " + JSON.stringify(e))
-            })
-        } catch (e) {
-            console.log("rats " + e)
-        }
+        if (points !== undefined && points.length > 0)
+            try {
+                Mapbox.addPolyline(poly, function () {
+                    console.log("done")
+                }, function (e) {
+                    console.log("rrrr " + JSON.stringify(e))
+                })
+            } catch (e) {
+                console.log("rats " + e)
+            }
     }
 
 
     function addMarker(marker, cb) {
-        marker = {title: 'MEMO', ...marker}
-        console.log("add marker " + JSON.stringify(marker));
-        if (Mapbox.getCenter() != undefined)
-            try {
 
-                Mapbox.addMarkerCallback(function (selectedMarker) {
-                    var title = marker.title
-                    console.log("Marker selected: " + JSON.stringify(selectedMarker) + " " + title)
-                    if (selectedMarker.title == title) {
-                        cb()
-                    }
-                })
+        if (!ready || marker === null)
+            return
 
-                Mapbox.addMarkers([marker])
-            } catch (e) {
-                console.log(e)
-            }
+        console.log('add marker', marker, Mapbox, Mapbox.getCenter())
+        marker = {title: 'ME', subtitle: 'OK', ...marker}
+        //if (Mapbox.getCenter() !== undefined) {
+        try {
+
+            Mapbox.addMarkers([marker])
+
+            Mapbox.addMarkerCallback(function (selectedMarker) {
+                var title = marker.title
+                console.log("Marker selected: " + JSON.stringify(selectedMarker) + " " + title)
+                if (selectedMarker.title == title) {
+                    cb()
+                }
+            })
+
+            console.log("add marker " + JSON.stringify(marker));
+        } catch (e) {
+            console.log(e)
+        }
+        /**
+         } else {
+            console.log("no center mapbox")
+        }
+         **/
         /*
          [
          {
@@ -351,7 +377,7 @@ peloApp.service("routemap", function (storage) {
     return {
         showMap: showMap,
         hideMap: hide,
-        getLocation: getLocation2,
+        getLocation: getLocation,
         addMarker: addMarker,
         updateDistanceToRiders: updateDistanceToRiders
     }
