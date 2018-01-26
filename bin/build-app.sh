@@ -1,8 +1,9 @@
 cd ~/$1
 git checkout $2
 git fetch 
+echo "ha! " + $5
 
-test `git rev-parse HEAD` != `git rev-parse @{u}` || exit 1
+test `git rev-parse HEAD` != `git rev-parse @{u}` || test -n "$5" || exit 1
 
 git checkout -- . 
 git pull --no-commit 

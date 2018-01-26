@@ -31,6 +31,7 @@ export default class Logout extends MyComponent {
     }
 
     render() {
+        console.log(this.props.error === null)
         return super.isError() ? (<h1>No way, fail failed :(</h1>) : (
             <div>
                 {this.props.signedIn ? <div><p>Sorry {this.props.login.name}</p>
@@ -40,7 +41,7 @@ export default class Logout extends MyComponent {
                 <NavLink activeClassName="active"
                          to={this.props.defaultPath}><span>Return to {this.props.defaultPath}</span></NavLink>
 
-                {this.props.error && this.ErrorRender()}
+                {this.props.error == null || this.ErrorRender()}
             </div>
         )
         {/**
@@ -81,7 +82,7 @@ export default class Logout extends MyComponent {
             login: {name: "user"}, logout: false
         },
         defaultPath: select.defaultPath(state),
-        error: state.error === undefined ? {} : state.error, //TODO move to selector
+        error: state.error ? null : state.error, //TODO move to selector
     })
 
     static reduxDispatchConfig = (dispatch) => ({

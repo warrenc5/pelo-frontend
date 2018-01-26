@@ -7,7 +7,7 @@
 				"storePassword": "123456",
 				"password": "123456",
 				"alias": "pelo",
-				"keystoreType": "jks"
+				"keystoreType": "pkcs12"
 			}
 	},
 	"ios": {

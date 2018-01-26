@@ -91,8 +91,8 @@ export default class RouterPath extends MyComponent {
                                 <span>build time: {this.props.buildTime}</span><br/>
                                 <span>server: {this.props.baseUrl}</span><br/>
                                 <span>device: {`${this.props.device.platform} ${this.props.device.version} ${this.props.device.model}`}</span><br/>
-                                <span>default: {this.props.defaultPath} </span>
-                                <span>default: {this.props.appVersion} </span>
+                                <span>default: {this.props.defaultPath} </span><br/>
+                                <span>appVersion: {this.props.appVersion} </span>
                             </div>
                         </Catch>
                     }/>
@@ -120,7 +120,7 @@ export default class RouterPath extends MyComponent {
         authId: PropTypes.number.isRequired,
         defaultPath: PropTypes.string.isRequired,
         device: PropTypes.object.isRequired,
-	appVersion: PropTypes.string.isRequired,
+        appVersion: PropTypes.string.isRequired,
     }
 
     static reduxPropsConfig = (state, props) => ({
@@ -131,7 +131,7 @@ export default class RouterPath extends MyComponent {
         online: ngScope().platform.isOnline(),
         authId: select.authIdSelector(state),
         defaultPath: select.defaultPath(state),
-	appVersion: ngScope().platform.cordovaOnly(()=>cordova.getAppVersion.getVersionNumber())
+        appVersion: ngScope().platform.cordovaOnly(()=>AppVersion.version)
     })
 
     static reduxDispatchConfig = (dispatch, props) => ({})

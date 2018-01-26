@@ -3,3 +3,7 @@ idevicesyslog
 cordova plugin add https://github.com/kaidokert/cordova-plugin-crosswalk-webview.git --variable XWALK_MODE="lite" 
 cordova pass -s to adb install  fix armv7/64 issue
 mapbox get callback on initialized
+cordova clean android -- --gradleArg=--debug --gradleArg=--no-build-cache --gradleArg=--no-daemon --gradleArg=--rerun-tasks  --gradleArg=--refresh-de
+pendencies
+cordova build android --release -- --gradleArg=--stacktrace --gradleArg=--info --gradleArg publishApkArmv7Release
+
