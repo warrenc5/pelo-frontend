@@ -701,6 +701,7 @@ const yarn = {commands: {
     yarn: ['--pure-lockfile'],
     npm: ['--offline']
 }
+
 gulp.task('install', [], function (done) {
     return gulp.src(packageConfig)
         .pipe(diff({hash: 'package'}))
