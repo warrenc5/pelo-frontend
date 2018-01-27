@@ -682,30 +682,52 @@ gulp.task('rerun', function () {
     return run('gulp ' + this.currentTask.name).exec()  // prints "[echo] Hello World\n".
         .pipe(gulp.dest('output'))           // writes "Hello World\n" to output/echo.
 })
+
+gulp.task('hash_package', [], function (done) {
+    return gulp.src(packageConfig)
+        .pipe(diff({hash: 'package'}))
+	.pipe(util.noop())
+})
+
+gulp.task('hash_cordova_package', [], function (done) {
+    return gulp.src(cordovaPackageConfig)
+        .pipe(diff({hash: 'cordova_package'}))
+	.pipe(util.noop())
+})
+
+const yarn = {commands: {
+      'package.json': 'yarn'
+    },
+    yarn: ['--pure-lockfile'],
+    npm: ['--offline']
+}
 gulp.task('install', [], function (done) {
     return gulp.src(packageConfig)
         .pipe(diff({hash: 'package'}))
-        .pipe(install())
+        .pipe(install(yarn))
+})
 
-    /**
-     process.chdir('./cordova');
-     gulp.src(packageConfig)
-     .pipe(plumber((e)=> {
-                console.log(e)
-            }
-     ))
+
+gulp.task('install_cordova', [], function (done) {
+
+     //process.chdir('./cordova');
+
+     gulp.src(cordovaPackageConfig)
+     .pipe(plumber((e)=> {console.log(e)}))
      .pipe(diff({hash: 'cordova_package'}))
-     .pipe(install({}))
+     .pipe(install(yarn))
      .on('error', (e) => {
             console.log(e)
             this.emit('end')
         })
-     //FIXME: never continues
-     .pipe(diff({hash: 'cordova_package'}))
-     .pipe(install({}))
 
-     process.chdir(paths.root)
-     */
+     //process.chdir(paths.root)
+})
+
+gulp.task('hash_cordova_config', [], function (done) {
+    return gulp.src(cordovaConfig)
+        .pipe(diff({hash: 'cordova'}))
+	.pipe(util.noop())
 })
 
 gulp.task('setup', ['install'], (done) => {
