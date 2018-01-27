@@ -61,7 +61,8 @@ export default class MyAjax {
                 case 4:
                     console.log("finished " + xhttp.status + " len:" + xhttp.responseText.length)
 
-                    platform.cordovaOnly(() => SpinnerDialog.hide(name))
+                    platform.cordovaOnly(() => SpinnerDialog.hide())
+
                     switch (xhttp.status) {
                         case 200:
                         case 202:

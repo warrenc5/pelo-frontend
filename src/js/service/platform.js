@@ -68,8 +68,7 @@ export default class MyPlatform {
             try {
                 return func()
             } catch (e) {
-                console.log("eee" + e)
-                alert(e.toString())
+                console.log(e)
             }
         }
     }

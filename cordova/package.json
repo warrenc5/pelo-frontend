@@ -7,8 +7,8 @@
     },
     "cordova": {
         "platforms": [
-            "ios",
-            "android"
+            "android",
+            "ios"
         ],
         "plugins": {
             "cordova-plugin-compat": {},
@@ -33,13 +33,16 @@
                 "XWALK_MODE": "embedded",
                 "XWALK_MULTIPLEAPK": "true"
             },
-            "com.filfatstudios.spinnerdialog": {}
+            "com.filfatstudios.spinnerdialog": {},
+            "cordova-plugin-appversion": {}
         }
     },
     "dependencies": {
+        "com.filfatstudios.spinnerdialog": "git+https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog",
         "cordova-android": "^7.0.0",
         "cordova-ios": "^4.5.4",
         "cordova-plugin-app-event": "^1.2.1",
+        "cordova-plugin-appversion": "^1.0.0",
         "cordova-plugin-compat": "^1.2.0",
         "cordova-plugin-crosswalk-webview": "^2.3.0",
         "cordova-plugin-device": "^2.0.1",
@@ -51,8 +54,7 @@
         "cordova-plugin-progress-indicator": "git+https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog.git",
         "cordova-plugin-splashscreen": "^5.0.1",
         "cordova-plugin-whitelist": "^1.3.3",
-        "de.appplant.cordova.plugin.local-notification": "^0.8.5",
-        "com.filfatstudios.spinnerdialog": "git+https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog"
+        "de.appplant.cordova.plugin.local-notification": "^0.8.5"
     },
     "devDependencies": {
         "npm-check-updates": "^2.14.0",

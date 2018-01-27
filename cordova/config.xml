@@ -71,6 +71,7 @@
         <variable name="XWALK_MULTIPLEAPK" value="true" />
     </plugin>
     <plugin name="com.filfatstudios.spinnerdialog" spec="git+https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog" />
-    <engine name="ios" spec="^4.5.4" />
+    <plugin name="cordova-plugin-appversion" spec="^1.0.0" />
     <engine name="android" spec="^7.0.0" />
+    <engine name="ios" spec="^4.5.4" />
 </widget>
