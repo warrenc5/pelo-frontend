@@ -58,8 +58,8 @@
         "debug": "^3.1.0"
     },
     "devDependencies": {
-        "npm-check-updates": "^2.14.0",
         "cordova-icon": "^0.11.0",
-        "cordova-splash": "^0.10.0"
+        "cordova-splash": "^0.10.0",
+        "npm-check-updates": "^2.14.0"
     }
 }
