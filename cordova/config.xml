@@ -59,7 +59,7 @@
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.1" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
     <plugin name="cordova-plugin-dialogs" spec="^2.0.1" />
-    <plugin name="cordova-plugin-mapbox" spec="git://github.com/Telerik-Verified-Plugins/Mapbox.git">
+    <plugin name="cordova-plugin-mapbox" spec="git://github.com/warrenc5/Mapbox.git">
         <variable name="ACCESS_TOKEN" value="pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g" />
     </plugin>
     <plugin name="de.appplant.cordova.plugin.local-notification" spec="^0.8.5" />
