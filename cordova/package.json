@@ -35,7 +35,8 @@
                 "XWALK_MODE": "embedded",
                 "XWALK_MULTIPLEAPK": "true"
             },
-            "cordova-plugin-appversion": {}
+            "cordova-plugin-appversion": {},
+            "cordova-plugin-progress-indicator": {}
         }
     },
     "dependencies": {
@@ -49,9 +50,9 @@
         "cordova-plugin-dialogs": "^2.0.1",
         "cordova-plugin-facebook4": "^1.9.1",
         "cordova-plugin-geolocation": "^4.0.1",
-        "cordova-plugin-mapbox": "https://github.com/warrenc5/Mapbox",
+        "cordova-plugin-mapbox": "https://github.com/warrenc5/Mapbox.git",
         "cordova-plugin-network-information": "^2.0.1",
-        "cordova-plugin-progress-indicator": "git+https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog.git",
+        "cordova-plugin-progress-indicator": "https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog.git",
         "cordova-plugin-splashscreen": "^5.0.1",
         "cordova-plugin-whitelist": "^1.3.3",
         "de.appplant.cordova.plugin.local-notification": "^0.8.5",

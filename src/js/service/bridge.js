@@ -15,6 +15,8 @@ export class NgScope2 extends MyComponent {
     }
 
     setup() {
+	this.oldState = ngScope().platform.checkConnection()
+
         document.addEventListener("offline", this.goOffline.bind(this), false)
         document.addEventListener("online", this.goOnline.bind(this), false)
     }
@@ -25,16 +27,34 @@ export class NgScope2 extends MyComponent {
     render() {
         return this.props.children
     }
+    
+    updateConnection() {
+	var newState = ngScope().platform.checkConnection()
+
+	if(this.oldState === Connection.UNKNOWN) {
+	  this.oldState = newState
+	  return false
+	} else {
+	  this.oldState = newState
+	  return true
+        }
+    }
 
     goOffline() {
+	if(!this.updateConnection()) {
+	  return
+	} 
         alert('offline')
         console.log('offline')
         this.reload()
     }
 
-    goOnline() {
-        alert('online')
-        console.log('online')
+    goOnline(e) {
+	if(!this.updateConnection()) {
+	  return
+	} 
+        alert('online') 
+        console.log('online',e)
         this.reload()
     }
 
