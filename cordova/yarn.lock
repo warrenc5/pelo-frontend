@@ -610,17 +610,18 @@ cordova-plugin-geolocation@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/cordova-plugin-geolocation/-/cordova-plugin-geolocation-4.0.1.tgz#4703fa649d2405d25a9a732c99ebf868754a2c04"
 
-"cordova-plugin-mapbox@https://github.com/warrenc5/Mapbox":
+cordova-plugin-mapbox@/Users/wozza/pelo-react/cordova/export/Mapbox:
   version "1.2.3"
-  resolved "https://github.com/warrenc5/Mapbox#508efa305b5e1734a9d2904f0ec895070926e1a7"
+
+"cordova-plugin-mapbox@file:export/Mapbox":
+  version "1.2.3"
 
 cordova-plugin-network-information@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/cordova-plugin-network-information/-/cordova-plugin-network-information-2.0.1.tgz#e90421f430c6ab76d409223f25fcefbbbce17690"
 
-"cordova-plugin-progress-indicator@git+https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog.git":
+"cordova-plugin-progress-indicator@file:export/cordova-plugin-spinnerdialog":
   version "1.0.3"
-  resolved "git+https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog.git#03b952e80b279cf0792a3eb99b3d1ab95b39392d"
 
 cordova-plugin-splashscreen@^5.0.1:
   version "5.0.1"
