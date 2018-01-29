@@ -1,4 +1,5 @@
 mkdir ./export
-git clone https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog.git ./export
-git clone https://github.com/warrenc5/Mapbox.git ./export
+git -C ./export clone https://github.com/filfat-Studios-AB/cordova-plugin-spinnerdialog.git 
+git -C ./export clone https://github.com/warrenc5/Mapbox.git 
+exit 0
 

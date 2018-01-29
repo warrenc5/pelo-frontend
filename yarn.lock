@@ -6228,9 +6228,9 @@ marked@^0.3.12, marked@~0.3.0:
   version "0.3.12"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.12.tgz#7cf25ff2252632f3fe2406bde258e94eee927519"
 
-material-ui-upload@^1.2.1:
+"material-ui-upload@https://github.com/warrenc5/material-ui-upload.git":
   version "1.2.1"
-  resolved "https://registry.yarnpkg.com/material-ui-upload/-/material-ui-upload-1.2.1.tgz#c5a082b07620f42564a193e57d94b0e7a3aa89b8"
+  resolved "https://github.com/warrenc5/material-ui-upload.git#283faf3dde3f625b91e1e4ec95607b254829ed50"
   dependencies:
     jshashes "^1.0.7"
     lodash "^4.17.4"
@@ -6653,6 +6653,10 @@ ng-redux@^3.5.2:
 ngreact@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/ngreact/-/ngreact-0.5.1.tgz#2dcccc1541771796689d13e51bb8d5010af41c57"
+
+"node-adb@github:warrenc5/adb-tools":
+  version "0.1.5"
+  resolved "https://codeload.github.com/warrenc5/adb-tools/tar.gz/d979866f5417f722d23f365b2e58fa514b5b1dfc"
 
 node-alias@^1.0.4:
   version "1.0.4"
@@ -8087,6 +8091,10 @@ react-form@^2.16.1:
 react-hamburger-menu@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-hamburger-menu/-/react-hamburger-menu-1.0.0.tgz#46d9504b48310d0a8c52eaa86de02fde6a62913c"
+
+"react-hamburger-menu@https://github.com/warrenc5/react-hamburger-menu.git":
+  version "1.0.0"
+  resolved "https://github.com/warrenc5/react-hamburger-menu.git#143d176bf5048c02194c6ab5aaf33a48023980e7"
 
 react-history@^0.18.2:
   version "0.18.2"
@@ -9990,9 +9998,9 @@ ua-parser-js@^0.7.9:
   version "0.7.17"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
 
-uglify-es@^3.3.8:
-  version "3.3.8"
-  resolved "https://registry.yarnpkg.com/uglify-es/-/uglify-es-3.3.8.tgz#f2c68e6cff0d0f9dc9577e4da207151c2e753b7e"
+uglify-es@^3.3.9:
+  version "3.3.9"
+  resolved "https://registry.yarnpkg.com/uglify-es/-/uglify-es-3.3.9.tgz#0c1c4f0700bed8dbc124cdb304d2592ca203e677"
   dependencies:
     commander "~2.13.0"
     source-map "~0.6.1"
@@ -10014,9 +10022,16 @@ uglify-js@^2.6.1:
   optionalDependencies:
     uglify-to-browserify "~1.0.0"
 
-uglify-js@^3.0.5, uglify-js@^3.3.8:
+uglify-js@^3.0.5:
   version "3.3.8"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.3.8.tgz#51e9a5db73afb53ac98603d08224edcd0be45fd8"
+  dependencies:
+    commander "~2.13.0"
+    source-map "~0.6.1"
+
+uglify-js@^3.3.9:
+  version "3.3.9"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.3.9.tgz#33869666c8ab7f7658ce3d22f0f1ced40097d33a"
   dependencies:
     commander "~2.13.0"
     source-map "~0.6.1"

@@ -33,6 +33,7 @@
     <preference name="tools:overrideLibrary" value="org.xwalk.core" />
     <preference name="uses-sdk:minSdkVersion" value="15" />
     <preference name="android-targetSdkVersion" value="21" />
+    <hook src="scripts/clone-exports.sh" type="before_prepare" />
     <hook src="scripts/after_prepare" type="after_prepare" />
     <hook src="scripts/cordova-icon.js" type="after_platform_add" />
     <hook src="scripts/cordova-splash.js" type="after_platform_add" />
@@ -69,10 +70,10 @@
         <variable name="XWALK_MULTIPLEAPK" value="true" />
     </plugin>
     <plugin name="cordova-plugin-appversion" spec="^1.0.0" />
-    <engine name="android" spec="^7.0.0" />
-    <engine name="ios" spec="^4.5.4" />
     <plugin name="com.filfatstudios.spinnerdialog" spec="./export/cordova-plugin-spinnerdialog" />
     <plugin name="cordova-plugin-mapbox" spec="./export/Mapbox">
         <variable name="ACCESS_TOKEN" value="pk.eyJ1Ijoid2FycmVuYzUiLCJhIjoiY2lqNWJyZGdwMDA1b3VkbHZxbHdtcWh6bCJ9.q_fttPToEFTe6tnFFC2K8g" />
     </plugin>
+    <engine name="android" spec="^7.0.0" />
+    <engine name="ios" spec="^4.5.4" />
 </widget>
