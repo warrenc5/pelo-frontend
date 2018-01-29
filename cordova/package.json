@@ -4,6 +4,7 @@
     "displayName": "Pelo",
     "scripts": {
         "clean": "cordova clean",
+        "preinstall": "scripts/clone-exports.sh",
         "postinstall": "gulp hash_cordova_package",
         "after_prepare": "gulp hash_cordova_config"
     },
@@ -50,9 +51,9 @@
         "cordova-plugin-dialogs": "^2.0.1",
         "cordova-plugin-facebook4": "^1.9.1",
         "cordova-plugin-geolocation": "^4.0.1",
-        "cordova-plugin-mapbox": "/Users/wozza/pelo-react/cordova/export/Mapbox",
+        "cordova-plugin-mapbox": "./export/Mapbox",
         "cordova-plugin-network-information": "^2.0.1",
-        "cordova-plugin-progress-indicator": "/Users/wozza/pelo-react/cordova/export/cordova-plugin-spinnerdialog",
+        "cordova-plugin-progress-indicator": "./export/cordova-plugin-spinnerdialog",
         "cordova-plugin-splashscreen": "^5.0.1",
         "cordova-plugin-whitelist": "^1.3.3",
         "de.appplant.cordova.plugin.local-notification": "^0.8.5",

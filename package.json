@@ -12,7 +12,7 @@
     "android": "gulp android",
     "clean": "rm -rf .gulp node_modules && cd cordova && cordova clean",
     "clean3": "cd cordova && npm run clean",
-    "setup": "npm i -g npm-check-updates cordova gulp gradle babel yarn",
+    "setup": "npm i --ignore-scripts -g npm-check-updates cordova gulp gradle babel yarn && npm i",
     "postinstall": "cp -r patch/node_modules . && gulp hash_package",
     "postinstall2": "npm-git install",
     "sass": "npm rebuild node-sass --force",
